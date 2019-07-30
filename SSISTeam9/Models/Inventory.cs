@@ -7,7 +7,7 @@ namespace SSISTeam9.Models
 {
     public class Inventory
     {
-        public long ItemId { get; }
+        public long ItemId { get; set; }
         public string ItemCode { get; set; }
         public string BinNo { get; set; }
         public int StockLevel { get; set; }

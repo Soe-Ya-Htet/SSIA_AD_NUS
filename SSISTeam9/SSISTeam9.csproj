@@ -143,8 +143,22 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdjVoucher.cs" />
+    <Compile Include="Models\Cart.cs" />
+    <Compile Include="Models\CollectionPoint.cs" />
     <Compile Include="Models\Data.cs" />
+    <Compile Include="Models\Delegate.cs" />
+    <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\DisbursementList.cs" />
+    <Compile Include="Models\DisbursementListDetails.cs" />
+    <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Inventory.cs" />
+    <Compile Include="Models\PriceList.cs" />
+    <Compile Include="Models\PurchaseOrder.cs" />
+    <Compile Include="Models\PurchaseOrderDetails.cs" />
+    <Compile Include="Models\Requisition.cs" />
+    <Compile Include="Models\RequisitionDetails.cs" />
+    <Compile Include="Models\Supplier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

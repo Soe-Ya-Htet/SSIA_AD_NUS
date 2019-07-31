@@ -8,10 +8,20 @@ namespace SSISTeam9.Models
 {
     public class SupplierService
     {
-        public List<Supplier> DisplayAllSuppliers()
+        public static List<Supplier> DisplayAllSuppliers()
         {
-            return null;
+            return SupplierDAO.DisplayAllSuppliers();
         }
-            
+
+        public static Supplier DisplaySupplierDetails(string supplierCode)
+        {
+            return SupplierDAO.DisplaySupplierDetails(supplierCode);
+        }
+
+        public static void UpdateSupplierDetails(Supplier supplier)
+        {
+            SupplierDAO.UpdateSupplierDetails(supplier);
+        }
+
     }
 }

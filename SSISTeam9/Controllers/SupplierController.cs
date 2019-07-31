@@ -1,4 +1,6 @@
 ﻿using System.Web.Mvc;
+using SSISTeam9.Models;
+using System.Collections.Generic;
 
 namespace SSISTeam9.Controllers
 {
@@ -13,6 +15,9 @@ namespace SSISTeam9.Controllers
         //Display all suppliers
         public ActionResult All()
         {
+            List<Supplier> suppliers = SupplierService.DisplayAllSuppliers();
+
+            ViewData["suppliers"] = suppliers;
             return View();
         }
 
@@ -21,9 +26,19 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult UpdateDetails()
+        public ActionResult DisplaySupplierDetails(string supplierCode)
         {
+            ViewData["supplier"] = SupplierService.DisplaySupplierDetails(supplierCode);
             return View();
+        }
+
+        public ActionResult Update(Supplier supplier)
+        {
+            SupplierService.UpdateSupplierDetails(supplier);
+
+            List<Supplier> suppliers = SupplierService.DisplayAllSuppliers();
+            ViewData["suppliers"] = suppliers;
+            return View("All");
         }
 
     }

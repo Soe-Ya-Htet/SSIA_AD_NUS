@@ -1,0 +1,38 @@
+﻿@using SSISTeam9.Models;
+@{
+    List<Supplier> suppliers = (List<Supplier>)ViewData["suppliers"];
+}
+
+<h2>Suppliers</h2>
+
+@if (suppliers.Count == 0){
+    <br /><br />
+    <p style="font-size:14px">No suppliers to display</p>
+}
+else
+{
+    <table>
+        <tr>
+            <th>Supplier Code</th>
+            <th>Supplier Name</th>
+            <th>GST Registration Number</th>
+            <th>Address</th>
+            <th>Contact Name</th>
+            <th>Phone Number</th>
+            <th>Fax Number</th>
+        </tr>
+        @foreach (var supplier in suppliers)
+        {
+        <tr>
+            <td><a href ="/Supplier/DisplaySupplierDetails?supplierCode=@supplier.SupplierCode">@supplier.SupplierCode</a></td>
+            <td>@supplier.Name</td>
+            <td>@supplier.GstNumber</td>
+            <td>@supplier.Address</td>
+            <td>@supplier.ContactName</td>
+            <td>@supplier.PhoneNumber</td>
+            <td>@supplier.FaxNumber</td>
+        </tr>
+        }
+    </table>
+}
+

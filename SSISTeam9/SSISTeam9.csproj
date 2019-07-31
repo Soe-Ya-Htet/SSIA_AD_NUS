@@ -221,6 +221,9 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Requisition\NewRequisition.cshtml" />
+    <Content Include="Views\Supplier\All.cshtml" />
+    <Content Include="Views\Supplier\DisplaySupplierDetails.cshtml" />
+    <Content Include="Views\Supplier\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

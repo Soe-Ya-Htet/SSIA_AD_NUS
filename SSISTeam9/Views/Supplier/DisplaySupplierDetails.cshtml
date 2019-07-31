@@ -40,7 +40,8 @@
             <td>@Html.TextBoxFor(m => m.FaxNumber, new { id = "faxNumber", @Value = supplier.FaxNumber })</td>
         </tr>
         <tr>
-            <td colspan="2" align="right"><input type="submit" value="Save"></td>
+            <td align="left"> <input type="button" value="Delete Supplier" onclick="location.href='/Supplier/Delete?supplierCode=@supplier.SupplierCode'"> </td>
+            <td align="right"><input type="submit" value="Save"></td>
             @Html.Hidden("supplierId", supplier.SupplierId)
         </tr>
     </table>

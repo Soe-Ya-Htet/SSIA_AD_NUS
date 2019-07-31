@@ -21,16 +21,27 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult CreateForm(Supplier supplier)
+        public ActionResult CreateForm()
         {
-            SupplierService.CreateNewSupplier(supplier);
-
             return View();
         }
 
-        public ActionResult CreateNew()
+        public ActionResult CreateNew(Supplier supplier)
         {
-            return View();
+            SupplierService.CreateNewSupplier(supplier);
+
+            List<Supplier> suppliers = SupplierService.DisplayAllSuppliers();
+            ViewData["suppliers"] = suppliers;
+            return View("All");
+        }
+
+        public ActionResult Delete(string supplierCode)
+        {
+            SupplierService.DeleteSupplier(supplierCode);
+
+            List<Supplier> suppliers = SupplierService.DisplayAllSuppliers();
+            ViewData["suppliers"] = suppliers;
+            return View("All");
         }
 
         public ActionResult DisplaySupplierDetails(string supplierCode)

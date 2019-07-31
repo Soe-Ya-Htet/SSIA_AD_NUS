@@ -23,6 +23,11 @@ namespace SSISTeam9.Models
             SupplierDAO.CreateNewSupplier(supplier);
         }
 
+        public static void DeleteSupplier(string supplierCode)
+        {
+            SupplierDAO.DeleteSupplier(supplierCode);
+        }
+
         public static void UpdateSupplierDetails(Supplier supplier)
         {
             SupplierDAO.UpdateSupplierDetails(supplier);

@@ -11,5 +11,7 @@ namespace SSISTeam9.Models
         public long DeptId { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
+        public Employee Employee { get; set; }
+        public Department Department { get; set; }
     }
 }

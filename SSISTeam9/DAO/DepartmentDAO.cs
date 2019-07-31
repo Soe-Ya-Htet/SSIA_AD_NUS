@@ -27,8 +27,6 @@ namespace SSISTeam9.DAO
                     {
                         DeptId = (int)reader["deptId"],
                         DeptCode = (string)reader["deptCode"],
-                        RepresentativeId = (int)reader["representativeId"],
-                        CollectionPointId = (int)reader["collectionPointId"],
                         Name = (string)reader["name"],
                         Contact = (string)reader["contact"],
                         Telephone = (string)reader["telephone"],
@@ -58,8 +56,6 @@ namespace SSISTeam9.DAO
                 {
                     department.DeptId = (int)reader["deptId"];
                     department.DeptCode = (string)reader["deptCode"];
-                    department.RepresentativeId = (int)reader["representativeId"];
-                    department.CollectionPointId = (int)reader["collectionPointId"];
                     department.Name = (string)reader["name"];
                     department.Contact = (string)reader["contact"];
                     department.Telephone = (string)reader["telephone"];

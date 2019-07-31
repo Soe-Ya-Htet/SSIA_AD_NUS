@@ -18,6 +18,11 @@ namespace SSISTeam9.Models
             return SupplierDAO.DisplaySupplierDetails(supplierCode);
         }
 
+        public static void CreateNewSupplier(Supplier supplier)
+        {
+            SupplierDAO.CreateNewSupplier(supplier);
+        }
+
         public static void UpdateSupplierDetails(Supplier supplier)
         {
             SupplierDAO.UpdateSupplierDetails(supplier);

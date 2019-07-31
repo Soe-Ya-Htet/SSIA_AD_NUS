@@ -21,6 +21,13 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
+        public ActionResult CreateForm(Supplier supplier)
+        {
+            SupplierService.CreateNewSupplier(supplier);
+
+            return View();
+        }
+
         public ActionResult CreateNew()
         {
             return View();

@@ -41,6 +41,18 @@ namespace SSISTeam9.DAO
             return suppliers;
         }
 
+        public static void CreateNewSupplier(Supplier supplier)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = "INSERT INTO Supplier (supplierCode,name,gstNumber,address,contactName,phoneNumber,faxNumber)" + "VALUES ('" + supplier.SupplierCode + "','" + supplier.Name + "'," + "'" + supplier.GstNumber + "," + supplier.Address + "," + supplier.ContactName + "," + supplier.PhoneNumber + "," + supplier.FaxNumber + "')"; ;
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public static Supplier DisplaySupplierDetails(string supplierCode)
         {
 

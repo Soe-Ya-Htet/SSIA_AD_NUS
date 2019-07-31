@@ -118,5 +118,26 @@ namespace SSISTeam9.DAO
 
             }
         }
+
+        public static List<string> ViewAllSupplierCode()
+        {
+            List<string> supplierCodes = new List<string>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT DISTINCT supplierCode from Supplier";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    string supplierCode = (string)reader["supplierCode"];
+                    supplierCodes.Add(supplierCode);
+                }
+            }
+            return supplierCodes;
+        }
     }
 }

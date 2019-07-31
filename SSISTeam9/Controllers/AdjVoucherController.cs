@@ -8,7 +8,7 @@ namespace SSISTeam9.Controllers
 {
     public class AdjVoucherController : Controller
     {
-        
+        // GET: AdjVoucher
         public ActionResult Index()
         {
             return View();

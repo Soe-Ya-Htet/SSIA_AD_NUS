@@ -10,7 +10,7 @@ namespace SSISTeam9.Models
     {
         public List<Supplier> DisplayAllSuppliers()
         {
-            return SupplierDAO.DisplayAllSuppliers();
+            return null;
         }
             
     }

@@ -25,8 +25,8 @@ namespace SSISTeam9.DAO
                 {
                     Supplier supplier = new Supplier()
                     {
-                       SupplierCode = (long)reader["supplierCode"],
-                       name = (string)reader["name"],
+                       SupplierCode = (string)reader["supplierCode"],
+                       Name = (string)reader["name"],
                        GstNumber = (string)reader["gstNumber"],
                        Address = (string)reader["address"],
                        ContactName = (string)reader["contactName"],

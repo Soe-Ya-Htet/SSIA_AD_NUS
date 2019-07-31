@@ -139,8 +139,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Filters\BasicAuthenticationAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RequisitionController.cs" />
+    <Compile Include="Controllers\RestDepartmentHeadController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="DAO\CatalogueDAO.cs" />
     <Compile Include="DAO\DepartmentDAO.cs" />

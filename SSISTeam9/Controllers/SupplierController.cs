@@ -2,6 +2,7 @@
 using SSISTeam9.Models;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using SSISTeam9.Services;
 
 namespace SSISTeam9.Controllers
 {
@@ -37,7 +38,7 @@ namespace SSISTeam9.Controllers
                 ViewData["suppliers"] = suppliers;
                 return View("All");
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
                 TempData["errorMsg"] = "<script>alert('Supplier code already exists! Please enter another one.');</script>";
                 return View("CreateForm");

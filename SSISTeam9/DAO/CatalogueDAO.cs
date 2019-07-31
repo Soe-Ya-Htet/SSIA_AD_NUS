@@ -111,7 +111,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static List<string> DisplayAllCategory()
+        public static List<string> DGetAllCategories()
         {
             List<string> categories = new List<string>();
 
@@ -133,7 +133,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static List<string> DisplayAllUnit()
+        public static List<string> GetAllUnits()
         {
             List<string> units = new List<string>();
 
@@ -189,19 +189,15 @@ namespace SSISTeam9.DAO
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
-                string q1 = @"SELECT MAX(itemId) from Inventory";
-                SqlCommand cmd1 = new SqlCommand(q1, conn);
-                Catalogue.ItemId = (int)cmd1.ExecuteScalar() + 1;
 
-                string q2 = @"INSERT INTO Inventory (itemId,itemCode,category,description,unitOfMeasure)" +
-                            "VALUES ('" + Catalogue.ItemId +
-                            "','" + Catalogue.ItemCode +
+                string q = @"INSERT INTO Inventory (itemCode,category,description,unitOfMeasure)" +
+                            "VALUES ('" + Catalogue.ItemCode +
                             "','" + Catalogue.Category +
                             "','" + Catalogue.Description +
                             "','" + Catalogue.UnitOfMeasure+ "'";
 
-                SqlCommand cmd2 = new SqlCommand(q2, conn);
-                cmd2.ExecuteNonQuery();
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
             }
         }
 

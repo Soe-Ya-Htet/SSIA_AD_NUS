@@ -30,8 +30,7 @@ namespace SSISTeam9.DAO
                     };
                     Requisition requisition = new Requisition()
                     {
-                        ReqId = (long)reader["reqId"],
-                        EmpId = (long)reader["empId"],
+                        ReqId = (long)reader["reqId"],                     
                         ReqCode = (String)reader["reqCode"],
                         //DateOfRequest = (DateTime)reader["dateOfRequest"],
                         Status = (String)reader["status"],

@@ -1,7 +1,33 @@
-﻿
+﻿@model SSISTeam9.Models.Requisition
+@using SSISTeam9.Models
 @{
-    ViewBag.Title = "GetPendingRequisitions";
+    var requisitions = (List<Requisition>)ViewData["requisitionsToProcess"];
+
 }
 
-<h2>GetPendingRequisitions</h2>
+@{
+    if (requisitions.Count == 0)
+    {
+        <h2>No pending requisitions</h2>
+    }
+    else
+    {
 
+        <table>
+            <tr>
+                <th>RequisitionID</th>
+                <th>Employee Name</th>
+            </tr>
+
+            @foreach (var requisition in requisitions)
+            {
+                <tr>
+
+                    <td>@Html.ActionLink(requisition.ReqId.ToString(), "Controller", "Action", new { })</td>
+                    <td>@requisition.Employee.EmpName</td>
+                </tr>
+            }
+        </table>
+    }
+
+}

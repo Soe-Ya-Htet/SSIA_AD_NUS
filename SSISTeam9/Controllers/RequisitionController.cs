@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SSISTeam9.Models;
+using SSISTeam9.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +13,12 @@ namespace SSISTeam9.Controllers
         // GET: Requisition
         public ActionResult Index()
         {
+            return View();
+        }
+        public ActionResult GetPendingRequisitions()
+        {
+            List<Requisition> requisitions = RequisitionService.DisplayPendingRequisitions();
+            ViewData["requisitionsToProcess"] = requisitions;
             return View();
         }
     }

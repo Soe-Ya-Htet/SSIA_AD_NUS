@@ -47,10 +47,15 @@ namespace SSISTeam9.DAO
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
-                string q = @"Update UserInfo set SessionID = NULL where SessionID ='"  + "'";
-                SqlCommand cmd = new SqlCommand(q, conn);
-                cmd.ExecuteNonQuery();
+                string q1 = @"DELETE from Inventory where itemId = '" + ItemId + "'";
+                SqlCommand cmd1 = new SqlCommand(q1, conn);
+                cmd1.ExecuteNonQuery();
             }
+        }
+
+        public static void CreateCatalogue()
+        {
+
         }
 
     }

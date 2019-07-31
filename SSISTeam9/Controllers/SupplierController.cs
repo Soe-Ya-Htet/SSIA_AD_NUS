@@ -39,19 +39,24 @@ namespace SSISTeam9.Controllers
             }
             catch (SqlException ex)
             {
-                ViewData["errorMsg"] = ex.Message;
+                TempData["errorMsg"] = "<script>alert('Supplier code already exists! Please enter another one.');</script>";
                 return View("CreateForm");
             }
             
         }
 
-        public ActionResult Delete(string supplierCode)
+        public ActionResult Delete(bool confirm, string supplierCode)
         {
-            SupplierService.DeleteSupplier(supplierCode);
+            if (confirm)
+            {
+                SupplierService.DeleteSupplier(supplierCode);
 
-            List<Supplier> suppliers = SupplierService.DisplayAllSuppliers();
-            ViewData["suppliers"] = suppliers;
-            return View("All");
+                List<Supplier> suppliers = SupplierService.DisplayAllSuppliers();
+                ViewData["suppliers"] = suppliers;
+                return View("All");
+            }
+            return null;
+
         }
 
         public ActionResult DisplaySupplierDetails(string supplierCode)

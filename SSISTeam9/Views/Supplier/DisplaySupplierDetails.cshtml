@@ -10,43 +10,57 @@
 <div>
     @using (Html.BeginForm("Update", "Supplier", FormMethod.Post))
     {
-    <table>
-        <tr>
-            <td>@Html.LabelFor(m => m.SupplierCode) </td>
-            <td>@Html.TextBoxFor(m => m.SupplierCode, new { id = "supplierCode", @Value = supplier.SupplierCode })</td>
-        </tr>
-        <tr>
-            <td>@Html.LabelFor(m => m.Name) </td>
-            <td>@Html.TextBoxFor(m => m.Name, new { id = "supplierName", @Value = supplier.Name })</td>
-        </tr>
-        <tr>
-            <td>@Html.LabelFor(m => m.GstNumber) </td>
-            <td>@Html.TextBoxFor(m => m.GstNumber, new { id = "gstNumber", @Value = supplier.GstNumber })</td>
-        </tr>
-        <tr>
-            <td>@Html.LabelFor(m => m.Address) </td>
-            <td>@Html.TextBoxFor(m => m.Address, new { id = "address", @Value = supplier.Address })</td>
-        </tr>
-        <tr>
-            <td>@Html.LabelFor(m => m.ContactName) </td>
-            <td>@Html.TextBoxFor(m => m.ContactName, new { id = "contactName", @Value = supplier.ContactName })</td>
-        </tr>
-        <tr>
-            <td>@Html.LabelFor(m => m.PhoneNumber) </td>
-            <td>@Html.TextBoxFor(m => m.PhoneNumber, new { id = "phoneNumber", @Value = supplier.PhoneNumber })</td>
-        </tr>
-        <tr>
-            <td>@Html.LabelFor(m => m.FaxNumber) </td>
-            <td>@Html.TextBoxFor(m => m.FaxNumber, new { id = "faxNumber", @Value = supplier.FaxNumber })</td>
-        </tr>
-        <tr>
-            <td align="left"> <input type="button" value="Delete Supplier" onclick="location.href='/Supplier/Delete?supplierCode=@supplier.SupplierCode'"> </td>
-            <td align="right"><input type="submit" value="Save"></td>
-            @Html.Hidden("supplierId", supplier.SupplierId)
-        </tr>
-    </table>
-       
+        <table>
+            <tr>
+                <td>@Html.LabelFor(m => m.SupplierCode) </td>
+                <td>@Html.TextBoxFor(m => m.SupplierCode, new { id = "supplierCode", @Value = supplier.SupplierCode })</td>
+                <td>@Html.ValidationMessageFor(m => m.SupplierCode, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Name) </td>
+                <td>@Html.TextBoxFor(m => m.Name, new { id = "supplierName", @Value = supplier.Name })</td>
+                <td>@Html.ValidationMessageFor(m => m.Name, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.GstNumber) </td>
+                <td>@Html.TextBoxFor(m => m.GstNumber, new { id = "gstNumber", @Value = supplier.GstNumber })</td>
+                <td>@Html.ValidationMessageFor(m => m.GstNumber, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Address) </td>
+                <td>@Html.TextBoxFor(m => m.Address, new { id = "address", @Value = supplier.Address })</td>
+                <td>@Html.ValidationMessageFor(m => m.Address, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.ContactName) </td>
+                <td>@Html.TextBoxFor(m => m.ContactName, new { id = "contactName", @Value = supplier.ContactName })</td>
+                <td>@Html.ValidationMessageFor(m => m.ContactName, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.PhoneNumber) </td>
+                <td>@Html.TextBoxFor(m => m.PhoneNumber, new { id = "phoneNumber", @Value = supplier.PhoneNumber })</td>
+                <td>@Html.ValidationMessageFor(m => m.PhoneNumber, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.FaxNumber) </td>
+                <td>@Html.TextBoxFor(m => m.FaxNumber, new { id = "faxNumber", @Value = supplier.FaxNumber })</td>
+                <td>@Html.ValidationMessageFor(m => m.FaxNumber, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>
+                    <button>
+                        @Html.ActionLink("Delete Supplier","Delete","Supplier",
+                        new { confirm = true, supplierCode = supplier.SupplierCode },
+                        new { onclick = "return confirm('Do you really want to delete this supplier?')" })
+                    </button>
+                    <!-- <input type="button" value="Delete Supplier" onclick="location.href='/Supplier/Delete?supplierCode=@supplier.SupplierCode'">-->
+                </td>
+                <td align="right"><input type="submit" value="Save Update(s)"></td>
+                @Html.Hidden("supplierId", supplier.SupplierId)
+            </tr>
+        </table>
 
+        
     }
 
 </div>

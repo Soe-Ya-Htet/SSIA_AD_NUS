@@ -223,7 +223,6 @@
     <Content Include="Views\Requisition\NewRequisition.cshtml" />
     <Content Include="Views\Supplier\All.cshtml" />
     <Content Include="Views\Supplier\DisplaySupplierDetails.cshtml" />
-    <Content Include="Views\Supplier\Update.cshtml" />
     <Content Include="Views\Supplier\CreateForm.cshtml" />
     <Content Include="Views\Requisition\GetPendingRequisitions.cshtml" />
   </ItemGroup>

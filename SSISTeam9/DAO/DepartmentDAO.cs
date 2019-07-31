@@ -44,7 +44,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static Department DisplaySelectedDepartment(int DeptId)
+        public static Department DisplayDepartmentDetails(int DeptId)
         {
             Department department = null;
 
@@ -129,6 +129,27 @@ namespace SSISTeam9.DAO
         //        cmd2.ExecuteNonQuery();
         //    }
         //}
+
+
+        public static void UpdateDepartment(Department department)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"UPDATE department SET deptId = '" + department.DeptId +
+                    "', deptCode = '" + department.DeptCode +
+                    "', name = '" + department.Name +
+                    "', contact = '" + department.Contact +
+                    "', telephone = '" + department.Telephone +
+                    "', fax = '" + department.Fax +
+                    "', head = '" + department.Head +
+                    "' WHERE deptId = '" + department.DeptId + "'";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
 
 
         //public static void UpdateDepartment(int DeptId, string DeptCode, string Name, string Contact, string Telephone, string Fax, string Head)

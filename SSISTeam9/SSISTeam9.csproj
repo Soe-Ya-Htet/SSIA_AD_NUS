@@ -142,9 +142,20 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RequisitionController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
+    <Compile Include="DAO\AdjVoucherDAO.cs" />
+    <Compile Include="DAO\CartDAO.cs" />
     <Compile Include="DAO\CatalogueDAO.cs" />
+    <Compile Include="DAO\CollectionPointDAO.cs" />
+    <Compile Include="DAO\DelegateDAO.cs" />
     <Compile Include="DAO\DepartmentDAO.cs" />
+    <Compile Include="DAO\DisbursementListDAO.cs" />
+    <Compile Include="DAO\DisbursementListDetailsDAO.cs" />
+    <Compile Include="DAO\EmployeeDAO.cs" />
+    <Compile Include="DAO\PriceListDAO.cs" />
+    <Compile Include="DAO\PurchaseOrderDAO.cs" />
+    <Compile Include="DAO\PurchaseOrderDetailsDAO.cs" />
     <Compile Include="DAO\RequisitionDAO.cs" />
+    <Compile Include="DAO\RequisitionDetailsDAO.cs" />
     <Compile Include="DAO\SupplierDAO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

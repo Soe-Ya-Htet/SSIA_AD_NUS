@@ -168,6 +168,30 @@ namespace SSISTeam9.DAO
         }
 
 
+        public static void UpdateCatalogueDetails(Inventory Catalogue)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q1 = @"UPDATE Catalogue SET description = '" + Catalogue.Description +
+                    "', unitOfMeasure = '" + Catalogue.UnitOfMeasure +
+                    "' WHERE itemId = '" + Catalogue.ItemId + "'";
+
+                SqlCommand cmd1 = new SqlCommand(q1, conn);
+                cmd1.ExecuteNonQuery();
+
+                string q2 = @"UPDATE PriceList SET description = '" + Catalogue.Description +
+                     "', unitOfMeasure = '" + Catalogue.UnitOfMeasure +
+                     "' WHERE itemId = '" + Catalogue.ItemId + "'";
+
+                SqlCommand cmd2 = new SqlCommand(q2, conn);
+                cmd2.ExecuteNonQuery();
+
+
+            }
+        }
+
         //public static void CreateCatalogue(string ItemCode, string Category, string Description, string UnitOfMeasure, string Supplier1Id, string Supplier2Id, string Supplier3Id)
         //{
         //    using (SqlConnection conn = new SqlConnection(Data.db_cfg))

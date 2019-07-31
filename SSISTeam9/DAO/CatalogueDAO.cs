@@ -111,7 +111,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static List<string> DisplayAllCategory()
+        public static List<string> DGetAllCategories()
         {
             List<string> categories = new List<string>();
 
@@ -133,7 +133,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static List<string> DisplayAllUnit()
+        public static List<string> GetAllUnits()
         {
             List<string> units = new List<string>();
 

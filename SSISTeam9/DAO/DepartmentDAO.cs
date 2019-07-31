@@ -160,5 +160,51 @@ namespace SSISTeam9.DAO
         //        cmd.ExecuteNonQuery();
         //    }
         //}
+
+
+        public static List<string> GetAllDepartmentCodes()
+        {
+            List<string> departmentCodes = new List<string>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT DISTINCT deptCode from Department";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    string departmentCode = (string)reader["deptCode"];
+                    departmentCodes.Add(departmentCode);
+                }
+            }
+            return departmentCodes;
+        }
+
+
+        public static List<string> GetAllDepartmentNames()
+        {
+            List<string> departmentNames = new List<string>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT DISTINCT name from Department";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    string departmentName = (string)reader["name"];
+                    departmentNames.Add(departmentName);
+                }
+            }
+            return departmentNames;
+        }
+
+
     }
 }

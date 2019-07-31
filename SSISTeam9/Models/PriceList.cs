@@ -14,5 +14,6 @@ namespace SSISTeam9.Models
         public string Supplier1UnitPrice { get; set; }
         public string Supplier2UnitPrice { get; set; }
         public string Supplier3UnitPrice { get; set; }
+        public Inventory Item { get; set; }
     }
 }

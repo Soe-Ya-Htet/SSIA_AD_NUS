@@ -14,6 +14,7 @@ namespace SSISTeam9.Models
         public string Status { get; set; }
         public DateTime PickUpDate { get; set; }
         public string ApprovedBy { get; set; }
-        
+        public Employee Employee { get; set; }
+
     }
 }

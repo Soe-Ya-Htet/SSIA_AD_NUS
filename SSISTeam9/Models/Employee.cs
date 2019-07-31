@@ -14,5 +14,6 @@ namespace SSISTeam9.Models
         public string EmpDisplayRole { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public Department Department { get; set; }
     }
 }

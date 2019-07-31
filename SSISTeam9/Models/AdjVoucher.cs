@@ -13,5 +13,6 @@ namespace SSISTeam9.Models
         public string AuthorisedBy { get; set; }
         public int AdjQty { get; set; }
         public string Reason { get; set; }
+        public Inventory Item { get; set; }
     }
 }

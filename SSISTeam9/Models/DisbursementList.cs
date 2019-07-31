@@ -12,5 +12,7 @@ namespace SSISTeam9.Models
         public long CollectionPointId { get; set; }
         public string AcknowledgeBy { get; set; }
         public DateTime date { get; set; }
+        public Department Department { get; set; }
+        public CollectionPoint CollectionPoint { get; set; }
     }
 }

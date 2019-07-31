@@ -97,21 +97,17 @@ namespace SSISTeam9.DAO
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
-                string q1 = @"SELECT MAX(deptId) from Department";
-                SqlCommand cmd1 = new SqlCommand(q1, conn);
-                department.DeptId = (int)cmd1.ExecuteScalar() + 1;
 
-                string q2 = @"INSERT INTO department (deptId,deptCode,name,contact,telephone,fax,head)" + 
-                            "VALUES ('" +  department.DeptId +
-                            "','" + department.DeptCode +
+                string q = @"INSERT INTO department (deptCode,name,contact,telephone,fax,head)" + 
+                            "VALUES ('" +  department.DeptCode +
                             "','" + department.Name +
                             "','" + department.Contact +
                             "','" + department.Telephone +
                             "','" + department.Fax +
                             "','" + department.Head + "'";
 
-                SqlCommand cmd2 = new SqlCommand(q2, conn);
-                cmd2.ExecuteNonQuery();
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
             }
         }
 

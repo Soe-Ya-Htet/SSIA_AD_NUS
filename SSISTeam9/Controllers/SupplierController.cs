@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using SSISTeam9.Models;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 
 namespace SSISTeam9.Controllers
 {
@@ -28,11 +29,20 @@ namespace SSISTeam9.Controllers
 
         public ActionResult CreateNew(Supplier supplier)
         {
-            SupplierService.CreateNewSupplier(supplier);
+            try
+            {
+                SupplierService.CreateNewSupplier(supplier);
 
-            List<Supplier> suppliers = SupplierService.DisplayAllSuppliers();
-            ViewData["suppliers"] = suppliers;
-            return View("All");
+                List<Supplier> suppliers = SupplierService.DisplayAllSuppliers();
+                ViewData["suppliers"] = suppliers;
+                return View("All");
+            }
+            catch (SqlException ex)
+            {
+                ViewData["errorMsg"] = ex.Message;
+                return View("CreateForm");
+            }
+            
         }
 
         public ActionResult Delete(string supplierCode)

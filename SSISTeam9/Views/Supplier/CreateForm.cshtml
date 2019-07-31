@@ -1,5 +1,8 @@
 ﻿@model SSISTeam9.Models.Supplier
 
+@{
+    string errorMsg = (string)ViewData["errorMsg"];
+}
 <h2>Create New Supplier</h2>
 
 <div>
@@ -40,6 +43,7 @@
                 <td>@Html.LabelFor(m => m.FaxNumber) </td>
                 <td>@Html.TextBoxFor(m => m.FaxNumber, new { id = "faxNumber" })</td>
                 <td>@Html.ValidationMessageFor(m => m.FaxNumber, "", new { style = "color:red" })</td>
+                }
             </tr>
             <tr>
                 <td colspan="2" align="right"><input type="submit" value="Save"></td>

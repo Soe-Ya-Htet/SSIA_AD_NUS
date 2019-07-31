@@ -8,7 +8,6 @@ namespace SSISTeam9.Controllers
 {
     public class InventoryController : Controller
     {
-        // GET: Inventory
         public ActionResult Index()
         {
             return View();

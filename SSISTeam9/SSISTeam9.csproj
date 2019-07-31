@@ -225,6 +225,7 @@
     <Content Include="Views\Supplier\DisplaySupplierDetails.cshtml" />
     <Content Include="Views\Supplier\Update.cshtml" />
     <Content Include="Views\Supplier\CreateForm.cshtml" />
+    <Content Include="Views\Requisition\GetPendingRequisitions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,8 +8,6 @@ namespace SSISTeam9.Models
     public class PurchaseOrder
     {
         public long OrderId { get; set; }
-        public long SupplierId { get; set; }
-        public long EmpId { get; set; }
         public string OrderNumber { get; set; }
         public string Status { get; set; }
         public DateTime SubmittedDate { get; set; }

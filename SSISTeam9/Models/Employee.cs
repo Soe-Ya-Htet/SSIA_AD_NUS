@@ -8,7 +8,6 @@ namespace SSISTeam9.Models
     public class Employee
     {
         public long EmpId { get; set; }
-        public long DeptId { get; set; }
         public string EmpName { get; set; }
         public string EmpRole { get; set; }
         public string EmpDisplayRole { get; set; }

@@ -8,7 +8,6 @@ namespace SSISTeam9.Models
     public class AdjVoucher
     {
         public long AdjId { get; set; }
-        public long ItemId { get; set; }
         public DateTime Date { get; set; }
         public string AuthorisedBy { get; set; }
         public int AdjQty { get; set; }

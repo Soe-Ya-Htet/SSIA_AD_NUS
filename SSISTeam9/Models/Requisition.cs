@@ -8,7 +8,6 @@ namespace SSISTeam9.Models
     public class Requisition
     {
         public long ReqId { get; set; }
-        public long EmpId { get; set; }
         public string ReqCode { get; set; }
         public DateTime DateOfRequest { get; set; }
         public string Status { get; set; }

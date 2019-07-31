@@ -7,8 +7,8 @@ namespace SSISTeam9.Models
 {
     public class Cart
     {
-        public long EmpId { get; set; }
-        public long ItemId { get; set; }
         public int Quantity { get; set; }
+        public Employee Employee { get; set; }
+        public Inventory Item { get; set; }
     }
 }

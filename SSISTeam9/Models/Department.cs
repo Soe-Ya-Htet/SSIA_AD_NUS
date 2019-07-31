@@ -9,8 +9,6 @@ namespace SSISTeam9.Models
     {
         public long DeptId { get; set; }
         public string DeptCode { get; set; }
-        public long RepresentativeId { get; set; }
-        public long CollectionPointId { get; set; }
         public string Name { get; set; }
         public string Contact { get; set; }
         public string Telephone { get; set; }

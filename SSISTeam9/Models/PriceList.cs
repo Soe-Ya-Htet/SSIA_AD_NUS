@@ -7,7 +7,6 @@ namespace SSISTeam9.Models
 {
     public class PriceList
     {
-        public long ItemId { get; set; }
         public string Supplier1Id { get; set; }
         public string Supplier2Id { get; set; }
         public string Supplier3Id { get; set; }

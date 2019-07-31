@@ -9,7 +9,7 @@ namespace SSISTeam9.Services
 {
     public class CatalogueService
     {
-        public static bool VerifyCodeExist(string itemCode)
+        public static bool VerifyExist(string itemCode)
         {
             List<string> catalogueCodes = CatalogueDAO.GetAllItemCodes();
             foreach(string code in catalogueCodes)
@@ -20,6 +20,38 @@ namespace SSISTeam9.Services
                 }
             }
             return false;
+        }
+
+        public static List<Inventory> DisplayAllCatalogue()
+        {
+            return CatalogueDAO.DisplayAllCatalogue();
+        }
+
+        public static Inventory DisplayCatalogueDetails(long itemId)
+        {
+            return CatalogueDAO.DisplayCatalogueDetails(itemId);
+        }
+
+        public static void DeleteCatalogue(long itemId)
+        {
+            CatalogueDAO.DeleteCatalogue(itemId);
+        }
+
+        public static void CreateCatalogueDetaills(Inventory catalogue, List<string> supplierCodes)
+        {
+            CatalogueDAO.CreateCatalogue(catalogue);
+            CatalogueDAO.CreatePriceList(catalogue.ItemId);
+            int number = 1;
+            foreach(string supplierCode in supplierCodes)
+            {
+                CatalogueDAO.UpdatePriceList(catalogue.ItemId, supplierCode, number);
+                number++;
+            }
+        }
+
+        public static void UpdateCatalogue(Inventory catalogue)
+        {
+            CatalogueDAO.UpdateCatalogue(catalogue);
         }
 
     }

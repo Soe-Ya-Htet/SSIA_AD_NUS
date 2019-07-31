@@ -25,7 +25,7 @@ namespace SSISTeam9.DAO
                 {
                     Inventory catalogue = new Inventory()
                     {
-                        ItemId = (int)reader["itemId"],
+                        ItemId = (long)reader["itemId"],
                         ItemCode = (string)reader["itemCode"],
                         BinNo = (reader["binNo"] == DBNull.Value) ? "Nil" : (string)reader["binNo"],
                         StockLevel = (int)reader["stockLevel"],
@@ -43,7 +43,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static Inventory DisplayCatalogueDetails(int ItemId)
+        public static Inventory DisplayCatalogueDetails(long ItemId)
         {
 
             Inventory catalogue = null;
@@ -60,7 +60,7 @@ namespace SSISTeam9.DAO
                 {
                     catalogue = new Inventory()
                     {
-                        ItemId = (int)reader["itemId"],
+                        ItemId = (long)reader["itemId"],
                         ItemCode = (string)reader["itemCode"],
                         BinNo = (reader["binNo"] == DBNull.Value) ? "Nil" : (string)reader["binNo"],
                         StockLevel = (int)reader["stockLevel"],
@@ -93,7 +93,7 @@ namespace SSISTeam9.DAO
                 {
                     Inventory catalogue = new Inventory()
                     {
-                        ItemId = (int)reader["itemId"],
+                        ItemId = (long)reader["itemId"],
                         ItemCode = (string)reader["itemCode"],
                         BinNo = (reader["binNo"] == DBNull.Value) ? "Nil" : (string)reader["binNo"],
                         StockLevel = (int)reader["stockLevel"],
@@ -176,7 +176,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static void DeleteCatalogue(int ItemId)
+        public static void DeleteCatalogue(long ItemId)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
@@ -223,7 +223,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static void UpdatePriceList(int itemId, string supplierCode, int number)
+        public static void UpdatePriceList(long itemId, string supplierCode, int number)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
@@ -239,7 +239,7 @@ namespace SSISTeam9.DAO
             }
         }
 
-        public static void CreatePriceList(int itemId)
+        public static void CreatePriceList(long itemId)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
@@ -261,7 +261,7 @@ namespace SSISTeam9.DAO
 
         //        string q1 = @"SELECT MAX(itemId) from Inventory";
         //        SqlCommand cmd1 = new SqlCommand(q1, conn);
-        //        int ItemId = (int)cmd1.ExecuteScalar() + 1;
+        //        long ItemId = (int)cmd1.ExecuteScalar() + 1;
 
         //        string q2 = "INSERT INTO Inventory (itemId,itemCode,category,description,unitOfMeasure,supplier1Id,supplier2Id,supplier3Id)" + "VALUES ('" + ItemId + "','" + ItemCode + "','" + Category + "','" + Description + "','" + UnitOfMeasure + "','" + Supplier1Id + "','" + Supplier2Id + "','" + Supplier3Id + "')";
         //        SqlCommand cmd2 = new SqlCommand(q2, conn);
@@ -270,7 +270,7 @@ namespace SSISTeam9.DAO
         //}
 
 
-        //public static void UpdateCatagolue(string ItemId, string Description, string UnitOfMeasure, string Supplier1Id, string Supplier2Id, string Supplier3Id)
+        //public static void UpdateCatagolue(string ItemCode, string Description, string UnitOfMeasure, string Supplier1Id, string Supplier2Id, string Supplier3Id)
         //{
         //    using (SqlConnection conn = new SqlConnection(Data.db_cfg))
         //    {

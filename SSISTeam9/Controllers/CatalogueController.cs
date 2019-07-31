@@ -6,31 +6,69 @@ using System.Web.Mvc;
 using System.Data.SqlClient;
 using SSISTeam9.Models;
 using SSISTeam9.DAO;
+using SSISTeam9.Services;
 
 namespace SSISTeam9.Controllers
 {
     public class CatalogueController : Controller
     {
-        public ActionResult ViewCatalogue()
+        public ActionResult AllCatalogue()
         {
-            List<Inventory> catalogues = new List<Inventory>();
-            ViewData["AllCatalogue"] = CatalogueDAO.DisplayAllCatalogue();
+            List<Inventory> catalogues = CatalogueService.DisplayAllCatalogue();
 
+            ViewData["catalogues"] = catalogues;
             return View();
         }
 
-        public ActionResult DeleteCatalogue(int itemId)
+        public ActionResult Delete(bool confirm, long itemId)
         {
-            CatalogueDAO.DeleteCatalogue(itemId);
-            return Redirect(Request.UrlReferrer.ToString());
+            if (confirm)
+            {
+                CatalogueService.DeleteCatalogue(itemId);
+
+                List<Inventory> catalogues = CatalogueService.DisplayAllCatalogue();
+                ViewData["catalogues"] = catalogues;
+                return View("AllCatalogue");
+            }
+            return null;
         }
 
-
-
-        public ActionResult UpdateCatalogue()
+        public ActionResult CreateCatalogue()
         {
             return View();
         }
 
+        public ActionResult CreateNew(Inventory catalogue, List<string> supplierCodes)
+        {
+
+            if (CatalogueService.VerifyExist(catalogue.ItemCode))
+            {
+                TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please Verify.');</script>";
+                return View("CreateCatalogue");
+            }
+            else
+            {
+                CatalogueService.CreateCatalogueDetaills(catalogue, supplierCodes);
+
+                List<Inventory> catalogues = CatalogueService.DisplayAllCatalogue();
+                ViewData["catalogues"] = catalogue;               
+            }
+            return View("AllCatalogue");
+        }
+
+        public ActionResult DisplayCatalogueDetails(long itemId)
+        {
+            ViewData["catalogues"] = CatalogueService.DisplayCatalogueDetails(itemId);
+            return View();
+        }
+
+        public ActionResult UpdateCatalogue(Inventory catalogue)
+        {
+            CatalogueService.UpdateCatalogue(catalogue);
+
+            List<Inventory> catalogues = CatalogueService.DisplayAllCatalogue();
+            ViewData["catalogues"] = catalogues;
+            return View("AllCatalogue");
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace SSISTeam9.DAO
                 {
                     Department department = new Department()
                     {
-                        DeptId = (int)reader["deptId"],
+                        DeptId = (long)reader["deptId"],
                         DeptCode = (string)reader["deptCode"],
                         Name = (string)reader["name"],
                         Contact = (reader["contact"] == DBNull.Value) ? "Nil" : (string)reader["contact"],
@@ -44,7 +44,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static Department DisplayDepartmentDetails(int DeptId)
+        public static Department DisplayDepartmentDetails(long DeptId)
         {
             Department department = null;
 
@@ -63,7 +63,7 @@ namespace SSISTeam9.DAO
                 {
                     department = new Department()
                     {
-                        DeptId = (int)reader["deptId"],
+                        DeptId = (long)reader["deptId"],
                         DeptCode = (string)reader["deptCode"],
                         Name = (string)reader["name"],
                         Contact = (reader["contact"] == DBNull.Value) ? "Nil" : (string)reader["contact"],
@@ -79,7 +79,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static void DeleteDepartment(int DeptId)
+        public static void DeleteDepartment(long DeptId)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
@@ -119,7 +119,7 @@ namespace SSISTeam9.DAO
 
         //        string q1 = @"SELECT MAX(deptId) from Department";
         //        SqlCommand cmd1 = new SqlCommand(q1, conn);
-        //        int DeptId = (int)cmd1.ExecuteScalar() + 1;
+        //        long DeptId = (long)cmd1.ExecuteScalar() + 1;
 
         //        string q2 = "INSERT INTO Department (deptId,deptCode,name,contact,telephone,fax,head)" + "VALUES ('" + DeptId + "','" + DeptCode + "','" + Name + "','" + Contact + "','" + Telephone + "','" + Fax + "','" + Head + "')";
         //        SqlCommand cmd2 = new SqlCommand(q2, conn);
@@ -149,7 +149,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        //public static void UpdateDepartment(int DeptId, string DeptCode, string Name, string Contact, string Telephone, string Fax, string Head)
+        //public static void UpdateDepartment(long DeptId, string DeptCode, string Name, string Contact, string Telephone, string Fax, string Head)
         //{
         //    using (SqlConnection conn = new SqlConnection(Data.db_cfg))
         //    {

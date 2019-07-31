@@ -119,7 +119,7 @@ namespace SSISTeam9.DAO
             }
         }
 
-        public static List<string> ViewAllSupplierCode()
+        public static List<string> GetAllSuppliersCodes()
         {
             List<string> supplierCodes = new List<string>();
 

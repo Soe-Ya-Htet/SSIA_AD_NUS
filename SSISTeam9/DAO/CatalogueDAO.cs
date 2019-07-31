@@ -168,7 +168,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static void UpdateCatalogueDetails(Inventory Catalogue)
+        public static void UpdateCatalogue(Inventory Catalogue)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
@@ -184,14 +184,56 @@ namespace SSISTeam9.DAO
             }
         }
 
-        public static void UpdatePriceList(Supplier supplier, int number)
+        public static void CreateCatalogue(Inventory Catalogue)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q1 = @"SELECT MAX(itemId) from Inventory";
+                SqlCommand cmd1 = new SqlCommand(q1, conn);
+                Catalogue.ItemId = (int)cmd1.ExecuteScalar() + 1;
+
+                string q2 = @"INSERT INTO Inventory (itemId,itemCode,category,description,unitOfMeasure)" +
+                            "VALUES ('" + Catalogue.ItemId +
+                            "','" + Catalogue.ItemCode +
+                            "','" + Catalogue.Category +
+                            "','" + Catalogue.Description +
+                            "','" + Catalogue.UnitOfMeasure+ "'";
+
+                SqlCommand cmd2 = new SqlCommand(q2, conn);
+                cmd2.ExecuteNonQuery();
+            }
+        }
+
+
+        public static void UpdatePriceList(int itemId, string supplierCode, int number)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
 
-            }
+                string q = @"UPDATE p SET p.supplier" + number + "Id = s.supplierId " +
+                            "FROM PriceList p, Supplier s" +
+                            "WHERE s.supplierCode = '" + supplierCode +
+                            "' AND p.itemId = '" + itemId + "'";
 
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void CreatePriceList(int itemId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"INSERT INTO PriceList (itemId)" +
+                            "VALUES ('" + itemId + "'";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
         }
 
         //public static void CreateCatalogue(string ItemCode, string Category, string Description, string UnitOfMeasure, string Supplier1Id, string Supplier2Id, string Supplier3Id)

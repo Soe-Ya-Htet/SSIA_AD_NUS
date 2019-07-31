@@ -169,7 +169,35 @@ namespace SSISTeam9.DAO
                 }
                 return supplier;
             }
-               
+        }
+        public static PriceList GetItemSuppliersDetails(long itemId)
+        {
+            PriceList itemSuppliersDetails = new PriceList();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from PriceList where itemId = '" + itemId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    itemSuppliersDetails = new PriceList()
+                    {
+                        Supplier1Id = (string)reader["supplier1Id"],
+                        Supplier2Id = (string)reader["supplier2Id"],
+                        Supplier3Id = (string)reader["supplier3Id"],
+                        Supplier1UnitPrice = (string)reader["supplier1UnitPrice"],
+                        Supplier2UnitPrice = (string)reader["supplier2UnitPrice"],
+                        Supplier3UnitPrice = (string)reader["supplier3UnitPrice"]
+
+                    };
+                }
+                return itemSuppliersDetails;
+            }
+
         }
     }
 }

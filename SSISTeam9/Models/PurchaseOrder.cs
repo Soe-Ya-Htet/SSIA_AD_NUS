@@ -16,5 +16,6 @@ namespace SSISTeam9.Models
         public long EmployeeId { get; set; }
         public Supplier Supplier { get; set; }
         public Employee Employee { get; set; }
+        public List<PurchaseOrderDetails> ItemDetails { get; set; }
     }
 }

@@ -1,7 +1,17 @@
-﻿
+﻿@model SSISTeam9.Models.PurchaseOrder
+
+@using SSISTeam9.Models;
 @{
-    ViewBag.Title = "Edit";
+    PurchaseOrder order = (PurchaseOrder)ViewData["order"];
 }
 
-<h2>Edit</h2>
+<h2>Update Purchase Order</h2>
+
+@foreach(var item in order.ItemDetails)
+{
+    <p>@item.Quantity</p>
+}
+
+
+
 

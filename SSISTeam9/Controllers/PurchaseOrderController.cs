@@ -23,5 +23,21 @@ namespace SSISTeam9.Controllers
             ViewData["orders"] = orders;
             return View();
         }
+
+        public ActionResult Edit(string orderNumber)
+        {
+            PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
+
+            ViewData["order"] = order;
+            return View();
+        }
+
+        public ActionResult Close(string orderNumber)
+        {
+            PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
+
+            ViewData["order"] = order;
+            return View();
+        }
     }
 }

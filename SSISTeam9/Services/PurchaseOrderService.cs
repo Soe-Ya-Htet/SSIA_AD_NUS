@@ -13,5 +13,10 @@ namespace SSISTeam9.Services
         {
             return PurchaseOrderDAO.GetAllOrders();
         }
+
+        public static PurchaseOrder GetOrderDetails(string orderNumber)
+        {
+            return PurchaseOrderDAO.GetOrderDetails(orderNumber);
+        }
     }
 }

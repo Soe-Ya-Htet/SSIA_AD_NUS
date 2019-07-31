@@ -23,7 +23,17 @@ else
         @foreach (var order in orders)
         {
             <tr>
-                <td><a href="">@order.OrderNumber</a></td>
+                <td>
+                    @if (@order.Status == "Pending Supplier Confirmation")
+                    {
+                        <a href="/PurchaseOrder/Edit?orderNumber=@order.OrderNumber">@order.OrderNumber</a>
+                    }
+                    else if (@order.Status == "Pending Delivery")
+                    {
+                        <a href="/PurchaseOrder/Close?orderNumber=@order.OrderNumber">@order.OrderNumber</a>
+                    }
+
+                </td>
                 <td>@order.SubmittedDate</td>
                 <td>@order.OrderDate</td>
                 <td>@order.Supplier.Name</td>

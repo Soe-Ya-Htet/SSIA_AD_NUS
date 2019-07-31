@@ -111,7 +111,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static List<string> DGetAllCategories()
+        public static List<string> GetAllCategories()
         {
             List<string> categories = new List<string>();
 
@@ -152,6 +152,27 @@ namespace SSISTeam9.DAO
                 }
             }
             return units;
+        }
+
+        public static List<string> GetAllItemCodes()
+        {
+            List<string> itemCodes = new List<string>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT DISTINCT itemCode from Inventory";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    string itemCode = (string)reader["unitOfMeasure"];
+                    itemCodes.Add(itemCode);
+                }
+            }
+            return itemCodes;
         }
 
 

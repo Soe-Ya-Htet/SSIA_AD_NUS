@@ -25,11 +25,7 @@ namespace SSISTeam9.Controllers
             return Redirect(Request.UrlReferrer.ToString());
         }
 
-        public ActionResult CreateCatalogue(string ItemCode, string Category, string Description, string UnitOfMeasure, string Supplier1Id, string Supplier2Id, string Supplier3Id)
-        {
-            CatalogueDAO.CreateCatalogue(ItemCode, Category, Description, UnitOfMeasure, Supplier1Id, Supplier2Id, Supplier3Id);
-            return Redirect(Request.UrlReferrer.ToString());
-        }
+        
 
         public ActionResult UpdateCatalogue()
         {

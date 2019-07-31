@@ -1,7 +1,35 @@
-﻿
+﻿@using SSISTeam9.Models;
 @{
-    ViewBag.Title = "All";
+    List<PurchaseOrder> orders = (List<PurchaseOrder>)ViewData["orders"];
 }
 
-<h2>All</h2>
+<h2>Purchase Orders</h2>
+
+@if (orders.Count == 0)
+{
+    <br /><br />
+    <p style="font-size:14px">No orders to display</p>
+}
+else
+{
+    <table>
+        <tr>
+            <th>PO Number</th>
+            <th>Submitted Date</th>
+            <th>Order Date</th>
+            <th>Supplier Name</th>
+            <th>Status</th>
+        </tr>
+        @foreach (var order in orders)
+        {
+            <tr>
+                <td><a href="">@order.OrderNumber</a></td>
+                <td>@order.SubmittedDate</td>
+                <td>@order.OrderDate</td>
+                <td>@order.Supplier.Name</td>
+                <td>@order.Status</td>
+            </tr>
+        }
+    </table>
+}
 

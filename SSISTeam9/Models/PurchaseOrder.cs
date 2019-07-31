@@ -12,6 +12,8 @@ namespace SSISTeam9.Models
         public string Status { get; set; }
         public DateTime SubmittedDate { get; set; }
         public DateTime OrderDate { get; set; }
+        public long SupplierId { get; set; }
+        public long EmployeeId { get; set; }
         public Supplier Supplier { get; set; }
         public Employee Employee { get; set; }
     }

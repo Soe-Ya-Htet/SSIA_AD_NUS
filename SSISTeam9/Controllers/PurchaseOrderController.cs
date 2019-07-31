@@ -22,7 +22,6 @@ namespace SSISTeam9.Controllers
 
             ViewData["orders"] = orders;
             return View();
-            
         }
     }
 }

@@ -108,6 +108,7 @@ namespace SSISTeam9.DAO
                 foreach (var item in items)
                 {
                     item.ItemSuppliersDetails = SupplierDAO.GetItemSuppliersDetails(item.ItemId);
+                    item.Item = CatalogueDAO.DisplayCatalogueDetails(item.ItemId);
                 }
 
             }

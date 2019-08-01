@@ -7,9 +7,9 @@
 
 <h2>Update Purchase Order</h2>
 
-@foreach(var item in order.ItemDetails)
+@foreach (var item in order.ItemDetails)
 {
-    <p>@item.Quantity</p>
+    <p>@item.Item.Description</p>
 }
 
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using SSISTeam9.DAO;
 using SSISTeam9.Models;
+using SSISTeam9.Services;
 
 namespace SSISTeam9.Services
 {
@@ -11,12 +12,33 @@ namespace SSISTeam9.Services
     {
         public static List<PurchaseOrder> GetAllOrders()
         {
-            return PurchaseOrderDAO.GetAllOrders();
+            List<PurchaseOrder> orders = PurchaseOrderDAO.GetAllOrders();
+
+            foreach (var order in orders)
+            {
+                order.Employee = EmployeeDAO.GetEmployeeById(order.EmployeeId);
+                order.Supplier = SupplierDAO.GetSupplierById(order.SupplierId);
+                order.ItemDetails = PurchaseOrderDAO.GetItemsInPurchaseOrder(order.OrderId);
+            }
+
+            return orders;
         }
 
         public static PurchaseOrder GetOrderDetails(string orderNumber)
         {
-            return PurchaseOrderDAO.GetOrderDetails(orderNumber);
+            PurchaseOrder order = PurchaseOrderDAO.GetOrderDetails(orderNumber);
+
+            order.Employee = EmployeeDAO.GetEmployeeById(order.EmployeeId);
+            order.Supplier = SupplierDAO.GetSupplierById(order.SupplierId);
+            order.ItemDetails = PurchaseOrderDAO.GetItemsInPurchaseOrder(order.OrderId);
+
+            foreach (var item in order.ItemDetails)
+            {
+                item.ItemSuppliersDetails = SupplierDAO.GetItemSuppliersDetails(item.ItemId);
+                item.Item = CatalogueDAO.GetCatalogueById(item.ItemId);
+            }
+            
+            return order;
         }
     }
 }

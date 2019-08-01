@@ -31,11 +31,12 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        //public ActionResult ViewAllOutstandingRequisitions()
-        //{
-        //    List<Requisition> requisitions = RequistionService.ShowAllOutstandingRequisitionsByDate();
-        //    ViewData["outstandingReqs"] = requisitions;
-        //    return View();
-        //}
+        public ActionResult ViewAllOutstandingRequisitions()
+        {
+            List<Requisition> requisitions = RequisitionService.ShowAllOutstandingRequisitionsByDate();
+            ViewData["outstandingReqs"] = requisitions;
+            return View();
+            
+        }
     }
 }

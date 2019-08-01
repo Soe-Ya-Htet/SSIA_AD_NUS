@@ -5,13 +5,83 @@
     PurchaseOrder order = (PurchaseOrder)ViewData["order"];
 }
 
-<h2>Update Purchase Order</h2>
+<h2>Purchase Order</h2>
 
-@foreach (var item in order.ItemDetails)
-{
-    <p>@item.Item.Description</p>
-}
+<form method="post">
+    <table>
+        <tr>
+            <td colspan="3">PO Number: </td>
+            <td colspan="3">@order.OrderNumber</td>
+        </tr>
+        <tr>
+            <td colspan="3">Deliver To: </td>
+            <td colspan="3"><input type="text" value="@order.DeliverTo" style="height:100px; width:350px"></td>
+        </tr>
+        <tr>
+            <td colspan="3">To Supply Items By: </td>
+            <td colspan="3"><input type="date" value="@order.DeliverBy.Date.ToString("yyyy-MM-dd")"></td>
+        </tr>
+        <tr>
+            <th>Change Supplier (?)</th>
+            <th>Item Number</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit Price ($)</th>
+            <th>Total ($)</th>
+        </tr>
+        @foreach (var item in order.ItemDetails)
+        {
+            <tr>
+                <td>@item.Item.ItemCode</td>
+                <td>@item.Item.ItemCode</td>
+                <td>@item.Item.Description</td>
+                <td>@item.Quantity</td>
 
-<p>@order.DeliverTo</p>
+                <!--To check what is the supplier for the current Purchase Order-->
+                @if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier1Id))
+                {
+                    <td>@item.ItemSuppliersDetails.Supplier1UnitPrice</td>
+                }
+                else if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier2Id))
+                {
+                    <td>@item.ItemSuppliersDetails.Supplier2UnitPrice</td>
+                }
+                else if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier3Id))
+                {
+                    <td>@item.ItemSuppliersDetails.Supplier3UnitPrice</td>
+                }
+
+                @if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier1Id))
+                {
+                    <td>@(item.Quantity * Convert.ToDouble(item.ItemSuppliersDetails.Supplier1UnitPrice))</td>
+                }
+                else if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier2Id))
+                {
+                    <td>@(item.Quantity * Convert.ToDouble(item.ItemSuppliersDetails.Supplier2UnitPrice))</td>
+                }
+                else if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier3Id))
+                {
+                    <td>@(item.Quantity * Convert.ToDouble(item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
+                }
+            </tr>
+        }
+        <tr>
+            <td colspan="6" align="right"><input type="submit" value="Change Supplier For Items"></td>
+        </tr>
+        <tr>
+            <td colspan="6" align="right"><input type="submit" value="Delete PO"></td>
+        </tr>
+    </table>
+</form>
 
 
+<style>
+    td {
+        padding: 2px;
+    }
+
+    tr {
+        height: 40px;
+        padding: 2px;
+    }
+</style>

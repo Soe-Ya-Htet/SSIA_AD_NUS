@@ -59,7 +59,7 @@ namespace SSISTeam9.Controllers
 
         public ActionResult Details(long deptId)
         {
-            ViewData["departments"] = DepartmentService.GetDepartmentById(deptId);
+            ViewData["department"] = DepartmentService.GetDepartmentById(deptId);
             return View();
         }
 

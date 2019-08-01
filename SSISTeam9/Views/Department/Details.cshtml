@@ -1,7 +1,72 @@
-﻿
+﻿@model SSISTeam9.Models.Department
+
+@using SSISTeam9.Models;
 @{
-    ViewBag.Title = "DepartmentDetails";
+    Department department = (Department)ViewData["department"];
 }
 
-<h2>DepartmentDetails</h2>
+<h2>Update Department Details</h2>
 
+
+<div>
+    @using (Html.BeginForm("Update", "Department", FormMethod.Post))
+    {
+        <table>
+            <tr>
+                <td>@Html.LabelFor(x => x.DeptCode) </td>
+                <td>@Html.TextBoxFor(x => x.DeptCode, new { id = "deptCode", @Value = department.DeptCode })</td>
+                <td>@Html.ValidationMessageFor(x => x.DeptCode, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.DeptName) </td>
+                <td>@Html.TextBoxFor(x => x.DeptName, new { id = "deptName", @Value = department.DeptName })</td>
+                <td>@Html.ValidationMessageFor(x => x.DeptName, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.Contact) </td>
+                <td>@Html.TextBoxFor(x => x.Contact, new { id = "contact", @Value = department.Contact })</td>
+                <td>@Html.ValidationMessageFor(x => x.Contact, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.Telephone) </td>
+                <td>@Html.TextBoxFor(x => x.Telephone, new { id = "telephone", @Value = department.Telephone })</td>
+                <td>@Html.ValidationMessageFor(x => x.Telephone, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.Fax) </td>
+                <td>@Html.TextBoxFor(x => x.Fax, new { id = "fax", @Value = department.Fax })</td>
+                <td>@Html.ValidationMessageFor(x => x.Fax, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.Head) </td>
+                <td>@Html.TextBoxFor(x => x.Head, new { id = "head", @Value = department.Head })</td>
+                <td>@Html.ValidationMessageFor(x => x.Head, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>
+                    <button>
+                        @Html.ActionLink("Delete Department","Delete","Department",
+                        new { confirm = true, deptCode = department.DeptCode },
+                        new { onclick = "return confirm('Do you really want to delete this department?')" })
+                    </button>
+                </td>
+                <td align="right"><input type="submit" value="Save Update"></td>
+                @Html.Hidden("deptId", department.DeptId)
+            </tr>
+        </table>
+
+
+    }
+
+</div>
+
+<style>
+    td {
+        padding: 2px;
+    }
+
+    tr {
+        height: 40px;
+        padding: 2px;
+    }
+</style>

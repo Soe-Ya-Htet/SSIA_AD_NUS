@@ -60,6 +60,7 @@ namespace SSISTeam9.Controllers
         public ActionResult Details(long deptId)
         {
             ViewData["department"] = DepartmentService.GetDepartmentById(deptId);
+            ViewData["empNames"] = EmployeeDAO.GetAllEmployeeNames();
             return View();
         }
 

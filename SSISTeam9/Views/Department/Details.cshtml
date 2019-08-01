@@ -3,6 +3,7 @@
 @using SSISTeam9.Models;
 @{
     Department department = (Department)ViewData["department"];
+    List<string> empNames = (List<string>)ViewData["empNames"];
 }
 
 <h2>Update Department Details</h2>
@@ -24,8 +25,20 @@
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Contact) </td>
-                <td>@Html.TextBoxFor(x => x.Contact, new { id = "contact", @Value = department.Contact })</td>
-                <td>@Html.ValidationMessageFor(x => x.Contact, "", new { style = "color:red" })</td>
+                <td>
+                    <div>
+                        <select id="contact" style="width: 180px">
+                            <option>@department.Contact</option>
+                            @foreach (string empName in empNames)
+                            {
+                                if (empName != department.Contact)
+                                {
+                                    <option>@empName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Telephone) </td>
@@ -39,9 +52,21 @@
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Head) </td>
-                <td>@Html.TextBoxFor(x => x.Head, new { id = "head", @Value = department.Head })</td>
-                <td>@Html.ValidationMessageFor(x => x.Head, "", new { style = "color:red" })</td>
-            </tr>
+                <td>
+                    <div>
+                        <select id="head" style="width: 180px">
+                            <option>@department.Head</option>
+                            @foreach (string empName in empNames)
+                            {
+                                if (empName != department.Head)
+                                {
+                                    <option>@empName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </td>
+            </tr>       
             <tr>
                 <td>
                     <button>
@@ -69,4 +94,5 @@
         height: 40px;
         padding: 2px;
     }
+
 </style>

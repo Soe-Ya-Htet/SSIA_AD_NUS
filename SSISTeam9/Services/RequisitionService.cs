@@ -19,16 +19,48 @@ namespace SSISTeam9.Services
             return RequisitionDAO.GetPendingRequisitionsFromDB();
         }
 
-        //public static List<Requisition> ShowAllOutstandingRequisitionsByDate()
-        //{
-        //    List<Requisition> list = RequisitionDAO.GetPendindingRequisition();
-        //    foreach (Requisition req in list)
-        //    {
-        //        req.Employee = EmployeeDAO.GetEmployeeById(req.EmpId);
-        //        req.Employee.Department = DepartmentDAO.GetDepartmentById(req.Employee.DeptId);
+        public static List<Requisition> ShowAllOutstandingRequisitionsByDate()
+        {
+            List<Requisition> list = RequisitionDAO.GetPendingRequisitionsFromDB();
+            List<long> empIds = new List<long>();
+            foreach (Requisition req in list)
+            {
+                empIds.Add(req.Employee.EmpId);
+                //req.Employee = EmployeeDAO.GetEmployeeById(req.Employee.EmpId);
+            }
 
-        //    }
-        //    return list;
-        //}
+            List<Employee> employees = EmployeeDAO.GetEmployeesByIdList(empIds);
+            if(employees.Count != 0)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if(list[i].Employee.EmpId == employees[i].EmpId)
+                    {
+                        list[i].Employee = employees[i];
+                    }
+                }
+            }
+
+            List<long> depIds = new List<long>();
+            foreach (Requisition req in list)
+            {
+                depIds.Add(req.Employee.Department.DeptId);
+                //req.Employee = EmployeeDAO.GetEmployeeById(req.Employee.EmpId);
+            }
+
+            List<Department> departments = new List<Department>();
+            if (employees.Count != 0)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].Employee.Department.DeptId == departments[i].DeptId)
+                    {
+                        list[i].Employee.Department = departments[i];
+                    }
+                }
+            }
+
+            return list;
+        }
     }
 }

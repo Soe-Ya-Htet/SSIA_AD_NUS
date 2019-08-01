@@ -26,7 +26,7 @@ namespace SSISTeam9.DAO
                     Employee e = new Employee()
                     {
                         EmpId = (long)reader["empId"],
-                        EmpName = (String)reader["empName"]
+                        //EmpName = (String)reader["empName"]
                     };
                     Requisition requisition = new Requisition()
                     {

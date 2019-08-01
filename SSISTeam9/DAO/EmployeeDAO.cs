@@ -65,6 +65,10 @@ namespace SSISTeam9.DAO
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    Department d = new Department()
+                    {
+                        DeptId = (long)reader["deptId"]
+                    };
                     employee = new Employee()
                     {
                         EmpId = (long)reader["empId"],
@@ -72,7 +76,8 @@ namespace SSISTeam9.DAO
                         EmpRole = (string)reader["empRole"],
                         EmpDisplayRole = (string)reader["empDisplayRole"],
                         UserName = (string)reader["userName"],
-                        Password = (string)reader["password"]
+                        Password = (string)reader["password"],
+                        Department = d
 
                     };
                     employees.Add(employee);

@@ -57,7 +57,7 @@ namespace SSISTeam9.Services
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    while(list[i].Employee.EmpId == employees[i].EmpId)
+                    if(list[i].Employee.EmpId == employees[i].EmpId)
                     {
                         list[i].Employee = employees[i];
                     }
@@ -70,7 +70,7 @@ namespace SSISTeam9.Services
                 depIds.Add(req.Employee.Department.DeptId);
             }
 
-            List<Department> departments = new List<Department>();
+            List<Department> departments = DepartmentDAO.GetDepartmentsByIdList(depIds);
             if (employees.Count != 0)
             {
                 for (int i = 0; i < list.Count; i++)

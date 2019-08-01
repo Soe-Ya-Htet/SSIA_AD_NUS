@@ -209,6 +209,51 @@ namespace SSISTeam9.DAO
             return departmentNames;
         }
 
+        public static List<Department> GetDepartmentsByIdList(List<long> deptIds)
+        {
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from Department where deptId IN ({0})";
+
+                var parms = deptIds.Select((s, i) => "@id" + i.ToString()).ToArray();
+                var inclause = string.Join(",", parms);
+
+                string sql = string.Format(q, inclause);
+                Console.Write(sql);
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                for (var i = 0; i < parms.Length; i++)
+                {
+                    cmd.Parameters.AddWithValue(parms[i], deptIds[i]);
+                }
+
+                Department department = null;
+
+                List<Department> departments = new List<Department>();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    department = new Department()
+                    {
+                        DeptId = (long)reader["deptId"],
+                        DeptCode = (string)reader["deptCode"],
+                        DeptName = (string)reader["name"],
+                        Contact = (reader["contact"] == DBNull.Value) ? "Nil" : (string)reader["contact"],
+                        Telephone = (string)reader["telephone"],
+                        Fax = (reader["fax"] == DBNull.Value) ? "Nil" : (string)reader["fax"],
+                        Head = (reader["head"] == DBNull.Value) ? "Nil" : (string)reader["head"]
+                    };
+                    
+                    departments.Add(department);
+                }
+                return departments;
+            }
+        }
+
 
     }
 }

@@ -17,7 +17,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from Requisition where status='Pending'";
+                string q = @"SELECT * from Requisition where status='Approved' or status='Partially Completed'";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -38,6 +38,7 @@ namespace SSISTeam9.DAO
                         ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
                         Employee = e
                     };
+
 
                     requisitions.Add(requisition);
                 }

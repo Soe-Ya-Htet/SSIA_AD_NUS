@@ -271,6 +271,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Requisition\GetRequisitionDetails.cshtml" />
     <Content Include="Views\Department\All.cshtml" />
+    <Content Include="Views\PurchaseOrder\ChooseSuppliers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

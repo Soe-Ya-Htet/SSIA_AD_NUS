@@ -32,6 +32,11 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
+        public ActionResult ChooseSuppliers(List<Inventory> items)
+        {
+            return View();
+        }
+
         public ActionResult Close(string orderNumber)
         {
             PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);

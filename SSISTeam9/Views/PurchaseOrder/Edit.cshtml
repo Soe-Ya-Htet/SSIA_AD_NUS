@@ -7,19 +7,19 @@
 
 <h2>Purchase Order</h2>
 
-<form method="post">
+<form method="post" action="/PurchaseOrder/ChooseSuppliers">
     <table>
         <tr>
-            <td colspan="3">PO Number: </td>
-            <td colspan="3">@order.OrderNumber</td>
+            <td colspan="2">PO Number: </td>
+            <td colspan="2">@order.OrderNumber</td>
         </tr>
         <tr>
-            <td colspan="3">Deliver To: </td>
-            <td colspan="3"><input type="text" value="@order.DeliverTo" style="height:100px; width:350px"></td>
+            <td colspan="2">Deliver To: </td>
+            <td colspan="2"><input type="text" value="@order.DeliverTo" style="height:100px; width:350px"></td>
         </tr>
         <tr>
-            <td colspan="3">To Supply Items By: </td>
-            <td colspan="3"><input type="date" value="@order.DeliverBy.Date.ToString("yyyy-MM-dd")"></td>
+            <td colspan="2">To Supply Items By: </td>
+            <td colspan="2"><input type="date" value="@order.DeliverBy.Date.ToString("yyyy-MM-dd")"></td>
         </tr>
         <tr>
             <th>Change Supplier (?)</th>
@@ -32,7 +32,7 @@
         @foreach (var item in order.ItemDetails)
         {
             <tr>
-                <td>@item.Item.ItemCode</td>
+                <td><input id="@item.OrderId" type="checkbox" name="orderId" value="@item.OrderId" /> </td>
                 <td>@item.Item.ItemCode</td>
                 <td>@item.Item.Description</td>
                 <td>@item.Quantity</td>
@@ -84,4 +84,5 @@
         height: 40px;
         padding: 2px;
     }
+
 </style>

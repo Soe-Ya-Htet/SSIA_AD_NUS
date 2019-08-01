@@ -30,6 +30,8 @@ namespace SSISTeam9.DAO
                         Status = (string)reader["status"],
                         SubmittedDate= (DateTime)reader["submittedDate"],
                         OrderDate = (DateTime)reader["orderDate"],
+                        DeliverTo = (string)reader["deliverTo"],
+                        DeliverBy = (DateTime)reader["deliverBy"],
                         SupplierId = (long)reader["supplierId"],
                         EmployeeId = (long)reader["empId"]
 
@@ -68,6 +70,8 @@ namespace SSISTeam9.DAO
                         Status = (string)reader["status"],
                         SubmittedDate = (DateTime)reader["submittedDate"],
                         OrderDate = (DateTime)reader["orderDate"],
+                        DeliverTo = (string)reader["deliverTo"],
+                        DeliverBy = (DateTime)reader["deliverBy"],
                         SupplierId = (long)reader["supplierId"],
                         EmployeeId = (long)reader["empId"]
 

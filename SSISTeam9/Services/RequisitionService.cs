@@ -57,7 +57,7 @@ namespace SSISTeam9.Services
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if(list[i].Employee.EmpId == employees[i].EmpId)
+                    while(list[i].Employee.EmpId == employees[i].EmpId)
                     {
                         list[i].Employee = employees[i];
                     }

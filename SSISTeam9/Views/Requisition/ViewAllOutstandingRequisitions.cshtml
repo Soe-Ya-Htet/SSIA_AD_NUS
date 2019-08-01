@@ -1,9 +1,21 @@
 ﻿<!DOCTYPE html>
+@using SSISTeam9.Models
+@{
+    var outstandingrequisitions = (List<Requisition>)ViewData["outstandingReqs"];
+    
+    var sessionId = ViewData["sessionId"];
+
+}
 <html>
 <head>
     <title></title>
 </head>
 <body>
-    <h1>test</h1> 
+ @foreach(var req in outstandingrequisitions){
+
+     @req.Employee.EmpId
+ }
+
+
 </body>
 </html>

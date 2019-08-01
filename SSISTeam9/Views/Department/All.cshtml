@@ -19,7 +19,7 @@ else
             {
                 <div class="department-list">
                     <p>
-                        Department Code: <a href="/Department/DepartmentDetails?deptId=@d.DeptId">@d.DeptCode</a><br>
+                        Department Code: <a href="/Department/Details?deptId=@d.DeptId">@d.DeptCode</a><br>
                         Department Name: @d.DeptName<br>
                         Contact Name: @d.Contact<br>
                         Telephone No.: @d.Telephone<br>
@@ -32,7 +32,7 @@ else
             }
         </div>
         <div>
-            <p align="right"><input type="button" value="Create New Department" onclick="location.href='@Url.Action("Create","Department")'"></p>
+            <p align="center"><input type="button" value="Create New Department" onclick="location.href='@Url.Action("Create","Department")'"></p>
         </div>
     </section>
 

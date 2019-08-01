@@ -86,5 +86,26 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static List<string> GetAllEmployeeNames()
+        {
+            List<string> employeeNames = new List<string>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT DISTINCT empName from Employee";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    string employeeName = (string)reader["empName"];
+                    employeeNames.Add(employeeName);
+                }
+            }
+            return employeeNames;
+        }
+
     }
 }

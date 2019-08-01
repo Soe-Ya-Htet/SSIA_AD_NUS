@@ -17,9 +17,13 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * FROM Department d
+                string q = @"SELECT d.deptId, d.deptCode, d.deptName, c.empName AS contact, 
+                            d.telephone, d.fax, h.empName AS head, e.empName AS rep, cp.name AS collectionPoint
+                            FROM Department d
+                            INNER JOIN Employee c ON d.contact = c.empId
+                            INNER JOIN Employee h ON d.head = h.empId
                             LEFT JOIN Employee e ON d.representativeId = e.empId
-                            LEFT JOIN CollectionPoint c ON d.collectionPointId = c.placeId";
+                            LEFT JOIN CollectionPoint cp ON d.collectionPointId = cp.placeId";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -36,11 +40,14 @@ namespace SSISTeam9.DAO
                         Head = (reader["head"] == DBNull.Value) ? "Nil" : (string)reader["head"]
                     };
                     department.Representative = new Employee();
-                    department.Representative.EmpName = (reader["empName"] == DBNull.Value) ? " " : (string)reader["empName"];
+                    department.Representative.EmpName = (reader["rep"] == DBNull.Value) ? " " : (string)reader["rep"];
                     department.CollectionPoint = new CollectionPoint();
-                    department.CollectionPoint.Name = (reader["name"] == DBNull.Value) ? " " : (string)reader["name"];
+                    department.CollectionPoint.Name = (reader["collectionPoint"] == DBNull.Value) ? " " : (string)reader["collectionPoint"];
                     departments.Add(department);
                 }
+
+
+
             }
             return departments;
         }
@@ -54,9 +61,13 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * FROM Department d
+                string q = @"SELECT d.deptId, d.deptCode, d.deptName, c.empName AS contact, 
+                            d.telephone, d.fax, h.empName AS head, e.empName AS rep, cp.name AS collectionPoint
+                            FROM Department d
+                            INNER JOIN Employee c ON d.contact = c.empId
+                            INNER JOIN Employee h ON d.head = h.empId
                             LEFT JOIN Employee e ON d.representativeId = e.empId
-                            LEFT JOIN CollectionPoint c ON d.collectionPointId = c.placeId 
+                            LEFT JOIN CollectionPoint cp ON d.collectionPointId = cp.placeId
                             WHERE d.deptId = '" + DeptId + "'";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
@@ -74,9 +85,9 @@ namespace SSISTeam9.DAO
                         Head = (reader["head"] == DBNull.Value) ? "Nil" : (string)reader["head"]
                     };
                     department.Representative = new Employee();
-                    department.Representative.EmpName = (reader["empName"] == DBNull.Value) ? " " : (string)reader["empName"];
+                    department.Representative.EmpName = (reader["rep"] == DBNull.Value) ? " " : (string)reader["rep"];
                     department.CollectionPoint = new CollectionPoint();
-                    department.CollectionPoint.Name = (reader["name"] == DBNull.Value) ? " " : (string)reader["name"];
+                    department.CollectionPoint.Name = (reader["collectionPoint"] == DBNull.Value) ? " " : (string)reader["collectionPoint"];
                 }
                 return department;
             }
@@ -102,13 +113,29 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
+                string q1 = @"SELECT c.empId AS contact, h.empId AS head
+                            FROM Employee c, Employee h
+                            WHERE c.empName = '" + department.Contact + "' AND h.empName = '" + department.Head + "'";
+
+                SqlCommand cmd1 = new SqlCommand(q1, conn);
+
+                SqlDataReader reader = cmd1.ExecuteReader();
+                string contact = null;
+                string head = null;
+                while (reader.Read())
+                {
+                    contact = (string)reader["contact"];
+                    head = (string)reader["head"];
+                }
+
+
                 string q = @"INSERT INTO department (deptCode,deptName,contact,telephone,fax,head)" + 
                             "VALUES ('" +  department.DeptCode +
                             "','" + department.DeptName +
-                            "','" + department.Contact +
+                            "','" + contact +
                             "','" + department.Telephone +
                             "','" + department.Fax +
-                            "','" + department.Head + "'";
+                            "','" + head + "'";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();
@@ -138,13 +165,28 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
+                string q1 = @"SELECT c.empId AS contact, h.empId AS head
+                            FROM Employee c, Employee h
+                            WHERE c.empName = '" + department.Contact + "' AND h.empName = '" + department.Head + "'";
+
+                SqlCommand cmd1 = new SqlCommand(q1, conn);
+
+                SqlDataReader reader = cmd1.ExecuteReader();
+                string contact = null;
+                string head = null;
+                while (reader.Read())
+                {
+                    contact = (string)reader["contact"];
+                    head = (string)reader["head"];
+                }
+
                 string q = @"UPDATE department SET deptId = '" + department.DeptId +
                     "', deptCode = '" + department.DeptCode +
                     "', deptName = '" + department.DeptName +
-                    "', contact = '" + department.Contact +
+                    "', contact = '" + contact +
                     "', telephone = '" + department.Telephone +
                     "', fax = '" + department.Fax +
-                    "', head = '" + department.Head +
+                    "', head = '" + head +
                     "' WHERE deptId = '" + department.DeptId + "'";
 
                 SqlCommand cmd = new SqlCommand(q, conn);

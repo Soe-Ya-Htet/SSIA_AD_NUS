@@ -23,11 +23,6 @@ namespace SSISTeam9.DAO
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    Employee e = new Employee()
-                    {
-                        EmpId = (long)reader["empId"],
-                        //EmpName = (String)reader["empName"]
-                    };
                     Requisition requisition = new Requisition()
                     {
                         ReqId = (long)reader["reqId"],                     
@@ -36,8 +31,11 @@ namespace SSISTeam9.DAO
                         Status = (String)reader["status"],
                         //PickUpDate = (DateTime)reader["pickUpDate"],
                         ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
-                        Employee = e
-
+                        Employee = new Employee()
+                        {
+                            EmpId = (long)reader["empId"],
+                            //EmpName = (String)reader["empName"]
+                        }
                     };
 
                     requisitions.Add(requisition);

@@ -45,9 +45,19 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from Employee where empId IN :ids";
-                SqlCommand cmd = new SqlCommand(q, conn);
-                cmd.Parameters.AddWithValue("ids", empIds);
+                string q = @"SELECT * from Employee where empId IN ({0})";
+
+                var parms = empIds.Select((s, i) => "@id" + i.ToString()).ToArray();
+                var inclause = string.Join(",", parms);
+
+                string sql = string.Format(q, inclause);
+                Console.Write(sql);
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                for(var i=0; i<parms.Length; i++)
+                {
+                    cmd.Parameters.AddWithValue(parms[i], empIds[i]);
+                }
 
                 Employee employee = null;
 

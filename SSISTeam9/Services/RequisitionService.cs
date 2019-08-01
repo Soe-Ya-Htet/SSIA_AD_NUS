@@ -22,12 +22,16 @@ namespace SSISTeam9.Services
         public static List<Requisition> ShowAllOutstandingRequisitionsByDate()
         {
             List<Requisition> list = RequisitionDAO.GetPendingRequisitionsFromDB();
+
+            if (list.Count == 0) return null;
+
             List<long> empIds = new List<long>();
             foreach (Requisition req in list)
             {
                 empIds.Add(req.Employee.EmpId);
-                //req.Employee = EmployeeDAO.GetEmployeeById(req.Employee.EmpId);
             }
+
+            if (empIds.Count == 0) return null;
 
             List<Employee> employees = EmployeeDAO.GetEmployeesByIdList(empIds);
             if(employees.Count != 0)
@@ -45,7 +49,6 @@ namespace SSISTeam9.Services
             foreach (Requisition req in list)
             {
                 depIds.Add(req.Employee.Department.DeptId);
-                //req.Employee = EmployeeDAO.GetEmployeeById(req.Employee.EmpId);
             }
 
             List<Department> departments = new List<Department>();

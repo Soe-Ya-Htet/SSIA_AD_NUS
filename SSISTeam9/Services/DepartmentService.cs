@@ -22,14 +22,14 @@ namespace SSISTeam9.Services
             return false;
         }
 
-        public static List<Department> DisplayAllDepartment()
+        public static List<Department> GetAllDepartment()
         {
-            return DepartmentDAO.DisplayAllDepartment();
+            return DepartmentDAO.GetAllDepartment();
         }
 
-        public static Department DisplayDepartmentDetails(long itemId)
+        public static Department GetDepartmentById(long itemId)
         {
-            return DepartmentDAO.DisplayDepartmentDetails(itemId);
+            return DepartmentDAO.GetDepartmentById(itemId);
         }
 
         public static void DeleteDepartment(long itemId)

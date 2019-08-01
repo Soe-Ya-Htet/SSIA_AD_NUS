@@ -9,7 +9,7 @@ namespace SSISTeam9.DAO
 {
     public class CatalogueDAO
     {
-        public static List<Inventory> DisplayAllCatalogue()
+        public static List<Inventory> GetAllCatalogue()
         {
             List<Inventory> catalogues = new List<Inventory>();
 
@@ -43,7 +43,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static Inventory DisplayCatalogueDetails(long ItemId)
+        public static Inventory GetCatalogueById(long ItemId)
         {
 
             Inventory catalogue = null;

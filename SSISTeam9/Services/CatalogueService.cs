@@ -22,14 +22,14 @@ namespace SSISTeam9.Services
             return false;
         }
 
-        public static List<Inventory> DisplayAllCatalogue()
+        public static List<Inventory> GetAllCatalogue()
         {
-            return CatalogueDAO.DisplayAllCatalogue();
+            return CatalogueDAO.GetAllCatalogue();
         }
 
-        public static Inventory DisplayCatalogueDetails(long itemId)
+        public static Inventory GetCatalogueById(long itemId)
         {
-            return CatalogueDAO.DisplayCatalogueDetails(itemId);
+            return CatalogueDAO.GetCatalogueById(itemId);
         }
 
         public static void DeleteCatalogue(long itemId)

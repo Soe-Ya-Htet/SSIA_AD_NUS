@@ -12,7 +12,7 @@ namespace SSISTeam9.Services
     {
         public static List<Inventory> GetAllInventory()
         {
-            return CatalogueDAO.DisplayAllCatalogue();
+            return CatalogueDAO.GetAllCatalogue();
         }
         public static List<Requisition> DisplayPendingRequisitions()
         {

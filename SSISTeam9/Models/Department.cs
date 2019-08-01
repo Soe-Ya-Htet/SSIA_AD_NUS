@@ -9,7 +9,7 @@ namespace SSISTeam9.Models
     {
         public long DeptId { get; set; }
         public string DeptCode { get; set; }
-        public string Name { get; set; }
+        public string DeptName { get; set; }
         public string Contact { get; set; }
         public string Telephone { get; set; }
         public string Fax { get; set; }

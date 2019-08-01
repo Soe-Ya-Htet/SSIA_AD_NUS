@@ -1,0 +1,46 @@
+﻿@using SSISTeam9.Models;
+@{
+    List<Department> departments = (List<Department>)ViewData["departments"];
+}
+
+<h2>Department List</h2>
+
+@if (departments.Count == 0)
+{
+    <br /><br />
+    <p style="font-size:14px">No departments to display</p>
+}
+else
+{
+    <section  class="department">
+        @foreach (var d in departments)
+        {
+            <div  class="department-list">
+                <p>Department Code: @d.DeptCode<br />
+                Department Name: @d.DeptName<br />
+                Contact Name: @d.Contact<br />
+                Telephone No.: @d.Telephone<br />
+                Fax No.: @d.Fax<br />
+                Head's Name: @d.Head<br />
+                Collection Point: @d.CollectionPoint.Name<br />
+                Representative Name: @d.Representative.EmpName</P>
+            </div>
+        }
+    </section>
+}
+
+<style>
+
+    .department {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .department-list {
+        padding: 2%;
+        flex-grow: 1;
+        flex-basis: 45%;
+        display: flex;
+    }
+</style>
+

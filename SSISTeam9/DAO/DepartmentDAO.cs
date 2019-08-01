@@ -29,14 +29,16 @@ namespace SSISTeam9.DAO
                     {
                         DeptId = (long)reader["deptId"],
                         DeptCode = (string)reader["deptCode"],
-                        Name = (string)reader["name"],
+                        DeptName = (string)reader["deptName"],
                         Contact = (reader["contact"] == DBNull.Value) ? "Nil" : (string)reader["contact"],
                         Telephone = (string)reader["telephone"],
                         Fax = (reader["fax"] == DBNull.Value) ? "Nil" : (string)reader["fax"],
                         Head = (reader["head"] == DBNull.Value) ? "Nil" : (string)reader["head"]
                     };
-                    department.Representative.EmpName = (reader["empName"] == DBNull.Value) ? "Nil" : (string)reader["empName"];
-                    department.CollectionPoint.Name = (reader["name"] == DBNull.Value) ? "Nil" : (string)reader["name"];
+                    department.Representative = new Employee();
+                    department.Representative.EmpName = (reader["empName"] == DBNull.Value) ? " " : (string)reader["empName"];
+                    department.CollectionPoint = new CollectionPoint();
+                    department.CollectionPoint.Name = (reader["name"] == DBNull.Value) ? " " : (string)reader["name"];
                     departments.Add(department);
                 }
             }
@@ -65,14 +67,16 @@ namespace SSISTeam9.DAO
                     {
                         DeptId = (long)reader["deptId"],
                         DeptCode = (string)reader["deptCode"],
-                        Name = (string)reader["name"],
+                        DeptName = (string)reader["deptName"],
                         Contact = (reader["contact"] == DBNull.Value) ? "Nil" : (string)reader["contact"],
                         Telephone = (string)reader["telephone"],
                         Fax = (reader["fax"] == DBNull.Value) ? "Nil" : (string)reader["fax"],
                         Head = (reader["head"] == DBNull.Value) ? "Nil" : (string)reader["head"]
                     };
-                    department.Representative.EmpName = (reader["empName"] == DBNull.Value) ? "Nil" : (string)reader["empName"];
-                    department.CollectionPoint.Name = (reader["name"] == DBNull.Value) ? "Nil" : (string)reader["name"];
+                    department.Representative = new Employee();
+                    department.Representative.EmpName = (reader["empName"] == DBNull.Value) ? " " : (string)reader["empName"];
+                    department.CollectionPoint = new CollectionPoint();
+                    department.CollectionPoint.Name = (reader["name"] == DBNull.Value) ? " " : (string)reader["name"];
                 }
                 return department;
             }
@@ -98,9 +102,9 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"INSERT INTO department (deptCode,name,contact,telephone,fax,head)" + 
+                string q = @"INSERT INTO department (deptCode,deptName,contact,telephone,fax,head)" + 
                             "VALUES ('" +  department.DeptCode +
-                            "','" + department.Name +
+                            "','" + department.DeptName +
                             "','" + department.Contact +
                             "','" + department.Telephone +
                             "','" + department.Fax +
@@ -111,7 +115,7 @@ namespace SSISTeam9.DAO
             }
         }
 
-        //public static void CreateDepartment(string DeptCode, string Name, string Contact, string Telephone, string Fax, string Head)
+        //public static void CreateDepartment(string DeptCode, string DeptName, string Contact, string Telephone, string Fax, string Head)
         //{
         //    using (SqlConnection conn = new SqlConnection(Data.db_cfg))
         //    {
@@ -121,7 +125,7 @@ namespace SSISTeam9.DAO
         //        SqlCommand cmd1 = new SqlCommand(q1, conn);
         //        long DeptId = (long)cmd1.ExecuteScalar() + 1;
 
-        //        string q2 = "INSERT INTO Department (deptId,deptCode,name,contact,telephone,fax,head)" + "VALUES ('" + DeptId + "','" + DeptCode + "','" + Name + "','" + Contact + "','" + Telephone + "','" + Fax + "','" + Head + "')";
+        //        string q2 = "INSERT INTO Department (deptId,deptCode,deptName,contact,telephone,fax,head)" + "VALUES ('" + DeptId + "','" + DeptCode + "','" + DeptName + "','" + Contact + "','" + Telephone + "','" + Fax + "','" + Head + "')";
         //        SqlCommand cmd2 = new SqlCommand(q2, conn);
         //        cmd2.ExecuteNonQuery();
         //    }
@@ -136,7 +140,7 @@ namespace SSISTeam9.DAO
 
                 string q = @"UPDATE department SET deptId = '" + department.DeptId +
                     "', deptCode = '" + department.DeptCode +
-                    "', name = '" + department.Name +
+                    "', deptName = '" + department.DeptName +
                     "', contact = '" + department.Contact +
                     "', telephone = '" + department.Telephone +
                     "', fax = '" + department.Fax +
@@ -149,13 +153,13 @@ namespace SSISTeam9.DAO
         }
 
 
-        //public static void UpdateDepartment(long DeptId, string DeptCode, string Name, string Contact, string Telephone, string Fax, string Head)
+        //public static void UpdateDepartment(long DeptId, string DeptCode, string DeptName, string Contact, string Telephone, string Fax, string Head)
         //{
         //    using (SqlConnection conn = new SqlConnection(Data.db_cfg))
         //    {
         //        conn.Open();
 
-        //        string q = @"UPDATE Department SET deptCode = '" + DeptCode + "', name = '" + Name + "', contact = '" + Contact + "', telephone = '" + Telephone + "', fax = '" + Fax + "', head = '" + Head + " WHERE deptId ='" + DeptId + "'";
+        //        string q = @"UPDATE Department SET deptCode = '" + DeptCode + "', deptName = '" + DeptName + "', contact = '" + Contact + "', telephone = '" + Telephone + "', fax = '" + Fax + "', head = '" + Head + " WHERE deptId ='" + DeptId + "'";
         //        SqlCommand cmd = new SqlCommand(q, conn);
         //        cmd.ExecuteNonQuery();
         //    }
@@ -192,13 +196,13 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT DISTINCT name from Department";
+                string q = @"SELECT DISTINCT deptName from Department";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    string departmentName = (string)reader["name"];
+                    string departmentName = (string)reader["deptName"];
                     departmentNames.Add(departmentName);
                 }
             }

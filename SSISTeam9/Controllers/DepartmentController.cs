@@ -13,7 +13,7 @@ namespace SSISTeam9.Controllers
     public class DepartmentController : Controller
     {
 
-        public ActionResult AllDepartment()
+        public ActionResult All()
         {
             List<Department> departments = DepartmentService.GetAllDepartment();
 
@@ -34,7 +34,7 @@ namespace SSISTeam9.Controllers
             return null;
         }
 
-        public ActionResult CreateDepartment()
+        public ActionResult Create()
         {
             return View();
         }
@@ -63,7 +63,7 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult UpdateDepartment(Department department)
+        public ActionResult Update(Department department)
         {
             DepartmentService.UpdateDepartment(department);
 

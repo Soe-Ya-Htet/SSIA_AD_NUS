@@ -268,6 +268,7 @@
     <Content Include="Views\PurchaseOrder\All.cshtml" />
     <Content Include="Views\PurchaseOrder\Edit.cshtml" />
     <Content Include="Views\PurchaseOrder\Close.cshtml" />
+    <Content Include="Views\Requisition\ViewAllOutstandingRequisitions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

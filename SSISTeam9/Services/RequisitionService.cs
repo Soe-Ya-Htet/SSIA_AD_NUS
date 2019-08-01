@@ -19,5 +19,16 @@ namespace SSISTeam9.Services
             return RequisitionDAO.GetPendingRequisitionsFromDB();
         }
 
+        //public static List<Requisition> ShowAllOutstandingRequisitionsByDate()
+        //{
+        //    List<Requisition> list = RequisitionDAO.GetPendindingRequisition();
+        //    foreach (Requisition req in list)
+        //    {
+        //        req.Employee = EmployeeDAO.GetEmployeeById(req.EmpId);
+        //        req.Employee.Department = DepartmentDAO.GetDepartmentById(req.Employee.DeptId);
+
+        //    }
+        //    return list;
+        //}
     }
 }

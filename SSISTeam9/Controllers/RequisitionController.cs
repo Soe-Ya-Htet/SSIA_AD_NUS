@@ -30,5 +30,12 @@ namespace SSISTeam9.Controllers
             ViewData["requisitionsToProcess"] = requisitions;
             return View();
         }
+
+        //public ActionResult ViewAllOutstandingRequisitions()
+        //{
+        //    List<Requisition> requisitions = RequistionService.ShowAllOutstandingRequisitionsByDate();
+        //    ViewData["outstandingReqs"] = requisitions;
+        //    return View();
+        //}
     }
 }

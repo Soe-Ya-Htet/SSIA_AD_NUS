@@ -39,12 +39,6 @@ namespace SSISTeam9.DAO
                     orders.Add(order);
                 }
 
-                foreach (var order in orders)
-                {
-                    order.Employee = EmployeeDAO.GetEmployeeById(order.EmployeeId);
-                    order.Supplier = SupplierDAO.GetSupplierById(order.SupplierId);
-                    order.ItemDetails = GetItemsInPurchaseOrder(order.OrderId);
-                }
             }
             return orders;
         }
@@ -79,9 +73,6 @@ namespace SSISTeam9.DAO
                 }
             }
 
-            order.Employee = EmployeeDAO.GetEmployeeById(order.EmployeeId);
-            order.Supplier = SupplierDAO.GetSupplierById(order.SupplierId);
-            order.ItemDetails = GetItemsInPurchaseOrder(order.OrderId);
             return order;
         }
 
@@ -107,12 +98,6 @@ namespace SSISTeam9.DAO
 
                     };
                     items.Add(item);
-                }
-
-                foreach (var item in items)
-                {
-                    item.ItemSuppliersDetails = SupplierDAO.GetItemSuppliersDetails(item.ItemId);
-                    item.Item = CatalogueDAO.GetCatalogueById(item.ItemId);
                 }
 
             }

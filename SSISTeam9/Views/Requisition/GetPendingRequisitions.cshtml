@@ -23,7 +23,7 @@
             {
                 <tr>
 
-                    <td>@Html.ActionLink(requisition.ReqId.ToString(), "Controller", "Action", new { })</td>
+                    <td>@Html.ActionLink(@requisition.ReqId.ToString(), "GetRequisitionDetails", new { reqId=@requisition.ReqId})</td>
                     <td>@requisition.Employee.EmpName</td>
                 </tr>
             }

@@ -38,6 +38,30 @@ namespace SSISTeam9.Services
             return list;
         }
 
+        public static List<RequisitionDetails> DisplayRequisitionDetailsByReqId(long reqId)
+        {
+            List<RequisitionDetails> list = RequisitionDAO.GetRequisitionDetailsByReqId(reqId);
+            List<long> inventoryIds = new List<long>();
+            foreach (RequisitionDetails req in list)
+            {
+                inventoryIds.Add(req.Item.ItemId);
+                //req.Employee = EmployeeDAO.GetEmployeeById(req.Employee.EmpId);
+            }
+
+            List<Inventory> items = CatalogueDAO.GetInventoriesByIdList(inventoryIds);
+            if (items.Count != 0)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].Item.ItemId == items[i].ItemId)
+                    {
+                        list[i].Item = items[i];
+                    }
+                }
+            }
+            return list;
+        }
+
         public static List<Requisition> ShowAllOutstandingRequisitionsByDate()
         {
             List<Requisition> list = RequisitionDAO.GetPendingRequisitionsFromDB();

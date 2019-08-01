@@ -32,10 +32,10 @@ namespace SSISTeam9.DAO
                     {
                         ReqId = (long)reader["reqId"],                     
                         ReqCode = (String)reader["reqCode"],
-                        //DateOfRequest = (DateTime)reader["dateOfRequest"],
+                        DateOfRequest = (DateTime)reader["dateOfRequest"],
                         Status = (String)reader["status"],
                         //PickUpDate = (DateTime)reader["pickUpDate"],
-                        //ApprovedBy = (String)reader["approvedBy"],
+                        ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
                         Employee = e
 
                     };

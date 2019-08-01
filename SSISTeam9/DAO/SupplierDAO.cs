@@ -197,7 +197,23 @@ namespace SSISTeam9.DAO
                 }
                 return itemSuppliersDetails;
             }
+        }
 
+        public static string GetSupplierName(string supplierId)
+        {
+            string supplierName = null;
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT name from Supplier where supplierId = '" + supplierId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                supplierName = (string)cmd.ExecuteScalar();
+               
+                return supplierName;
+            }
         }
     }
 }

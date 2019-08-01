@@ -36,6 +36,9 @@ namespace SSISTeam9.Services
             {
                 item.ItemSuppliersDetails = SupplierDAO.GetItemSuppliersDetails(item.ItemId);
                 item.Item = CatalogueDAO.GetCatalogueById(item.ItemId);
+                item.ItemSuppliersDetails.Supplier1Name = SupplierDAO.GetSupplierName(item.ItemSuppliersDetails.Supplier1Id);
+                item.ItemSuppliersDetails.Supplier2Name = SupplierDAO.GetSupplierName(item.ItemSuppliersDetails.Supplier2Id);
+                item.ItemSuppliersDetails.Supplier3Name = SupplierDAO.GetSupplierName(item.ItemSuppliersDetails.Supplier3Id);
             }
             
             return order;

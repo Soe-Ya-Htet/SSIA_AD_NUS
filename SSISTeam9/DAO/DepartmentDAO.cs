@@ -113,13 +113,29 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
+                string q1 = @"SELECT c.empId AS contact, h.empId AS head
+                            FROM Employee c, Employee h
+                            WHERE c.empName = '" + department.Contact + "' AND h.empName = '" + department.Head + "'";
+
+                SqlCommand cmd1 = new SqlCommand(q1, conn);
+
+                SqlDataReader reader = cmd1.ExecuteReader();
+                string contact = null;
+                string head = null;
+                while (reader.Read())
+                {
+                    contact = (string)reader["contact"];
+                    head = (string)reader["head"];
+                }
+
+
                 string q = @"INSERT INTO department (deptCode,deptName,contact,telephone,fax,head)" + 
                             "VALUES ('" +  department.DeptCode +
                             "','" + department.DeptName +
-                            "','" + department.Contact +
+                            "','" + contact +
                             "','" + department.Telephone +
                             "','" + department.Fax +
-                            "','" + department.Head + "'";
+                            "','" + head + "'";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();
@@ -149,13 +165,28 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
+                string q1 = @"SELECT c.empId AS contact, h.empId AS head
+                            FROM Employee c, Employee h
+                            WHERE c.empName = '" + department.Contact + "' AND h.empName = '" + department.Head + "'";
+
+                SqlCommand cmd1 = new SqlCommand(q1, conn);
+
+                SqlDataReader reader = cmd1.ExecuteReader();
+                string contact = null;
+                string head = null;
+                while (reader.Read())
+                {
+                    contact = (string)reader["contact"];
+                    head = (string)reader["head"];
+                }
+
                 string q = @"UPDATE department SET deptId = '" + department.DeptId +
                     "', deptCode = '" + department.DeptCode +
                     "', deptName = '" + department.DeptName +
-                    "', contact = '" + department.Contact +
+                    "', contact = '" + contact +
                     "', telephone = '" + department.Telephone +
                     "', fax = '" + department.Fax +
-                    "', head = '" + department.Head +
+                    "', head = '" + head +
                     "' WHERE deptId = '" + department.DeptId + "'";
 
                 SqlCommand cmd = new SqlCommand(q, conn);

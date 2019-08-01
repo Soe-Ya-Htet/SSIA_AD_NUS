@@ -32,8 +32,19 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult ChooseSuppliers(List<Inventory> items)
+        public ActionResult ChooseSuppliers(PurchaseOrder order, string orderNumber)
         {
+
+            Console.WriteLine(orderNumber);
+            PurchaseOrder checkedItemsInOrder = PurchaseOrderService.GetOrderDetails(orderNumber);
+            
+            for (int i = 0; i < order.ItemDetails.Count; i++)
+            {
+                checkedItemsInOrder.ItemDetails[i].Item.isChecked = order.ItemDetails[i].Item.isChecked;
+            }
+
+            ViewData["order"] = checkedItemsInOrder;
+
             return View();
         }
 

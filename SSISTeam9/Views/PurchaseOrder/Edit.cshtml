@@ -3,24 +3,30 @@
 @using SSISTeam9.Models;
 @{
     PurchaseOrder order = (PurchaseOrder)ViewData["order"];
+    var counter = 0;
 }
 
 <h2>Purchase Order</h2>
 
-<form method="post" action="/PurchaseOrder/ChooseSuppliers">
+<table>
+    <tr>
+        <td colspan="2">PO Number: </td>
+        <td colspan="2">@order.OrderNumber</td>
+    </tr>
+    <tr>
+        <td colspan="2">Deliver To: </td>
+        <td colspan="2"><input type="text" value="@order.DeliverTo" style="height:100px; width:350px"></td>
+    </tr>
+    <tr>
+        <td colspan="2">To Supply Items By: </td>
+        <td colspan="2"><input type="date" value="@order.DeliverBy.Date.ToString("yyyy-MM-dd")"></td>
+    </tr>
+</table>
+
+<div>
+    @using (Html.BeginForm("ChooseSuppliers", "PurchaseOrder", FormMethod.Post))
+    {
     <table>
-        <tr>
-            <td colspan="2">PO Number: </td>
-            <td colspan="2">@order.OrderNumber</td>
-        </tr>
-        <tr>
-            <td colspan="2">Deliver To: </td>
-            <td colspan="2"><input type="text" value="@order.DeliverTo" style="height:100px; width:350px"></td>
-        </tr>
-        <tr>
-            <td colspan="2">To Supply Items By: </td>
-            <td colspan="2"><input type="date" value="@order.DeliverBy.Date.ToString("yyyy-MM-dd")"></td>
-        </tr>
         <tr>
             <th>Change Supplier (?)</th>
             <th>Item Number</th>
@@ -29,42 +35,46 @@
             <th>Unit Price ($)</th>
             <th>Total ($)</th>
         </tr>
+
         @foreach (var item in order.ItemDetails)
         {
-            <tr>
-                <td><input id="@item.OrderId" type="checkbox" name="orderId" value="@item.OrderId" /> </td>
-                <td>@item.Item.ItemCode</td>
-                <td>@item.Item.Description</td>
-                <td>@item.Quantity</td>
+        <tr>
+            <td>@Html.CheckBoxFor(m => m.ItemDetails[counter].Item.isChecked, new { id = "selectedChangeSupplier" })</td>
+            @Html.Hidden("orderNumber",order.OrderNumber)
+            <td>@item.Item.ItemCode</td>
+            <td>@item.Item.Description</td>
+            <td>@item.Quantity</td>
 
-                <!--To check what is the supplier for the current Purchase Order-->
-                @if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier1Id))
-                {
-                    <td>@item.ItemSuppliersDetails.Supplier1UnitPrice</td>
-                }
-                else if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier2Id))
-                {
-                    <td>@item.ItemSuppliersDetails.Supplier2UnitPrice</td>
-                }
-                else if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier3Id))
-                {
-                    <td>@item.ItemSuppliersDetails.Supplier3UnitPrice</td>
-                }
+            <!--To check what is the supplier for the current Purchase Order-->
+            @if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier1Id))
+            {
+                <td>@item.ItemSuppliersDetails.Supplier1UnitPrice</td>
+            }
+            else if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier2Id))
+            {
+                <td>@item.ItemSuppliersDetails.Supplier2UnitPrice</td>
+            }
+            else if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier3Id))
+            {
+                <td>@item.ItemSuppliersDetails.Supplier3UnitPrice</td>
+            }
 
-                @if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier1Id))
-                {
-                    <td>@(item.Quantity * Convert.ToDouble(item.ItemSuppliersDetails.Supplier1UnitPrice))</td>
-                }
-                else if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier2Id))
-                {
-                    <td>@(item.Quantity * Convert.ToDouble(item.ItemSuppliersDetails.Supplier2UnitPrice))</td>
-                }
-                else if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier3Id))
-                {
-                    <td>@(item.Quantity * Convert.ToDouble(item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
-                }
-            </tr>
+            @if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier1Id))
+            {
+                <td>@(item.Quantity * Convert.ToDouble(item.ItemSuppliersDetails.Supplier1UnitPrice))</td>
+            }
+            else if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier2Id))
+            {
+                <td>@(item.Quantity * Convert.ToDouble(item.ItemSuppliersDetails.Supplier2UnitPrice))</td>
+            }
+            else if (order.SupplierId == long.Parse(@item.ItemSuppliersDetails.Supplier3Id))
+            {
+                <td>@(item.Quantity * Convert.ToDouble(item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
+            }
+        </tr>
+            counter = counter + 1;
         }
+
         <tr>
             <td colspan="6" align="right"><input type="submit" value="Change Supplier For Items"></td>
         </tr>
@@ -72,7 +82,8 @@
             <td colspan="6" align="right"><input type="submit" value="Delete PO"></td>
         </tr>
     </table>
-</form>
+    }
+</div>
 
 
 <style>
@@ -84,5 +95,5 @@
         height: 40px;
         padding: 2px;
     }
-
 </style>
+

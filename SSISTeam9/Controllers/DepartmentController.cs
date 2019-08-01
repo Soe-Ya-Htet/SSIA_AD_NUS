@@ -15,7 +15,7 @@ namespace SSISTeam9.Controllers
 
         public ActionResult AllDepartment()
         {
-            List<Department> departments = DepartmentService.DisplayAllDepartment();
+            List<Department> departments = DepartmentService.GetAllDepartment();
 
             ViewData["departments"] = departments;
             return View();
@@ -27,7 +27,7 @@ namespace SSISTeam9.Controllers
             {
                 DepartmentService.DeleteDepartment(deptId);
 
-                List<Department> departments = DepartmentService.DisplayAllDepartment();
+                List<Department> departments = DepartmentService.GetAllDepartment();
                 ViewData["departments"] = departments;
                 return View("AllDepartment");
             }
@@ -51,7 +51,7 @@ namespace SSISTeam9.Controllers
             {
                 DepartmentService.CreateDepartment(department);
 
-                List<Department> departments = DepartmentService.DisplayAllDepartment();
+                List<Department> departments = DepartmentService.GetAllDepartment();
                 ViewData["departments"] = departments;
             }
             return View("AllDepartment");
@@ -59,7 +59,7 @@ namespace SSISTeam9.Controllers
 
         public ActionResult DisplayDepartmentDetails(long deptId)
         {
-            ViewData["departments"] = DepartmentService.DisplayDepartmentDetails(deptId);
+            ViewData["departments"] = DepartmentService.GetDepartmentById(deptId);
             return View();
         }
 
@@ -67,7 +67,7 @@ namespace SSISTeam9.Controllers
         {
             DepartmentService.UpdateDepartment(department);
 
-            List<Department> departments = DepartmentService.DisplayAllDepartment();
+            List<Department> departments = DepartmentService.GetAllDepartment();
             ViewData["departments"] = departments;
             return View("AllDepartment");
         }

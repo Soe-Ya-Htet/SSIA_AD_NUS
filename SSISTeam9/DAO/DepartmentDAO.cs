@@ -9,7 +9,7 @@ namespace SSISTeam9.DAO
 {
     public class DepartmentDAO
     {
-        public static List<Department> DisplayAllDepartment()
+        public static List<Department> GetAllDepartment()
         {
             List<Department> departments = new List<Department>();
 
@@ -44,7 +44,7 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static Department DisplayDepartmentDetails(long DeptId)
+        public static Department GetDepartmentById(long DeptId)
         {
             Department department = null;
 

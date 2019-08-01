@@ -14,7 +14,7 @@ namespace SSISTeam9.Controllers
     {
         public ActionResult AllCatalogue()
         {
-            List<Inventory> catalogues = CatalogueService.DisplayAllCatalogue();
+            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
 
             ViewData["catalogues"] = catalogues;
             return View();
@@ -26,7 +26,7 @@ namespace SSISTeam9.Controllers
             {
                 CatalogueService.DeleteCatalogue(itemId);
 
-                List<Inventory> catalogues = CatalogueService.DisplayAllCatalogue();
+                List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
                 ViewData["catalogues"] = catalogues;
                 return View("AllCatalogue");
             }
@@ -50,7 +50,7 @@ namespace SSISTeam9.Controllers
             {
                 CatalogueService.CreateCatalogueDetaills(catalogue, supplierCodes);
 
-                List<Inventory> catalogues = CatalogueService.DisplayAllCatalogue();
+                List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
                 ViewData["catalogues"] = catalogue;               
             }
             return View("AllCatalogue");
@@ -58,7 +58,7 @@ namespace SSISTeam9.Controllers
 
         public ActionResult DisplayCatalogueDetails(long itemId)
         {
-            ViewData["catalogues"] = CatalogueService.DisplayCatalogueDetails(itemId);
+            ViewData["catalogues"] = CatalogueService.GetCatalogueById(itemId);
             return View();
         }
 
@@ -66,7 +66,7 @@ namespace SSISTeam9.Controllers
         {
             CatalogueService.UpdateCatalogue(catalogue);
 
-            List<Inventory> catalogues = CatalogueService.DisplayAllCatalogue();
+            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
             ViewData["catalogues"] = catalogues;
             return View("AllCatalogue");
         }

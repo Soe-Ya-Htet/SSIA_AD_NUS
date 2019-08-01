@@ -3,6 +3,8 @@
 @{
     var requisitionDetails = (List<RequisitionDetails>)ViewData["requisitionDetails"];
     var reqId = (long)ViewData["reqId"];
+    var appStatus = "approve";
+    var rejStatus = "reject";
 }
 
 @{
@@ -26,8 +28,8 @@
             }
             <tr>
                 <td></td>
-                <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status='approve'"><span>Approve</span></button></td>
-                <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status='reject'"><span>Reject</span></button></td>
+                <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@appStatus"><span>Approve</span></button></td>
+                <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@rejStatus"><span>Reject</span></button></td>
             </tr>
         </table>
     </form>

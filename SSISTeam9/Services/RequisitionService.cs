@@ -16,7 +16,7 @@ namespace SSISTeam9.Services
         }
         public static List<Requisition> DisplayPendingRequisitions()
         {
-            List<Requisition> list = RequisitionDAO.GetPendingRequisitionsFromDB();
+            List<Requisition> list = RequisitionDAO.GetRequisitionsByStatuses();
             List<long> empIds = new List<long>();
             foreach (Requisition req in list)
             {
@@ -29,10 +29,8 @@ namespace SSISTeam9.Services
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (list[i].Employee.EmpId == employees[i].EmpId)
-                    {
-                        list[i].Employee = employees[i];
-                    }
+                    list[i].Employee = employees.Find(e => e.EmpId == list[i].Employee.EmpId);
+
                 }
             }
             return list;
@@ -64,7 +62,7 @@ namespace SSISTeam9.Services
 
         public static List<Requisition> ShowAllOutstandingRequisitionsByDate()
         {
-            List<Requisition> list = RequisitionDAO.GetPendingRequisitionsFromDB();
+            List<Requisition> list = RequisitionDAO.GetRequisitionsByStatuses("Approved","Partially Completed");
 
             if (list.Count == 0) return null;
 
@@ -81,10 +79,9 @@ namespace SSISTeam9.Services
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    while(list[i].Employee.EmpId == employees[i].EmpId)
-                    {
-                        list[i].Employee = employees[i];
-                    }
+                    
+                    list[i].Employee = employees.Find(e => e.EmpId == list[i].Employee.EmpId);
+                    
                 }
             }
 
@@ -94,15 +91,14 @@ namespace SSISTeam9.Services
                 depIds.Add(req.Employee.Department.DeptId);
             }
 
-            List<Department> departments = new List<Department>();
+            List<Department> departments = DepartmentDAO.GetDepartmentsByIdList(depIds);
             if (employees.Count != 0)
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (list[i].Employee.Department.DeptId == departments[i].DeptId)
-                    {
-                        list[i].Employee.Department = departments[i];
-                    }
+                    
+                    list[i].Employee.Department = departments.Find(e => e.DeptId == list[i].Employee.Department.DeptId);
+                   
                 }
             }
 

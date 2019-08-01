@@ -9,15 +9,20 @@ namespace SSISTeam9.DAO
 {
     public class RequisitionDAO
     {
-        public static List<Requisition> GetPendingRequisitionsFromDB()
+        public static List<Requisition> GetRequisitionsByStatuses(params string[] status)
         {
             List<Requisition> requisitions = new List<Requisition>();
+            
 
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
 
-                string q = @"SELECT * from Requisition where status='Pending'";
+                string q = @"SELECT * from Requisition where status='"+status[0]+"'";
+                for (int i = 1; i < status.Length; i++)
+                {
+                    q = q + " OR status= '" + status[i]+"'";
+                }
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -38,6 +43,7 @@ namespace SSISTeam9.DAO
                         ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
                         Employee = e
                     };
+
 
                     requisitions.Add(requisition);
                 }

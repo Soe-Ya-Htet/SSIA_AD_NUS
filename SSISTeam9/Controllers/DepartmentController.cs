@@ -36,23 +36,24 @@ namespace SSISTeam9.Controllers
 
         public ActionResult Create()
         {
+            ViewData["empNames"] = EmployeeDAO.GetAllEmployeeNames();
             return View();
         }
 
         public ActionResult CreateNew(Department department)
         {
 
-            if (DepartmentService.VerifyExist(department.DeptCode))
-            {
-                TempData["errorMsg"] = "<script>alert('Department code already exists! Please Verify.');</script>";
-                return RedirectToAction("Create");
-            }
-            else
+            try
             {
                 DepartmentService.CreateDepartment(department);
 
                 List<Department> departments = DepartmentService.GetAllDepartment();
                 ViewData["departments"] = departments;
+            }
+            catch (SqlException)
+            {
+                TempData["errorMsg"] = "<script>alert('Department code already exists! Please Verify.');</script>";
+                return RedirectToAction("Create");
             }
             return RedirectToAction("All");
         }
@@ -66,11 +67,20 @@ namespace SSISTeam9.Controllers
 
         public ActionResult Update(Department department)
         {
-            DepartmentService.UpdateDepartment(department);
+            
+            try
+            {
+                DepartmentService.UpdateDepartment(department);
 
-            List<Department> departments = DepartmentService.GetAllDepartment();
-            ViewData["departments"] = departments;
-            return RedirectToAction("All");
+                List<Department> departments = DepartmentService.GetAllDepartment();
+                ViewData["departments"] = departments;
+                return RedirectToAction("All");
+            }
+            catch (SqlException)
+            {
+                TempData["errorMsg"] = "<script>alert('Department code already exists! Please Verify.');</script>";
+                return RedirectToAction("Details", new { deptId = department.DeptId });
+            }
         }
     }
 }

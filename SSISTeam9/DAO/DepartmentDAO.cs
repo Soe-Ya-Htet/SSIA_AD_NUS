@@ -136,7 +136,7 @@ namespace SSISTeam9.DAO
                             "','" + contact +
                             "','" + department.Telephone +
                             "','" + department.Fax +
-                            "','" + head + "'";
+                            "','" + head + "')";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();

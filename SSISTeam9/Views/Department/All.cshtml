@@ -1,4 +1,5 @@
 ﻿@using SSISTeam9.Models;
+
 @{
     List<Department> departments = (List<Department>)ViewData["departments"];
 }
@@ -7,26 +8,34 @@
 
 @if (departments.Count == 0)
 {
-    <br /><br />
+    <br><br>
     <p style="font-size:14px">No departments to display</p>
 }
 else
 {
-    <section  class="department">
-        @foreach (var d in departments)
-        {
-            <div  class="department-list">
-                <p>Department Code: @d.DeptCode<br />
-                Department Name: @d.DeptName<br />
-                Contact Name: @d.Contact<br />
-                Telephone No.: @d.Telephone<br />
-                Fax No.: @d.Fax<br />
-                Head's Name: @d.Head<br />
-                Collection Point: @d.CollectionPoint.Name<br />
-                Representative Name: @d.Representative.EmpName</P>
-            </div>
-        }
+    <section>
+        <div  class="department">
+            @foreach (var d in departments)
+            {
+                <div class="department-list">
+                    <p>
+                        Department Code: <a href="/Department/DepartmentDetails?deptId=@d.DeptId">@d.DeptCode</a><br>
+                        Department Name: @d.DeptName<br>
+                        Contact Name: @d.Contact<br>
+                        Telephone No.: @d.Telephone<br>
+                        Fax No.: @d.Fax<br>
+                        Head's Name: @d.Head<br>
+                        Collection Point: @d.CollectionPoint.Name<br>
+                        Representative Name: @d.Representative.EmpName
+                    </p>
+                </div>
+            }
+        </div>
+        <div>
+            <p align="right"><input type="button" value="Create New Department" onclick="location.href='@Url.Action("Create","Department")'"></p>
+        </div>
     </section>
+
 }
 
 <style>

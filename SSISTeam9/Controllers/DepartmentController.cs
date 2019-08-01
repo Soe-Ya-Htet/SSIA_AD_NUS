@@ -57,7 +57,7 @@ namespace SSISTeam9.Controllers
             return View("AllDepartment");
         }
 
-        public ActionResult DisplayDepartmentDetails(long deptId)
+        public ActionResult Details(long deptId)
         {
             ViewData["departments"] = DepartmentService.GetDepartmentById(deptId);
             return View();

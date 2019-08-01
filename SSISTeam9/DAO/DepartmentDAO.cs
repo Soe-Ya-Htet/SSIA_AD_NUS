@@ -128,6 +128,7 @@ namespace SSISTeam9.DAO
                     head = (string)reader["head"];
                 }
 
+                reader.Close();
 
                 string q = @"INSERT INTO department (deptCode,deptName,contact,telephone,fax,head)" + 
                             "VALUES ('" +  department.DeptCode +
@@ -179,9 +180,10 @@ namespace SSISTeam9.DAO
                     contact = (string)reader["contact"];
                     head = (string)reader["head"];
                 }
+                reader.Close();
 
-                string q = @"UPDATE department SET deptId = '" + department.DeptId +
-                    "', deptCode = '" + department.DeptCode +
+
+                string q = @"UPDATE department SET deptCode = '" + department.DeptCode +
                     "', deptName = '" + department.DeptName +
                     "', contact = '" + contact +
                     "', telephone = '" + department.Telephone +

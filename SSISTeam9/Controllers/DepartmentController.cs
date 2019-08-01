@@ -29,7 +29,7 @@ namespace SSISTeam9.Controllers
 
                 List<Department> departments = DepartmentService.GetAllDepartment();
                 ViewData["departments"] = departments;
-                return View("AllDepartment");
+                return RedirectToAction("All");
             }
             return null;
         }
@@ -45,7 +45,7 @@ namespace SSISTeam9.Controllers
             if (DepartmentService.VerifyExist(department.DeptCode))
             {
                 TempData["errorMsg"] = "<script>alert('Department code already exists! Please Verify.');</script>";
-                return View("CreateDepartment");
+                return RedirectToAction("Create");
             }
             else
             {
@@ -54,7 +54,7 @@ namespace SSISTeam9.Controllers
                 List<Department> departments = DepartmentService.GetAllDepartment();
                 ViewData["departments"] = departments;
             }
-            return View("AllDepartment");
+            return RedirectToAction("All");
         }
 
         public ActionResult Details(long deptId)
@@ -70,7 +70,7 @@ namespace SSISTeam9.Controllers
 
             List<Department> departments = DepartmentService.GetAllDepartment();
             ViewData["departments"] = departments;
-            return View("AllDepartment");
+            return RedirectToAction("All");
         }
     }
 }

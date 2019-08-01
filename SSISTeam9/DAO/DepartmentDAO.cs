@@ -20,8 +20,8 @@ namespace SSISTeam9.DAO
                 string q = @"SELECT d.deptId, d.deptCode, d.deptName, c.empName AS contact, 
                             d.telephone, d.fax, h.empName AS head, e.empName AS rep, cp.name AS collectionPoint
                             FROM Department d
-                            INNER JOIN Employee c ON d.contact = c.empId
-                            INNER JOIN Employee h ON d.head = h.empId
+                            LEFT JOIN Employee c ON d.contact IS NULL OR d.contact = c.empId
+                            LEFT JOIN Employee h ON d.head IS NULL OR d.head = h.empId
                             LEFT JOIN Employee e ON d.representativeId = e.empId
                             LEFT JOIN CollectionPoint cp ON d.collectionPointId = cp.placeId";
                 SqlCommand cmd = new SqlCommand(q, conn);
@@ -64,8 +64,8 @@ namespace SSISTeam9.DAO
                 string q = @"SELECT d.deptId, d.deptCode, d.deptName, c.empName AS contact, 
                             d.telephone, d.fax, h.empName AS head, e.empName AS rep, cp.name AS collectionPoint
                             FROM Department d
-                            INNER JOIN Employee c ON d.contact = c.empId
-                            INNER JOIN Employee h ON d.head = h.empId
+                            LEFT JOIN Employee c ON d.contact IS NULL OR d.contact = c.empId
+                            LEFT JOIN Employee h ON d.head IS NULL OR d.head = h.empId
                             LEFT JOIN Employee e ON d.representativeId = e.empId
                             LEFT JOIN CollectionPoint cp ON d.collectionPointId = cp.placeId
                             WHERE d.deptId = '" + DeptId + "'";
@@ -120,12 +120,12 @@ namespace SSISTeam9.DAO
                 SqlCommand cmd1 = new SqlCommand(q1, conn);
 
                 SqlDataReader reader = cmd1.ExecuteReader();
-                string contact = null;
-                string head = null;
+                long contact = 0;
+                long head = 0;
                 while (reader.Read())
                 {
-                    contact = (string)reader["contact"];
-                    head = (string)reader["head"];
+                    contact = (long)reader["contact"];
+                    head = (long)reader["head"];
                 }
 
                 reader.Close();
@@ -173,12 +173,12 @@ namespace SSISTeam9.DAO
                 SqlCommand cmd1 = new SqlCommand(q1, conn);
 
                 SqlDataReader reader = cmd1.ExecuteReader();
-                string contact = null;
-                string head = null;
+                long contact = 0;
+                long head = 0;
                 while (reader.Read())
                 {
-                    contact = (string)reader["contact"];
-                    head = (string)reader["head"];
+                    contact = (long)reader["contact"];
+                    head = (long)reader["head"];
                 }
                 reader.Close();
 

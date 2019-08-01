@@ -16,7 +16,8 @@ namespace SSISTeam9.Services
         }
         public static List<Requisition> DisplayPendingRequisitions()
         {
-            List<Requisition> list = RequisitionDAO.GetRequisitionsByStatuses();
+            string[] status = { "Pending Approval"};
+            List<Requisition> list = RequisitionDAO.GetRequisitionsByStatuses(status);
             List<long> empIds = new List<long>();
             foreach (Requisition req in list)
             {

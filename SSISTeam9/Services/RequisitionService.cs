@@ -16,7 +16,7 @@ namespace SSISTeam9.Services
         }
         public static List<Requisition> DisplayPendingRequisitions()
         {
-            List<Requisition> list = RequisitionDAO.GetPendingRequisitionsFromDB();
+            List<Requisition> list = RequisitionDAO.GetRequisitionsByStatuses();
             List<long> empIds = new List<long>();
             foreach (Requisition req in list)
             {
@@ -62,7 +62,7 @@ namespace SSISTeam9.Services
 
         public static List<Requisition> ShowAllOutstandingRequisitionsByDate()
         {
-            List<Requisition> list = RequisitionDAO.GetPendingRequisitionsFromDB();
+            List<Requisition> list = RequisitionDAO.GetRequisitionsByStatuses("Approved","Partially Completed");
 
             if (list.Count == 0) return null;
 

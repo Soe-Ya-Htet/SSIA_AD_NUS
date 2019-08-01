@@ -29,10 +29,8 @@ namespace SSISTeam9.Services
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (list[i].Employee.EmpId == employees[i].EmpId)
-                    {
-                        list[i].Employee = employees[i];
-                    }
+                    list[i].Employee = employees.Find(e => e.EmpId == list[i].Employee.EmpId);
+
                 }
             }
             return list;

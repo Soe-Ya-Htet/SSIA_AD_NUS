@@ -17,25 +17,26 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from Requisition r,Employee e where r.empId=e.empId and r.status='Pending'";
+                string q = @"SELECT * from Requisition where status='Pending'";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    Employee e = new Employee()
+                    {
+                        EmpId = (long)reader["empId"]
+                    };
+
                     Requisition requisition = new Requisition()
                     {
-                        ReqId = (long)reader["reqId"],                     
+                        ReqId = (long)reader["reqId"],
                         ReqCode = (String)reader["reqCode"],
                         DateOfRequest = (DateTime)reader["dateOfRequest"],
                         Status = (String)reader["status"],
                         //PickUpDate = (DateTime)reader["pickUpDate"],
                         ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
-                        Employee = new Employee()
-                        {
-                            EmpId = (long)reader["empId"],
-                            //EmpName = (String)reader["empName"]
-                        }
+                        Employee = e
                     };
 
                     requisitions.Add(requisition);

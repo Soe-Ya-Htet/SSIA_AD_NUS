@@ -16,7 +16,26 @@ namespace SSISTeam9.Services
         }
         public static List<Requisition> DisplayPendingRequisitions()
         {
-            return RequisitionDAO.GetPendingRequisitionsFromDB();
+            List<Requisition> list = RequisitionDAO.GetPendingRequisitionsFromDB();
+            List<long> empIds = new List<long>();
+            foreach (Requisition req in list)
+            {
+                empIds.Add(req.Employee.EmpId);
+                //req.Employee = EmployeeDAO.GetEmployeeById(req.Employee.EmpId);
+            }
+
+            List<Employee> employees = EmployeeDAO.GetEmployeesByIdList(empIds);
+            if (employees.Count != 0)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].Employee.EmpId == employees[i].EmpId)
+                    {
+                        list[i].Employee = employees[i];
+                    }
+                }
+            }
+            return list;
         }
 
         public static List<Requisition> ShowAllOutstandingRequisitionsByDate()

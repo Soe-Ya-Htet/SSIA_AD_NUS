@@ -63,7 +63,7 @@ namespace SSISTeam9.DAO
 
                 List<Employee> employees = new List<Employee>();
                 SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
+                while (reader.Read())
                 {
                     employee = new Employee()
                     {

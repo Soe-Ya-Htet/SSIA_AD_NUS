@@ -1,7 +1,35 @@
-﻿
+﻿@model SSISTeam9.Models.RequisitionDetails
+@using SSISTeam9.Models
 @{
-    ViewBag.Title = "GetRequisitionDetails";
+    var requisitionDetails = (List<RequisitionDetails>)ViewData["requisitionDetails"];
+    var reqId = (long)ViewData["reqId"];
 }
 
-<h2>GetRequisitionDetails</h2>
+@{
 
+    <form method="post">
+        <table>
+            <tr>
+                <th>Description</th>
+                <th>UnitOfMeasure</th>
+                <th>Quantity</th>
+            </tr>
+
+            @foreach (var detail in requisitionDetails)
+            {
+                <tr>
+
+                    <td>@detail.Item.Description</td>
+                    <td>@detail.Item.UnitOfMeasure</td>
+                    <td>@detail.Quantity</td>
+                </tr>
+            }
+            <tr>
+                <td></td>
+                <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status='approve'"><span>Approve</span></button></td>
+                <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status='reject'"><span>Reject</span></button></td>
+            </tr>
+        </table>
+    </form>
+
+}

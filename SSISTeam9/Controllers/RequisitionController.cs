@@ -31,6 +31,14 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
+        public ActionResult GetRequisitionDetails(long reqId)
+        {
+            List<RequisitionDetails> requisitionDetails = RequisitionService.DisplayRequisitionDetailsByReqId(reqId);
+            ViewData["requisitionDetails"] = requisitionDetails;
+            ViewData["reqId"] = reqId;
+            return View();
+        }
+
         public ActionResult ViewAllOutstandingRequisitions()
         {
             List<Requisition> requisitions = RequisitionService.ShowAllOutstandingRequisitionsByDate();

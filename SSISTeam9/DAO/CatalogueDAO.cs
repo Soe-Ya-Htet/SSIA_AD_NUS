@@ -253,6 +253,53 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static List<Inventory> GetInventoriesByIdList(List<long> inventoryIds)
+        {
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from Inventory where itemId IN ({0})";
+
+                var parms = inventoryIds.Select((s, i) => "@id" + i.ToString()).ToArray();
+                var inclause = string.Join(",", parms);
+
+                string sql = string.Format(q, inclause);
+                Console.Write(sql);
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                for (var i = 0; i < parms.Length; i++)
+                {
+                    cmd.Parameters.AddWithValue(parms[i], inventoryIds[i]);
+                }
+
+                Inventory item = null;
+
+                List<Inventory> items = new List<Inventory>();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    item = new Inventory()
+                    {
+                        ItemId = (long)reader["itemId"],
+                        ItemCode = (string)reader["itemCode"],
+                        BinNo = (string)reader["binNo"],
+                        StockLevel = (int)reader["stockLevel"],
+                        ReorderLevel = (int)reader["reorderLevel"],
+                        ReorderQty = (int)reader["reorderQty"],
+                        Category = (string)reader["category"],
+                        Description = (string)reader["description"],
+                        UnitOfMeasure = (string)reader["unitOfMeasure"],
+                        ImageUrl = (reader["imageUrl"] == DBNull.Value) ? "Nil" : (string)reader["imageUrl"]
+                    };
+                    items.Add(item);
+                }
+                return items;
+            }
+        }
+
+
         //public static void CreateCatalogue(string ItemCode, string Category, string Description, string UnitOfMeasure, string Supplier1Id, string Supplier2Id, string Supplier3Id)
         //{
         //    using (SqlConnection conn = new SqlConnection(Data.db_cfg))

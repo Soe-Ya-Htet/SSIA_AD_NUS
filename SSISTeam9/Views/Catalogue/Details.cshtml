@@ -1,7 +1,43 @@
-﻿
+﻿@model SSISTeam9.Models.Inventory
+
+@using SSISTeam9.Models;
 @{
-    ViewBag.Title = "Details";
+    Inventory catalogue = (Inventory)ViewData["catalogue"];
+    PriceList pricelist = (PriceList)ViewData["pricelist"];
 }
 
-<h2>Details</h2>
+<h2 style="text-align:center">Catalogue Details</h2>
 
+<section>
+    <div>
+        <p>
+            Item Code: @catalogue.ItemCode<br />
+            Category: @catalogue.Category<br />
+            Description: @catalogue.Description<br />
+            Unit Of Measure: @catalogue.UnitOfMeasure<br />
+        </p>
+        @if(pricelist != null)
+        {
+        <table>
+            <tr>
+                <td>First Supplier's Name: @pricelist.Supplier1Name</td>
+                <td>Price: $@pricelist.Supplier1UnitPrice</td>
+            </tr>
+            <tr>
+                <td>Second Supplier's Name: @pricelist.Supplier2Name</td>
+                <td>Price: $@pricelist.Supplier2UnitPrice</td>
+            </tr>
+            <tr>
+                <td>Thrid Supplier's Name: @pricelist.Supplier3Name</td>
+                <td>Price: $@pricelist.Supplier3UnitPrice</td>
+            </tr>
+        </table>
+        }
+    </div>
+</section>
+
+<style>
+    td {
+        width: 35%;
+    }
+</style>

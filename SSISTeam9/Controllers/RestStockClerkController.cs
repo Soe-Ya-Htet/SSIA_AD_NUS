@@ -6,15 +6,13 @@ using System.Web.Mvc;
 
 namespace SSISTeam9.Controllers
 {
-
-    [RoutePrefix("Rest/DeptHead")]
-    public class RestDepartmentHeadController : Controller
+    [RoutePrefix("Rest/StockClerk")]
+    public class RestStockClerkController : Controller
     {
         [Route("Index")]
-        public JsonResult Index()
+        public ActionResult Index()
         {
-            return Json("Memory Loss", JsonRequestBehavior.AllowGet);
+            return Json("No Memory", JsonRequestBehavior.AllowGet);
         }
-
     }
 }

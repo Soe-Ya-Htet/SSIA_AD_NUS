@@ -142,6 +142,7 @@
     <Compile Include="Controllers\PurchaseOrderController.cs" />
     <Compile Include="Controllers\RequisitionController.cs" />
     <Compile Include="Controllers\RestDepartmentHeadController.cs" />
+    <Compile Include="Controllers\RestStockClerkController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="DAO\AdjVoucherDAO.cs" />
     <Compile Include="DAO\CartDAO.cs" />
@@ -278,6 +279,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
     <Folder Include="Views\AdjVoucher\" />
+    <Folder Include="Views\RestStockClerk\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -312,9 +314,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>51097</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:51097/</IISUrl>
+          <IISUrl>http://localhost:62043/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

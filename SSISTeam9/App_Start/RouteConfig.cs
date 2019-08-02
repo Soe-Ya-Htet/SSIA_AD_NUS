@@ -13,6 +13,10 @@ namespace SSISTeam9
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //Attribute routing
+            routes.MapMvcAttributeRoutes();
+
+            //Convention routing
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

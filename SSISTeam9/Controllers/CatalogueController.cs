@@ -59,11 +59,17 @@ namespace SSISTeam9.Controllers
 
         public ActionResult Details(long itemId)
         {
-            ViewData["catalogues"] = CatalogueService.GetCatalogueById(itemId);
+            ViewData["catalogue"] = CatalogueService.GetCatalogueById(itemId);
+            ViewData["pricelist"] = PriceListService.GetPriceListByItemId(itemId);
             return View();
         }
 
-        public ActionResult Update(Inventory catalogue, List<string> supplierCodes)
+        public ActionResult Update()
+        {
+            return View();
+        }
+
+        public ActionResult UpdateDetails(Inventory catalogue, List<string> supplierCodes)
         {
             try
             {

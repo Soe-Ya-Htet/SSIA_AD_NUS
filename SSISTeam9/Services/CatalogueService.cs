@@ -9,18 +9,18 @@ namespace SSISTeam9.Services
 {
     public class CatalogueService
     {
-        public static bool VerifyExist(string itemCode)
-        {
-            List<string> catalogueCodes = CatalogueDAO.GetAllItemCodes();
-            foreach(string code in catalogueCodes)
-            {
-                if(itemCode == code)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        //public static bool VerifyExist(string itemCode)
+        //{
+        //    List<string> catalogueCodes = CatalogueDAO.GetAllItemCodes();
+        //    foreach(string code in catalogueCodes)
+        //    {
+        //        if(itemCode == code)
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
         public static List<Inventory> GetAllCatalogue()
         {

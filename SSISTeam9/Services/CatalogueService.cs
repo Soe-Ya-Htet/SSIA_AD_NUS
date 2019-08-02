@@ -39,6 +39,9 @@ namespace SSISTeam9.Services
 
         public static void CreateCatalogueDetaills(Inventory catalogue, List<string> supplierCodes)
         {
+            string itemCode = catalogue.ItemCode.ToUpper();
+            catalogue.ItemCode = itemCode;
+
             CatalogueDAO.CreateCatalogue(catalogue);
             CatalogueDAO.CreatePriceList(catalogue.ItemId);
             int number = 1;
@@ -49,9 +52,18 @@ namespace SSISTeam9.Services
             }
         }
 
-        public static void UpdateCatalogue(Inventory catalogue)
+        public static void UpdateCatalogue(Inventory catalogue, List<string> supplierCodes)
         {
+            string itemCode = catalogue.ItemCode.ToUpper();
+            catalogue.ItemCode = itemCode;
+
             CatalogueDAO.UpdateCatalogue(catalogue);
+            int number = 1;
+            foreach (string supplierCode in supplierCodes)
+            {
+                CatalogueDAO.UpdatePriceList(catalogue.ItemId, supplierCode, number);
+                number++;
+            }
         }
 
     }

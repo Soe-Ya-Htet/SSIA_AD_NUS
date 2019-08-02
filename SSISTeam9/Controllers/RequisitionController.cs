@@ -21,9 +21,25 @@ namespace SSISTeam9.Controllers
         {
             List<Inventory> itemList = RequisitionService.GetAllInventory();
             ViewData["itemList"] = itemList;
-            
-            return View();
+
+            return View(itemList);
         }
+
+        public ActionResult AddtoCart(int itemId)
+        {
+            Cart cart = new Cart();
+            Employee emp = new Employee();
+            emp.EmpId = 1;
+            Inventory item = new Inventory();
+            item.ItemId = 1;
+            cart.Employee = emp;
+            cart.Item = item;
+            cart.Quantity = 1;
+            RequisitionService.SaveToCart(cart);
+
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
         public ActionResult GetPendingRequisitions()
         {
             long deptId = 1;

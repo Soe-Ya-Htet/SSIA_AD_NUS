@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<SSISTeam9.Models.Inventory>
+@using SSISTeam9.Models;
 
 @{
     ViewBag.Title = "NewRequisition";
@@ -9,79 +10,134 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ItemId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ItemCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BinNo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StockLevel)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReorderLevel)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReorderQty)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Category)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UnitOfMeasure)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ItemId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ItemCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BinNo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StockLevel)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReorderLevel)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReorderQty)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UnitOfMeasure)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ImageUrl)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
+<section class="products">
 
-</table>
+    @foreach (var item in Model)
+    {
+        <div class="product-card">
+            <div class="product-info">
+                <center><img style="width: 150px; height:100px" src="" /></center>
+                <h5 style="text-align:center">@item.Description</h5>
+                <h6 style="text-align:center; width:200px">@item.UnitOfMeasure</h6>
+                <form style="text-align:center" method="post">
+                    <input type="submit" value="Add to Cart" formaction="/Requisition/AddtoCart?itemId=@item.ItemId">
+                    <input type="submit" value="Remove from cart" formaction="/Gallery/RemovefromCart?productId=@item.ItemId">
+                    <input type="hidden" value="Empty cart" formaction="/Gallery/EmptyCart?productId=@item.ItemId">
+                </form>
+            </div>
+        </div>
+    }
+</section>
+
+<style>
+    td, tr {
+        padding: 2px;
+    }
+
+    a {
+        color: #000;
+        font-size: 12px;
+    }
+
+    .button {
+        border: none;
+        padding: 10px 24px;
+        text-align: center;
+        display: inline-block;
+        width: 250px;
+    }
+
+    .products {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .product-card {
+        padding: 2%;
+        flex-grow: 1;
+        flex-basis: 27%;
+        display: flex;
+    }
+
+    .product-info {
+        margin-top: auto;
+    }
+</style>
+
+@*<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BinNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReorderLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReorderQty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitOfMeasure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BinNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReorderLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReorderQty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitOfMeasure)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageUrl)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+    }
+
+    </table> *@

@@ -49,17 +49,6 @@ namespace SSISTeam9.Controllers
         }
 
 
-        public ActionResult CreateRetrievalForm(string[] requisition)
-        {
-            List<string> selected =  new List<string>();
-            foreach (var id in requisition)
-            {
-                selected.Add(id);
-            }
-
-            ViewData["reqs"] = selected;
-
-            return View();
-        }
+        
     }
 }

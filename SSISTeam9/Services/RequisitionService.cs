@@ -12,8 +12,58 @@ namespace SSISTeam9.Services
     {
         public static List<Inventory> GetAllInventory()
         {
-            return CatalogueDAO.GetAllCatalogue();
+            List<Inventory> itemList = new List<Inventory>();
+            itemList.Add(CatalogueDAO.GetCatalogueById(1));
+            return itemList;
+            //return CatalogueDAO.DisplayAllCatalogue();
         }
+
+        public static void SaveToCart(Cart cart)
+        {
+            List<Cart> carts = CartDAO.GetAllCart();
+            carts = GetCartsWithObjects(carts);
+
+            if (null != carts &&
+                null != carts.Find(c => c.Employee.EmpId == cart.Employee.EmpId && c.Item.ItemId == cart.Item.ItemId))
+            {
+                CartDAO.UpdateCart(cart);
+            }
+            else
+            {
+                CartDAO.SaveCart(cart);
+            }
+
+
+        }
+
+        private static List<Cart> GetCartsWithObjects(List<Cart> carts)
+        {
+            if (carts.Count == 0) return null;
+            List<long> empIds = new List<long>();
+            List<long> itemIds = new List<long>();
+            foreach (Cart c in carts)
+            {
+                empIds.Add(c.Employee.EmpId);
+                itemIds.Add(c.Item.ItemId);
+            }
+
+            if (empIds.Count == 0 || itemIds.Count == 0) return null;
+
+
+            List<Employee> employees = EmployeeDAO.GetEmployeesByIdList(empIds);
+            List<Inventory> inventories = CatalogueDAO.GetCataloguesByIdList(itemIds);
+            if (employees.Count != 0)
+            {
+                for (int i = 0; i < carts.Count; i++)
+                {
+                    carts[i].Employee = employees.Find(e => e.EmpId == carts[i].Employee.EmpId);
+                    carts[i].Item = inventories.Find(item => item.ItemId == carts[i].Item.ItemId);
+                }
+            }
+
+            return carts;
+        }
+
         public static List<Requisition> DisplayPendingRequisitions(long deptId)
         {
             string[] status = { "Pending Approval"};
@@ -79,6 +129,12 @@ namespace SSISTeam9.Services
                 }
             }
             return list;
+        }
+
+        public static void ProcessRequisition(long reqId, string status, long currentHead)
+        {
+
+            RequisitionDAO.UpdateRequisitionStatus(reqId, status, currentHead);
         }
 
         public static List<Requisition> ShowAllOutstandingRequisitionsByDate()

@@ -138,11 +138,13 @@
     <Compile Include="Controllers\AdjVoucherController.cs" />
     <Compile Include="Controllers\CatalogueController.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
+    <Compile Include="Controllers\DisbursementController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PurchaseOrderController.cs" />
     <Compile Include="Controllers\RequisitionController.cs" />
     <Compile Include="Controllers\RestDepartmentHeadController.cs" />
     <Compile Include="Controllers\RestStockClerkController.cs" />
+    <Compile Include="Controllers\RetrievalFormController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="DAO\AdjVoucherDAO.cs" />
     <Compile Include="DAO\CartDAO.cs" />
@@ -278,6 +280,9 @@
     <Content Include="Views\Catalogue\All.cshtml" />
     <Content Include="Views\Catalogue\Create.cshtml" />
     <Content Include="Views\Catalogue\Details.cshtml" />
+    <Content Include="Views\Disbursement\ViewAllDisbursements.cshtml" />
+    <Content Include="Views\Disbursement\ViewDisbursementDetails.cshtml" />
+    <Content Include="Views\RetrievalForm\ViewRetrievalForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

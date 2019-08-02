@@ -81,5 +81,16 @@ namespace SSISTeam9.DAO
 
         }
 
+        public static void UpdateRequisitionStatus(long reqId, string status, long currentHead)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                    string q = @"UPDATE Requisition SET status = '" + status + "'" + ",approvedBy=" + currentHead + " WHERE reqId =" + reqId;
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
     }
 }

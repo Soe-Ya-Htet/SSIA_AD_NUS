@@ -9,18 +9,19 @@ namespace SSISTeam9.Services
 {
     public class DepartmentService
     {
-        public static bool VerifyExist(string deptCode)
-        {
-            List<string> deptCodes = DepartmentDAO.GetAllDepartmentCodes();
-            foreach (string code in deptCodes)
-            {
-                if (deptCode == code)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        //public static bool VerifyExist(string deptCode)
+        //{
+        //    string input = deptCode.ToUpper();
+        //    List<string> deptCodes = DepartmentDAO.GetAllDepartmentCodes();
+        //    foreach (string code in deptCodes)
+        //    {
+        //        if (input == code)
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
         public static List<Department> GetAllDepartment()
         {
@@ -39,11 +40,15 @@ namespace SSISTeam9.Services
 
         public static void CreateDepartment(Department department)
         {
+            string deptCode = department.DeptCode.ToUpper();           
+            department.DeptCode = deptCode;
             DepartmentDAO.CreateDepartment(department);
         }
 
         public static void UpdateDepartment(Department department)
         {
+            string deptCode = department.DeptCode.ToUpper();
+            department.DeptCode = deptCode;
             DepartmentDAO.UpdateDepartment(department);
         }
 

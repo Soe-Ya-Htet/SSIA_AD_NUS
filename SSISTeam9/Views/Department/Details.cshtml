@@ -8,11 +8,18 @@
 
 <h2>Update Department Details</h2>
 
-
 <div>
     @using (Html.BeginForm("Update", "Department", FormMethod.Post))
     {
         <table>
+            <tr>
+                <td>
+                    <p align="left"><input type="button" value="Reset" onclick="location.href='@Url.Action("Details","Department", new {deptId = department.DeptId})'"></p>
+                </td>
+                <td>
+                    <p align="right"><input type="button" value="Back" onclick="location.href='@Url.Action("All","Department")'"></p>
+                </td>
+            </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.DeptCode) </td>
                 <td>@Html.TextBoxFor(x => x.DeptCode, new { id = "deptCode", @Value = department.DeptCode })</td>
@@ -27,8 +34,11 @@
                 <td>@Html.LabelFor(x => x.Contact) </td>
                 <td>
                     <div>
-                        <select id="contact" style="width: 180px">
-                            <option>@department.Contact</option>
+                        <select name="contact" id="contact" style="width: 180px">
+                            @if (department.Contact != "Nil")
+                            {
+                                <option>@department.Contact</option>
+                            }
                             @foreach (string empName in empNames)
                             {
                                 if (empName != department.Contact)
@@ -54,8 +64,11 @@
                 <td>@Html.LabelFor(x => x.Head) </td>
                 <td>
                     <div>
-                        <select id="head" style="width: 180px">
-                            <option>@department.Head</option>
+                        <select name="head" id="head" style="width: 180px">
+                            @if (department.Head != "Nil")
+                            {
+                                <option>@department.Head</option>
+                            }
                             @foreach (string empName in empNames)
                             {
                                 if (empName != department.Head)
@@ -66,16 +79,16 @@
                         </select>
                     </div>
                 </td>
-            </tr>       
+            </tr>
             <tr>
                 <td>
-                    <button>
+                    <button style="background-color:red;">
                         @Html.ActionLink("Delete Department","Delete","Department",
-                        new { confirm = true, deptCode = department.DeptCode },
-                        new { onclick = "return confirm('Do you really want to delete this department?')" })
+                        new { confirm = true, deptId = department.DeptId },
+                        new { Style = "color:White;", onclick = "return confirm('Do you really want to delete this department?')" })
                     </button>
                 </td>
-                <td align="right"><input type="submit" value="Save Update"></td>
+                <td align="right"><input type="submit" value="Save Update" style="background-color:forestgreen; color:white"></td>
                 @Html.Hidden("deptId", department.DeptId)
             </tr>
         </table>
@@ -84,6 +97,8 @@
     }
 
 </div>
+
+@Html.Raw(TempData["errorMsg"])
 
 <style>
     td {
@@ -94,5 +109,4 @@
         height: 40px;
         padding: 2px;
     }
-
 </style>

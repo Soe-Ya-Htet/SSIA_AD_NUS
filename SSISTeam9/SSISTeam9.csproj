@@ -277,7 +277,7 @@
     <Content Include="Views\Department\Create.cshtml" />
     <Content Include="Views\Catalogue\All.cshtml" />
     <Content Include="Views\Catalogue\Create.cshtml" />
-    <Content Include="Views\Department\Update.cshtml" />
+    <Content Include="Views\Catalogue\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

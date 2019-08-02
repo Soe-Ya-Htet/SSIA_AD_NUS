@@ -12,7 +12,7 @@ namespace SSISTeam9.Controllers
 {
     public class CatalogueController : Controller
     {
-        public ActionResult AllCatalogue()
+        public ActionResult All()
         {
             List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
 
@@ -28,12 +28,12 @@ namespace SSISTeam9.Controllers
 
                 List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
                 ViewData["catalogues"] = catalogues;
-                return View("AllCatalogue");
+                return RedirectToAction("All");
             }
             return null;
         }
 
-        public ActionResult CreateCatalogue()
+        public ActionResult Create()
         {
             return View();
         }
@@ -41,34 +41,43 @@ namespace SSISTeam9.Controllers
         public ActionResult CreateNew(Inventory catalogue, List<string> supplierCodes)
         {
 
-            if (CatalogueService.VerifyExist(catalogue.ItemCode))
-            {
-                TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please Verify.');</script>";
-                return View("CreateCatalogue");
-            }
-            else
+            
+            try
             {
                 CatalogueService.CreateCatalogueDetaills(catalogue, supplierCodes);
 
                 List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
                 ViewData["catalogues"] = catalogue;               
             }
-            return View("AllCatalogue");
+            catch (SqlException)
+            {
+                TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please Verify.');</script>";
+                return RedirectToAction("Create");
+            }
+            return RedirectToAction("All");
         }
 
-        public ActionResult DisplayCatalogueDetails(long itemId)
+        public ActionResult Details(long itemId)
         {
             ViewData["catalogues"] = CatalogueService.GetCatalogueById(itemId);
             return View();
         }
 
-        public ActionResult UpdateCatalogue(Inventory catalogue)
+        public ActionResult Update(Inventory catalogue, List<string> supplierCodes)
         {
-            CatalogueService.UpdateCatalogue(catalogue);
-
-            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
-            ViewData["catalogues"] = catalogues;
-            return View("AllCatalogue");
+            try
+            {
+                CatalogueService.UpdateCatalogue(catalogue, supplierCodes);
+                List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
+                ViewData["catalogues"] = catalogues;
+            }
+            catch(SqlException)
+            {
+                TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please Verify.');</script>";
+                return RedirectToAction("Create");
+            }
+       
+            return RedirectToAction("All");
         }
     }
 }

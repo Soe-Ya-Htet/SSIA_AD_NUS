@@ -24,9 +24,10 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult Edit(string orderNumber)
+        public ActionResult Edit(PurchaseOrder order, string orderNumber)
         {
-            PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
+            PurchaseOrder selectedOrder = order;
+            //PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
 
             ViewData["order"] = order;
             return View();
@@ -34,16 +35,10 @@ namespace SSISTeam9.Controllers
 
         public ActionResult ChooseSuppliers(PurchaseOrder order, string orderNumber)
         {
+            //PurchaseOrder checkedItemsInOrder = PurchaseOrderService.GetOrderDetails(orderNumber);
 
-            Console.WriteLine(orderNumber);
-            PurchaseOrder checkedItemsInOrder = PurchaseOrderService.GetOrderDetails(orderNumber);
-            
-            for (int i = 0; i < order.ItemDetails.Count; i++)
-            {
-                checkedItemsInOrder.ItemDetails[i].Item.isChecked = order.ItemDetails[i].Item.isChecked;
-            }
-
-            ViewData["order"] = checkedItemsInOrder;
+            ViewData["orderItems"] = order.ItemDetails;
+            ViewData["order"] = order;
 
             return View();
         }

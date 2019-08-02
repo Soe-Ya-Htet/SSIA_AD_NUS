@@ -17,6 +17,6 @@ namespace SSISTeam9.Models
         public string Description { get; set; }
         public string UnitOfMeasure { get; set; }
         public string ImageUrl { get; set; }
-        public bool isChecked { get; set; }
+        public bool IsChecked { get; set; }
     }
 }

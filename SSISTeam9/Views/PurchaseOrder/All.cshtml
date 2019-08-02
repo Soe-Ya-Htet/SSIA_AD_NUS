@@ -1,4 +1,6 @@
-﻿@using SSISTeam9.Models;
+﻿@model SSISTeam9.Models.PurchaseOrder
+
+@using SSISTeam9.Models;
 @{
     List<PurchaseOrder> orders = (List<PurchaseOrder>)ViewData["orders"];
 }
@@ -12,34 +14,56 @@
 }
 else
 {
-    <table>
-        <tr>
-            <th>PO Number</th>
-            <th>Submitted Date</th>
-            <th>Order Date</th>
-            <th>Supplier Name</th>
-            <th>Status</th>
-        </tr>
-        @foreach (var order in orders)
-        {
+    using (Html.BeginForm("Edit", "PurchaseOrder", FormMethod.Post))
+    {
+        <table>
             <tr>
-                <td>
-                    @if (@order.Status == "Pending Supplier Confirmation")
-                    {
-                        <a href="/PurchaseOrder/Edit?orderNumber=@order.OrderNumber">@order.OrderNumber</a>
-                    }
-                    else if (@order.Status == "Pending Delivery")
-                    {
-                        <a href="/PurchaseOrder/Close?orderNumber=@order.OrderNumber">@order.OrderNumber</a>
-                    }
-
-                </td>
-                <td>@order.SubmittedDate</td>
-                <td>@order.OrderDate</td>
-                <td>@order.Supplier.Name</td>
-                <td>@order.Status</td>
+                <th>PO Number</th>
+                <th>Submitted Date</th>
+                <th>Order Date</th>
+                <th>Supplier Name</th>
+                <th>Status</th>
             </tr>
-        }
-    </table>
+            @foreach (var order in orders)
+            {
+                <tr>
+                    <td>
+                        @if (@order.Status == "Pending Supplier Confirmation")
+                        {
+                            @Html.HiddenFor(m => m.OrderNumber, new { value = order.OrderNumber })
+                            @Html.HiddenFor(m => m.OrderNumber, new { id = "orderNumber" })
+
+                            <input type="submit" value="@order.OrderNumber" />
+                        }
+                        else if (@order.Status == "Pending Delivery")
+                        {
+                            <a href="/PurchaseOrder/Close?orderNumber=@order.OrderNumber">@order.OrderNumber</a>
+                        }
+
+                    </td>
+                    <td>@order.SubmittedDate</td>
+                    <td>@order.OrderDate</td>
+                    <td>@order.Supplier.Name</td>
+                    <td>@order.Status</td>
+                </tr>
+            }
+        </table>
+    }
 }
 
+<style>
+    td {
+        padding: 2px;
+        width: 200px;
+    }
+
+    tr {
+        height: 40px;
+        padding: 2px;
+        text-align: center;
+    }
+
+    th {
+        text-align: center;
+    }
+</style>

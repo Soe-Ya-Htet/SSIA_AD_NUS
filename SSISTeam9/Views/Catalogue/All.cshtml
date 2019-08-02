@@ -31,7 +31,10 @@ else
                     <td>@c.Description</td>
                     <td>@c.UnitOfMeasure</td>
                     <td>
-                        <input type="button" value="View" style="background-color:royalblue; color:white" onclick="location.href='@Url.Action("Create","Catalogue")'">
+                        @Html.Hidden("supplierId", c.ItemId)
+                        <input type="button" value="View" style="background-color:royalblue; color:white" onclick="location.href='@Url.Action("Details","Catalogue", new { itemId = c.ItemId })'">
+
+
                     </td>
                 </tr>
             }

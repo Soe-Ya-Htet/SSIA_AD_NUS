@@ -170,6 +170,39 @@ namespace SSISTeam9.DAO
                 return supplier;
             }
         }
+
+
+        public static Supplier GetSupplierByIdstring(string supplierId)
+        {
+            Supplier supplier = new Supplier();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from Supplier where supplierId = '" + supplierId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    supplier = new Supplier()
+                    {
+                        SupplierId = (long)reader["supplierId"],
+                        SupplierCode = (reader["supplierCode"] == DBNull.Value) ? null : (string)reader["supplierCode"],
+                        Name = (reader["name"] == DBNull.Value) ? null : (string)reader["name"],
+                        GstNumber = (reader["gstNumber"] == DBNull.Value) ? null : (string)reader["gstNumber"],
+                        Address = (reader["address"] == DBNull.Value) ? null : (string)reader["address"],
+                        ContactName = (reader["contactName"] == DBNull.Value) ? null : (string)reader["contactName"],
+                        PhoneNumber = (reader["phoneNumber"] == DBNull.Value) ? null : (string)reader["phoneNumber"],
+                        FaxNumber = (reader["faxNumber"] == DBNull.Value) ? null : (string)reader["faxNumber"]
+
+                    };
+                }
+                return supplier;
+            }
+        }
+
         public static PriceList GetItemSuppliersDetails(long itemId)
         {
             PriceList itemSuppliersDetails = new PriceList();

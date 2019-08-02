@@ -14,9 +14,11 @@ namespace SSISTeam9.Services
         {
             return CatalogueDAO.GetAllCatalogue();
         }
-        public static List<Requisition> DisplayPendingRequisitions()
+        public static List<Requisition> DisplayPendingRequisitions(long deptId)
         {
-            List<Requisition> list = RequisitionDAO.GetRequisitionsByStatuses();
+            string[] status = { "Pending Approval"};
+            List<Requisition> list = RequisitionDAO.GetRequisitionsByStatuses(status);
+            List<Requisition> filtered=new List<Requisition>();
             List<long> empIds = new List<long>();
             foreach (Requisition req in list)
             {
@@ -30,10 +32,29 @@ namespace SSISTeam9.Services
                 for (int i = 0; i < list.Count; i++)
                 {
                     list[i].Employee = employees.Find(e => e.EmpId == list[i].Employee.EmpId);
+             
+                }
+            }
+            List<long> depIds = new List<long>();
+            foreach (Requisition req in list)
+            {
+                depIds.Add(req.Employee.Department.DeptId);
+            }
+            List<Department> departments = DepartmentDAO.GetDepartmentsByIdList(depIds);
+            if (employees.Count != 0)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+
+                    list[i].Employee.Department = departments.Find(e => e.DeptId == list[i].Employee.Department.DeptId);
+                    if (list[i].Employee.Department.DeptId == deptId)
+                    {
+                        filtered.Add(list[i]);
+                    }
 
                 }
             }
-            return list;
+            return filtered;
         }
 
         public static List<RequisitionDetails> DisplayRequisitionDetailsByReqId(long reqId)

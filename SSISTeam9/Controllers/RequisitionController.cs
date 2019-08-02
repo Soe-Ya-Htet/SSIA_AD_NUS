@@ -26,7 +26,8 @@ namespace SSISTeam9.Controllers
         }
         public ActionResult GetPendingRequisitions()
         {
-            List<Requisition> requisitions = RequisitionService.DisplayPendingRequisitions();
+            long deptId = 1;
+            List<Requisition> requisitions = RequisitionService.DisplayPendingRequisitions(deptId);
             ViewData["requisitionsToProcess"] = requisitions;
             return View();
         }

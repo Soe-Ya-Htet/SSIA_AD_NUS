@@ -274,6 +274,7 @@
     <Content Include="Views\Department\All.cshtml" />
     <Content Include="Views\PurchaseOrder\ChooseSuppliers.cshtml" />
     <Content Include="Views\Department\Details.cshtml" />
+    <Content Include="Views\Department\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

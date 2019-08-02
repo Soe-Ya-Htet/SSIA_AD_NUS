@@ -141,6 +141,7 @@
     <Compile Include="Controllers\DisbursementController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PurchaseOrderController.cs" />
+    <Compile Include="Controllers\RepresentativeController.cs" />
     <Compile Include="Controllers\RequisitionController.cs" />
     <Compile Include="Controllers\RestDepartmentHeadController.cs" />
     <Compile Include="Controllers\RestStockClerkController.cs" />
@@ -185,6 +186,7 @@
     <Compile Include="Services\DepartmentService.cs" />
     <Compile Include="Services\PriceListService.cs" />
     <Compile Include="Services\PurchaseOrderService.cs" />
+    <Compile Include="Services\RepresentativeService.cs" />
     <Compile Include="Services\RequisitionService.cs" />
     <Compile Include="Services\SupplierService.cs" />
   </ItemGroup>
@@ -287,6 +289,7 @@
     <Content Include="Views\RetrievalForm\ViewRetrievalForm.cshtml" />
     <Content Include="Views\Requisition\RequisitionList.cshtml" />
     <Content Include="Views\Catalogue\Update.cshtml" />
+    <Content Include="Views\Representative\ChangeRepresentative.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

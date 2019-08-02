@@ -3,7 +3,7 @@
     List<Inventory> catalogues = (List<Inventory>)ViewData["catalogues"];
 }
 
-<h2>Catalogues List</h2>
+<h2 style="text-align:center">Catalogues List</h2>
 
 @if (catalogues.Count == 0)
 {
@@ -12,29 +12,25 @@
 }
 else
 {
-        <p>
+        <p style="text-align:center">
             <input type="button" value="Create New Supplier" style="background-color:forestgreen; color:white" onclick="location.href='@Url.Action("Create","Catalogue")'">
         </p>
-        <table>
-            <tr>
+        <table align="center">
+            <tr align="center">
                 <th>Item Number</th>
                 <th>Category</th>
                 <th>Description</th>
                 <th>Unit Of Measure</th>
-                <th>Action</th>
             </tr>
             @foreach (var c in catalogues)
             {
-                <tr>
-                    <td>@c.ItemCode</td>
+                <tr  align="center">
+                    <td><a href="/Catalogue/Details?itemId=@c.ItemId">@c.ItemCode </a></td>
                     <td>@c.Category</td>
                     <td>@c.Description</td>
                     <td>@c.UnitOfMeasure</td>
                     <td>
                         @Html.Hidden("supplierId", c.ItemId)
-                        <input type="button" value="View" style="background-color:royalblue; color:white" onclick="location.href='@Url.Action("Details","Catalogue", new { itemId = c.ItemId })'">
-
-
                     </td>
                 </tr>
             }

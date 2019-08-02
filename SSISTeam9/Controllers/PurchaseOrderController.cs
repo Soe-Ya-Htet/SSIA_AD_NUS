@@ -27,12 +27,12 @@ namespace SSISTeam9.Controllers
         public ActionResult Edit(string orderNumber)
         {
             PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
-
+            
             ViewData["order"] = order;
             return View();
         }
 
-        public ActionResult ChooseSuppliers(PurchaseOrder order)
+        public ActionResult ChooseSuppliers(PurchaseOrder order, FormCollection formCollection)
         {
             PurchaseOrder selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
 
@@ -62,16 +62,36 @@ namespace SSISTeam9.Controllers
 
             ViewData["selectedItems"] = selectedItems;
             ViewData["order"] = selectedOrder;
+            ViewData["deliverTo"] = formCollection["deliverTo"];
+            ViewData["deliverBy"] = formCollection["deliverBy"];
 
             return View();
         }
 
-        public ActionResult ConfirmUpdate(FormCollection formCollection, string counter)
+        public ActionResult ConfirmUpdate(PurchaseOrder order, FormCollection formCollection)
         {
-            string supplier1Name = formCollection["item_0"];
-            string quantity1 = formCollection["quantity_0"];
-            string supplier2Name = formCollection["item_1"];
-            string quantity2 = formCollection["quantity_1"];
+            PurchaseOrder selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
+
+            string counter = formCollection["counter"];
+
+            List<string> selectedItemIds = new List<string>();
+            List<string> selectedAltSuppliers = new List<string>();
+            List<string> updateQuantities = new List<string>();
+            List<string> newQuantities = new List<string>();
+
+            for (int i = 0; i < int.Parse(counter); i++)
+            {
+                selectedItemIds.Add(formCollection["selectedItem_" + i]);
+                selectedAltSuppliers.Add(formCollection["item_" + i]);
+                updateQuantities.Add(formCollection["originalquantity_" + i]);
+                newQuantities.Add(formCollection["quantity_" + i]);
+            }
+            
+            PurchaseOrderService.UpdatePurchaseOrder(selectedOrder, selectedItemIds, updateQuantities, int.Parse(counter), order.DeliverTo, order.DeliverBy);
+
+            selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
+            PurchaseOrderService.CreatePurchaseOrders(selectedOrder, selectedItemIds, selectedAltSuppliers, updateQuantities, int.Parse(counter));
+
             return null;
         }
 

@@ -108,5 +108,62 @@ namespace SSISTeam9.DAO
             }
             return items;
         }
+
+        public static void DeleteItemFromPurchaseOrder(long orderId, long itemId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"DELETE from PurchaseOrderDetails WHERE orderNumber = '" + orderId + "' AND itemId = '" + itemId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void UpdatePurchaseOrderDeliveryDetails (long orderId, string deliverTo, DateTime deliverBy)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"UPDATE PurchaseOrder SET deliverTo = '" + deliverTo +
+                            "', deliverBy = '" + deliverBy +
+                           "' WHERE orderId  = '" + orderId + "'";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void UpdatePurchaseOrderItemQuantity(long orderId, long itemId, int quantity)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"UPDATE PurchaseOrderDetails SET quantity = '" + quantity +
+                           "' WHERE itemId = '" + itemId + "' AND orderId = '" + orderId + "'";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void CreatePurchaseOrderAfterChangeSuppliers(PurchaseOrder order, long itemId, long altSupplierId, int quantity)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = "INSERT INTO PurchaseOrder (supplierId,empId,orderNumber,status,submittedDate,orderDate,deliverTo,deliverBy)" 
+                            + "VALUES ('" + altSupplierId + "','" + (long.Parse(order.OrderNumber) + 1) + "','" + "Pending Delivery" 
+                            + "','" + DateTime.Now.Date + "','" + order.DeliverTo + "','" 
+                            + order.DeliverBy + "')"; ;
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

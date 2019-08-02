@@ -2,30 +2,31 @@
 
 @using SSISTeam9.Models;
 @{
+    ViewBag.Title = "Update Purchase Order";
     PurchaseOrder order = (PurchaseOrder)ViewData["order"];
     var counter = 0;
 }
 
 <h2>Purchase Order</h2>
 
-<table>
-    <tr>
-        <td colspan="2">PO Number: </td>
-        <td colspan="2">@order.OrderNumber</td>
-    </tr>
-    <tr>
-        <td colspan="2">Deliver To: </td>
-        <td colspan="2"><input type="text" value="@order.DeliverTo" style="height:100px; width:350px"></td>
-    </tr>
-    <tr>
-        <td colspan="2">To Supply Items By: </td>
-        <td colspan="2"><input type="date" value="@order.DeliverBy.Date.ToString("yyyy-MM-dd")"></td>
-    </tr>
-</table>
-
 <div>
     @using (Html.BeginForm("ChooseSuppliers", "PurchaseOrder", FormMethod.Post))
     {
+        <table>
+            <tr>
+                <td colspan="2">PO Number: </td>
+                <td colspan="2">@order.OrderNumber</td>
+            </tr>
+            <tr>
+                <td colspan="2">Deliver To: </td>
+                <td colspan="2"><input type="text" name="deliverTo" value="@order.DeliverTo" style="height:100px; width:350px"></td>
+            </tr>
+            <tr>
+                <td colspan="2">To Supply Items By: </td>
+                <td colspan="2"><input type="date" name="deliverBy" value="@order.DeliverBy.Date.ToString("yyyy-MM-dd")"></td>
+            </tr>
+        </table>
+
         <table>
             <tr>
                 <th>Change Supplier (?)</th>
@@ -38,42 +39,43 @@
 
             @foreach (var item in order.ItemDetails)
             {
-            <tr>
-                @Html.HiddenFor(m => m.OrderNumber, new { id = "orderNumber" })
-                @Html.HiddenFor(m => m.ItemDetails[counter].Item.ItemId, new { @Value = order.ItemDetails[counter].Item.ItemId })
-                @Html.HiddenFor(m => m.ItemDetails[counter].Item.ItemSuppliersDetails, new { @Value = order.ItemDetails[counter].Item.ItemSuppliersDetails })
-                <td>@Html.CheckBoxFor(m => m.ItemDetails[counter].Item.IsChecked, new { id = "selectedChangeSupplier" })</td>
-                <td>@item.Item.ItemCode</td>
-                <td>@item.Item.Description</td>
-                <td>@item.Quantity</td>
+                <tr>
+                    @Html.HiddenFor(m => m.OrderNumber, new { id = "orderNumber" })
+                    @Html.HiddenFor(m => m.OrderNumber, new { id = "orderNumber" })
+                    @Html.HiddenFor(m => m.ItemDetails[counter].Item.ItemId, new { @Value = order.ItemDetails[counter].Item.ItemId })
+                    @Html.HiddenFor(m => m.ItemDetails[counter].Item.ItemSuppliersDetails, new { @Value = order.ItemDetails[counter].Item.ItemSuppliersDetails })
+                    <td>@Html.CheckBoxFor(m => m.ItemDetails[counter].Item.IsChecked, new { id = "selectedChangeSupplier" })</td>
+                    <td>@item.Item.ItemCode</td>
+                    <td>@item.Item.Description</td>
+                    <td>@item.Quantity</td>
 
-                <!--To check what is the supplier for the current Purchase Order-->
-                @if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier1Id)
-                {
-                    <td>@item.Item.ItemSuppliersDetails.Supplier1UnitPrice</td>
-                }
-                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
-                {
-                    <td>@item.Item.ItemSuppliersDetails.Supplier2UnitPrice</td>
-                }
-                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
-                {
-                    <td>@item.Item.ItemSuppliersDetails.Supplier3UnitPrice</td>
-                }
+                    <!--To check what is the supplier for the current Purchase Order-->
+                    @if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier1Id)
+                    {
+                        <td>@item.Item.ItemSuppliersDetails.Supplier1UnitPrice</td>
+                    }
+                    else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
+                    {
+                        <td>@item.Item.ItemSuppliersDetails.Supplier2UnitPrice</td>
+                    }
+                    else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
+                    {
+                        <td>@item.Item.ItemSuppliersDetails.Supplier3UnitPrice</td>
+                    }
 
-                @if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier1Id)
-                {
-                    <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice))</td>
-                }
-                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
-                {
-                    <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier2UnitPrice))</td>
-                }
-                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
-                {
-                    <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
-                }
-            </tr>
+                    @if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier1Id)
+                    {
+                        <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice))</td>
+                    }
+                    else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
+                    {
+                        <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier2UnitPrice))</td>
+                    }
+                    else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
+                    {
+                        <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
+                    }
+                </tr>
                 counter = counter + 1;
             }
 

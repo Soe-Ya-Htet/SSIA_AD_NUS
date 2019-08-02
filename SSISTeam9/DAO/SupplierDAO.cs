@@ -47,7 +47,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = "INSERT INTO Supplier (supplierCode,name,gstNumber,address,contactName,phoneNumber,faxNumber)" + "VALUES ('" + supplier.SupplierCode + "','" + supplier.Name + "','" + supplier.GstNumber + "','" + supplier.Address + "','" + supplier.ContactName + "','" + supplier.PhoneNumber + "','" + supplier.FaxNumber + "')"; ;
+                string q = "INSERT INTO Supplier (supplierCode,name,gstNumber,address,contactName,phoneNumber,faxNumber)" + "VALUES ('" + supplier.SupplierCode + "','" + supplier.Name + "','" + supplier.GstNumber + "','" + supplier.Address + "','" + supplier.ContactName + "','" + supplier.PhoneNumber + "','" + supplier.FaxNumber + "')"; 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();
                

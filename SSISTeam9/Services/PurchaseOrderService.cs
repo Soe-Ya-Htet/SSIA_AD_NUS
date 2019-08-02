@@ -47,5 +47,33 @@ namespace SSISTeam9.Services
         {
             return SupplierDAO.GetItemSuppliersDetails(itemId);
         }
+
+        public static void UpdatePurchaseOrder(PurchaseOrder order, List<string>itemIds, List<string> updatedQuantities, int itemCount, string deliverTo, DateTime deliverBy)
+        {
+            for (int i = 0; i < itemCount; i++)
+            {
+                if (order.ItemDetails[i].Quantity == 0)
+                {
+                    PurchaseOrderDAO.DeleteItemFromPurchaseOrder(order.OrderId, long.Parse(itemIds[i]));
+                }
+                else if (order.ItemDetails[i].Quantity != int.Parse(updatedQuantities[i]))
+                {
+                    PurchaseOrderDAO.UpdatePurchaseOrderDeliveryDetails(order.OrderId, deliverTo, deliverBy);
+                    PurchaseOrderDAO.UpdatePurchaseOrderItemQuantity(order.OrderId, long.Parse(itemIds[i]), int.Parse(updatedQuantities[i]));
+                }
+            }
+        }
+
+        public static void CreatePurchaseOrders(PurchaseOrder order, List<string> itemIds, List<string> altSuppliers, List<string> quantities, int itemCount)
+        {
+            for (int i = 0; i < itemCount; i++)
+            {
+                if (int.Parse(quantities[i]) > 0)
+                {
+                    PurchaseOrderDAO.CreatePurchaseOrderAfterChangeSuppliers(order, long.Parse(itemIds[i]), long.Parse(altSuppliers[i]), int.Parse(quantities[i]));
+                }
+            }
+
+        }
     }
 }

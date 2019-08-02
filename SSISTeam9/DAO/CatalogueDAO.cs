@@ -42,6 +42,51 @@ namespace SSISTeam9.DAO
             return catalogues;
         }
 
+        public static List<Inventory> GetCataloguesByIdList(List<long> itemIds)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from Inventory where itemId IN ({0})";
+
+                var parms = itemIds.Select((s, i) => "@id" + i.ToString()).ToArray();
+                var inclause = string.Join(",", parms);
+
+                string sql = string.Format(q, inclause);
+                Console.Write(sql);
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                for (var i = 0; i < parms.Length; i++)
+                {
+                    cmd.Parameters.AddWithValue(parms[i], itemIds[i]);
+                }
+
+                Inventory item = null;
+
+                List<Inventory> items = new List<Inventory>();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    item = new Inventory()
+                    {
+                        ItemId = (long)reader["itemId"],
+                        ItemCode = (string)reader["itemCode"],
+                        BinNo = (reader["binNo"] == DBNull.Value) ? "Nil" : (string)reader["binNo"],
+                        StockLevel = (int)reader["stockLevel"],
+                        ReorderLevel = (int)reader["reorderLevel"],
+                        ReorderQty = (int)reader["reorderQty"],
+                        Category = (string)reader["category"],
+                        Description = (string)reader["description"],
+                        UnitOfMeasure = (string)reader["unitOfMeasure"],
+                        ImageUrl = (reader["imageUrl"] == DBNull.Value) ? "Nil" : (string)reader["imageUrl"]
+
+                    };
+                    items.Add(item);
+                }
+                return items;
+            }
+        }
 
         public static Inventory GetCatalogueById(long ItemId)
         {
@@ -222,36 +267,7 @@ namespace SSISTeam9.DAO
             }
         }
 
-
-        public static void UpdatePriceList(long itemId, string supplierCode, int number)
-        {
-            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
-            {
-                conn.Open();
-
-                string q = @"UPDATE p SET p.supplier" + number + "Id = s.supplierId " +
-                            "FROM PriceList p, Supplier s" +
-                            "WHERE s.supplierCode = '" + supplierCode +
-                            "' AND p.itemId = '" + itemId + "'";
-
-                SqlCommand cmd = new SqlCommand(q, conn);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        public static void CreatePriceList(long itemId)
-        {
-            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
-            {
-                conn.Open();
-
-                string q = @"INSERT INTO PriceList (itemId)" +
-                            "VALUES ('" + itemId + "'";
-
-                SqlCommand cmd = new SqlCommand(q, conn);
-                cmd.ExecuteNonQuery();
-            }
-        }
+        
 
         public static List<Inventory> GetInventoriesByIdList(List<long> inventoryIds)
         {

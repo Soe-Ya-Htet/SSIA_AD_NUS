@@ -81,6 +81,12 @@ namespace SSISTeam9.Services
             return list;
         }
 
+        public static void ProcessRequisition(long reqId, string status, long currentHead)
+        {
+
+            RequisitionDAO.UpdateRequisitionStatus(reqId, status, currentHead);
+        }
+
         public static List<Requisition> ShowAllOutstandingRequisitionsByDate()
         {
             List<Requisition> list = RequisitionDAO.GetRequisitionsByStatuses("Approved","Partially Completed");

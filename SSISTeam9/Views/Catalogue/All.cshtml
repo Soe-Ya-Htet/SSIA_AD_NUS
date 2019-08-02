@@ -1,7 +1,43 @@
-﻿
+﻿@using SSISTeam9.Models;
 @{
-    ViewBag.Title = "All";
+    List<Inventory> catalogues = (List<Inventory>)ViewData["catalogues"];
 }
 
-<h2>All</h2>
+<h2>Catalogues List</h2>
+
+@if (catalogues.Count == 0)
+{
+    <br /><br />
+    <p style="font-size:14px">No catalogues to display</p>
+}
+else
+{
+        <p>
+            <input type="button" value="Create New Supplier" style="background-color:forestgreen; color:white" onclick="location.href='@Url.Action("Create","Catalogue")'">
+        </p>
+        <table>
+            <tr>
+                <th>Item Number</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Unit Of Measure</th>
+                <th>Action</th>
+            </tr>
+            @foreach (var c in catalogues)
+            {
+                <tr>
+                    <td>@c.ItemCode</td>
+                    <td>@c.Category</td>
+                    <td>@c.Description</td>
+                    <td>@c.UnitOfMeasure</td>
+                    <td>
+                        @Html.Hidden("supplierId", c.ItemId)
+                        <input type="button" value="View" style="background-color:royalblue; color:white" onclick="location.href='@Url.Action("Details","Catalogue", new { itemId = c.ItemId })'">
+
+
+                    </td>
+                </tr>
+            }
+        </table>
+        }
 

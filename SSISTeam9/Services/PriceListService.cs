@@ -11,11 +11,16 @@ namespace SSISTeam9.Services
     {
         public static PriceList GetPriceListByItemId(long itemId)
         {
-            PriceList pricelist = PriceListDAO.GetPriceListById(itemId);           
-            pricelist.Supplier1Name = SupplierDAO.GetSupplierByIdstring(pricelist.Supplier1Id).Name;
-            pricelist.Supplier2Name = SupplierDAO.GetSupplierByIdstring(pricelist.Supplier2Id).Name;
-            pricelist.Supplier3Name = SupplierDAO.GetSupplierByIdstring(pricelist.Supplier3Id).Name;
-            return pricelist;
+            PriceList pricelist = new PriceList();
+            pricelist = PriceListDAO.GetPriceListById(itemId);
+            if(pricelist != null)
+            {
+                pricelist.Supplier1Name = SupplierDAO.GetSupplierByIdstring(pricelist.Supplier1Id).Name;
+                pricelist.Supplier2Name = SupplierDAO.GetSupplierByIdstring(pricelist.Supplier2Id).Name;
+                pricelist.Supplier3Name = SupplierDAO.GetSupplierByIdstring(pricelist.Supplier3Id).Name;
+                return pricelist;
+            }
+            return null;
         }
     }
 }

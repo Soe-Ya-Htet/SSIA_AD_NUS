@@ -150,16 +150,36 @@ namespace SSISTeam9.DAO
             }
         }
 
-        public static void CreatePurchaseOrderAfterChangeSuppliers(PurchaseOrder order, long itemId, long altSupplierId, int quantity)
+        public static void CreatePurchaseOrderAfterChangeSuppliers(PurchaseOrder order, long altSupplierId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                
+                string getMaxOrderNumber = @"SELECT MAX(orderNumber) from PurchaseOrder";
+                SqlCommand cmd = new SqlCommand(getMaxOrderNumber, conn);
+                long newOrderNumber = long.Parse((string)cmd.ExecuteScalar()) + 1;
+
+                string q = "INSERT INTO PurchaseOrder (supplierId,empId,orderNumber,status,submittedDate,orderDate,deliverTo,deliverBy)"
+                                + "VALUES ('" + altSupplierId + "','" + order.EmployeeId + "','" + newOrderNumber + "','" + "Pending Delivery"
+                                + "','" + DateTime.Now.Date + "','" + DateTime.Now.Date + "','" + order.DeliverTo + "','"
+                                + order.DeliverBy + "')"; ;
+
+                cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void CreatePurchaseOrderDetailsAfterChangeSuppliers(long orderId, long itemId, int quantity)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
 
-                string q = "INSERT INTO PurchaseOrder (supplierId,empId,orderNumber,status,submittedDate,orderDate,deliverTo,deliverBy)" 
-                            + "VALUES ('" + altSupplierId + "','" + (long.Parse(order.OrderNumber) + 1) + "','" + "Pending Delivery" 
-                            + "','" + DateTime.Now.Date + "','" + order.DeliverTo + "','" 
-                            + order.DeliverBy + "')"; ;
+                string q = "INSERT INTO PurchaseOrderDetails (orderId,itemId,quantity)"
+                            + "VALUES ('" + orderId + "','" 
+                            + itemId + "','"
+                            + quantity + "')"; ;
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();

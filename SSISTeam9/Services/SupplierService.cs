@@ -38,5 +38,10 @@ namespace SSISTeam9.Services
         {
             return SupplierDAO.GetSupplierName(supplierId);
         }
+
+        public static long GetSupplierId(string supplierName)
+        {
+            return SupplierDAO.GetSupplierId(supplierName);
+        }
     }
 }

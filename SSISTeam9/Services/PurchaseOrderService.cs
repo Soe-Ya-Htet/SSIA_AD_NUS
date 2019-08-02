@@ -64,14 +64,29 @@ namespace SSISTeam9.Services
             }
         }
 
-        public static void CreatePurchaseOrders(PurchaseOrder order, List<string> itemIds, List<string> altSuppliers, List<string> quantities, int itemCount)
+        public static void CreatePurchaseOrders(PurchaseOrder order, List<string> itemIds, List<long> altSuppliers, List<string> quantities, int itemCount)
         {
+            Dictionary<long, List<long>> uniquePurchaseOrders = new Dictionary<long, List<long>>();
+            
             for (int i = 0; i < itemCount; i++)
             {
                 if (int.Parse(quantities[i]) > 0)
                 {
-                    PurchaseOrderDAO.CreatePurchaseOrderAfterChangeSuppliers(order, long.Parse(itemIds[i]), long.Parse(altSuppliers[i]), int.Parse(quantities[i]));
+                    if(uniquePurchaseOrders.ContainsKey(altSuppliers[i]))
+                    {
+                        uniquePurchaseOrders[altSuppliers[i]].Add(long.Parse(itemIds[i]));
+                    }
+                    else
+                    {
+                        List<long> selectedItemsIds = new List<long>();
+                        uniquePurchaseOrders.Add(altSuppliers[i], selectedItemsIds);
+                    }
                 }
+            }
+
+            foreach(var c in uniquePurchaseOrders)
+            {
+                PurchaseOrderDAO.CreatePurchaseOrderAfterChangeSuppliers(order, c.Key);
             }
 
         }

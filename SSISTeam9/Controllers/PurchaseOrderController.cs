@@ -75,24 +75,32 @@ namespace SSISTeam9.Controllers
             string counter = formCollection["counter"];
 
             List<string> selectedItemIds = new List<string>();
-            List<string> selectedAltSuppliers = new List<string>();
+            List<string> selectedAltSuppliersNames = new List<string>();
+            List<long> selectedAltSuppliersIds = new List<long>();
             List<string> updateQuantities = new List<string>();
             List<string> newQuantities = new List<string>();
 
             for (int i = 0; i < int.Parse(counter); i++)
             {
                 selectedItemIds.Add(formCollection["selectedItem_" + i]);
-                selectedAltSuppliers.Add(formCollection["item_" + i]);
+                selectedAltSuppliersNames.Add(formCollection["item_" + i]);
                 updateQuantities.Add(formCollection["originalquantity_" + i]);
                 newQuantities.Add(formCollection["quantity_" + i]);
             }
             
+            foreach(var c in selectedAltSuppliersNames)
+            {
+                selectedAltSuppliersIds.Add(SupplierService.GetSupplierId(c));
+            }
             PurchaseOrderService.UpdatePurchaseOrder(selectedOrder, selectedItemIds, updateQuantities, int.Parse(counter), order.DeliverTo, order.DeliverBy);
 
             selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
-            PurchaseOrderService.CreatePurchaseOrders(selectedOrder, selectedItemIds, selectedAltSuppliers, updateQuantities, int.Parse(counter));
+            PurchaseOrderService.CreatePurchaseOrders(selectedOrder, selectedItemIds, selectedAltSuppliersIds, updateQuantities, int.Parse(counter));
 
-            return null;
+
+            List<PurchaseOrder> orders = PurchaseOrderService.GetAllOrders();
+            ViewData["orders"] = orders;
+            return View("All");
         }
 
         public ActionResult Close(string orderNumber)

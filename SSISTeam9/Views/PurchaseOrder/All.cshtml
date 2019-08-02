@@ -22,6 +22,7 @@ else
                 <th>PO Number</th>
                 <th>Submitted Date</th>
                 <th>Order Date</th>
+                <th>To Be Delivered By</th>
                 <th>Supplier Name</th>
                 <th>Status</th>
             </tr>
@@ -41,6 +42,7 @@ else
                 </td>
                 <td>@order.SubmittedDate.ToString("dd MMM yyyy")</td>
                 <td>@order.OrderDate.ToString("dd MMM yyyy")</td>
+                <td>@order.DeliverBy.ToString("dd MMM yyyy")</td>
                 <td>@order.Supplier.Name</td>
                 <td>@order.Status</td>
             </tr>

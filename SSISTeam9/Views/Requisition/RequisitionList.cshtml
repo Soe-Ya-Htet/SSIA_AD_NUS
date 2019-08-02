@@ -1,0 +1,40 @@
+﻿@model SSISTeam9.Models.Cart
+
+@{
+    ViewBag.Title = "RequisitionList";
+}
+
+<h2>RequisitionList</h2>
+
+<div>
+    <h4>Cart</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.EmpId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.EmpId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Item.ItemId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Item.ItemId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

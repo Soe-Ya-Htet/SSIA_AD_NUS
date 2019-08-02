@@ -267,36 +267,7 @@ namespace SSISTeam9.DAO
             }
         }
 
-
-        public static void UpdatePriceList(long itemId, string supplierCode, int number)
-        {
-            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
-            {
-                conn.Open();
-
-                string q = @"UPDATE p SET p.supplier" + number + "Id = s.supplierId " +
-                            "FROM PriceList p, Supplier s" +
-                            "WHERE s.supplierCode = '" + supplierCode +
-                            "' AND p.itemId = '" + itemId + "'";
-
-                SqlCommand cmd = new SqlCommand(q, conn);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        public static void CreatePriceList(long itemId)
-        {
-            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
-            {
-                conn.Open();
-
-                string q = @"INSERT INTO PriceList (itemId)" +
-                            "VALUES ('" + itemId + "'";
-
-                SqlCommand cmd = new SqlCommand(q, conn);
-                cmd.ExecuteNonQuery();
-            }
-        }
+        
 
         public static List<Inventory> GetInventoriesByIdList(List<long> inventoryIds)
         {

@@ -43,11 +43,11 @@ namespace SSISTeam9.Services
             catalogue.ItemCode = itemCode;
 
             CatalogueDAO.CreateCatalogue(catalogue);
-            CatalogueDAO.CreatePriceList(catalogue.ItemId);
+            PriceListDAO.CreatePriceList(catalogue.ItemId);
             int number = 1;
             foreach(string supplierCode in supplierCodes)
             {
-                CatalogueDAO.UpdatePriceList(catalogue.ItemId, supplierCode, number);
+                PriceListDAO.UpdatePriceList(catalogue.ItemId, supplierCode, number);
                 number++;
             }
         }
@@ -61,7 +61,7 @@ namespace SSISTeam9.Services
             int number = 1;
             foreach (string supplierCode in supplierCodes)
             {
-                CatalogueDAO.UpdatePriceList(catalogue.ItemId, supplierCode, number);
+                PriceListDAO.UpdatePriceList(catalogue.ItemId, supplierCode, number);
                 number++;
             }
         }

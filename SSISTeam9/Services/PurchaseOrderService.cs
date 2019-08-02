@@ -34,13 +34,12 @@ namespace SSISTeam9.Services
 
             foreach (var item in order.ItemDetails)
             {
-                item.ItemSuppliersDetails = SupplierDAO.GetItemSuppliersDetails(item.ItemId);
                 item.Item = CatalogueDAO.GetCatalogueById(item.ItemId);
-                item.ItemSuppliersDetails.Supplier1Name = SupplierDAO.GetSupplierName(item.ItemSuppliersDetails.Supplier1Id);
-                item.ItemSuppliersDetails.Supplier2Name = SupplierDAO.GetSupplierName(item.ItemSuppliersDetails.Supplier2Id);
-                item.ItemSuppliersDetails.Supplier3Name = SupplierDAO.GetSupplierName(item.ItemSuppliersDetails.Supplier3Id);
+                item.Item.ItemSuppliersDetails = SupplierDAO.GetItemSuppliersDetails(item.ItemId);
+                item.Item.ItemSuppliersDetails.Supplier1Name = SupplierDAO.GetSupplierName(item.Item.ItemSuppliersDetails.Supplier1Id);
+                item.Item.ItemSuppliersDetails.Supplier2Name = SupplierDAO.GetSupplierName(item.Item.ItemSuppliersDetails.Supplier2Id);
+                item.Item.ItemSuppliersDetails.Supplier3Name = SupplierDAO.GetSupplierName(item.Item.ItemSuppliersDetails.Supplier3Id);
             }
-            
             return order;
         }
     }

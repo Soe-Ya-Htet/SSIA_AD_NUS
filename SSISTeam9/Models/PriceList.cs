@@ -35,6 +35,7 @@ namespace SSISTeam9.Models
         [Display(Name = "Unit Price from Third Supplier")]
         [Required]
         public string Supplier3UnitPrice { get; set; }
+
         public Inventory Item { get; set; }
     }
 }

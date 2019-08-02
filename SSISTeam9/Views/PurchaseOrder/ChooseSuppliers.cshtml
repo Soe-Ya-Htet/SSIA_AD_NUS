@@ -3,8 +3,8 @@
 @using SSISTeam9.Models;
 @{
     ViewBag.Title = "Choose Suppliers";
-    PurchaseOrder order = (PurchaseOrder)ViewData["order"];
-    List<Inventory> items = (List<Inventory>)ViewData["orderItems"];
+    List <Inventory> selectedItems = (List<Inventory>)ViewData["selectedItems"];
+    PurchaseOrder selectedOrder = (PurchaseOrder)ViewData["selectedOrder"];
 }
 
 <h2>Choose Alternative Suppliers</h2>
@@ -12,33 +12,35 @@
 <div>
     @using (Html.BeginForm("ChooseSuppliers", "PurchaseOrder", FormMethod.Post))
     {
-        @Html.HiddenFor(m => order.OrderNumber)
+    <table>
+        <tr>
+            <th>Change Supplier To</th>
+            <th>Item Number</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit Price ($)</th>
+        </tr>
 
-        <table>
-            <tr>
-                <th>Change Supplier To</th>
-                <th>Item Number</th>
-                <th>Description</th>
-                <th>Quantity</th>
-                <th>Unit Price ($)</th>
-            </tr>
-
-            @foreach (var item in items)
+        @foreach (var item in selectedItems)
+        {
+        <tr>
+            @if (selectedOrder.SupplierId == long.Parse(item.ItemSuppliersDetails.Supplier1Id))
             {
-                if (@item.IsChecked)
-                {
-                    <tr>
-                        <td>@item.ItemCode</td>
-                        <td>@item.ItemCode</td>
-                    </tr>
-
-                }
-
+                <td>
+                    <select name="alt_supplier">
+                        <option value="@item.ItemSuppliersDetails.Supplier2Name"></option>
+                        <option value="@item.ItemSuppliersDetails.Supplier3Name"></option>
+                    </select>
+                </td>
             }
-            <tr>
-                <td colspan="6" align="right"><input type="submit" value="Confirm Changes"></td>
-            </tr>
-        </table>
+
+        </tr>
+
+        }
+        <tr>
+            <td colspan="6" align="right"><input type="submit" value="Confirm Changes"></td>
+        </tr>
+    </table>
 
     }
 </div>

@@ -101,6 +101,11 @@ namespace SSISTeam9.DAO
                 }
 
             }
+            foreach (var item in items)
+            {
+                item.Item = new Inventory();
+                item.Item.ItemSuppliersDetails = new PriceList();
+            }
             return items;
         }
     }

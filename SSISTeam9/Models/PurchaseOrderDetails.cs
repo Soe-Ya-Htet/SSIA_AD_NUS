@@ -11,6 +11,5 @@ namespace SSISTeam9.Models
         public long OrderId { get; set; }
         public long ItemId { get; set; }
         public Inventory Item { get; set; }
-        public PriceList ItemSuppliersDetails { get; set; }
     }
 }

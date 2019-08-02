@@ -26,26 +26,23 @@ else
             </tr>
             @foreach (var order in orders)
             {
-                <tr>
-                    <td>
-                        @if (@order.Status == "Pending Supplier Confirmation")
-                        {
-                            @Html.HiddenFor(m => m.OrderNumber, new { value = order.OrderNumber })
-                            @Html.HiddenFor(m => m.OrderNumber, new { id = "orderNumber" })
+            <tr>
+                <td>
+                    @if (@order.Status == "Pending Supplier Confirmation")
+                    {
+                        <a href="/PurchaseOrder/Edit?orderNumber=@order.OrderNumber">@order.OrderNumber</a>
+                    }
+                    else if (@order.Status == "Pending Delivery")
+                    {
+                        <a href="/PurchaseOrder/Close?orderNumber=@order.OrderNumber">@order.OrderNumber</a>
+                    }
 
-                            <input type="submit" value="@order.OrderNumber" />
-                        }
-                        else if (@order.Status == "Pending Delivery")
-                        {
-                            <a href="/PurchaseOrder/Close?orderNumber=@order.OrderNumber">@order.OrderNumber</a>
-                        }
-
-                    </td>
-                    <td>@order.SubmittedDate</td>
-                    <td>@order.OrderDate</td>
-                    <td>@order.Supplier.Name</td>
-                    <td>@order.Status</td>
-                </tr>
+                </td>
+                <td>@order.SubmittedDate.ToString("dd MMM yyyy")</td>
+                <td>@order.OrderDate.ToString("dd MMM yyyy")</td>
+                <td>@order.Supplier.Name</td>
+                <td>@order.Status</td>
+            </tr>
             }
         </table>
     }

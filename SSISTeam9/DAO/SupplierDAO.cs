@@ -192,9 +192,13 @@ namespace SSISTeam9.DAO
                         Supplier1UnitPrice = (string)reader["supplier1UnitPrice"],
                         Supplier2UnitPrice = (string)reader["supplier2UnitPrice"],
                         Supplier3UnitPrice = (string)reader["supplier3UnitPrice"]
-
                     };
                 }
+
+                itemSuppliersDetails.Item = new Inventory();
+                itemSuppliersDetails.Supplier1Name = "";
+                itemSuppliersDetails.Supplier2Name = "";
+                itemSuppliersDetails.Supplier3Name = "";
                 return itemSuppliersDetails;
             }
         }

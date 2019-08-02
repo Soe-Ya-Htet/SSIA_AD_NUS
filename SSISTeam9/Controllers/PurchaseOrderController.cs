@@ -24,21 +24,36 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult Edit(PurchaseOrder order, string orderNumber)
+        public ActionResult Edit(string orderNumber)
         {
-            PurchaseOrder selectedOrder = order;
-            //PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
+            PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
 
             ViewData["order"] = order;
             return View();
         }
 
-        public ActionResult ChooseSuppliers(PurchaseOrder order, string orderNumber)
+        public ActionResult ChooseSuppliers(PurchaseOrder order)
         {
-            //PurchaseOrder checkedItemsInOrder = PurchaseOrderService.GetOrderDetails(orderNumber);
+            PurchaseOrder selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
 
-            ViewData["orderItems"] = order.ItemDetails;
-            ViewData["order"] = order;
+            List<long> selectedItemsIds = new List<long>();
+            List<Inventory> selectedItems = new List<Inventory>();
+
+            foreach (var item in order.ItemDetails)
+            {
+                if (item.Item.IsChecked)
+                {
+                    selectedItemsIds.Add(item.Item.ItemId);
+                }
+            }
+
+            foreach (var id in selectedItemsIds)
+            {
+                selectedItems.Add(CatalogueService.GetCatalogueById(id));
+            }
+
+            ViewData["selectedItems"] = selectedItems;
+            ViewData["order"] = selectedOrder;
 
             return View();
         }

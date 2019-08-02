@@ -284,6 +284,7 @@
     <Content Include="Views\Disbursement\ViewAllDisbursements.cshtml" />
     <Content Include="Views\Disbursement\ViewDisbursementDetails.cshtml" />
     <Content Include="Views\RetrievalForm\ViewRetrievalForm.cshtml" />
+    <Content Include="Views\Catalogue\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

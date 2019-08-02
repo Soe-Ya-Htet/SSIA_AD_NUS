@@ -3,14 +3,15 @@
 @using SSISTeam9.Models;
 @{
     ViewBag.Title = "Choose Suppliers";
-    List <Inventory> selectedItems = (List<Inventory>)ViewData["selectedItems"];
-    PurchaseOrder selectedOrder = (PurchaseOrder)ViewData["selectedOrder"];
+    List<Inventory> selectedItems = (List<Inventory>)ViewData["selectedItems"];
+    PurchaseOrder selectedOrder = (PurchaseOrder)ViewData["order"];
+    var counter = 0;
 }
 
 <h2>Choose Alternative Suppliers</h2>
 
 <div>
-    @using (Html.BeginForm("ChooseSuppliers", "PurchaseOrder", FormMethod.Post))
+    @using (Html.BeginForm("ConfirmUpdate", "PurchaseOrder", FormMethod.Post))
     {
     <table>
         <tr>
@@ -20,26 +21,39 @@
             <th>Quantity</th>
             <th>Unit Price ($)</th>
         </tr>
-
         @foreach (var item in selectedItems)
         {
         <tr>
-            @if (selectedOrder.SupplierId == long.Parse(item.ItemSuppliersDetails.Supplier1Id))
-            {
-                <td>
-                    <select name="alt_supplier">
-                        <option value="@item.ItemSuppliersDetails.Supplier2Name"></option>
-                        <option value="@item.ItemSuppliersDetails.Supplier3Name"></option>
-                    </select>
-                </td>
-            }
-
+            <td>
+                <select id="item_@counter" name="item_@counter">
+                    @if (selectedOrder.SupplierId == item.ItemSuppliersDetails.Supplier1Id)
+                    {
+                        <option value="@item.ItemSuppliersDetails.Supplier2Name">@item.ItemSuppliersDetails.Supplier2Name</option>
+                        <option value="@item.ItemSuppliersDetails.Supplier3Name">@item.ItemSuppliersDetails.Supplier3Name</option>
+                    }
+                    else if (selectedOrder.SupplierId == item.ItemSuppliersDetails.Supplier2Id)
+                    {
+                        <option value="@item.ItemSuppliersDetails.Supplier2Name">@item.ItemSuppliersDetails.Supplier1Name</option>
+                        <option value="@item.ItemSuppliersDetails.Supplier3Name">@item.ItemSuppliersDetails.Supplier3Name</option>
+                    }
+                    else if (selectedOrder.SupplierId == item.ItemSuppliersDetails.Supplier3Id)
+                    {
+                        <option value="@item.ItemSuppliersDetails.Supplier2Name">@item.ItemSuppliersDetails.Supplier1Name</option>
+                        <option value="@item.ItemSuppliersDetails.Supplier3Name">@item.ItemSuppliersDetails.Supplier2Name</option>
+                    }
+                </select>
+            </td>
+            <td>@item.ItemCode</td>
+            <td>@item.Description</td>
+            <td><input style="text-align:center" type="number" name="quantity_@counter" id="quantity_@counter" value="@selectedOrder.ItemDetails[counter].Quantity">@(" " + item.UnitOfMeasure)</td>
+            <td>@item.ItemSuppliersDetails.Supplier1UnitPrice</td>
         </tr>
-
+        counter  = counter + 1;
         }
         <tr>
             <td colspan="6" align="right"><input type="submit" value="Confirm Changes"></td>
         </tr>
+
     </table>
 
     }

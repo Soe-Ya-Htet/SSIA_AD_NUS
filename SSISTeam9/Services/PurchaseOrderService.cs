@@ -42,5 +42,10 @@ namespace SSISTeam9.Services
             }
             return order;
         }
+        
+        public static PriceList GetItemSuppliersDetails(long itemId)
+        {
+            return SupplierDAO.GetItemSuppliersDetails(itemId);
+        }
     }
 }

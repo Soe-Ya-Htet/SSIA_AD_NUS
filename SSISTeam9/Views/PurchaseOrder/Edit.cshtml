@@ -48,28 +48,28 @@
                 <td>@item.Quantity</td>
 
                 <!--To check what is the supplier for the current Purchase Order-->
-                @if (order.SupplierId == @item.Item.ItemSuppliersDetails.Supplier1Id)
+                @if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier1Id)
                 {
                     <td>@item.Item.ItemSuppliersDetails.Supplier1UnitPrice</td>
                 }
-                else if (order.SupplierId == @item.Item.ItemSuppliersDetails.Supplier2Id)
+                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
                 {
                     <td>@item.Item.ItemSuppliersDetails.Supplier2UnitPrice</td>
                 }
-                else if (order.SupplierId == @item.Item.ItemSuppliersDetails.Supplier3Id)
+                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
                 {
                     <td>@item.Item.ItemSuppliersDetails.Supplier3UnitPrice</td>
                 }
 
-                @if (order.SupplierId == @item.Item.ItemSuppliersDetails.Supplier1Id)
+                @if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier1Id)
                 {
                     <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice))</td>
                 }
-                else if (order.SupplierId == @item.Item.ItemSuppliersDetails.Supplier2Id)
+                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
                 {
                     <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier2UnitPrice))</td>
                 }
-                else if (order.SupplierId == @item.Item.ItemSuppliersDetails.Supplier3Id)
+                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
                 {
                     <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
                 }

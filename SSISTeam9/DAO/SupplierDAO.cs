@@ -148,7 +148,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from Supplier where supplierId = '" + supplierId + "'";
+                string q = @"SELECT * from Supplier where supplierId = " + supplierId;
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -179,7 +179,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from PriceList where itemId = '" + itemId + "'";
+                string q = @"SELECT * from PriceList where itemId = " + itemId;
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -192,15 +192,14 @@ namespace SSISTeam9.DAO
                         Supplier3Id = (long)reader["supplier3Id"],
                         Supplier1UnitPrice = (string)reader["supplier1UnitPrice"],
                         Supplier2UnitPrice = (string)reader["supplier2UnitPrice"],
-                        Supplier3UnitPrice = (string)reader["supplier3UnitPrice"]
+                        Supplier3UnitPrice = (string)reader["supplier3UnitPrice"],
+                        Supplier1Name = "",
+                        Supplier2Name = "",
+                        Supplier3Name = ""
                     };
                 }
-                
-                itemSuppliersDetails.Supplier1Name = "";
-                itemSuppliersDetails.Supplier2Name = "";
-                itemSuppliersDetails.Supplier3Name = "";
                 return itemSuppliersDetails;
-            }
+                }
         }
 
         public static string GetSupplierName(long supplierId)
@@ -211,7 +210,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT name from Supplier where supplierId = '" + supplierId + "'";
+                string q = @"SELECT name from Supplier where supplierId = " + supplierId;
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 supplierName = (string)cmd.ExecuteScalar();

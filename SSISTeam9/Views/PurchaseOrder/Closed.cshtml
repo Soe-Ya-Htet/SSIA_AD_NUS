@@ -8,8 +8,10 @@
     long itemSupplierId = 0;
 }
 
-<h2>Purchase Order</h2>
-
+<h2>
+    Purchase Order
+    <a class="btn btn-light" href="javascript:window.print()">Print Purchase Order</a>
+</h2>
 <div>
     <table>
         <tr>
@@ -79,9 +81,9 @@
         </tr>
         @if (order.SupplierId != itemSupplierId)
         {
-        <tr>
-            <td colspan="5" align="left">Note to Purchasing Department: Did not order from main supplier as it is not able to fulfill required order.</td>
-        </tr>
+            <tr>
+                <td colspan="5" align="left">Note to Purchasing Department: Did not order from main supplier as it is not able to fulfill required order.</td>
+            </tr>
         }
         <tr>
             <td colspan="2" align="left">Ordered By: @order.Employee.EmpName</td>

@@ -9,9 +9,9 @@ namespace SSISTeam9.Services
 {
     public class StockService
     {
-        public static List<Inventory> GetAllItems()
+        public static List<Inventory> GetAllItemsOrdered()
         {
-            return CatalogueDAO.GetAllCatalogue();
+            return StockDAO.GetAllItemsOrdered();
         }
     }
 }

@@ -25,5 +25,37 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static List<Inventory> GetAllItemsOrdered()
+        {
+            List<Inventory> catalogues = new List<Inventory>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from Inventory ORDER BY (stockLevel - reorderLevel)";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Inventory catalogue = new Inventory()
+                    {
+                        ItemId = (long)reader["itemId"],
+                        ItemCode = (string)reader["itemCode"],
+                        BinNo = (reader["binNo"] == DBNull.Value) ? "Nil" : (string)reader["binNo"],
+                        StockLevel = (int)reader["stockLevel"],
+                        ReorderLevel = (int)reader["reorderLevel"],
+                        ReorderQty = (int)reader["reorderQty"],
+                        Category = (string)reader["category"],
+                        Description = (string)reader["description"],
+                        UnitOfMeasure = (string)reader["unitOfMeasure"],
+                        ImageUrl = (reader["imageUrl"] == DBNull.Value) ? "Nil" : (string)reader["imageUrl"]
+                    };
+                    catalogues.Add(catalogue);
+                }
+            }
+            return catalogues;
+        }
     }
 }

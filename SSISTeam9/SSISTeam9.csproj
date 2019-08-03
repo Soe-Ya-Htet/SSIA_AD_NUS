@@ -298,7 +298,7 @@
     <Content Include="Views\Representative\ChangeRepresentative.cshtml" />
     <Content Include="Views\PurchaseOrder\Closed.cshtml" />
     <Content Include="Views\Stock\All.cshtml" />
-    <Content Include="Views\Stock\SelectItems.cshtml" />
+    <Content Include="Views\Stock\CreatePurchaseOrders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

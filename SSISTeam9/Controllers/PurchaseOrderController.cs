@@ -27,12 +27,12 @@ namespace SSISTeam9.Controllers
         public ActionResult Edit(string orderNumber)
         {
             PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
-
+            
             ViewData["order"] = order;
             return View();
         }
 
-        public ActionResult ChooseSuppliers(PurchaseOrder order)
+        public ActionResult UpdatePurchaseOrder(PurchaseOrder order, FormCollection formCollection)
         {
             PurchaseOrder selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
 
@@ -62,17 +62,46 @@ namespace SSISTeam9.Controllers
 
             ViewData["selectedItems"] = selectedItems;
             ViewData["order"] = selectedOrder;
+            ViewData["deliverTo"] = formCollection["deliverTo"];
+            ViewData["deliverBy"] = formCollection["deliverBy"];
 
             return View();
         }
 
-        public ActionResult ConfirmUpdate(FormCollection formCollection, string counter)
+        public ActionResult ConfirmUpdate(PurchaseOrder order, FormCollection formCollection)
         {
-            string supplier1Name = formCollection["item_0"];
-            string quantity1 = formCollection["quantity_0"];
-            string supplier2Name = formCollection["item_1"];
-            string quantity2 = formCollection["quantity_1"];
-            return null;
+            PurchaseOrder selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
+
+            string counter = formCollection["counter"];
+
+            List<string> selectedItemIds = new List<string>();
+            List<string> selectedAltSuppliersNames = new List<string>();
+            List<long> selectedAltSuppliersIds = new List<long>();
+            List<string> updateQuantities = new List<string>();
+            List<string> newQuantities = new List<string>();
+
+            for (int i = 0; i < int.Parse(counter); i++)
+            {
+                selectedItemIds.Add(formCollection["selectedItem_" + i]);
+                selectedAltSuppliersNames.Add(formCollection["item_" + i]);
+                updateQuantities.Add(formCollection["originalquantity_" + i]);
+                newQuantities.Add(formCollection["quantity_" + i]);
+            }
+
+            foreach (var c in selectedAltSuppliersNames)
+            {
+                selectedAltSuppliersIds.Add(SupplierService.GetSupplierId(c));
+            }
+            PurchaseOrderService.UpdatePurchaseOrder(selectedOrder, selectedItemIds, updateQuantities, int.Parse(counter), order.DeliverTo, order.DeliverBy);
+
+            selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
+
+            if (newQuantities.Sum(m => int.Parse(m)) != 0)
+            {
+                PurchaseOrderService.CreatePurchaseOrders(selectedOrder, selectedItemIds, selectedAltSuppliersIds, newQuantities, int.Parse(counter));
+            }
+            
+            return RedirectToAction("All");
         }
 
         public ActionResult Close(string orderNumber)
@@ -81,6 +110,37 @@ namespace SSISTeam9.Controllers
 
             ViewData["order"] = order;
             return View();
+        }
+
+        public ActionResult Delete(bool confirm, string orderNumber)
+        {
+            if (confirm)
+            {
+                PurchaseOrderService.DeletePurchaseOrder(orderNumber);
+
+                List<PurchaseOrder> orders = PurchaseOrderService.GetAllOrders();
+
+                ViewData["orders"] = orders;
+                return View("All");
+            }
+            return null;
+        }
+
+        public ActionResult ConfirmClose(PurchaseOrder orderToClose)
+        {
+            PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderToClose.OrderNumber);
+
+            PurchaseOrderService.ClosePurchaseOrder(order);
+
+            return RedirectToAction("All");
+        }
+
+        public ActionResult ViewClosedPO(string orderNumber)
+        {
+            PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
+
+            ViewData["order"] = order;
+            return View("Closed");
         }
     }
 }

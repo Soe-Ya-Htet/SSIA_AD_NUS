@@ -1,0 +1,113 @@
+﻿@model SSISTeam9.Models.PurchaseOrder
+
+@using SSISTeam9.Models;
+@{
+    ViewBag.Title = "Update Quantity and/or Select Alternative Supplier";
+    List<Inventory> selectedItems = (List<Inventory>)ViewData["selectedItems"];
+    PurchaseOrder selectedOrder = (PurchaseOrder)ViewData["order"];
+
+    string deliverTo = (string)ViewData["deliverTo"];
+    string deliverBy = (string)ViewData["deliverBy"];
+
+    var counter = 0;
+}
+
+<h2>Update Quantity and/or Select Alternative Supplier</h2>
+
+@if (selectedItems.Count == 0)
+{
+    <br /><br />
+    <p style="font-size:14px">You did not select any items.</p>
+}
+else
+{
+    <div>
+        @using (Html.BeginForm("ConfirmUpdate", "PurchaseOrder", FormMethod.Post))
+        {
+            <table>
+                <tr>
+                    <th>Change Supplier To</th>
+                    <th>Item Number</th>
+                    <th>Description</th>
+                    <th>Quantity from Main Supplier</th>
+                    <th>Unit Price ($) for Main Supplier</th>
+                    <th>Quantity from Alternative Supplier</th>
+                </tr>
+                @foreach (var item in selectedItems)
+                {
+                    <tr>
+                        <td>
+                            @Html.HiddenFor(m => m.OrderNumber, new { id = "orderNumber" })
+                            @Html.HiddenFor(m => m.DeliverTo, new { @Value = deliverTo })
+                            @Html.HiddenFor(m => m.DeliverBy, new { @Value = deliverBy })
+                            <select id="item_@counter" name="item_@counter" style="width:300px">
+                                @if (selectedOrder.SupplierId == item.ItemSuppliersDetails.Supplier1Id)
+                                {
+                                    <option value="@item.ItemSuppliersDetails.Supplier2Name">@(item.ItemSuppliersDetails.Supplier2Name + " ($" + item.ItemSuppliersDetails.Supplier2UnitPrice + "/unit)")</option>
+                                    <option value="@item.ItemSuppliersDetails.Supplier3Name">@(item.ItemSuppliersDetails.Supplier3Name + " ($" + item.ItemSuppliersDetails.Supplier3UnitPrice + "/unit)")</option>
+                                }
+                                else if (selectedOrder.SupplierId == item.ItemSuppliersDetails.Supplier2Id)
+                                {
+                                    <option value="@item.ItemSuppliersDetails.Supplier2Name">@(item.ItemSuppliersDetails.Supplier1Name + " ($" + item.ItemSuppliersDetails.Supplier1UnitPrice + "/unit)")</option>
+                                    <option value="@item.ItemSuppliersDetails.Supplier3Name">@(item.ItemSuppliersDetails.Supplier3Name + " ($" + item.ItemSuppliersDetails.Supplier3UnitPrice + "/unit)")</option>
+                                }
+                                else if (selectedOrder.SupplierId == item.ItemSuppliersDetails.Supplier3Id)
+                                {
+                                    <option value="@item.ItemSuppliersDetails.Supplier2Name">@(item.ItemSuppliersDetails.Supplier1Name + " ($" + item.ItemSuppliersDetails.Supplier1UnitPrice + "/unit)")</option>
+                                    <option value="@item.ItemSuppliersDetails.Supplier3Name">@(item.ItemSuppliersDetails.Supplier2Name + " ($" + item.ItemSuppliersDetails.Supplier2UnitPrice + "/unit)")</option>
+                                }
+                            </select>
+                        </td>
+                        <td>@item.ItemCode</td>
+                        <td>@item.Description</td>
+                        <td><input style="text-align:center" type="number" name="originalquantity_@counter" id="quantity_@counter" value="@selectedOrder.ItemDetails[counter].Quantity" min="0">@(" " + item.UnitOfMeasure)</td>
+                        <td>
+                            @if (selectedOrder.SupplierId == item.ItemSuppliersDetails.Supplier1Id)
+                            {
+                                @item.ItemSuppliersDetails.Supplier1UnitPrice
+                            }
+                            else if (selectedOrder.SupplierId == item.ItemSuppliersDetails.Supplier2Id)
+                            {
+                                @item.ItemSuppliersDetails.Supplier2UnitPrice
+                            }
+                            else if (selectedOrder.SupplierId == item.ItemSuppliersDetails.Supplier3Id)
+                            {
+                                @item.ItemSuppliersDetails.Supplier3UnitPrice
+                            }
+                        </td>
+                        <td><input style="text-align:center" type="number" name="quantity_@counter" id="quantity_@counter" value="0" min="0"></td>
+                        <td>
+                            <input type="hidden" name="selectedItem_@counter" value="@item.ItemId" />
+                        </td>
+                    </tr>
+                    counter = counter + 1;
+                }
+                <tr>
+                    <td><input type="hidden" name="counter" value="@counter" /></td>
+                    <td colspan="6" align="right"><input type="submit" value="Confirm Changes"></td>
+                </tr>
+
+            </table>
+
+        }
+    </div>
+}
+
+
+<style>
+    td {
+        padding: 2px;
+        width: 200px;
+    }
+
+    tr {
+        height: 40px;
+        padding: 2px;
+        text-align: center;
+    }
+
+    th {
+        text-align: center;
+    }
+</style>
+

@@ -32,5 +32,8 @@ namespace SSISTeam9.Models
         public string ImageUrl { get; set; }
         public bool IsChecked { get; set; }
         public PriceList ItemSuppliersDetails { get; set; }
+
+        public List<bool> checkedItems { get; set; }
+        public List<Inventory> items { get; set; }
     }
 }

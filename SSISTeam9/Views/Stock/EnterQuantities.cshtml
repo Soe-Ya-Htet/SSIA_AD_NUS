@@ -1,0 +1,73 @@
+﻿@model SSISTeam9.Models.Inventory
+
+@using SSISTeam9.Models;
+@{
+    ViewBag.Title = "Create Purchase Order";
+    List<Inventory> selectedItems = (List<Inventory>)ViewData["selectedItems"];
+    
+    var counter = 0;
+}
+
+<h2>Create Purchase Orders</h2>
+
+@if (selectedItems.Count == 0)
+{
+    <br /><br />
+    <p style="font-size:14px">You did not select any items.</p>
+}
+else
+{
+    <div>
+        @using (Html.BeginForm("CreatePurchaseOrders", "Stock", FormMethod.Post))
+        {
+            <table>
+                <tr>
+                    <th>Item Code</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Unit of Measure</th>
+                    <th>Suggested Purchase Amount</th>
+                    <th>Enter Amount to Purchase</th>
+                </tr>
+                @foreach (var item in selectedItems)
+                {
+                <tr>
+                    <td>@item.ItemCode</td>
+                    <td>@item.Category</td>
+                    <td>@item.Description</td>
+                    <td>@item.UnitOfMeasure</td>
+                    <td>@item.ReorderQty</td>
+                    <td><input style="text-align:center" type="number" name="quantity_@counter" id="quantity_@counter" value="@item.ReorderQty" min="1"></td>
+                    <td><input type="hidden" name="item_@counter" value="@item.ItemCode"/></td>
+                </tr>
+                    counter = counter + 1;
+                }
+                <tr>
+                    <td><input type="hidden" name="counter" value="@counter" /></td>
+                    <td colspan="6" align="right"><input type="submit" value="Generate Purchase Orders"></td>
+                </tr>
+
+            </table>
+
+        }
+    </div>
+}
+
+
+<style>
+    td {
+        padding: 2px;
+        width: 200px;
+    }
+
+    tr {
+        height: 40px;
+        padding: 2px;
+        text-align: center;
+    }
+
+    th {
+        text-align: center;
+    }
+</style>
+

@@ -108,5 +108,126 @@ namespace SSISTeam9.DAO
             }
             return items;
         }
+
+        public static void DeleteItemFromPurchaseOrder(long orderId, long itemId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"DELETE from PurchaseOrderDetails WHERE orderId = '" + orderId + "' AND itemId = '" + itemId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void ClosePurchaseOrder(string orderNumber)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"UPDATE PurchaseOrder SET STATUS = 'Closed'  WHERE orderNumber = '" + orderNumber + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void DeletePurchaseOrder(long orderId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"DELETE from PurchaseOrderDetails WHERE orderID = '" + orderId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+
+                q = @"DELETE from PurchaseOrder WHERE orderID = '" + orderId + "'";
+                cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void UpdatePurchaseOrderDeliveryDetails (long orderId, string deliverTo, DateTime deliverBy)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"UPDATE PurchaseOrder SET deliverTo = '" + deliverTo +
+                            "', deliverBy = '" + deliverBy +
+                           "' WHERE orderId  = '" + orderId + "'";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void UpdatePurchaseOrderItemQuantity(long orderId, long itemId, int quantity)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"UPDATE PurchaseOrderDetails SET quantity = '" + quantity +
+                           "' WHERE itemId = '" + itemId + "' AND orderId = '" + orderId + "'";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static string CreatePurchaseOrderAfterChangeSuppliers(PurchaseOrder order, long altSupplierId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                
+                string getMaxOrderNumber = @"SELECT MAX(orderNumber) from PurchaseOrder";
+                SqlCommand cmd = new SqlCommand(getMaxOrderNumber, conn);
+                long newOrderNumber = long.Parse((string)cmd.ExecuteScalar()) + 1;
+
+                string q = "INSERT INTO PurchaseOrder (supplierId,empId,orderNumber,status,submittedDate,orderDate,deliverTo,deliverBy)"
+                                + "VALUES ('" + altSupplierId + "','" + order.EmployeeId + "','" + newOrderNumber + "','" + "Pending Delivery"
+                                + "','" + DateTime.Now.Date + "','" + DateTime.Now.Date + "','" + order.DeliverTo + "','"
+                                + order.DeliverBy + "')"; 
+
+                cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+
+                return newOrderNumber.ToString();
+            }
+        }
+
+        public static void CreatePurchaseOrderDetailsAfterChangeSuppliers(long orderId, long itemId, int quantity)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = "INSERT INTO PurchaseOrderDetails (orderId,itemId,quantity)"
+                            + "VALUES ('" + orderId + "','" 
+                            + itemId + "','"
+                            + quantity + "')"; 
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        
+        public static string GetQuantityByOrderIdAndItemId(long orderId, long itemId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT quantity FROM PurchaseOrderDetails WHERE orderId = '" + orderId + "' AND itemId = '" + itemId + "'";
+                         
+                SqlCommand cmd = new SqlCommand(q, conn);
+                return (string) cmd.ExecuteScalar();
+            }
+        }
+        
     }
 }

@@ -281,7 +281,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Requisition\GetRequisitionDetails.cshtml" />
     <Content Include="Views\Department\All.cshtml" />
-    <Content Include="Views\PurchaseOrder\ChooseSuppliers.cshtml" />
+    <Content Include="Views\PurchaseOrder\UpdatePurchaseOrder.cshtml" />
     <Content Include="Views\Department\Details.cshtml" />
     <Content Include="Views\Department\Create.cshtml" />
     <Content Include="Views\Catalogue\All.cshtml" />

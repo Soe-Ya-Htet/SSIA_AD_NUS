@@ -5,12 +5,13 @@
     ViewBag.Title = "Update Purchase Order";
     PurchaseOrder order = (PurchaseOrder)ViewData["order"];
     var counter = 0;
+    double total = 0;
 }
 
-<h2>Purchase Order</h2>
+<h2>Update Purchase Order</h2>
 
 <div>
-    @using (Html.BeginForm("ChooseSuppliers", "PurchaseOrder", FormMethod.Post))
+    @using (Html.BeginForm("UpdatePurchaseOrder", "PurchaseOrder", FormMethod.Post))
     {
         <table>
             <tr>
@@ -29,7 +30,7 @@
 
         <table>
             <tr>
-                <th>Change Supplier (?)</th>
+                <th>Check Item To Update</th>
                 <th>Item Number</th>
                 <th>Description</th>
                 <th>Quantity</th>
@@ -64,24 +65,30 @@
                     @if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier1Id)
                     {
                         <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice))</td>
+                        total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice);
                     }
                     else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
                     {
                         <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier2UnitPrice))</td>
+                        total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier2UnitPrice);
                     }
                     else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
                     {
                         <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
+                        total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice);
                     }
                 </tr>
                 counter = counter + 1;
             }
-
+            <tr style="height:100px">
+                <td colspan="5" align="right"><b>Total: </b></td>
+                <td colspan="1">@total.ToString("C2")</td>
+            </tr>
             <tr>
                 <td colspan="6" align="right"><input type="submit" value="Change Supplier For Items"></td>
             </tr>
             <tr>
-                <td colspan="6" align="right"><input type="submit" value="Delete PO"></td>
+                <td colspan="6" align="right"><input type="button" value="Delete PO"></td>
             </tr>
         </table>
     }

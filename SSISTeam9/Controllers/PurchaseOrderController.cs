@@ -32,7 +32,7 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult ChooseSuppliers(PurchaseOrder order, FormCollection formCollection)
+        public ActionResult UpdatePurchaseOrder(PurchaseOrder order, FormCollection formCollection)
         {
             PurchaseOrder selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
 
@@ -95,8 +95,12 @@ namespace SSISTeam9.Controllers
             PurchaseOrderService.UpdatePurchaseOrder(selectedOrder, selectedItemIds, updateQuantities, int.Parse(counter), order.DeliverTo, order.DeliverBy);
 
             selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
-            PurchaseOrderService.CreatePurchaseOrders(selectedOrder, selectedItemIds, selectedAltSuppliersIds, newQuantities, int.Parse(counter));
 
+            if (newQuantities.Sum(m => int.Parse(m)) != 0)
+            {
+                PurchaseOrderService.CreatePurchaseOrders(selectedOrder, selectedItemIds, selectedAltSuppliersIds, newQuantities, int.Parse(counter));
+            }
+            
             return RedirectToAction("All");
         }
 

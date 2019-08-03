@@ -118,5 +118,13 @@ namespace SSISTeam9.Services
                 }
             }
         }
+
+        public static void DeletePurchaseOrder(string orderNumber)
+        {
+            PurchaseOrder order = PurchaseOrderDAO.GetOrderDetails(orderNumber);
+            
+            //Delete records from both PurchaseOrder and PurchaseOrderDetails
+            PurchaseOrderDAO.DeletePurchaseOrder(order.OrderId);
+        }
     }
 }

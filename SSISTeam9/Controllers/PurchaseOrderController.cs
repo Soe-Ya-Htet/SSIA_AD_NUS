@@ -112,14 +112,35 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult ConfirmClose(PurchaseOrder orderToClose, FormCollection formCollection)
+        public ActionResult Delete(bool confirm, string orderNumber)
         {
-            string comments = formCollection["comments"];
+            if (confirm)
+            {
+                PurchaseOrderService.DeletePurchaseOrder(orderNumber);
+
+                List<PurchaseOrder> orders = PurchaseOrderService.GetAllOrders();
+
+                ViewData["orders"] = orders;
+                return View("All");
+            }
+            return null;
+        }
+
+        public ActionResult ConfirmClose(PurchaseOrder orderToClose)
+        {
             PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderToClose.OrderNumber);
 
             PurchaseOrderService.ClosePurchaseOrder(order);
 
             return RedirectToAction("All");
+        }
+
+        public ActionResult ViewClosedPO(string orderNumber)
+        {
+            PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
+
+            ViewData["order"] = order;
+            return View("Closed");
         }
     }
 }

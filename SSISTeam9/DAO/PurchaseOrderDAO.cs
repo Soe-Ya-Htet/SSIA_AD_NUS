@@ -133,6 +133,22 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static void DeletePurchaseOrder(long orderId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"DELETE from PurchaseOrderDetails WHERE orderID = '" + orderId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+
+                q = @"DELETE from PurchaseOrder WHERE orderID = '" + orderId + "'";
+                cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public static void UpdatePurchaseOrderDeliveryDetails (long orderId, string deliverTo, DateTime deliverBy)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))

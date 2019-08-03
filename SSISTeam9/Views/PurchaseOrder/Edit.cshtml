@@ -85,10 +85,16 @@
                 <td colspan="1">@total.ToString("C2")</td>
             </tr>
             <tr>
-                <td colspan="6" align="right"><input type="submit" value="Change Supplier For Items"></td>
+                <td colspan="6" align="right"><input type="submit" value="Update"></td>
             </tr>
             <tr>
-                <td colspan="6" align="right"><input type="button" value="Delete PO"></td>
+                <td colspan="6" align="right">
+                <button>
+                      @Html.ActionLink("Delete PO", "Delete", "PurchaseOrder",
+                      new { confirm = true, orderNumber = order.OrderNumber },
+                      new { onclick = "return confirm('Do you really want to delete this purchase order?')" })
+                </button>
+                </td>
             </tr>
         </table>
     }

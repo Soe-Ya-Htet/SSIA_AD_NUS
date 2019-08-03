@@ -297,6 +297,8 @@
     <Content Include="Views\Catalogue\Update.cshtml" />
     <Content Include="Views\Representative\ChangeRepresentative.cshtml" />
     <Content Include="Views\PurchaseOrder\Closed.cshtml" />
+    <Content Include="Views\Stock\All.cshtml" />
+    <Content Include="Views\Stock\SelectItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -304,7 +306,6 @@
     <Folder Include="Views\AdjVoucher\" />
     <Folder Include="Views\Analytics\" />
     <Folder Include="Views\RestStockClerk\" />
-    <Folder Include="Views\Stock\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

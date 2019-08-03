@@ -19,7 +19,7 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult SelectItems(Inventory inventory)
+        public ActionResult EnterQuantities(Inventory inventory)
         {
             List<Inventory> stock = StockService.GetAllItemsOrdered();
             List<Inventory> selectedItems = new List<Inventory>();

@@ -41,9 +41,7 @@
             {
                 <tr>
                     @Html.HiddenFor(m => m.OrderNumber, new { id = "orderNumber" })
-                    @Html.HiddenFor(m => m.OrderNumber, new { id = "orderNumber" })
                     @Html.HiddenFor(m => m.ItemDetails[counter].Item.ItemId, new { @Value = order.ItemDetails[counter].Item.ItemId })
-                    @Html.HiddenFor(m => m.ItemDetails[counter].Item.ItemSuppliersDetails, new { @Value = order.ItemDetails[counter].Item.ItemSuppliersDetails })
                     <td>@Html.CheckBoxFor(m => m.ItemDetails[counter].Item.IsChecked, new { id = "selectedChangeSupplier" })</td>
                     <td>@item.Item.ItemCode</td>
                     <td>@item.Item.Description</td>

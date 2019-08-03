@@ -1,7 +1,115 @@
-﻿
+﻿@model SSISTeam9.Models.PurchaseOrder
+
+@using SSISTeam9.Models;
 @{
-    ViewBag.Title = "Close";
+    ViewBag.Title = "Close Purchase Order";
+    PurchaseOrder order = (PurchaseOrder)ViewData["order"];
+    double total = 0;
+    long itemSupplierId = 0;
 }
 
-<h2>Close</h2>
+<h2>Purchase Order</h2>
+
+<div>
+    @using (Html.BeginForm("ConfirmClose", "PurchaseOrder", FormMethod.Post))
+    {
+    <table>
+        <tr>
+            <td colspan="3" align="left">Supplier name: @order.Supplier.Name </td>
+            <td colspan="2" align="right">PO Number: @order.OrderNumber</td>
+        </tr>
+        <tr>
+            <td colspan="3" align="left" />
+            <td colspan="2" align="right">Deliver To: @order.DeliverTo</td>
+        </tr>
+        <tr>
+            <td colspan="3" align="left">Please supply the following items by: <b><u>@order.DeliverBy.Date.ToString("dd MMM yyyy")</u></b> </td>
+            <td colspan="2" align="right">Attn: @order.Supplier.ContactName</td>
+        </tr>
+        <tr>
+            <th>Item Number</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit Price ($)</th>
+            <th align="right">Total ($)</th>
+        </tr>
+
+        @foreach (var item in order.ItemDetails)
+        {
+            <tr>
+                @Html.HiddenFor(m => m.OrderNumber, new { id = "orderNumber" })
+                <td>@item.Item.ItemCode</td>
+                <td>@item.Item.Description</td>
+                <td>@item.Quantity</td>
+
+                <!--To check what is the supplier for the current Purchase Order-->
+                @if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier1Id)
+                {
+                    <td>@item.Item.ItemSuppliersDetails.Supplier1UnitPrice</td>
+                    <!--To check if the supplier for this Purchase Order is the main supplier-->
+                    itemSupplierId = itemSupplierId + item.Item.ItemSuppliersDetails.Supplier1Id;
+                }
+                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
+                {
+                    <td>@item.Item.ItemSuppliersDetails.Supplier2UnitPrice</td>
+                    itemSupplierId = itemSupplierId + item.Item.ItemSuppliersDetails.Supplier2Id;
+                }
+                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
+                {
+                    <td>@item.Item.ItemSuppliersDetails.Supplier3UnitPrice</td>
+                    itemSupplierId = itemSupplierId + item.Item.ItemSuppliersDetails.Supplier3Id;
+                }
+
+                @if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier1Id)
+                {
+                    <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice))</td>
+                    total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice);
+                }
+                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
+                {
+                    <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier2UnitPrice))</td>
+                    total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice);
+                }
+                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
+                {
+                    <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
+                    total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice);
+                }
+            </tr>
+        }
+        <tr style="height:100px">
+            <td colspan="4" align="right"><b>Total: </b></td>
+            <td colspan="1">@total.ToString("C2")</td>
+        </tr>
+        @if (order.SupplierId != itemSupplierId)
+        {
+        <tr>
+            <td colspan="1" align="left">Comments for Purchasing Department: </td>
+            <td><textarea name="comments" placeholder="Did not order from Main Supplier as ... ..." cols="40" rows="3"></textarea></td>
+        </tr>
+        }
+        <tr>
+            <td colspan="2" align="left">Ordered By: @order.Employee.EmpName</td>
+            <td colspan="3" align="right"><input type="submit" value="Close Order"></td>
+        </tr>
+    </table>
+    }
+</div>
+
+<style>
+    td {
+        padding: 2px;
+        width: 200px;
+    }
+
+    tr {
+        height: 40px;
+        padding: 2px;
+        text-align: center;
+    }
+
+    th {
+        text-align: center;
+    }
+</style>
 

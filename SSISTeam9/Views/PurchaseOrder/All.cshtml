@@ -38,7 +38,10 @@ else
                     {
                         <a href="/PurchaseOrder/Close?orderNumber=@order.OrderNumber">@order.OrderNumber</a>
                     }
-
+                    else if (@order.Status == "Closed")
+                    {
+                        <a href = "/PurchaseOrder/ViewPO?orderNumber=@order.OrderNumber" > @order.OrderNumber </a>
+                    }
                 </td>
                 <td>@order.SubmittedDate.ToString("dd MMM yyyy")</td>
                 <td>@order.OrderDate.ToString("dd MMM yyyy")</td>

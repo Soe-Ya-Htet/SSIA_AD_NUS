@@ -48,11 +48,26 @@ namespace SSISTeam9.Services
             return SupplierDAO.GetItemSuppliersDetails(itemId);
         }
 
+        public static void ClosePurchaseOrder(PurchaseOrder order)
+        {
+            PurchaseOrderDAO.ClosePurchaseOrder(order.OrderNumber);
+            
+            Dictionary<long, int> itemAndNewStock = new Dictionary<long, int>();
+
+            foreach(var item in order.ItemDetails)
+            {
+                itemAndNewStock[item.ItemId] = item.Quantity + item.Item.StockLevel;
+            }
+            
+            //Update stock level for items in Purchase Order to be closed
+            CatalogueDAO.UpdateInventoryStock(itemAndNewStock);
+        }
+
         public static void UpdatePurchaseOrder(PurchaseOrder order, List<string>itemIds, List<string> updatedQuantities, int itemCount, string deliverTo, DateTime deliverBy)
         {
             for (int i = 0; i < itemCount; i++)
             {
-                if (order.ItemDetails[i].Quantity == 0)
+                if (int.Parse(updatedQuantities[i]) == 0)
                 {
                     PurchaseOrderDAO.DeleteItemFromPurchaseOrder(order.OrderId, long.Parse(itemIds[i]));
                 }
@@ -66,29 +81,42 @@ namespace SSISTeam9.Services
 
         public static void CreatePurchaseOrders(PurchaseOrder order, List<string> itemIds, List<long> altSuppliers, List<string> quantities, int itemCount)
         {
-            Dictionary<long, List<long>> uniquePurchaseOrders = new Dictionary<long, List<long>>();
+            //Key: SupplierId
+            //Value: List of Tuple of Item Id and Corresponding Quantity
+            Dictionary<long, List<Tuple<long,int>>> uniquePurchaseOrders = new Dictionary<long, List<Tuple<long, int>>>();
+            string newOrderNumber = null;
             
+            //To group items with same alt supplier together into one Purchase Order
             for (int i = 0; i < itemCount; i++)
             {
                 if (int.Parse(quantities[i]) > 0)
                 {
                     if(uniquePurchaseOrders.ContainsKey(altSuppliers[i]))
                     {
-                        uniquePurchaseOrders[altSuppliers[i]].Add(long.Parse(itemIds[i]));
+                        uniquePurchaseOrders[altSuppliers[i]].Add(new Tuple<long,int>(long.Parse(itemIds[i]),int.Parse(quantities[i])));
                     }
                     else
                     {
-                        List<long> selectedItemsIds = new List<long>();
-                        uniquePurchaseOrders.Add(altSuppliers[i], selectedItemsIds);
+                        List<Tuple<long, int>> selectedItemsIdsAndQuantites = new List<Tuple<long, int>>();
+                        uniquePurchaseOrders.Add(altSuppliers[i], selectedItemsIdsAndQuantites);
+                        uniquePurchaseOrders[altSuppliers[i]].Add(new Tuple<long, int>(long.Parse(itemIds[i]), int.Parse(quantities[i])));
                     }
                 }
             }
 
-            foreach(var c in uniquePurchaseOrders)
+            foreach (KeyValuePair<long, List<Tuple<long, int>>> po in uniquePurchaseOrders)
             {
-                PurchaseOrderDAO.CreatePurchaseOrderAfterChangeSuppliers(order, c.Key);
-            }
+                //Create new record under PurchaseOrder table.
+                newOrderNumber = PurchaseOrderDAO.CreatePurchaseOrderAfterChangeSuppliers(order, po.Key);
 
+                foreach (var itemIdAndQty in po.Value)
+                {
+                    //To insert new record under PurchaseOrderDetails table for each Item Id for same order Id.
+                    PurchaseOrder newOrder = PurchaseOrderDAO.GetOrderDetails(newOrderNumber);
+
+                    PurchaseOrderDAO.CreatePurchaseOrderDetailsAfterChangeSuppliers(newOrder.OrderId, itemIdAndQty.Item1, itemIdAndQty.Item2);
+                }
+            }
         }
     }
 }

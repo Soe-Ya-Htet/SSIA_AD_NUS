@@ -115,7 +115,19 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"DELETE from PurchaseOrderDetails WHERE orderNumber = '" + orderId + "' AND itemId = '" + itemId + "'";
+                string q = @"DELETE from PurchaseOrderDetails WHERE orderId = '" + orderId + "' AND itemId = '" + itemId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void ClosePurchaseOrder(string orderNumber)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"UPDATE PurchaseOrder SET STATUS = 'Closed'  WHERE orderNumber = '" + orderNumber + "'";
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();
             }
@@ -150,7 +162,7 @@ namespace SSISTeam9.DAO
             }
         }
 
-        public static void CreatePurchaseOrderAfterChangeSuppliers(PurchaseOrder order, long altSupplierId)
+        public static string CreatePurchaseOrderAfterChangeSuppliers(PurchaseOrder order, long altSupplierId)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
@@ -163,10 +175,12 @@ namespace SSISTeam9.DAO
                 string q = "INSERT INTO PurchaseOrder (supplierId,empId,orderNumber,status,submittedDate,orderDate,deliverTo,deliverBy)"
                                 + "VALUES ('" + altSupplierId + "','" + order.EmployeeId + "','" + newOrderNumber + "','" + "Pending Delivery"
                                 + "','" + DateTime.Now.Date + "','" + DateTime.Now.Date + "','" + order.DeliverTo + "','"
-                                + order.DeliverBy + "')"; ;
+                                + order.DeliverBy + "')"; 
 
                 cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();
+
+                return newOrderNumber.ToString();
             }
         }
 
@@ -179,11 +193,25 @@ namespace SSISTeam9.DAO
                 string q = "INSERT INTO PurchaseOrderDetails (orderId,itemId,quantity)"
                             + "VALUES ('" + orderId + "','" 
                             + itemId + "','"
-                            + quantity + "')"; ;
+                            + quantity + "')"; 
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();
             }
         }
+        
+        public static string GetQuantityByOrderIdAndItemId(long orderId, long itemId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT quantity FROM PurchaseOrderDetails WHERE orderId = '" + orderId + "' AND itemId = '" + itemId + "'";
+                         
+                SqlCommand cmd = new SqlCommand(q, conn);
+                return (string) cmd.ExecuteScalar();
+            }
+        }
+        
     }
 }

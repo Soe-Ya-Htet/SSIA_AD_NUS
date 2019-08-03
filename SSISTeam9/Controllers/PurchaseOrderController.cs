@@ -87,20 +87,17 @@ namespace SSISTeam9.Controllers
                 updateQuantities.Add(formCollection["originalquantity_" + i]);
                 newQuantities.Add(formCollection["quantity_" + i]);
             }
-            
-            foreach(var c in selectedAltSuppliersNames)
+
+            foreach (var c in selectedAltSuppliersNames)
             {
                 selectedAltSuppliersIds.Add(SupplierService.GetSupplierId(c));
             }
             PurchaseOrderService.UpdatePurchaseOrder(selectedOrder, selectedItemIds, updateQuantities, int.Parse(counter), order.DeliverTo, order.DeliverBy);
 
             selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
-            PurchaseOrderService.CreatePurchaseOrders(selectedOrder, selectedItemIds, selectedAltSuppliersIds, updateQuantities, int.Parse(counter));
+            PurchaseOrderService.CreatePurchaseOrders(selectedOrder, selectedItemIds, selectedAltSuppliersIds, newQuantities, int.Parse(counter));
 
-
-            List<PurchaseOrder> orders = PurchaseOrderService.GetAllOrders();
-            ViewData["orders"] = orders;
-            return View("All");
+            return RedirectToAction("All");
         }
 
         public ActionResult Close(string orderNumber)
@@ -109,6 +106,16 @@ namespace SSISTeam9.Controllers
 
             ViewData["order"] = order;
             return View();
+        }
+
+        public ActionResult ConfirmClose(PurchaseOrder orderToClose, FormCollection formCollection)
+        {
+            string comments = formCollection["comments"];
+            PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderToClose.OrderNumber);
+
+            PurchaseOrderService.ClosePurchaseOrder(order);
+
+            return RedirectToAction("All");
         }
     }
 }

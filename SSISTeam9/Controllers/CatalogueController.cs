@@ -35,6 +35,10 @@ namespace SSISTeam9.Controllers
 
         public ActionResult Create()
         {
+            List<string> supplierNames = SupplierService.GetAllSupplierNames();
+            ViewData["supplierNames"] = supplierNames;
+            List<string> unitsOfMeasure = CatalogueService.GetAllUnits();
+            ViewData["unitsOfMeasure"] = unitsOfMeasure;
             return View();
         }
 
@@ -44,7 +48,8 @@ namespace SSISTeam9.Controllers
             
             try
             {
-                CatalogueService.CreateCatalogueDetaills(catalogue, supplierCodes);
+                PriceList test = new PriceList();
+                CatalogueService.CreateCatalogueDetaills(test, supplierCodes);
 
                 List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
                 ViewData["catalogues"] = catalogue;               

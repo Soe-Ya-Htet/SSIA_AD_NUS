@@ -119,26 +119,28 @@ namespace SSISTeam9.DAO
             }
         }
 
-        public static List<string> GetAllSuppliersCodes()
+        public static List<string> GetAllSuppliersNames()
         {
-            List<string> supplierCodes = new List<string>();
+            List<string> supplierNames = new List<string>();
 
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
 
-                string q = @"SELECT DISTINCT supplierCode from Supplier";
+                string q = @"SELECT DISTINCT name from Supplier";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    string supplierCode = (string)reader["supplierCode"];
-                    supplierCodes.Add(supplierCode);
+                    string supplierName = (string)reader["name"];
+                    supplierNames.Add(supplierName);
                 }
             }
-            return supplierCodes;
+            return supplierNames;
         }
+
+
 
         public static Supplier GetSupplierById(long supplierId)
         {

@@ -293,7 +293,7 @@
     <Content Include="Views\Requisition\RequisitionList.cshtml" />
     <Content Include="Views\Catalogue\Update.cshtml" />
     <Content Include="Views\Representative\ChangeRepresentative.cshtml" />
-    <Content Include="Views\PurchaseOrder\ViewPO.cshtml" />
+    <Content Include="Views\PurchaseOrder\Closed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

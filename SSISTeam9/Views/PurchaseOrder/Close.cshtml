@@ -68,12 +68,12 @@
                 else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
                 {
                     <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier2UnitPrice))</td>
-                    total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice);
+                    total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier2UnitPrice);
                 }
                 else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
                 {
                     <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
-                    total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice);
+                    total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice);
                 }
             </tr>
         }

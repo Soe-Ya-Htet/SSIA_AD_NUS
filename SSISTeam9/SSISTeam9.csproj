@@ -147,6 +147,7 @@
     <Compile Include="Controllers\RestDepartmentHeadController.cs" />
     <Compile Include="Controllers\RestStockClerkController.cs" />
     <Compile Include="Controllers\RetrievalFormController.cs" />
+    <Compile Include="Controllers\StockController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="DAO\AdjVoucherDAO.cs" />
     <Compile Include="DAO\AnalyticsDAO.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="DAO\PurchaseOrderDetailsDAO.cs" />
     <Compile Include="DAO\RequisitionDAO.cs" />
     <Compile Include="DAO\RequisitionDetailsDAO.cs" />
+    <Compile Include="DAO\StockDAO.cs" />
     <Compile Include="DAO\SupplierDAO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -191,6 +193,7 @@
     <Compile Include="Services\PurchaseOrderService.cs" />
     <Compile Include="Services\RepresentativeService.cs" />
     <Compile Include="Services\RequisitionService.cs" />
+    <Compile Include="Services\StockService.cs" />
     <Compile Include="Services\SupplierService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +304,7 @@
     <Folder Include="Views\AdjVoucher\" />
     <Folder Include="Views\Analytics\" />
     <Folder Include="Views\RestStockClerk\" />
+    <Folder Include="Views\Stock\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

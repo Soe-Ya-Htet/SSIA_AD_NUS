@@ -314,21 +314,6 @@ namespace SSISTeam9.DAO
             }
         }
         
-        public static void UpdateInventoryStock(Dictionary<long,int>itemAndNewStock)
-        {
-            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
-            {
-                conn.Open();
-
-                foreach (KeyValuePair<long,int> item in itemAndNewStock)
-                {
-                    string q = @"UPDATE Inventory SET stockLevel = '" + item.Value + "' WHERE itemId = '" + item.Key + "'";
-
-                    SqlCommand cmd = new SqlCommand(q, conn);
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
 
         //public static void CreateCatalogue(string ItemCode, string Category, string Description, string UnitOfMeasure, string Supplier1Id, string Supplier2Id, string Supplier3Id)
         //{

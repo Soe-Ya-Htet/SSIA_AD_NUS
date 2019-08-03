@@ -60,7 +60,7 @@ namespace SSISTeam9.Services
             }
             
             //Update stock level for items in Purchase Order to be closed
-            CatalogueDAO.UpdateInventoryStock(itemAndNewStock);
+            StockDAO.UpdateInventoryStock(itemAndNewStock);
         }
 
         public static void UpdatePurchaseOrder(PurchaseOrder order, List<string>itemIds, List<string> updatedQuantities, int itemCount, string deliverTo, DateTime deliverBy)

@@ -33,43 +33,22 @@ namespace SSISTeam9.Controllers
             }
 
             ViewData["selectedItems"] = selectedItems;
-            return null;
+            return View();
         }
 
-        public ActionResult UpdatePurchaseOrder(PurchaseOrder order, FormCollection formCollection)
+        public ActionResult CreatePurchaseOrders(Inventory item, FormCollection formCollection)
         {
-            PurchaseOrder selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
+            Dictionary<string, int> itemsQuantities = new Dictionary<string, int>();
 
-            List<long> selectedItemsIds = new List<long>();
-            List<Inventory> selectedItems = new List<Inventory>();
+            string counter = formCollection["counter"];
 
-            foreach (var item in order.ItemDetails)
+            for(int i = 0; i < int.Parse(counter); i++)
             {
-                if (item.Item.IsChecked)
-                {
-                    selectedItemsIds.Add(item.Item.ItemId);
-                }
+                itemsQuantities.Add(formCollection["item_" + i], int.Parse(formCollection["quantity_" + i]));
             }
 
-            foreach (var id in selectedItemsIds)
-            {
-                selectedItems.Add(CatalogueService.GetCatalogueById(id));
-            }
-
-            foreach (var item in selectedItems)
-            {
-                item.ItemSuppliersDetails = PurchaseOrderService.GetItemSuppliersDetails(item.ItemId);
-                item.ItemSuppliersDetails.Supplier1Name = SupplierService.GetSupplierName(item.ItemSuppliersDetails.Supplier1Id);
-                item.ItemSuppliersDetails.Supplier2Name = SupplierService.GetSupplierName(item.ItemSuppliersDetails.Supplier2Id);
-                item.ItemSuppliersDetails.Supplier3Name = SupplierService.GetSupplierName(item.ItemSuppliersDetails.Supplier3Id);
-            }
-
-            ViewData["selectedItems"] = selectedItems;
-            ViewData["order"] = selectedOrder;
-            ViewData["deliverTo"] = formCollection["deliverTo"];
-            ViewData["deliverBy"] = formCollection["deliverBy"];
-
-            return View();
+            //To create Service method to create. Group items with same first supplier together...
+            return View("All");
         }
     }
 }

@@ -34,5 +34,6 @@ namespace SSISTeam9.Models
         public PriceList ItemSuppliersDetails { get; set; }
 
         public List<bool> checkedItems { get; set; }
+        public List<Inventory> items { get; set; }
     }
 }

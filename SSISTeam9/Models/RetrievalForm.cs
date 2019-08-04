@@ -7,5 +7,21 @@ namespace SSISTeam9.Models
 {
     public class RetrievalForm
     {
+        public string binNo { get; set; }
+        public long itemId { get; set; }
+
+        public string description { get; set; }
+        public int totalNeeded { get; set; }
+        public int totalRetrieved { get; set; }
+        public List<DeptNeeds> deptNeeds { get; set; }
     }
+
+    public class DeptNeeds
+    {
+        public string deptCode { get; set; }
+        public int deptNeeded { get; set; }
+        public int deptActual { get; set; }
+        
+    }
+   
 }

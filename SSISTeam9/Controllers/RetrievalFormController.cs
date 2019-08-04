@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SSISTeam9.Models;
+using SSISTeam9.Services;
+using SSISTeam9.DAO;
 
 namespace SSISTeam9.Controllers
 {
@@ -11,19 +14,23 @@ namespace SSISTeam9.Controllers
         // GET: RetrievalForm
         public ActionResult ViewRetrievalForm()
         {
+            List<RetrievalForm> retrievalForms = RetrievalFormService.ViewRetrievalForm(); 
+            ViewData["retrievalForms"] = retrievalForms;
             return View();
         }
 
-        public ActionResult CreateRetrievalForm(string[] requisition)
+        public ActionResult CreateRetrievalForm(long[] requisition)
         {
-            List<string> selected = new List<string>();
+            List<long> selected = new List<long>();
             foreach (var id in requisition)
             {
                 selected.Add(id);
             }
 
-            ViewData["reqs"] = selected;
+
             //using list to DAO search by list
+            RequisitionDAO.UpdateApprovedStatusByIdList(selected);
+            RequisitionDAO.UpdatePartiallyCompletedStatusByIdList(selected);
 
             return RedirectToAction("ViewRetrievalForm", "RetrievalForm");
         }  

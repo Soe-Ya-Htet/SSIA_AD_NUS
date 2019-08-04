@@ -315,7 +315,7 @@ namespace SSISTeam9.DAO
                     {
                         DeptId = (long)reader["deptId"],
                         DeptCode = (string)reader["deptCode"],
-                        DeptName = (string)reader["name"],
+                        DeptName = (string)reader["deptName"],
                         Contact = (reader["contact"] == DBNull.Value) ? "Nil" : (string)reader["contact"],
                         Telephone = (string)reader["telephone"],
                         Fax = (reader["fax"] == DBNull.Value) ? "Nil" : (string)reader["fax"],

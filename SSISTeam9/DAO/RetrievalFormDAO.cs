@@ -9,52 +9,79 @@ namespace SSISTeam9.DAO
 {
     public class RetrievalFormDAO
     {
-        public static List<RequisitionDetails> GetEmployeesByIdList(List<long> reqIds)
+        public static List<RetrievalForm> GetItemAndQuantity()
         {
 
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
 
-                string q = @"SELECT * from Employee where reqId IN ({0})";
+                string q = @"SELECT i.binNo, i.description, r.itemId, SUM(quantity) as needed from RequisitionDetails r, Inventory i, Requisition req 
+                            where req.status IN ('Assigned','Partially Completed(Assigned)') AND  r.itemId=i.itemId AND r.reqId=req.reqid 
+                            GROUP BY r.itemId, binNo, description 
+                            ORDER BY binNo";
 
-                var parms = reqIds.Select((s, i) => "@id" + i.ToString()).ToArray();
-                var inclause = string.Join(",", parms);
 
-                string sql = string.Format(q, inclause);
-                Console.Write(sql);
 
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                for (var i = 0; i < parms.Length; i++)
-                {
-                    cmd.Parameters.AddWithValue(parms[i], reqIds[i]);
+                SqlCommand cmd = new SqlCommand(q, conn);
+               
+
+                RetrievalForm retrievalForm = null;
+
+                List<RetrievalForm> retForms = new List<RetrievalForm>();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                { 
+                   
+                    retrievalForm = new RetrievalForm()
+                    {
+                        itemId = (long)reader["itemId"],
+                        binNo = (string)reader["binNo"],
+                        description = (string)reader["description"],
+                        totalNeeded = (int)reader["needed"] 
+
+                    };
+                    retForms.Add(retrievalForm);
                 }
+                return retForms;
+            }
 
-                RequisitionDetails requisitionDetails = null;
+            
+        }
+        public static List<DeptNeeds> GetDeptNeeds(long itemId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"SELECT SUM(quantity) as needed, d.deptCode 
+                            FROM RequisitionDetails r, Inventory i, Requisition req, Employee e, Department d 
+                            WHERE /*reqId IN ({0})*/ req.status IN ('Assigned', 'Partially Completed(Assigned)') AND  r.itemId='" +itemId + "' AND r.itemId=i.itemId AND r.reqId=req.reqId AND req.empId=e.empId AND e.deptId=d.deptId " +
+                            "GROUP BY r.itemId, d.deptCode " +
+                            "ORDER BY d.deptCode";
 
-                List<RequisitionDetails> reqDetails = new List<RequisitionDetails>();
+                
+                SqlCommand cmd = new SqlCommand(q, conn);
+                
+
+                DeptNeeds deptNeeds = null;
+
+                List<DeptNeeds> deptNeedsList = new List<DeptNeeds>();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    Requisition r = new Requisition()
+                    deptNeeds = new DeptNeeds()
                     {
-                        ReqId = (long)reader["reqId"]
+                        deptCode = (string)reader["deptCode"],
+                        deptNeeded = (int)reader["needed"],
                     };
-                    Inventory i = new Inventory()
-                    {
-                        ItemId = (long)reader["itemId"]
-                    };
-                    requisitionDetails = new RequisitionDetails()
-                    {
-                        Quantity = (int)reader["quantity"],
-                        Item = i,
-                        Requisition = r
-
-                    };
-                    reqDetails.Add(requisitionDetails);
+                    deptNeedsList.Add(deptNeeds);
                 }
-                return reqDetails;
+                return deptNeedsList;
             }
+            
+
+                
+            
         }
     }
 }

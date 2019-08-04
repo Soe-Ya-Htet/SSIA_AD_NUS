@@ -4,8 +4,8 @@
 }
 
 @{ 
-    var retForm = (List<Inventory>)ViewData["retForm"];
-    var deptlist = (List<?>)ViewData["deptList"];
+    var retForms = (List<RetrievalForm>)ViewData["retrievalForms"];
+
 }
 
 <table>
@@ -24,21 +24,23 @@
         <th>Needed</th>
         <th>Actual</th>
     </tr>
-    @foreach (var item in retForm)
+    @foreach (var retForm in retForms)
     {
     <tr>
-        <td rowspan="2">@item.BinNo</td>
-        <td rowspan="2">@item.Description</td>
-        <td rowspan="2">@retForm.needed</td>
-        <td rowspan="2">@retForm.retrieved</td>
-        <td>@deptlist[0].needed</td>
-        <td>@deptlist[0].actual</td>
+        <td rowspan="@retForm.deptNeeds.Count">@retForm.binNo</td>
+        <td rowspan="@retForm.deptNeeds.Count">@retForm.description</td>
+        <td rowspan="@retForm.deptNeeds.Count">@retForm.totalNeeded</td>
+        <td rowspan="@retForm.deptNeeds.Count">@retForm.totalRetrieved</td>
+        <td>@retForm.deptNeeds[0].deptCode</td>
+        <td>@retForm.deptNeeds[0].deptNeeded</td>
+        <td>@retForm.deptNeeds[0].deptActual</td>
     </tr>
-        for (int i = 1; i < retform. deptlist.length; i++)
+        for (int i = 1; i < retForm.deptNeeds.Count; i++)
         {
             <tr>
-                <td>@deptlist.needed</td>
-                <td onchange="change retrieved amt">@deptlist.actual</td>
+                <td>@retForm.deptNeeds[i].deptCode</td>
+                <td>@retForm.deptNeeds[i].deptNeeded</td>
+                <td @*onchange="change retrieved amt"*@>@retForm.deptNeeds[i].deptActual</td>
             </tr>
         }
         

@@ -1,7 +1,46 @@
-﻿
+﻿@using SSISTeam9.Models
 @{
     ViewBag.Title = "ViewRetrievalForm";
 }
 
-<h2>ViewRetrievalForm</h2>
+@{ 
+    var retForm = (List<Inventory>)ViewData["retForm"];
+    var deptlist = (List<?>)ViewData["deptList"];
+}
 
+<table>
+    <tr>
+        <th rowspan="2">Bin #</th>
+        <th rowspan="2">Stationary Description</th>
+        <th colspan="2">Total Quantity</th>
+        <th colspan="2">BreakDown By Department</th>
+        
+
+    </tr>
+    <tr>
+        <th>Needed</th>
+        <th>Retrieved</th>
+        <th>Dept Name</th>
+        <th>Needed</th>
+        <th>Actual</th>
+    </tr>
+    @foreach (var item in retForm)
+    {
+    <tr>
+        <td rowspan="2">@item.BinNo</td>
+        <td rowspan="2">@item.Description</td>
+        <td rowspan="2">@retForm.needed</td>
+        <td rowspan="2">@retForm.retrieved</td>
+        <td>@deptlist[0].needed</td>
+        <td>@deptlist[0].actual</td>
+    </tr>
+        for (int i = 1; i < retform. deptlist.length; i++)
+        {
+            <tr>
+                <td>@deptlist.needed</td>
+                <td onchange="change retrieved amt">@deptlist.actual</td>
+            </tr>
+        }
+        
+    }
+</table>

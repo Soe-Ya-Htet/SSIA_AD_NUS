@@ -26,9 +26,9 @@ namespace SSISTeam9.DAO
                 {
                     pricelist = new PriceList()
                     {                        
-                        Supplier1Id = (string)reader["supplier1Id"],
-                        Supplier2Id = (string)reader["supplier2Id"],
-                        Supplier3Id = (string)reader["supplier3Id"],
+                        Supplier1Id = (long)reader["supplier1Id"],
+                        Supplier2Id = (long)reader["supplier2Id"],
+                        Supplier3Id = (long)reader["supplier3Id"],
                         Supplier1UnitPrice = (reader["supplier1UnitPrice"] == DBNull.Value) ? "Nil" : (string)reader["supplier1UnitPrice"],
                         Supplier2UnitPrice = (reader["supplier2UnitPrice"] == DBNull.Value) ? "Nil" : (string)reader["supplier2UnitPrice"],
                         Supplier3UnitPrice = (reader["supplier3UnitPrice"] == DBNull.Value) ? "Nil" : (string)reader["supplier3UnitPrice"]

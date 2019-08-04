@@ -136,6 +136,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AdjVoucherController.cs" />
+    <Compile Include="Controllers\AnalyticsController.cs" />
     <Compile Include="Controllers\CatalogueController.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\DisbursementController.cs" />
@@ -146,8 +147,10 @@
     <Compile Include="Controllers\RestDepartmentHeadController.cs" />
     <Compile Include="Controllers\RestStockClerkController.cs" />
     <Compile Include="Controllers\RetrievalFormController.cs" />
+    <Compile Include="Controllers\StockController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="DAO\AdjVoucherDAO.cs" />
+    <Compile Include="DAO\AnalyticsDAO.cs" />
     <Compile Include="DAO\CartDAO.cs" />
     <Compile Include="DAO\CatalogueDAO.cs" />
     <Compile Include="DAO\CollectionPointDAO.cs" />
@@ -161,6 +164,7 @@
     <Compile Include="DAO\PurchaseOrderDetailsDAO.cs" />
     <Compile Include="DAO\RequisitionDAO.cs" />
     <Compile Include="DAO\RequisitionDetailsDAO.cs" />
+    <Compile Include="DAO\StockDAO.cs" />
     <Compile Include="DAO\SupplierDAO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -182,12 +186,14 @@
     <Compile Include="Models\RequisitionDetails.cs" />
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AnalyticsService.cs" />
     <Compile Include="Services\CatalogueService.cs" />
     <Compile Include="Services\DepartmentService.cs" />
     <Compile Include="Services\PriceListService.cs" />
     <Compile Include="Services\PurchaseOrderService.cs" />
     <Compile Include="Services\RepresentativeService.cs" />
     <Compile Include="Services\RequisitionService.cs" />
+    <Compile Include="Services\StockService.cs" />
     <Compile Include="Services\SupplierService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -278,7 +284,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Requisition\GetRequisitionDetails.cshtml" />
     <Content Include="Views\Department\All.cshtml" />
-    <Content Include="Views\PurchaseOrder\ChooseSuppliers.cshtml" />
+    <Content Include="Views\PurchaseOrder\UpdatePurchaseOrder.cshtml" />
     <Content Include="Views\Department\Details.cshtml" />
     <Content Include="Views\Department\Create.cshtml" />
     <Content Include="Views\Catalogue\All.cshtml" />
@@ -290,11 +296,15 @@
     <Content Include="Views\Requisition\RequisitionList.cshtml" />
     <Content Include="Views\Catalogue\Update.cshtml" />
     <Content Include="Views\Representative\ChangeRepresentative.cshtml" />
+    <Content Include="Views\PurchaseOrder\Closed.cshtml" />
+    <Content Include="Views\Stock\All.cshtml" />
+    <Content Include="Views\Stock\EnterQuantities.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
     <Folder Include="Views\AdjVoucher\" />
+    <Folder Include="Views\Analytics\" />
     <Folder Include="Views\RestStockClerk\" />
   </ItemGroup>
   <ItemGroup>

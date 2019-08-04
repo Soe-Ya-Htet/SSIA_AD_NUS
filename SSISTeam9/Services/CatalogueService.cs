@@ -37,10 +37,12 @@ namespace SSISTeam9.Services
             CatalogueDAO.DeleteCatalogue(itemId);
         }
 
-        public static void CreateCatalogueDetaills(Inventory catalogue, List<string> supplierCodes)
+        public static void CreateCatalogueDetaills(PriceList test, List<string> supplierCodes)
         {
-            string itemCode = catalogue.ItemCode.ToUpper();
-            catalogue.ItemCode = itemCode;
+            string itemCode = test.Item.ItemCode.ToUpper();
+            test.Item.ItemCode = itemCode;
+
+            Inventory catalogue = new Inventory();
 
             CatalogueDAO.CreateCatalogue(catalogue);
             PriceListDAO.CreatePriceList(catalogue.ItemId);
@@ -64,6 +66,11 @@ namespace SSISTeam9.Services
                 PriceListDAO.UpdatePriceList(catalogue.ItemId, supplierCode, number);
                 number++;
             }
+        }
+
+        public static List<string> GetAllUnits()
+        {
+            return CatalogueDAO.GetAllUnits();
         }
 
     }

@@ -271,7 +271,6 @@ namespace SSISTeam9.DAO
 
         public static List<Inventory> GetInventoriesByIdList(List<long> inventoryIds)
         {
-
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
@@ -314,7 +313,7 @@ namespace SSISTeam9.DAO
                 return items;
             }
         }
-
+        
 
         //public static void CreateCatalogue(string ItemCode, string Category, string Description, string UnitOfMeasure, string Supplier1Id, string Supplier2Id, string Supplier3Id)
         //{

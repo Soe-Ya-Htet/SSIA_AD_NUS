@@ -8,9 +8,10 @@ namespace SSISTeam9.Models
 {
     public class PriceList
     {
-        public string Supplier1Id { get; set; }
-        public string Supplier2Id { get; set; }
-        public string Supplier3Id { get; set; }
+        public Inventory Item { get; set; }
+        public long Supplier1Id { get; set; }
+        public long Supplier2Id { get; set; }
+        public long Supplier3Id { get; set; }
 
         [Display(Name = "First Supplier's Name")]
         [Required]
@@ -35,6 +36,5 @@ namespace SSISTeam9.Models
         [Display(Name = "Unit Price from Third Supplier")]
         [Required]
         public string Supplier3UnitPrice { get; set; }
-        public Inventory Item { get; set; }
     }
 }

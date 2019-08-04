@@ -1,5 +1,8 @@
-﻿@using SSISTeam9.Models;
+﻿@model SSISTeam9.Models.PurchaseOrder
+
+@using SSISTeam9.Models;
 @{
+    ViewBag.Title = "View All Purchase Orders";
     List<PurchaseOrder> orders = (List<PurchaseOrder>)ViewData["orders"];
 }
 
@@ -12,16 +15,19 @@
 }
 else
 {
-    <table>
-        <tr>
-            <th>PO Number</th>
-            <th>Submitted Date</th>
-            <th>Order Date</th>
-            <th>Supplier Name</th>
-            <th>Status</th>
-        </tr>
-        @foreach (var order in orders)
-        {
+    using (Html.BeginForm("Edit", "PurchaseOrder", FormMethod.Post))
+    {
+        <table>
+            <tr>
+                <th>PO Number</th>
+                <th>Submitted Date</th>
+                <th>Order Date</th>
+                <th>To Be Delivered By</th>
+                <th>Supplier Name</th>
+                <th>Status</th>
+            </tr>
+            @foreach (var order in orders)
+            {
             <tr>
                 <td>
                     @if (@order.Status == "Pending Supplier Confirmation")
@@ -32,14 +38,35 @@ else
                     {
                         <a href="/PurchaseOrder/Close?orderNumber=@order.OrderNumber">@order.OrderNumber</a>
                     }
-
+                    else if (@order.Status == "Closed")
+                    {
+                        <a href = "/PurchaseOrder/ViewClosedPO?orderNumber=@order.OrderNumber" > @order.OrderNumber </a>
+                    }
                 </td>
-                <td>@order.SubmittedDate</td>
-                <td>@order.OrderDate</td>
+                <td>@order.SubmittedDate.ToString("dd MMM yyyy")</td>
+                <td>@order.OrderDate.ToString("dd MMM yyyy")</td>
+                <td>@order.DeliverBy.ToString("dd MMM yyyy")</td>
                 <td>@order.Supplier.Name</td>
                 <td>@order.Status</td>
             </tr>
-        }
-    </table>
+            }
+        </table>
+    }
 }
 
+<style>
+    td {
+        padding: 2px;
+        width: 200px;
+    }
+
+    tr {
+        height: 40px;
+        padding: 2px;
+        text-align: center;
+    }
+
+    th {
+        text-align: center;
+    }
+</style>

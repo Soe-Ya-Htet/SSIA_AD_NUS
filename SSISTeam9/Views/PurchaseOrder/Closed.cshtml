@@ -2,17 +2,17 @@
 
 @using SSISTeam9.Models;
 @{
-    ViewBag.Title = "Close Purchase Order";
+    ViewBag.Title = "Closed Purchase Order";
     PurchaseOrder order = (PurchaseOrder)ViewData["order"];
     double total = 0;
     long itemSupplierId = 0;
 }
 
-<h2>Purchase Order</h2>
-
+<h2>
+    Purchase Order
+    <a class="btn btn-light" href="javascript:window.print()">Print Purchase Order</a>
+</h2>
 <div>
-    @using (Html.BeginForm("ConfirmClose", "PurchaseOrder", FormMethod.Post))
-    {
     <table>
         <tr>
             <td colspan="3" align="left">Supplier name: @order.Supplier.Name </td>
@@ -75,31 +75,24 @@
                 }
             </tr>
         }
-        <tr style="height:100px">
+        <tr style="height:150px">
             <td colspan="4" align="right"><b>Total: </b></td>
             <td colspan="1">@total.ToString("C2")</td>
         </tr>
         @if (order.SupplierId != itemSupplierId)
         {
-        <tr>
-            <td colspan="5" align="left">Note to Purchasing Department: Did not order from main supplier as it is not able to fulfill required order.</td>
-        </tr>
+            <tr>
+                <td colspan="5" align="left">Note to Purchasing Department: Did not order from main supplier as it is not able to fulfill required order.</td>
+            </tr>
         }
         <tr>
             <td colspan="2" align="left">Ordered By: @order.Employee.EmpName</td>
-            <td colspan="3" align="right"><input type="submit" value="Close Order"></td>
         </tr>
         <tr>
-            <td colspan="5" align="right">
-                <button>
-                    @Html.ActionLink("Delete PO", "Delete", "PurchaseOrder",
-                    new { confirm = true, orderNumber = order.OrderNumber },
-                    new { onclick = "return confirm('Do you really want to delete this purchase order?')" })
-                </button>
-            </td>
+            <td colspan="2" align="left">Order Date: @order.OrderDate.ToString("dd MMM yyyy")</td>
+            <td colspan="3" align="right">Delivery Reference Number: _______________________</td>
         </tr>
     </table>
-    }
 </div>
 
 <style>

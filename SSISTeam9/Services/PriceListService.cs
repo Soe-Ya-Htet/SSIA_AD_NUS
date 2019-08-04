@@ -15,9 +15,9 @@ namespace SSISTeam9.Services
             pricelist = PriceListDAO.GetPriceListById(itemId);
             if(pricelist != null)
             {
-                pricelist.Supplier1Name = SupplierDAO.GetSupplierByIdstring(pricelist.Supplier1Id).Name;
-                pricelist.Supplier2Name = SupplierDAO.GetSupplierByIdstring(pricelist.Supplier2Id).Name;
-                pricelist.Supplier3Name = SupplierDAO.GetSupplierByIdstring(pricelist.Supplier3Id).Name;
+                pricelist.Supplier1Name = SupplierDAO.GetSupplierById(pricelist.Supplier1Id).Name;
+                pricelist.Supplier2Name = SupplierDAO.GetSupplierById(pricelist.Supplier2Id).Name;
+                pricelist.Supplier3Name = SupplierDAO.GetSupplierById(pricelist.Supplier3Id).Name;
                 return pricelist;
             }
             return null;

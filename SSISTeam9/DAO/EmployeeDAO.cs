@@ -38,6 +38,20 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static void UpdateEmployeeRoleById(long newRep,long currentRep)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string qq = @"Update Employee Set empRole='EMPLOYEE',empDisplayRole='EMPLOYEE' where empId =" + currentRep;
+                SqlCommand cmd = new SqlCommand(qq, conn);
+                cmd.ExecuteNonQuery();
+                string q = @"Update Employee Set empRole='REPRESENTATIVE',empDisplayRole='REPRESENTATIVE' where empId =" + newRep;
+                SqlCommand cmd1 = new SqlCommand(q, conn);
+                cmd1.ExecuteNonQuery();
+            }
+        }
+
         public static List<Employee> GetEmployeesByIdList(List<long> empIds)
         {
 
@@ -84,6 +98,40 @@ namespace SSISTeam9.DAO
                 }
                 return employees;
             }
+        }
+
+        public static List<Employee> GetEmployeesByDepartment(long deptId)
+        {
+            List<Employee> employees = new List<Employee>();
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from Employee where deptId="+deptId;
+                Employee employee = null;
+                SqlCommand cmd = new SqlCommand(q, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Department d = new Department()
+                    {
+                        DeptId = (long)reader["deptId"]
+                    };
+                    employee = new Employee()
+                    {
+                        EmpId = (long)reader["empId"],
+                        EmpName = (string)reader["empName"],
+                        EmpRole = (string)reader["empRole"],
+                        EmpDisplayRole = (string)reader["empDisplayRole"],
+                        UserName = (string)reader["userName"],
+                        Password = (string)reader["password"],
+                        Department = d
+
+                    };
+                    employees.Add(employee);
+                } 
+            }
+            return employees;
         }
 
         public static List<string> GetAllEmployeeNames()

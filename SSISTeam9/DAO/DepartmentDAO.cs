@@ -143,6 +143,36 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static void UpdateDepartmentRepById(long deptId,long empId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"Update Department Set representativeId="+empId+" where deptId =" + deptId;
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static long GetCurrentRepById(long deptId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                long currentRep = 0;
+                string q = @"SELECT representativeId from Department where deptId = '" + deptId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    currentRep = (long)reader[0];
+                }
+                return currentRep;
+            }
+        }
+
         //public static void CreateDepartment(string DeptCode, string DeptName, string Contact, string Telephone, string Fax, string Head)
         //{
         //    using (SqlConnection conn = new SqlConnection(Data.db_cfg))

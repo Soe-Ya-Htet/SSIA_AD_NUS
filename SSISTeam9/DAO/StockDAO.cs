@@ -128,7 +128,8 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
                 string q = null;
-
+                
+                //Set rule for deliveryBy as one week from submitted/order date
                 q = "INSERT INTO PurchaseOrder (supplierId,empId,orderNumber,status,submittedDate,orderDate,deliverTo,deliverBy)"
                             + "VALUES ('" + supplierId + "','" + empId + "','" + newOrderNumber + "','" + "Pending Supplier Confirmation"
                             + "','" + DateTime.Now.Date + "','" + DateTime.Now.Date + "','" + "Logic University 29 Heng Mui Keng Terrace Singapore 123456" + "','"

@@ -139,12 +139,20 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"DELETE from PurchaseOrderDetails WHERE orderID = '" + orderId + "'";
+                string q = @"DELETE from PurchaseOrder WHERE orderID = '" + orderId + "'";
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();
+            }
+        }
 
-                q = @"DELETE from PurchaseOrder WHERE orderID = '" + orderId + "'";
-                cmd = new SqlCommand(q, conn);
+        public static void DeleteAllPurchaseOrderDetails(long orderId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"DELETE from PurchaseOrderDetails WHERE orderID = '" + orderId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -240,6 +248,19 @@ namespace SSISTeam9.DAO
                          
                 SqlCommand cmd = new SqlCommand(q, conn);
                 return (string) cmd.ExecuteScalar();
+            }
+        }
+
+        public static void ConfirmOrder(string orderNumber)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"UPDATE PurchaseOrder SET STATUS = 'Pending Delivery' WHERE orderNumber = '" + orderNumber + "'";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
             }
         }
         

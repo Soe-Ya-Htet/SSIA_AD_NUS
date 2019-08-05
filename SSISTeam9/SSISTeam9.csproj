@@ -202,7 +202,6 @@
     <Compile Include="Models\RetrievalForm.cs" />
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AdjVoucherService.cs" />
     <Compile Include="Services\AnalyticsService.cs" />
     <Compile Include="Services\CatalogueService.cs" />
     <Compile Include="Services\DelegateService.cs" />

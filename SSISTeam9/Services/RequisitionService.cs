@@ -14,8 +14,16 @@ namespace SSISTeam9.Services
         {
             List<Inventory> itemList = new List<Inventory>();
             itemList.Add(CatalogueDAO.GetCatalogueById(1));
+            itemList.Add(CatalogueDAO.GetCatalogueById(2));
             return itemList;
             //return CatalogueDAO.DisplayAllCatalogue();
+        }
+
+        public static List<Cart> GetCartsByEmpId(long empId)
+        {
+            List<Cart> carts = CartDAO.GetCartsByEmpId(empId);
+            carts = GetCartsWithObjects(carts);
+            return carts;
         }
 
         public static void SaveToCart(Cart cart)
@@ -32,8 +40,6 @@ namespace SSISTeam9.Services
             {
                 CartDAO.SaveCart(cart);
             }
-
-
         }
 
         private static List<Cart> GetCartsWithObjects(List<Cart> carts)
@@ -62,6 +68,32 @@ namespace SSISTeam9.Services
             }
 
             return carts;
+        }
+
+        public static void CreateRequisition(List<Cart> carts, long empId)
+        {
+            Employee emp = new Employee();
+            emp.EmpId = empId;
+            Requisition req = new Requisition();
+            req.ReqCode = DateTime.Now.Date.ToString();
+            req.DateOfRequest = DateTime.Now.Date;
+            req.Status = "Pending";
+            req.Employee = emp;
+            long reqId = RequisitionDAO.SaveRequisition(req);
+            req.ReqId = reqId;
+            List<RequisitionDetails> reqDetailsList = new List<RequisitionDetails>();
+            Inventory item = null;
+            foreach (Cart c in carts)
+            {
+                item = new Inventory();
+                item.ItemId = c.Item.ItemId;
+                RequisitionDetails reqDetail = new RequisitionDetails();
+                reqDetail.Requisition = req;
+                reqDetail.Item = item;
+                reqDetail.Quantity = c.Quantity;
+                reqDetailsList.Add(reqDetail);
+            }
+            RequisitionDetailsDAO.SaveRequisitionDetails(reqDetailsList);
         }
 
         public static List<Requisition> DisplayPendingRequisitions(long deptId)

@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "Create Purchase Order";
     List<Inventory> selectedItems = (List<Inventory>)ViewData["selectedItems"];
-    
+    string employeeId = (string) ViewData["empId"];
     var counter = 0;
 }
 
@@ -44,6 +44,7 @@ else
                 }
                 <tr>
                     <td><input type="hidden" name="counter" value="@counter" /></td>
+                    <td><input type="hidden" name="empId" value="@employeeId" /></td>
                     <td colspan="6" align="right"><input type="submit" value="Generate Purchase Orders"></td>
                 </tr>
 

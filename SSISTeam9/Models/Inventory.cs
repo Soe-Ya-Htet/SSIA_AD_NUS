@@ -33,7 +33,8 @@ namespace SSISTeam9.Models
         public bool IsChecked { get; set; }
         public PriceList ItemSuppliersDetails { get; set; }
 
-        public List<bool> checkedItems { get; set; }
-        public List<Inventory> items { get; set; }
+        public int PendingOrderQuantity;
+        public List<bool> CheckedItems { get; set; }
+        public List<Inventory> Items { get; set; }
     }
 }

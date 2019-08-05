@@ -200,6 +200,20 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static string GetNewOrderNumber()
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string getMaxOrderNumber = @"SELECT MAX(orderNumber) from PurchaseOrder";
+                SqlCommand cmd = new SqlCommand(getMaxOrderNumber, conn);
+                long newOrderNumber = long.Parse((string)cmd.ExecuteScalar()) + 1;
+
+                return newOrderNumber.ToString();
+            }
+        }
+
         public static void CreatePurchaseOrderDetailsAfterChangeSuppliers(long orderId, long itemId, int quantity)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))

@@ -5,6 +5,7 @@
     ViewBag.Title = "View All Inventory Items";
     List<Inventory> items = (List<Inventory>)ViewData["items"];
     var counter = 0;
+    string employeeId = (string)ViewData["empId"];
 }
 
 <h2>Stock</h2>
@@ -26,32 +27,36 @@ else
                 <th>Description</th>
                 <th>Unit of Measure</th>
                 <th>Stock Level</th>
+                <th>Stock Pending Order</th>
             </tr>
             @foreach (var item in items)
             {
             <tr>
                 @if (item.StockLevel < item.ReorderLevel)
                 {
-                    <td>@Html.CheckBoxFor(m => m.checkedItems[counter], new { id = "selectedOrderItem" })</td>
+                    <td>@Html.CheckBoxFor(m => m.CheckedItems[counter], new { id = "selectedOrderItem" })</td>
                     <td style="color:red">@item.ItemCode</td>
                     <td style="color:red">@item.Category</td>
                     <td style="color:red">@item.Description</td>
                     <td style="color:red">@item.UnitOfMeasure</td>
                     <td style="color:red">@item.StockLevel</td>
+                    <td style="color:red">@item.PendingOrderQuantity</td>
                 }
                 else
                 {
-                    <td>@Html.CheckBoxFor(m => m.checkedItems[counter], new { id = "selectedOrderItem" })</td>
+                    <td>@Html.CheckBoxFor(m => m.CheckedItems[counter], new { id = "selectedOrderItem" })</td>
                     <td>@item.ItemCode</td>
                     <td>@item.Category</td>
                     <td>@item.Description</td>
                     <td>@item.UnitOfMeasure</td>
                     <td>@item.StockLevel</td>
+                    <td>@item.PendingOrderQuantity</td>
                 }
             </tr>
                 counter = counter + 1;
             }
             <tr>
+                <td><input type="hidden" name="empId" value="@employeeId" /></td>
                 <td colspan="6" align="right"><input type="submit" value="Generate Purchase Orders"></td>
             </tr>
         </table>

@@ -324,8 +324,10 @@
     <Content Include="Views\Stock\All.cshtml" />
     <Content Include="Views\Stock\EnterQuantities.cshtml" />
     <Content Include="Views\Delegate\ViewDelegate.cshtml" />
-    <Content Include="Views\Analytics\Index.cshtml" />
+    <Content Include="Views\Analytics\DisplayChartByDept.cshtml" />
     <Content Include="Views\Analytics\Select.cshtml" />
+    <Content Include="Views\Analytics\DisplayChartByStationery.cshtml" />
+    <Content Include="Views\Analytics\DisplayChartBySupplier.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

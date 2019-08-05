@@ -1,0 +1,87 @@
+﻿@{
+    int month = (int)ViewData["month"];
+    int year = (int)ViewData["year"];
+    string department = (string)ViewData["selected_dept"];
+    List<string> monthsToDisplay = (List<string>)ViewData["monthsToDisplay"];
+
+    Dictionary<string, int> monthsAndQuantitiesForChart = (Dictionary<string, int>)ViewData["monthsAndQuantitiesForChart"];
+    var title = "Total Quantity Requested By " + department;
+}
+<!DOCTYPE html>
+
+<h2>Analytics</h2>
+<html>
+
+<head>
+    <script src="~/Scripts/Chart.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel=" = stylesheet" />
+</head>
+<body>
+    <div>
+        <h2>Select Month</h2>
+        @using (Html.BeginForm("SelectMonth", "Analytics", FormMethod.Post))
+        {
+            <select id="selected_month" name="selected_month">
+                @foreach (var m in monthsToDisplay)
+                {
+                    <option value="@m">@m</option>
+                }
+            </select>
+            <input type="hidden" name="year" value='@year' />
+            <input type="hidden" name="department" id="department" value='@department' />
+            <input type="submit" value="Generate" />
+        }
+
+    </div>
+    <div class="chart-container">
+        <canvas id="lineChart"></canvas>
+    </div>
+</body>
+
+</html>
+
+<script>
+    let myChart = $("#lineChart");
+    let months = @Html.Raw(Json.Encode(monthsAndQuantitiesForChart.Keys));
+    let quantities = @Html.Raw(Json.Encode(monthsAndQuantitiesForChart.Values));
+    let displayTitle = @Html.Raw(Json.Encode(title));
+
+    let reqChart = new Chart(myChart, {
+        type: 'line',
+        markerType: "cross",
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Total quantity requested',
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor:"rgba(75,192,192,0.4)",
+                borderColor:"rgba(75,192,192,1)",
+                borderCapStyle: 'butt', 
+                borderDash: [],
+                borderDashOffset: 0.0,
+                bordenJoinStyle: 'miter',
+                pointBorderColor: "rgba(75,192,192,1)",
+                pointBackgroundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: quantities
+            }]
+        },
+        options: {
+            legend: { display: false },
+            steppedLine: false,
+            title: {
+                display: true,
+                text: displayTitle 
+            }
+        }
+    });
+</script>

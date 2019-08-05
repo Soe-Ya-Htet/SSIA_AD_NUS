@@ -11,5 +11,7 @@ namespace SSISTeam9.Models
         public Requisition Requisition { get; set; }
         public Inventory Item { get; set; }
 
+        public DateTime DateOfRequest { get; set; }
+        public long ItemId { get; set; }
     }
 }

@@ -11,6 +11,8 @@ namespace SSISTeam9.Controllers
 {
     public class AnalyticsController : Controller
     {
+        public static int currentMonth = DateTime.Now.Month;
+        public static List<string> monthsToDisplay = new List<string>();
         public static Dictionary<int, string> months = new Dictionary<int, string>()
         {
             [1] = "Jan",
@@ -28,31 +30,11 @@ namespace SSISTeam9.Controllers
 
         };
 
-        public static int currentMonth = DateTime.Now.Month;
-
-        public static List<string> monthsToDisplay = new List<string>();
-
-        public ActionResult Index(FormCollection formCollection, int month, int year, string department)
-        {
-
-            for (int i = 1; i <= currentMonth; i++)
-            {
-                monthsToDisplay.Add(months[i]);
-            }
-
-            ViewData["month"] = month;
-            ViewData["year"] = year;
-
-            ViewData["monthsToDisplay"] = monthsToDisplay;
-            ViewData["department"] = formCollection["selected_dept"];
-            return View();
-        }
-
         public ActionResult Select()
         {
             DateTime today = DateTime.Now;
 
-            List <Department> departments = DepartmentService.GetAllDepartment();
+            List<Department> departments = DepartmentService.GetAllDepartment();
 
             ViewData["month"] = today.Month;
             ViewData["year"] = today.Year;
@@ -60,19 +42,33 @@ namespace SSISTeam9.Controllers
 
             return View();
         }
-
-        public ActionResult SelectMonth(FormCollection formCollection, int year, string department)
+        
+        public ActionResult DisplayChartByDept(FormCollection formCollection, int month, int year)
         {
-            int month = months
-                           .FirstOrDefault(x => x.Value != null && x.Value.Contains(formCollection["selected_month"]))
-                           .Key;
+            
+            for (int i = 1; i <= currentMonth; i++)
+            {
+                monthsToDisplay.Add(months[i]);
+            }
+
             ViewData["month"] = month;
             ViewData["year"] = year;
-            ViewData["department"] = department;
-
             ViewData["monthsToDisplay"] = monthsToDisplay;
+            ViewData["selected_dept"] = formCollection["selected_dept"];
+            
+            List<RequisitionDetails> reqs = AnalyticsService.GetRequisitionsByDept(formCollection["selected_dept"]);
 
-            return View("Index");
+            //Dictionary: Key: Tuple<Month,Year>; Value: Tuple<itemId,quantity>
+            Dictionary<Tuple<int, int>, List<Tuple<long, int>>> itemQuantitiesByMonthAndYear = AnalyticsService.GetItemQuantitiesByMonth(reqs);
+
+            //To sum quantity for all item ids by month, year
+            Dictionary<Tuple<int, int>, int> totalQuantitiesByMonthAndYear = AnalyticsService.GetTotalQuantitiesByMonth(itemQuantitiesByMonthAndYear);
+
+            Dictionary<string, int> monthsAndQuantitiesForChart = AnalyticsService.FormatDataForChart(totalQuantitiesByMonthAndYear, months, month,year);
+            
+            ViewData["monthsAndQuantitiesForChart"] = monthsAndQuantitiesForChart;
+            return View();
         }
+        
     }
 }

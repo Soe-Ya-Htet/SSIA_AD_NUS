@@ -6,6 +6,7 @@
     PurchaseOrder order = (PurchaseOrder)ViewData["order"];
     double total = 0;
     long itemSupplierId = 0;
+    var counter = 0;
 }
 
 <h2>Purchase Order</h2>
@@ -36,44 +37,46 @@
 
         @foreach (var item in order.ItemDetails)
         {
-            <tr>
-                @Html.HiddenFor(m => m.OrderNumber, new { id = "orderNumber" })
-                <td>@item.Item.ItemCode</td>
-                <td>@item.Item.Description</td>
-                <td>@item.Quantity</td>
+        <tr>
+            @Html.HiddenFor(m => m.OrderNumber, new { id = "orderNumber" })
+            <td>@item.Item.ItemCode</td>
+            <td>@item.Item.Description</td>
+            <td><input type="number" name="quantity_@counter" id="quantity_@counter" value="@order.ItemDetails[counter].Quantity" min="0"></td>
 
-                <!--To check what is the supplier for the current Purchase Order-->
-                @if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier1Id)
-                {
-                    <td>@item.Item.ItemSuppliersDetails.Supplier1UnitPrice</td>
-                    <!--To check if the supplier for this Purchase Order is the main supplier-->
-                    itemSupplierId = item.Item.ItemSuppliersDetails.Supplier1Id;
-                }
-                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
-                {
-                    <td>@item.Item.ItemSuppliersDetails.Supplier2UnitPrice</td>
-                }
-                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
-                {
-                    <td>@item.Item.ItemSuppliersDetails.Supplier3UnitPrice</td>
-                }
+            <!--To check what is the supplier for the current Purchase Order-->
+            @if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier1Id)
+            {
+                <td>@item.Item.ItemSuppliersDetails.Supplier1UnitPrice</td>
+                <!--To check if the supplier for this Purchase Order is the main supplier-->
+                itemSupplierId = item.Item.ItemSuppliersDetails.Supplier1Id;
+            }
+            else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
+            {
+                <td>@item.Item.ItemSuppliersDetails.Supplier2UnitPrice</td>
+            }
+            else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
+            {
+                <td>@item.Item.ItemSuppliersDetails.Supplier3UnitPrice</td>
+            }
 
-                @if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier1Id)
-                {
-                    <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice))</td>
-                    total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice);
-                }
-                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
-                {
-                    <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier2UnitPrice))</td>
-                    total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier2UnitPrice);
-                }
-                else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
-                {
-                    <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
-                    total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice);
-                }
-            </tr>
+            @if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier1Id)
+            {
+                <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice))</td>
+                total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier1UnitPrice);
+            }
+            else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier2Id)
+            {
+                <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier2UnitPrice))</td>
+                total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier2UnitPrice);
+            }
+            else if (order.SupplierId == item.Item.ItemSuppliersDetails.Supplier3Id)
+            {
+                <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
+                total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice);
+            }
+            <td><input type="hidden" name="item_@counter" id="item_@counter" value="@order.ItemDetails[counter].ItemId"></td>
+        </tr>
+            counter = counter + 1;
         }
         <tr style="height:100px">
             <td colspan="4" align="right"><b>Total: </b></td>

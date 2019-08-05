@@ -32,6 +32,20 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
+        public ActionResult ConfirmOrder(bool confirm, string orderNumber)
+        {
+            if (confirm)
+            {
+                PurchaseOrderService.ConfirmOrder(orderNumber);
+
+                List<PurchaseOrder> orders = PurchaseOrderService.GetAllOrders();
+
+                ViewData["orders"] = orders;
+                return View("All");
+            }
+            return null;
+        }
+
         public ActionResult UpdatePurchaseOrder(PurchaseOrder order, FormCollection formCollection)
         {
             PurchaseOrder selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
@@ -107,7 +121,7 @@ namespace SSISTeam9.Controllers
         public ActionResult Close(string orderNumber)
         {
             PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
-
+            
             ViewData["order"] = order;
             return View();
         }
@@ -126,11 +140,22 @@ namespace SSISTeam9.Controllers
             return null;
         }
 
-        public ActionResult ConfirmClose(PurchaseOrder orderToClose)
+        public ActionResult ConfirmClose(PurchaseOrder orderToClose, FormCollection formCollection)
         {
             PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderToClose.OrderNumber);
+            
+            List<int> itemsQuantities = new List<int>();
+            List<long> itemIds = new List<long>();
 
-            PurchaseOrderService.ClosePurchaseOrder(order);
+            for (int i = 0; i < order.ItemDetails.Count; i++)
+            {
+                itemsQuantities.Add(int.Parse(formCollection["quantity_" + i]));
+                itemIds.Add(long.Parse(formCollection["item_" + i]));
+            }
+
+            //SET status to close and update quantities (if any) accordingly
+            //Stock level is also updated accordingly
+            PurchaseOrderService.ClosePurchaseOrder(order, itemIds, itemsQuantities);
 
             return RedirectToAction("All");
         }
@@ -142,5 +167,6 @@ namespace SSISTeam9.Controllers
             ViewData["order"] = order;
             return View("Closed");
         }
+        
     }
 }

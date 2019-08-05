@@ -48,13 +48,38 @@ namespace SSISTeam9.Services
             return SupplierDAO.GetItemSuppliersDetails(itemId);
         }
 
-        public static void ClosePurchaseOrder(PurchaseOrder order)
+        public static void ClosePurchaseOrder(PurchaseOrder order, List<long> itemIds, List<int> itemQuantities)
         {
             PurchaseOrderDAO.ClosePurchaseOrder(order.OrderNumber);
-            
-            Dictionary<long, int> itemAndNewStock = new Dictionary<long, int>();
 
-            foreach(var item in order.ItemDetails)
+            int totalQuantity = itemQuantities.Sum(m => m);
+
+            //if no more items in Purchase Order, to remove record from Purchase Order and Purchase Order Details
+            if (totalQuantity == 0)
+            {
+                PurchaseOrderDAO.DeleteAllPurchaseOrderDetails(order.OrderId);
+                PurchaseOrderDAO.DeletePurchaseOrder(order.OrderId);
+            }
+            else
+            {
+                //Update quantities(if any)
+                for (int i = 0; i < itemIds.Count; i++)
+                {
+                    if (itemQuantities[i] == 0)
+                    {
+                        PurchaseOrderDAO.DeleteItemFromPurchaseOrder(order.OrderId, itemIds[i]);
+                    }
+                    else
+                    {
+                        PurchaseOrderDAO.UpdatePurchaseOrderItemQuantity(order.OrderId, itemIds[i], itemQuantities[i]);
+                    }
+                }
+            }
+
+            //Updated inventory stock level
+            PurchaseOrder updatedOrder = GetOrderDetails(order.OrderNumber);
+            Dictionary<long, int> itemAndNewStock = new Dictionary<long, int>();
+            foreach(var item in updatedOrder.ItemDetails)
             {
                 itemAndNewStock[item.ItemId] = item.Quantity + item.Item.StockLevel;
             }
@@ -65,16 +90,27 @@ namespace SSISTeam9.Services
 
         public static void UpdatePurchaseOrder(PurchaseOrder order, List<string>itemIds, List<string> updatedQuantities, int itemCount, string deliverTo, DateTime deliverBy)
         {
-            for (int i = 0; i < itemCount; i++)
+            int totalQuantity = updatedQuantities.Sum(m => int.Parse(m));
+            
+            //if no more items in Purchase Order, to remove record from Purchase Order and Purchase Order Details
+            if (totalQuantity == 0)
             {
-                if (int.Parse(updatedQuantities[i]) == 0)
+                PurchaseOrderDAO.DeleteAllPurchaseOrderDetails(order.OrderId);
+                PurchaseOrderDAO.DeletePurchaseOrder(order.OrderId);
+            }
+            else {
+                PurchaseOrderDAO.UpdatePurchaseOrderDeliveryDetails(order.OrderId, deliverTo, deliverBy);
+
+                for (int i = 0; i < itemCount; i++)
                 {
-                    PurchaseOrderDAO.DeleteItemFromPurchaseOrder(order.OrderId, long.Parse(itemIds[i]));
-                }
-                else if (order.ItemDetails[i].Quantity != int.Parse(updatedQuantities[i]))
-                {
-                    PurchaseOrderDAO.UpdatePurchaseOrderDeliveryDetails(order.OrderId, deliverTo, deliverBy);
-                    PurchaseOrderDAO.UpdatePurchaseOrderItemQuantity(order.OrderId, long.Parse(itemIds[i]), int.Parse(updatedQuantities[i]));
+                    if (int.Parse(updatedQuantities[i]) == 0)
+                    {
+                        PurchaseOrderDAO.DeleteItemFromPurchaseOrder(order.OrderId, long.Parse(itemIds[i]));
+                    }
+                    else if (order.ItemDetails[i].Quantity != int.Parse(updatedQuantities[i]))
+                    {
+                        PurchaseOrderDAO.UpdatePurchaseOrderItemQuantity(order.OrderId, long.Parse(itemIds[i]), int.Parse(updatedQuantities[i]));
+                    }
                 }
             }
         }
@@ -122,9 +158,15 @@ namespace SSISTeam9.Services
         public static void DeletePurchaseOrder(string orderNumber)
         {
             PurchaseOrder order = PurchaseOrderDAO.GetOrderDetails(orderNumber);
-            
+
             //Delete records from both PurchaseOrder and PurchaseOrderDetails
+            PurchaseOrderDAO.DeleteAllPurchaseOrderDetails(order.OrderId);
             PurchaseOrderDAO.DeletePurchaseOrder(order.OrderId);
+        }
+
+        public static void ConfirmOrder(string orderNumber)
+        {
+            PurchaseOrderDAO.ConfirmOrder(orderNumber);
         }
     }
 }

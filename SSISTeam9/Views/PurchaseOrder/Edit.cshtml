@@ -13,20 +13,24 @@
 <div>
     @using (Html.BeginForm("UpdatePurchaseOrder", "PurchaseOrder", FormMethod.Post))
     {
-        <table>
-            <tr>
-                <td colspan="2">PO Number: </td>
-                <td colspan="2">@order.OrderNumber</td>
-            </tr>
-            <tr>
-                <td colspan="2">Deliver To: </td>
-                <td colspan="2"><input type="text" name="deliverTo" value="@order.DeliverTo" style="height:100px; width:350px"></td>
-            </tr>
-            <tr>
-                <td colspan="2">To Supply Items By: </td>
-                <td colspan="2"><input type="date" name="deliverBy" value="@order.DeliverBy.Date.ToString("yyyy-MM-dd")"></td>
-            </tr>
-        </table>
+    <table>
+        <tr>
+            <td colspan="2">PO Number: </td>
+            <td colspan="2">@order.OrderNumber</td>
+        </tr>
+        <tr>
+            <td colspan="2">Supplier Name: </td>
+            <td colspan="2">@order.Supplier.Name</td>
+        </tr>
+        <tr>
+            <td colspan="2">Deliver To: </td>
+            <td colspan="2"><input type="text" name="deliverTo" value="@order.DeliverTo" style="height:100px; width:350px"></td>
+        </tr>
+        <tr>
+            <td colspan="2">To Supply Items By: </td>
+            <td colspan="2"><input type="date" name="deliverBy" value="@order.DeliverBy.Date.ToString("yyyy-MM-dd")"></td>
+        </tr>
+    </table>
 
         <table>
             <tr>
@@ -86,6 +90,15 @@
             </tr>
             <tr>
                 <td colspan="6" align="right"><input type="submit" value="Update"></td>
+            </tr>
+            <tr>
+                <td colspan="6" align="right">
+                <button>
+                      @Html.ActionLink("Confirm Order", "ConfirmOrder", "PurchaseOrder",
+                      new { confirm = true, orderNumber = order.OrderNumber },
+                      new { onclick = "return confirm('Confirmed?')" })
+                </button>
+                </td>
             </tr>
             <tr>
                 <td colspan="6" align="right">

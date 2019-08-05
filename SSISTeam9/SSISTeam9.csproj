@@ -322,12 +322,13 @@
     <Content Include="Views\Stock\All.cshtml" />
     <Content Include="Views\Stock\EnterQuantities.cshtml" />
     <Content Include="Views\Delegate\ViewDelegate.cshtml" />
+    <Content Include="Views\Analytics\Index.cshtml" />
+    <Content Include="Views\Analytics\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
     <Folder Include="Views\AdjVoucher\" />
-    <Folder Include="Views\Analytics\" />
     <Folder Include="Views\RestStockClerk\" />
   </ItemGroup>
   <ItemGroup>

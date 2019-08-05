@@ -1,7 +1,48 @@
-﻿
+﻿@using SSISTeam9.Models
 @{
     ViewBag.Title = "ViewRetrievalForm";
 }
 
-<h2>ViewRetrievalForm</h2>
+@{ 
+    var retForms = (List<RetrievalForm>)ViewData["retrievalForms"];
 
+}
+
+<table>
+    <tr>
+        <th rowspan="2">Bin #</th>
+        <th rowspan="2">Stationary Description</th>
+        <th colspan="2">Total Quantity</th>
+        <th colspan="2">BreakDown By Department</th>
+        
+
+    </tr>
+    <tr>
+        <th>Needed</th>
+        <th>Retrieved</th>
+        <th>Dept Name</th>
+        <th>Needed</th>
+        <th>Actual</th>
+    </tr>
+    @foreach (var retForm in retForms)
+    {
+    <tr>
+        <td rowspan="@retForm.deptNeeds.Count">@retForm.binNo</td>
+        <td rowspan="@retForm.deptNeeds.Count">@retForm.description</td>
+        <td rowspan="@retForm.deptNeeds.Count">@retForm.totalNeeded</td>
+        <td rowspan="@retForm.deptNeeds.Count">@retForm.totalRetrieved</td>
+        <td>@retForm.deptNeeds[0].deptCode</td>
+        <td>@retForm.deptNeeds[0].deptNeeded</td>
+        <td>@retForm.deptNeeds[0].deptActual</td>
+    </tr>
+        for (int i = 1; i < retForm.deptNeeds.Count; i++)
+        {
+            <tr>
+                <td>@retForm.deptNeeds[i].deptCode</td>
+                <td>@retForm.deptNeeds[i].deptNeeded</td>
+                <td @*onchange="change retrieved amt"*@>@retForm.deptNeeds[i].deptActual</td>
+            </tr>
+        }
+        
+    }
+</table>

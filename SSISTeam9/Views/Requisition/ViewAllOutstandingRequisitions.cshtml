@@ -24,7 +24,7 @@
     <form action="/ViewRetrievalForm" method="get">
         <input type="submit" value="View RetrievalForm" />
     </form>
-    <form action="/Requisition/CreateRetrievalForm" method="post">
+    <form action="/RetrievalForm/CreateRetrievalForm" method="post">
         <input type="submit"  value="Assign to Collection" />
         <table>
             <tr>
@@ -36,7 +36,7 @@
             @foreach (var req in outstandingrequisitions)
             {
                 <tr>
-                    <td><input type="checkbox" name="requisition" value="@req.ReqCode"></td>
+                    <td><input type="checkbox" name="requisition" value="@req.ReqId"></td>
                     <td>@req.ReqCode</td>
                     <td>@req.Employee.Department.DeptCode</td>
                     <td>@req.DateOfRequest</td>

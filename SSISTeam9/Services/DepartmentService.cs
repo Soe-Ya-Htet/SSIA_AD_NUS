@@ -51,6 +51,9 @@ namespace SSISTeam9.Services
             department.DeptCode = deptCode;
             DepartmentDAO.UpdateDepartment(department);
         }
-
+        public static long GetCurrentRep(long deptId)
+        {
+            return DepartmentDAO.GetCurrentRepById(deptId);
+        }
     }
 }

@@ -12,16 +12,16 @@ namespace SSISTeam9.DAO
         public static List<Requisition> GetRequisitionsByStatuses(params string[] status)
         {
             List<Requisition> requisitions = new List<Requisition>();
-            
+
 
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
 
-                string q = @"SELECT * from Requisition where status='"+status[0]+"'";
+                string q = @"SELECT * from Requisition where status='" + status[0] + "'";
                 for (int i = 1; i < status.Length; i++)
                 {
-                    q = q + " OR status= '" + status[i]+"'";
+                    q = q + " OR status= '" + status[i] + "'";
                 }
                 SqlCommand cmd = new SqlCommand(q, conn);
 
@@ -108,11 +108,55 @@ namespace SSISTeam9.DAO
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
-                    string q = @"UPDATE Requisition SET status = '" + status + "'" + ",approvedBy=" + currentHead + " WHERE reqId =" + reqId;
+                string q = @"UPDATE Requisition SET status = '" + status + "'" + ",approvedBy=" + currentHead + " WHERE reqId =" + reqId;
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();
             }
         }
 
+        public static void UpdateApprovedStatusByIdList(List<long> reqIds)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"UPDATE Requisition SET status = 'Assigned'  WHERE reqId IN ({0}) AND status = 'Approved'";
+                var parms = reqIds.Select((s, i) => "@id" + i.ToString()).ToArray();
+                var inclause = string.Join(",", parms);
+
+                string sql = string.Format(q, inclause);
+                Console.Write(sql);
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                for (var i = 0; i < parms.Length; i++)
+                {
+                    cmd.Parameters.AddWithValue(parms[i], reqIds[i]);
+                }
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void UpdatePartiallyCompletedStatusByIdList(List<long> reqIds)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"UPDATE Requisition SET status = 'Partially Completed(Assigned)'  WHERE reqId IN ({0}) AND status = 'Partially Completed'";
+                var parms = reqIds.Select((s, i) => "@id" + i.ToString()).ToArray();
+                var inclause = string.Join(",", parms);
+
+                string sql = string.Format(q, inclause);
+                Console.Write(sql);
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                for (var i = 0; i < parms.Length; i++)
+                {
+                    cmd.Parameters.AddWithValue(parms[i], reqIds[i]);
+                }
+
+                cmd.ExecuteNonQuery();
+
+            }
+        }
     }
 }

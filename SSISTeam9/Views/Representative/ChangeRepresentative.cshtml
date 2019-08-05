@@ -1,7 +1,38 @@
-﻿
+﻿@model SSISTeam9.Models.Employee
+@using SSISTeam9.Models
 @{
-    ViewBag.Title = "ChangeRepresentative";
+    var employees = (List<Employee>)ViewData["employees"];
+    var repEmp=new Employee();
+    foreach (var employee in employees)
+    {
+        if (employee.EmpRole.Equals("REPRESENTATIVE"))
+        {
+             repEmp = employee;
+        }
+    }
 }
-
 <h2>ChangeRepresentative</h2>
+ 
+Current Representative : @repEmp.EmpName
+
+<form>
+    <table>
+        <tr>
+            <td>
+                <select name="employee" id="empList">
+                    @foreach (var employee in employees)
+                    {
+                        if (repEmp != employee)
+                        {
+                            <option value="@employee.EmpId">@employee.EmpName</option>
+                        }
+                    }
+                </select>
+            </td>
+            <td>
+                <button type="submit" id="" formaction="/Representative/ChangeRepresentative?employee=">Change</button>
+            </td>
+        </tr>
+    </table>
+</form>
 

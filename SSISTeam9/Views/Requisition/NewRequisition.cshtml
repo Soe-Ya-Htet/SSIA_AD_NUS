@@ -5,6 +5,37 @@
     ViewBag.Title = "NewRequisition";
 }
 
+<link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
+<header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#"><h6>New Order </h6><span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <h6>@Html.ActionLink("Order List", "RequisitionList", "Requisition", new { @class = "nav-link" })</h6>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#"><h6>My Orders</h6></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#"><h6>Department Orders</h6></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav mt-2 mt-md-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#"><h6>Logout</h6></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
 <h2>NewRequisition</h2>
 
 <p>

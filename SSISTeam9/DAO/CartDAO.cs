@@ -16,13 +16,50 @@ namespace SSISTeam9.DAO
                 conn.Open();
 
                 string q = @"INSERT INTO Cart (empId,itemId,quantity)" +
-                            "VALUES (" + cart.Employee.EmpId +
-                            "," + cart.Item.ItemId +
-                            "," + cart.Quantity + ")";
+                            "VALUES (@empId, @itemId, @quantity)";
                 Console.WriteLine(q);
                 SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@empId", cart.Employee.EmpId);
+                cmd.Parameters.AddWithValue("@itemId", cart.Item.ItemId);
+                cmd.Parameters.AddWithValue("@quantity", cart.Quantity);
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        public static List<Cart> GetCartsByEmpId(long empId)
+        {
+            List<Cart> carts = new List<Cart>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from Cart where empId=@empId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@empId", empId);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Employee e = new Employee()
+                    {
+                        EmpId = (long)reader["empId"]
+                    };
+
+                    Inventory i = new Inventory()
+                    {
+                        ItemId = (long)reader["itemId"]
+                    };
+
+                    Cart cart = new Cart()
+                    {
+                        Quantity = (int)reader["quantity"],
+                        Employee = e,
+                        Item = i
+                    };
+                    carts.Add(cart);
+                }
+            }
+            return carts;
         }
 
         public static void UpdateCart(Cart cart)

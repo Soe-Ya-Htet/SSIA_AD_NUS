@@ -31,13 +31,27 @@ namespace SSISTeam9.Controllers
             Employee emp = new Employee();
             emp.EmpId = 1;
             Inventory item = new Inventory();
-            item.ItemId = 1;
+            item.ItemId = itemId;
             cart.Employee = emp;
             cart.Item = item;
             cart.Quantity = 1;
             RequisitionService.SaveToCart(cart);
 
             return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        public ActionResult RequisitionList()
+        {
+            List<Cart> carts =  RequisitionService.GetCartsByEmpId(1);
+            return View(carts);
+        }
+
+        public ActionResult Create(List<Cart> carts)
+        {
+            carts = RequisitionService.GetCartsByEmpId(1);
+            long empId = 1;
+            RequisitionService.CreateRequisition(carts, empId);
+            return RedirectToAction("Requisition","NewRequisition");
         }
 
         public ActionResult GetPendingRequisitions()

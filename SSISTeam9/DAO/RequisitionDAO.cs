@@ -81,6 +81,28 @@ namespace SSISTeam9.DAO
 
         }
 
+        public static long SaveRequisition(Requisition req)
+        {
+            int reqId;
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"INSERT INTO Requisition (empId,reqCode,dateOfRequest,status)" +
+                            "VALUES (@empId, @reqCode, @dateOfRequest, @status)"+
+                            "SELECT CAST(scope_identity() AS int)";
+                Console.WriteLine(q);
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@empId", req.Employee.EmpId);
+                cmd.Parameters.AddWithValue("@reqCode", req.ReqCode);
+                cmd.Parameters.AddWithValue("@dateOfRequest", req.DateOfRequest);
+                cmd.Parameters.AddWithValue("@status", req.Status);
+                reqId = (int)cmd.ExecuteScalar();
+                
+            }
+            return (long)reqId;
+        }
+
         public static void UpdateRequisitionStatus(long reqId, string status, long currentHead)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))

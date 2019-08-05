@@ -55,5 +55,9 @@ namespace SSISTeam9.Services
         {
             return DepartmentDAO.GetCurrentRepById(deptId);
         }
+        public static long GetCurrentHead(long deptId)
+        {
+            return DepartmentDAO.GetCurrentHeadById(deptId);
+        }
     }
 }

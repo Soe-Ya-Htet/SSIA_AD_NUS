@@ -15,7 +15,7 @@ namespace SSISTeam9.Services
             List<Employee> employees=EmployeeDAO.GetEmployeesByDepartment(deptId);
             foreach (Employee e in employees)
             {
-                if (!e.EmpRole.Equals("HEAD"))
+                if (!(e.EmpRole.Equals("HEAD") || e.EmpDisplayRole.Equals("HEAD")))
                 {
                     employeesWithoutHead.Add(e);
                 }

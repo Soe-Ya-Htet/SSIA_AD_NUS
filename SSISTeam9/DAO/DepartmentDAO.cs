@@ -155,6 +155,18 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static void UpdateDepartmentHead(long deptId, long empId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"Update Department Set head=" + empId + " where deptId =" + deptId;
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public static long GetCurrentRepById(long deptId)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
@@ -170,6 +182,24 @@ namespace SSISTeam9.DAO
                     currentRep = (long)reader[0];
                 }
                 return currentRep;
+            }
+        }
+
+        public static long GetCurrentHeadById(long deptId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string currentHead = "";
+                string q = @"SELECT head from Department where deptId = '" + deptId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    currentHead = (string)reader[0];
+                }
+                return long.Parse(currentHead);
             }
         }
 

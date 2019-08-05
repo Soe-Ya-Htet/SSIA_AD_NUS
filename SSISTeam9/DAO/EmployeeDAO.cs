@@ -52,6 +52,20 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static void UpdateEmployeeHead(long newHead, long currentHead)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string qq = @"Update Employee Set empRole='EMPLOYEE' where empId =" + currentHead;
+                SqlCommand cmd = new SqlCommand(qq, conn);
+                cmd.ExecuteNonQuery();
+                string q = @"Update Employee Set empRole='HEAD' where empId =" + newHead;
+                SqlCommand cmd1 = new SqlCommand(q, conn);
+                cmd1.ExecuteNonQuery();
+            }
+        }
+
         public static List<Employee> GetEmployeesByIdList(List<long> empIds)
         {
 

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SSISTeam9.Services;
+using SSISTeam9.Models;
+
 
 namespace SSISTeam9.Controllers
 {
@@ -48,16 +51,11 @@ namespace SSISTeam9.Controllers
         public ActionResult Select()
         {
             DateTime today = DateTime.Now;
-            int thisMonth = today.Month;
-            int thisYear = today.Year;
 
-            List<string> departments = new List<string>();
-            departments.Add("English Dept");
-            departments.Add("Computer Science");
+            List <Department> departments = DepartmentService.GetAllDepartment();
 
-
-            ViewData["month"] = thisMonth;
-            ViewData["year"] = thisYear;
+            ViewData["month"] = today.Month;
+            ViewData["year"] = today.Year;
             ViewData["departments"] = departments;
 
             return View();

@@ -1,7 +1,59 @@
-﻿
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    int month = (int)ViewData["month"];
+    int year = (int)ViewData["year"];
+    string department = (string)ViewData["department"];
+    List<string> monthsToDisplay = (List<string>)ViewData["monthsToDisplay"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<!DOCTYPE html>
 
-<h2>Index</h2>
+<h2>Analytics</h2>
+<html>
 
+<head>
+    <script>https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js</script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div>
+        @using (Html.BeginForm("SelectMonth", "Analytics", FormMethod.Post))
+        {
+            <select id="selected_month" name="selected_month">
+                @foreach (var m in monthsToDisplay)
+                {
+                    <option value="@m">@m</option>
+                }
+            </select>
+            <input type="hidden" name="year" value='@year' />
+            <input type="hidden" name="department" value='@department' />
+            <input type="submit" value="Generate" />
+        }
+
+    </div>
+
+    <img src="http://localhost:5000/@month/@year/@department" />
+
+
+
+    <div class="container">
+        <canvas id="MyChart"></canvas>
+    </div>
+</body>
+
+</html>
+
+<script>
+    let myChart = document.getElementById('MyChart');
+
+    let reqChart = new Chart(myChart, {
+        type: 'bar',
+        data: {
+            labels: ['Boston', 'USA', 'China'],
+            datasets: [{
+                label: "Population",
+                data:[123,111,111]
+            }]
+        },
+        options: {}
+    });
+</script>

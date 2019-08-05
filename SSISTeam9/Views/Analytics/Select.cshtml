@@ -1,7 +1,7 @@
 ﻿@using SSISTeam9.Models;
 @{
     List<Department> departments = (List<Department>)ViewData["departments"];
-    int month = (int)ViewData["month"];
+    string month = (string)ViewData["month"];
     int year = (int)ViewData["year"];
 }
 
@@ -17,10 +17,10 @@
     <div>
         @using (Html.BeginForm("DisplayChartByDept", "Analytics", FormMethod.Post))
         {
-            <select id="selected_dept" name="selected_dept">
+            <select id="department" name="department">
                 @foreach (var department in departments)
                 {
-                <option name="selected_department" value="@department.DeptName">@department.DeptName</option>
+                <option value="@department.DeptName">@department.DeptName</option>
                 }
             </select>
             <input type="hidden" name="month" value='@month' />

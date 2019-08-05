@@ -93,11 +93,11 @@ namespace SSISTeam9.Services
                 {
                     try
                     {
-                        monthsAndQuantitiesForChart[12.ToString() + " " + (year - 1)] = totalQuantitiesByMonthAndYear[new Tuple<int, int>(12, year - 1)];
+                        monthsAndQuantitiesForChart["Dec " + (year - 1)] = totalQuantitiesByMonthAndYear[new Tuple<int, int>(12, year - 1)];
                     }
                     catch (KeyNotFoundException)
                     {
-                        monthsAndQuantitiesForChart[12.ToString() + " " + (year - 1)] = 0;
+                        monthsAndQuantitiesForChart["Dec " + (year - 1)] = 0;
                     }
                     try
                     {
@@ -124,19 +124,19 @@ namespace SSISTeam9.Services
 
                     try
                     {
-                        monthsAndQuantitiesForChart[11.ToString() + " " + (year - 1)] = totalQuantitiesByMonthAndYear[new Tuple<int, int>(11, year - 1)];
+                        monthsAndQuantitiesForChart["Nov " + (year - 1)] = totalQuantitiesByMonthAndYear[new Tuple<int, int>(11, year - 1)];
                     }
                     catch (KeyNotFoundException)
                     {
-                        monthsAndQuantitiesForChart[11.ToString() + " " + (year - 1)] = 0;
+                        monthsAndQuantitiesForChart["Nov " + (year - 1)] = 0;
                     }
                     try
                     {
-                        monthsAndQuantitiesForChart[12.ToString() + " " + (year - 1)] = totalQuantitiesByMonthAndYear[new Tuple<int, int>(12, year - 1)];
+                        monthsAndQuantitiesForChart["Dec " + (year - 1)] = totalQuantitiesByMonthAndYear[new Tuple<int, int>(12, year - 1)];
                     }
                     catch (KeyNotFoundException)
                     {
-                        monthsAndQuantitiesForChart[12.ToString() + " " + (year - 1)] = 0;
+                        monthsAndQuantitiesForChart["Dec " + (year - 1)] = 0;
                     }
                     try
                     {

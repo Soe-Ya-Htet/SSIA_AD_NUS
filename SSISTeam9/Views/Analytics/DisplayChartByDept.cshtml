@@ -1,9 +1,10 @@
 ﻿@{
     int month = (int)ViewData["month"];
     int year = (int)ViewData["year"];
-    string department = (string)ViewData["selected_dept"];
+    string department = (string)ViewData["department"];
     List<string> monthsToDisplay = (List<string>)ViewData["monthsToDisplay"];
 
+    Dictionary<string, int> monthsInInt = (Dictionary<string, int>)ViewData["monthsInInt"];
     Dictionary<string, int> monthsAndQuantitiesForChart = (Dictionary<string, int>)ViewData["monthsAndQuantitiesForChart"];
     var title = "Total Quantity Requested By " + department;
 }
@@ -20,17 +21,25 @@
 </head>
 <body>
     <div>
-        <h2>Select Month</h2>
-        @using (Html.BeginForm("SelectMonth", "Analytics", FormMethod.Post))
+        <p>Default shows line chart for current month (base) and preceding two months.</p>
+        <p>Change base month using dropdown below.</p>
+        @using (Html.BeginForm("DisplayChartByDept", "Analytics", FormMethod.Post))
         {
-            <select id="selected_month" name="selected_month">
-                @foreach (var m in monthsToDisplay)
+        <select id="month" name="month">
+            @foreach (var m in monthsToDisplay)
+            {
+                if (month == monthsInInt[m])
+                {
+                    <option value="@m" selected>@m</option>
+                }
+                else
                 {
                     <option value="@m">@m</option>
                 }
-            </select>
+            }
+        </select>
             <input type="hidden" name="year" value='@year' />
-            <input type="hidden" name="department" id="department" value='@department' />
+            <input type="hidden" name="department" id="department" value="@department" />
             <input type="submit" value="Generate" />
         }
 

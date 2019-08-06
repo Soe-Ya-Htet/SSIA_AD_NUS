@@ -10,5 +10,9 @@ namespace SSISTeam9.Controllers
 {
     public class ChargeBackController : Controller
     {
+        public ActionResult ViewTable()
+        {
+            return View();
+        }
     }
 }

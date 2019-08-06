@@ -10,7 +10,7 @@ namespace SSISTeam9.Models
         public long Id { get; set; }
         public int MonthOfOrder { get; set; }
         public int YearOfOrder { get; set; }
-        public Department Department { get; set; }
+        public long DeptId { get; set; }
         public int Amount { get; set; }
     }
 }

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SSISTeam9.DAO
+namespace SSISTeam9.Services
 {
-    public class StockCardDAO
+    public class ChargeBackService
     {
-
     }
 }

@@ -151,6 +151,7 @@
     <Compile Include="Controllers\AdjVoucherController.cs" />
     <Compile Include="Controllers\AnalyticsController.cs" />
     <Compile Include="Controllers\CatalogueController.cs" />
+    <Compile Include="Controllers\ChargeBackController.cs" />
     <Compile Include="Controllers\DelegateController.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\DisbursementController.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Controllers\RestDepartmentHeadController.cs" />
     <Compile Include="Controllers\RestStockClerkController.cs" />
     <Compile Include="Controllers\RetrievalFormController.cs" />
+    <Compile Include="Controllers\StockCardController.cs" />
     <Compile Include="Controllers\StockController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="DAO\AdjVoucherDAO.cs" />
@@ -208,6 +210,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AnalyticsService.cs" />
     <Compile Include="Services\CatalogueService.cs" />
+    <Compile Include="Services\ChargeBackService.cs" />
     <Compile Include="Services\DelegateService.cs" />
     <Compile Include="Services\DepartmentService.cs" />
     <Compile Include="Services\DisbursementListService.cs" />
@@ -218,6 +221,7 @@
     <Compile Include="Services\RepresentativeService.cs" />
     <Compile Include="Services\RequisitionService.cs" />
     <Compile Include="Services\RetrievalFormService.cs" />
+    <Compile Include="Services\StockCardService.cs" />
     <Compile Include="Services\StockService.cs" />
     <Compile Include="Services\SupplierService.cs" />
   </ItemGroup>

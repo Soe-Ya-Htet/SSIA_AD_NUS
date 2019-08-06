@@ -333,6 +333,7 @@
     <Content Include="Views\Requisition\DeptRequisition.cshtml" />
     <Content Include="Views\Catalogue\CreateNext.cshtml" />
     <Content Include="Views\Delegate\ViewRemoveDelegate.cshtml" />
+    <Content Include="Views\Catalogue\UpdateNext.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

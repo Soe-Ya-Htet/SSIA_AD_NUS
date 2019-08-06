@@ -98,7 +98,8 @@ namespace SSISTeam9.Services
                 PurchaseOrderDAO.DeleteAllPurchaseOrderDetails(order.OrderId);
                 PurchaseOrderDAO.DeletePurchaseOrder(order.OrderId);
             }
-            else {
+            else
+            {
                 PurchaseOrderDAO.UpdatePurchaseOrderDeliveryDetails(order.OrderId, deliverTo, deliverBy);
 
                 for (int i = 0; i < itemCount; i++)

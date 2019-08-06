@@ -112,5 +112,18 @@ namespace SSISTeam9.DAO
             }
             return carts;
         }
+
+        public static void DeleteCarts(long empId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"DELETE from Cart where empId = @empId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@empid", empId);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

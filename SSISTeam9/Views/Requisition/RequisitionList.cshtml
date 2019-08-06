@@ -6,43 +6,44 @@
 }
 
 <h2>RequisitionList</h2>
+<form method="post">
+    <p>
+        <button class="btnlink" type="submit" formaction="/Requisition/CreateRequisition?empId=1">Create</button>
+    </p>
 
-<p>
-    @Html.ActionLink("Create Requisition", "Create", new { carts = Model})
-</p>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Employee.EmpId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Item.ItemId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var cart in Model)
-    {
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => cart.Employee.EmpId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => cart.Item.ItemId)
-            </td>
-            <td>
-                @Html.EditorFor(modelItem => cart.Quantity, new { htmlAttributes = new { @type = "number", @min = "0", @step = "1", } })
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee.EmpId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item.ItemId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var cart in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => cart.Employee.EmpId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => cart.Item.ItemId)
+                </td>
+                <td>
+                    <input type="number" id="@cart.Item.ItemId" min="0" step="1" value="@cart.Quantity" name="@cart.Item.ItemId" />
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+
+    </table>
+</form>

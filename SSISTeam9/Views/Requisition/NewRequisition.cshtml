@@ -15,16 +15,16 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#"><h6>New Order </h6><span class="sr-only">(current)</span></a>
+                    @Html.ActionLink("New Requisition", "NewRequisition", "Requisition", new { @style = "display:block;padding:.5rem 1rem"})
                 </li>
                 <li class="nav-item active">
-                    <h6>@Html.ActionLink("Order List", "RequisitionList", "Requisition", new { @class = "nav-link" })</h6>
+                    @Html.ActionLink("Requisition List", "RequisitionList", "Requisition", new { @class = "nav-link" })
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#"><h6>My Orders</h6></a>
+                    @Html.ActionLink("My Requisition", "MyRequisition", "Requisition", new { @class = "nav-link" })
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#"><h6>Department Orders</h6></a>
+                    @Html.ActionLink("Department Requisition", "DeptRequisition", "Requisition", new { @class = "nav-link" })
                 </li>
             </ul>
             <ul class="navbar-nav mt-2 mt-md-0">
@@ -45,7 +45,7 @@
 <section class="products">
 
     @foreach (var item in Model)
-    {
+                        {
         <div class="product-card">
             <div class="product-info">
                 <center><img style="width: 150px; height:100px" src="" /></center>

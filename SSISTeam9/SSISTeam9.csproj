@@ -329,6 +329,8 @@
     <Content Include="Views\Analytics\DisplayChartByStationery.cshtml" />
     <Content Include="Views\Analytics\DisplayChartBySupplier.cshtml" />
     <Content Include="Views\Analytics\Home.cshtml" />
+    <Content Include="Views\Requisition\MyRequisition.cshtml" />
+    <Content Include="Views\Requisition\DeptRequisition.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

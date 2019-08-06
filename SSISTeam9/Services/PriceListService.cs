@@ -22,5 +22,17 @@ namespace SSISTeam9.Services
             }
             return null;
         }
+
+        public static List<PriceList> GetPriceListByItemIds(List<long> itemIds)
+        {
+            List<PriceList> priceLists = new List<PriceList>();
+
+            foreach(var itemId in itemIds)
+            {
+                priceLists.Add(PriceListDAO.GetPriceListById(itemId));
+            }
+
+            return priceLists;
+        }
     }
 }

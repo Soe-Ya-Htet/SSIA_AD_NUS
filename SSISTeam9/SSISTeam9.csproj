@@ -326,13 +326,14 @@
     <Content Include="Views\Delegate\ViewDelegate.cshtml" />
     <Content Include="Views\Analytics\DisplayChartByDept.cshtml" />
     <Content Include="Views\Analytics\Select.cshtml" />
-    <Content Include="Views\Analytics\DisplayChartByStationery.cshtml" />
+    <Content Include="Views\Analytics\ByStationeryCategoryRequested.cshtml" />
     <Content Include="Views\Analytics\DisplayChartBySupplier.cshtml" />
     <Content Include="Views\Analytics\Home.cshtml" />
     <Content Include="Views\Requisition\MyRequisition.cshtml" />
     <Content Include="Views\Requisition\DeptRequisition.cshtml" />
     <Content Include="Views\Catalogue\CreateNext.cshtml" />
     <Content Include="Views\Delegate\ViewRemoveDelegate.cshtml" />
+    <Content Include="Views\Analytics\ByStationeryCategoryOrdered.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

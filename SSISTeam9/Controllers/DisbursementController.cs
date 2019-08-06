@@ -9,9 +9,9 @@ namespace SSISTeam9.Controllers
     public class DisbursementController : Controller
     {
         // GET: Disbursement
-        public ActionResult ViewAllDisbursements()
+        public ActionResult ViewAllDisbursements(string collectionPt)
         {
-            ViewData["disbursements"] = DisbursementListService.ViewAllDisbursments();
+            ViewData["disbursements"] = DisbursementListService.ViewOutstandingDisbursementsByCollection(collectionPt);
 
             return View();
         }

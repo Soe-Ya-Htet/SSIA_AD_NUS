@@ -26,7 +26,7 @@ namespace SSISTeam9.Services
         {
             RequisitionDAO.UpdateApprovedStatusByIdList(selected);
             RequisitionDAO.UpdatePartiallyCompletedStatusByIdList(selected);
-            DisbursementListDAO.CreateDisbursementList(selected);
+            //DisbursementListDAO.CreateDisbursementList(selected);
         }
     }
 }

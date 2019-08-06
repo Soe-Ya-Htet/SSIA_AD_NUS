@@ -250,21 +250,24 @@ namespace SSISTeam9.DAO
             }
         }
 
-        public static void CreateCatalogue(Inventory Catalogue)
+        public static long CreateCatalogue(Inventory Catalogue)
         {
+            int itemId;
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
 
-                string q = @"INSERT INTO Inventory (itemCode,category,description,unitOfMeasure)" +
+                string q = @"INSERT INTO Inventory (itemCode,category,description,unitOfMeasure,stockLevel,reorderLevel,reorderQty)" +
                             "VALUES ('" + Catalogue.ItemCode +
                             "','" + Catalogue.Category +
                             "','" + Catalogue.Description +
-                            "','" + Catalogue.UnitOfMeasure+ "'";
+                            "','" + Catalogue.UnitOfMeasure+ "','0','0','0')" +
+                            "SELECT CAST(scope_identity() AS int)";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
-                cmd.ExecuteNonQuery();
+                itemId = (int)cmd.ExecuteScalar();
             }
+            return (long)itemId;
         }
 
         

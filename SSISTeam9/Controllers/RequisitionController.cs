@@ -11,6 +11,7 @@ namespace SSISTeam9.Controllers
 {
     public class RequisitionController : Controller
     {
+
         // GET: Requisition
         public ActionResult Index()
         {
@@ -42,16 +43,39 @@ namespace SSISTeam9.Controllers
 
         public ActionResult RequisitionList()
         {
-            List<Cart> carts =  RequisitionService.GetCartsByEmpId(1);
-            return View(carts);
+            List<Cart> empCarts =  RequisitionService.GetCartsByEmpId(1);
+            return View(empCarts);
         }
 
-        public ActionResult Create(List<Cart> carts)
+        public ActionResult CreateRequisition(int empId)
         {
-            carts = RequisitionService.GetCartsByEmpId(1);
-            long empId = 1;
-            RequisitionService.CreateRequisition(carts, empId);
-            return RedirectToAction("Requisition","NewRequisition");
+            List<Cart> empCarts = RequisitionService.GetCartsByEmpId((long)empId);
+            List<Cart> cartsToRequest = new List<Cart>();
+            foreach (string key in Request.Form.AllKeys)
+            {
+                var value = Request[key];
+                int quantity = Convert.ToInt32(value);
+                long itemId = Convert.ToInt64(key);
+                Cart cart = empCarts.Find(c => c.Item.ItemId == itemId) ;
+                cart.Quantity = quantity;
+                cartsToRequest.Add(cart);
+            }
+
+            //long empId = 1;
+            RequisitionService.CreateRequisition(cartsToRequest, empId);
+            return RedirectToAction("NewRequisition","Requisition");
+        }
+
+        public ActionResult MyRequisition(int empId)
+        {
+
+            return View();
+        }
+        
+        public ActionResult DeptRequisition(int empId)
+        {
+
+            return View();
         }
 
         public ActionResult GetPendingRequisitions()

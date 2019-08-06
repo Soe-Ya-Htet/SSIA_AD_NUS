@@ -1,0 +1,63 @@
+﻿@model IEnumerable<SSISTeam9.Models.Requisition>
+
+@{
+    ViewBag.Title = "MyRequisition";
+}
+
+<h2>MyRequisition</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ReqId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReqCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfRequest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PickUpDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApprovedBy)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReqId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReqCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfRequest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PickUpDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApprovedBy)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

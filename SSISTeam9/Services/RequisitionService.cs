@@ -77,7 +77,7 @@ namespace SSISTeam9.Services
             Requisition req = new Requisition();
             req.ReqCode = DateTime.Now.Date.ToString();
             req.DateOfRequest = DateTime.Now.Date;
-            req.Status = "Pending";
+            req.Status = "Pending Approval";
             req.Employee = emp;
             long reqId = RequisitionDAO.SaveRequisition(req);
             req.ReqId = reqId;
@@ -94,6 +94,7 @@ namespace SSISTeam9.Services
                 reqDetailsList.Add(reqDetail);
             }
             RequisitionDetailsDAO.SaveRequisitionDetails(reqDetailsList);
+            CartDAO.DeleteCarts(empId);
         }
 
         public static List<Requisition> DisplayPendingRequisitions(long deptId)

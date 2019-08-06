@@ -1,7 +1,9 @@
-﻿
+﻿@model SSISTeam9.Models.Inventory
+
+@using SSISTeam9.Models;
 @{
-    ViewBag.Title = "StockCard";
+    Inventory catalogue = (Inventory)ViewData["catalogue"];
+    PriceList pricelist = (PriceList)ViewData["pricelist"];
 }
 
-<h2>StockCard</h2>
-
+<h2 style="text-align:center">Stock Card</h2>

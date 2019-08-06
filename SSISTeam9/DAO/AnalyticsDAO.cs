@@ -71,8 +71,8 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT MONTH(orderDate) as monthOfOrder, YEAR(orderDate) as yearOfOrder,sum(quantity) as total, pod.itemId, category from PurchaseOrder po, PurchaseOrderDetails pod, Inventory i WHERE po.orderId = pod.orderId AND pod.itemId = i.itemId AND STATUS='CLOSED'
-                            GROUP BY MONTH(orderDate), YEAR(orderDate), pod.itemId, category";
+                string q = @"SELECT MONTH(orderDate) as monthOfOrder, YEAR(orderDate) as yearOfOrder,sum(quantity) as total, pod.itemId, category,po.supplierId from PurchaseOrder po, PurchaseOrderDetails pod, Inventory i, Supplier s WHERE po.orderId = pod.orderId AND pod.itemId = i.itemId AND po.supplierId = s.supplierId AND STATUS='CLOSED'
+                            GROUP BY MONTH(orderDate), YEAR(orderDate), pod.itemId, category, po.supplierId";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -83,7 +83,9 @@ namespace SSISTeam9.DAO
                         MonthOfOrder = (int)reader["monthOfOrder"],
                         YearOfOrder = (int)reader["yearOfOrder"],
                         Quantity = (int)reader["total"],
-                        ItemCategory = (string)reader["category"]
+                        ItemCategory = (string)reader["category"],
+                        SupplierId = (long)reader["supplierId"],
+                        ItemId = (long)reader["itemId"]
                     };
                     pos.Add(po);
                 }

@@ -50,10 +50,10 @@ namespace SSISTeam9.Controllers
         public ActionResult Home()
         {
             List<string> analytics = new List<string>();
-            analytics.Add("Amount Requested (By Department)");
-            analytics.Add("Amount Requested (By Stationery Category)");
-            analytics.Add("Amount Ordered (By Stationery Category)");
-            analytics.Add("Amount Ordered (By Supplier)");
+            analytics.Add("Requests By Department");
+            analytics.Add("Requests By Stationery Category");
+            analytics.Add("Orders By Stationery Category");
+            analytics.Add("Orders By Supplier");
 
             ViewData["analytics"] = analytics;
 
@@ -70,15 +70,15 @@ namespace SSISTeam9.Controllers
         {
             string analytic = formCollection["analytic"];
 
-            if (analytic == "Amount Requested (By Department)")
+            if (analytic == "Requests By Department")
             {
                 return RedirectToAction("Select", "Analytics");
             }
-            else if (analytic == "Amount Requested (By Stationery Category)")
+            else if (analytic == "Requests By Stationery Category")
             {
                 return RedirectToAction("ByStationeryCategoryRequested", "Analytics"); 
             }
-            else if (analytic == "Amount Ordered (By Stationery Category)")
+            else if (analytic == "Orders By Stationery Category")
             {
                 return RedirectToAction("ByStationeryCategoryOrdered", "Analytics");
             }
@@ -187,10 +187,27 @@ namespace SSISTeam9.Controllers
             ViewData["year"] = currentYear;
             ViewData["monthsInInt"] = monthsInInt;
             ViewData["monthsToDisplay"] = monthsToDisplay;
-            ViewData["chartTitle"] = "Total Quantity Requested By Stationery Category For " + months[currentMonth] + " " + currentYear;
+            ViewData["chartTitle"] = "Total Amount Ordered By Stationery Category For " + months[currentMonth] + " " + currentYear;
             return View();
         }
 
+        public ActionResult ByStationeryCategoryOrderedForSelectedMonth(FormCollection formCollection)
+        {
+            List<PurchaseOrderDetails> pos = AnalyticsService.GetOrderDetailsByStationeryCategory();
+            
+            int month = monthsInInt[formCollection["month"]];
+            //To get list of pair of category and quantity for a particular month
+            Dictionary<string, double> dataForDisplay = AnalyticsService.GetCategoriesAmountsForMonth(pos, month, currentYear);
+
+            ViewData["dataForDisplay"] = dataForDisplay;
+
+            ViewData["month"] = month;
+            ViewData["year"] = currentYear;
+            ViewData["monthsInInt"] = monthsInInt;
+            ViewData["monthsToDisplay"] = monthsToDisplay;
+            ViewData["chartTitle"] = "Total Amount Ordered By Stationery Category For " + months[month] + " " + currentYear;
+            return View("ByStationeryCategoryOrdered");
+        }
 
         public ActionResult DisplayChartBySupplier(FormCollection formCollection)
         {

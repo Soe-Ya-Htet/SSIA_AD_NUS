@@ -1,4 +1,5 @@
 ﻿@{
+    ViewBag.Title = "Orders By Supplier";
     int month = (int)ViewData["month"];
     int year = (int)ViewData["year"];
     List<string> monthsToDisplay = (List<string>)ViewData["monthsToDisplay"];
@@ -9,7 +10,7 @@
 }
 <!DOCTYPE html>
 
-<h2>Analytics (By Supplier)</h2>
+<h2>Orders By Supplier</h2>
 <html>
 
 <head>
@@ -25,7 +26,7 @@
         @using (Html.BeginForm("DisplayChartBySupplierForSelectedMonth", "Analytics", FormMethod.Post))
         {
             <p>Year: @year</p>
-            <label for="month" value="Month: " />
+            <label for="month">Month: </label>
             <select id="month" name="month">
                 @foreach (var m in monthsToDisplay)
                 {

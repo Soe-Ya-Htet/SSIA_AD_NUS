@@ -331,6 +331,7 @@
     <Content Include="Views\Analytics\Home.cshtml" />
     <Content Include="Views\Requisition\MyRequisition.cshtml" />
     <Content Include="Views\Requisition\DeptRequisition.cshtml" />
+    <Content Include="Views\Catalogue\CreateNext.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

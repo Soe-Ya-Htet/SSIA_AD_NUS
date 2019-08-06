@@ -1,7 +1,23 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Home";
+    List<string> analytics = (List<string>)ViewData["analytics"];
 }
 
-<h2>Home</h2>
+<h2>Analytics</h2>
+
+<div>
+    @using (Html.BeginForm("Redirect", "Analytics", FormMethod.Post))
+    {
+        <select id="analytic" name="analytic">
+            @foreach (var analytic in analytics)
+            {
+                <option value="@analytic">@analytic</option>
+            }
+        </select>
+        <input type="submit" value="Generate" />
+    }
+
+</div>
+
+
 

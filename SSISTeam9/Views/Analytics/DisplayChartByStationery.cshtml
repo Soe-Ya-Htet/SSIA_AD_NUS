@@ -1,7 +1,81 @@
-﻿
-@{
-    ViewBag.Title = "DisplayChartByStationery";
+﻿@{
+    int month = (int)ViewData["month"];
+    int year = (int)ViewData["year"];
+    List<string> monthsToDisplay = (List<string>)ViewData["monthsToDisplay"];
+    Dictionary<string, int> monthsInInt = (Dictionary<string, int>)ViewData["monthsInInt"];
+
+    Dictionary <string,int> dataForDisplay = (Dictionary <string, int>)ViewData["dataForDisplay"];
+    string title = (string)ViewData["chartTitle"];
 }
+<!DOCTYPE html>
 
-<h2>DisplayChartByStationery</h2>
+<h2>Analytics (By Stationery Category)</h2>
+<html>
 
+<head>
+    <script src="~/Scripts/Chart.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel=" = stylesheet" />
+</head>
+<body>
+    <div>
+        <p>Default shows total requisitions by stationery category for current month (base).</p>
+        <p>Change base month using dropdown below.</p>
+        @using (Html.BeginForm("DisplayChartByStationeryBySelectedMonth", "Analytics", FormMethod.Post))
+        {
+            <p>Year: @year</p>
+            <label for="month" value="Month: " />
+            <select id="month" name="month">
+                @foreach (var m in monthsToDisplay)
+                {
+                    if (month == monthsInInt[m])
+                    {
+                        <option value="@m" selected>@m</option>
+                    }
+                    else
+                    {
+                        <option value="@m">@m</option>
+                    }
+                }
+            </select>
+            <input type="hidden" name="year" value='@year' />
+            <input type="submit" value="Generate" />
+        }
+
+    </div>
+    <div class="chart-container">
+        <canvas id="barChart" width="800" height="450"></canvas>
+    </div>
+</body>
+
+</html>
+
+<script>
+    let myChart = $("#barChart");
+    let categories = @Html.Raw(Json.Encode(dataForDisplay.Keys));
+    let quantities = @Html.Raw(Json.Encode(dataForDisplay.Values));
+    let displayTitle = @Html.Raw(Json.Encode(title));
+
+    let reqChart = new Chart(myChart, {
+        type: 'bar',
+        data: {
+            labels: categories,
+            datasets: [{
+                label: "Number of units",
+                data: quantities
+            }]
+        },
+        options: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: displayTitle
+            },
+            scales: {
+                yAxes: [{ id: 'y-axis-1', type: 'linear', position: 'left', ticks: { min: 0 } }],
+                xAxes: [{maxBarThickness: 100}]
+            }
+        }
+    });
+</script>

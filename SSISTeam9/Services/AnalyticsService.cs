@@ -13,47 +13,19 @@ namespace SSISTeam9.Services
         {
             return AnalyticsDAO.GetRequisitionsByDept(department);
         }
-
-        public static Dictionary<Tuple<int, int>, List<Tuple<long, int>>> GetItemQuantitiesByMonth(List<RequisitionDetails> reqs)
-        {
-            Dictionary<Tuple<int, int>, List<Tuple<long, int>>> itemQuantitiesByMonthAndYear = new Dictionary<Tuple<int, int>, List<Tuple<long, int>>>();
-
-            foreach(var req in reqs)
-            {
-                Tuple<int, int> monthYear = new Tuple<int, int>(req.DateOfRequest.Date.Month, req.DateOfRequest.Date.Year);
-
-                if (itemQuantitiesByMonthAndYear.ContainsKey(monthYear))
-                {
-                    itemQuantitiesByMonthAndYear[monthYear].Add(new Tuple<long, int>(req.ItemId, req.Quantity));
-                }
-                else
-                {
-                    List<Tuple<long, int>> itemsIdsAndQuantites = new List<Tuple<long, int>>();
-                    itemQuantitiesByMonthAndYear.Add(monthYear, itemsIdsAndQuantites);
-                    itemQuantitiesByMonthAndYear[monthYear].Add(new Tuple<long, int>(req.ItemId, req.Quantity));
-                }
-            }
-            return itemQuantitiesByMonthAndYear;
-        }
-
-        public static Dictionary<Tuple<int, int>, int> GetTotalQuantitiesByMonth(Dictionary<Tuple<int, int>, List<Tuple<long, int>>> itemQuantitiesByMonthAndYear)
+        
+        public static Dictionary<Tuple<int, int>, int> GetTotalQuantitiesByMonthAndYear(List<RequisitionDetails> reqs)
         {
             Dictionary<Tuple<int, int>, int> totalQuantitiesByMonthAndYear = new Dictionary<Tuple<int, int>, int>();
-            int quantity = 0;
-
-            foreach (KeyValuePair<Tuple<int, int>, List<Tuple<long, int>>> r in itemQuantitiesByMonthAndYear)
+            
+            foreach (var r in reqs)
             {
-                foreach (var qty in r.Value)
-                {
-                    quantity += qty.Item2;
-                }
-                totalQuantitiesByMonthAndYear[r.Key] =  quantity;
-                quantity = 0;
+                totalQuantitiesByMonthAndYear[new Tuple<int,int>(r.MonthOfRequest,r.YearOfRequest)] =  r.Quantity;
             }
             return totalQuantitiesByMonthAndYear;
         }
 
-        public static Dictionary<string, int> FormatDataForChart(Dictionary<Tuple<int, int>, int> totalQuantitiesByMonthAndYear, Dictionary<int, string> months, int month, int year)
+        public static Dictionary<string, int> FillEmptyData(Dictionary<Tuple<int, int>, int> totalQuantitiesByMonthAndYear, Dictionary<int, string> months, int month, int year)
         {
             Dictionary<string, int> monthsAndQuantitiesForChart = new Dictionary<string, int>();
 
@@ -149,6 +121,11 @@ namespace SSISTeam9.Services
                 }
             }
             return monthsAndQuantitiesForChart;
+        }
+
+        public static List<RequisitionDetails> GetRequisitionsByStationeryCategory()
+        {
+            return AnalyticsDAO.GetRequisitionsByStationeryCategory();
         }
     }
 }

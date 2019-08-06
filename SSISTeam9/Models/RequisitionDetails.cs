@@ -11,7 +11,10 @@ namespace SSISTeam9.Models
         public Requisition Requisition { get; set; }
         public Inventory Item { get; set; }
 
-        public DateTime DateOfRequest { get; set; }
+        //Attributes needed for analytics use case
         public long ItemId { get; set; }
+        public string Category { get; set; }
+        public int MonthOfRequest { get; set; }
+        public int YearOfRequest { get; set; }
     }
 }

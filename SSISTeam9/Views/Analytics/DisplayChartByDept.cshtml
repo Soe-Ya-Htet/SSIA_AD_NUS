@@ -2,15 +2,16 @@
     int month = (int)ViewData["month"];
     int year = (int)ViewData["year"];
     string department = (string)ViewData["department"];
-    List<string> monthsToDisplay = (List<string>)ViewData["monthsToDisplay"];
 
+    List<string> monthsToDisplay = (List<string>)ViewData["monthsToDisplay"];
     Dictionary<string, int> monthsInInt = (Dictionary<string, int>)ViewData["monthsInInt"];
     Dictionary<string, int> monthsAndQuantitiesForChart = (Dictionary<string, int>)ViewData["monthsAndQuantitiesForChart"];
+
     var title = "Total Quantity Requested By " + department;
 }
 <!DOCTYPE html>
 
-<h2>Analytics</h2>
+<h2>Analytics (By Department)</h2>
 <html>
 
 <head>
@@ -63,7 +64,7 @@
         data: {
             labels: months,
             datasets: [{
-                label: 'Total quantity requested',
+                label: 'Number of units',
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor:"rgba(75,192,192,0.4)",
@@ -90,6 +91,9 @@
             title: {
                 display: true,
                 text: displayTitle 
+            },
+            scales: {
+                yAxes: [{ id: 'y-axis-1', type: 'linear', position: 'left', ticks: { min: 0 } }]
             }
         }
     });

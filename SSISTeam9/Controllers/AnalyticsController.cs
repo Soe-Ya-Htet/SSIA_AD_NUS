@@ -12,6 +12,7 @@ namespace SSISTeam9.Controllers
     public class AnalyticsController : Controller
     {
         public static int currentMonth = DateTime.Now.Month;
+        public static int currentYear = DateTime.Now.Year;
         public static List<string> monthsToDisplay = new List<string>();
         public static Dictionary<int, string> months = new Dictionary<int, string>()
         {
@@ -46,11 +47,14 @@ namespace SSISTeam9.Controllers
             ["Dec"] = 12,
         };
 
-        public ActionResult Select()
+        public ActionResult Home()
         {
-            DateTime today = DateTime.Now;
+            List<string> analytics = new List<string>();
+            analytics.Add("By Department");
+            analytics.Add("By Stationery Category");
+            analytics.Add("By Supplier");
 
-            List<Department> departments = DepartmentService.GetAllDepartment();
+            ViewData["analytics"] = analytics;
 
             monthsToDisplay = new List<string>();
             for (int i = 1; i <= currentMonth; i++)
@@ -58,8 +62,33 @@ namespace SSISTeam9.Controllers
                 monthsToDisplay.Add(months[i]);
             }
 
-            ViewData["month"] = months[today.Month];
-            ViewData["year"] = today.Year;
+            return View();
+        }
+
+        public ActionResult Redirect(FormCollection formCollection)
+        {
+            string analytic = formCollection["analytic"];
+
+            if (analytic == "By Department")
+            {
+                return RedirectToAction("Select", "Analytics");
+            }
+            else if (analytic == "By Stationery Category")
+            {
+                return RedirectToAction("DisplayChartByStationery", "Analytics"); 
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public ActionResult Select()
+        {
+            List<Department> departments = DepartmentService.GetAllDepartment();
+           
+            ViewData["month"] = months[currentMonth];
+            ViewData["year"] = currentYear;
             ViewData["departments"] = departments;
             ViewData["monthsToDisplay"] = monthsToDisplay;
             ViewData["monthsInInt"] = monthsInInt;
@@ -79,19 +108,65 @@ namespace SSISTeam9.Controllers
             ViewData["department"] = formCollection["department"];
             
             List<RequisitionDetails> reqs = AnalyticsService.GetRequisitionsByDept(formCollection["department"]);
-
-            //Dictionary: Key: Tuple<Month,Year>; Value: Tuple<itemId,quantity>
-            Dictionary<Tuple<int, int>, List<Tuple<long, int>>> itemQuantitiesByMonthAndYear = AnalyticsService.GetItemQuantitiesByMonth(reqs);
-
-            //To sum quantity for all item ids by month, year
-            Dictionary<Tuple<int, int>, int> totalQuantitiesByMonthAndYear = AnalyticsService.GetTotalQuantitiesByMonth(itemQuantitiesByMonthAndYear);
-
-            Dictionary<string, int> monthsAndQuantitiesForChart = AnalyticsService.FormatDataForChart(totalQuantitiesByMonthAndYear, months, month, year);
+            
+            Dictionary<Tuple<int, int>, int> totalQuantitiesByMonthAndYear = AnalyticsService.GetTotalQuantitiesByMonthAndYear(reqs);
+            //For months with no value, to fill it with 0.
+            Dictionary<string, int> monthsAndQuantitiesForChart = AnalyticsService.FillEmptyData(totalQuantitiesByMonthAndYear, months, month, year);
 
             ViewData["monthsAndQuantitiesForChart"] = monthsAndQuantitiesForChart;
 
             return View();
         }
-        
+
+        public ActionResult DisplayChartByStationery(FormCollection formCollection)
+        {
+            List<RequisitionDetails> reqs = AnalyticsService.GetRequisitionsByStationeryCategory();
+
+            //To get list of pair of category and quantity for a particular month
+            Dictionary<string,int> dataForDisplay = new Dictionary<string, int>();
+
+            foreach(var r in reqs)
+            {
+                if (r.MonthOfRequest == currentMonth && r.YearOfRequest == currentYear)
+                {
+                    dataForDisplay[r.Category] = r.Quantity;
+                }
+            }
+            ViewData["dataForDisplay"] = dataForDisplay;
+
+            ViewData["month"] = currentMonth;
+            ViewData["year"] = currentYear;
+            ViewData["monthsInInt"] = monthsInInt;
+            ViewData["monthsToDisplay"] = monthsToDisplay;
+            ViewData["chartTitle"] = "Total Quantity Requested By Stationery Category For " + months[currentMonth] + " " + currentYear;
+            return View();
+        }
+
+        public ActionResult DisplayChartByStationeryBySelectedMonth(FormCollection formCollection)
+        {
+            List<RequisitionDetails> reqs = AnalyticsService.GetRequisitionsByStationeryCategory();
+
+            //To get list of pair of category and quantity for a particular month
+            Dictionary<string, int> dataForDisplay = new Dictionary<string, int>();
+
+            int month = monthsInInt[formCollection["month"]];
+
+            foreach (var r in reqs)
+            {
+                if (r.MonthOfRequest == month && r.YearOfRequest == currentYear)
+                {
+                    dataForDisplay[r.Category] = r.Quantity;
+                }
+            }
+            ViewData["dataForDisplay"] = dataForDisplay;
+
+            ViewData["month"] = month;
+            ViewData["year"] = currentYear;
+            ViewData["monthsInInt"] = monthsInInt;
+            ViewData["monthsToDisplay"] = monthsToDisplay;
+            ViewData["chartTitle"] = "Total Quantity Requested By Stationery Category For " + months[month] + " " + currentYear;
+
+            return View("DisplayChartByStationery");
+        }
     }
 }

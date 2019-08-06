@@ -5,44 +5,74 @@
 
 @{ 
     var retForms = (List<RetrievalForm>)ViewData["retrievalForms"];
+    
 
 }
 
-<table>
-    <tr>
-        <th rowspan="2">Bin #</th>
-        <th rowspan="2">Stationary Description</th>
-        <th colspan="2">Total Quantity</th>
-        <th colspan="2">BreakDown By Department</th>
-        
+<form action="/CreateDisbursementLists" method="post">
+    <table>
+        <tr>
+            <th rowspan="2">Bin #</th>
+            <th rowspan="2">Stationary Description</th>
+            <th colspan="2">Total Quantity</th>
+            <th colspan="2">BreakDown By Department</th>
 
-    </tr>
-    <tr>
-        <th>Needed</th>
-        <th>Retrieved</th>
-        <th>Dept Name</th>
-        <th>Needed</th>
-        <th>Actual</th>
-    </tr>
-    @foreach (var retForm in retForms)
-    {
-    <tr>
-        <td rowspan="@retForm.deptNeeds.Count">@retForm.binNo</td>
-        <td rowspan="@retForm.deptNeeds.Count">@retForm.description</td>
-        <td rowspan="@retForm.deptNeeds.Count">@retForm.totalNeeded</td>
-        <td rowspan="@retForm.deptNeeds.Count">@retForm.totalRetrieved</td>
-        <td>@retForm.deptNeeds[0].deptCode</td>
-        <td>@retForm.deptNeeds[0].deptNeeded</td>
-        <td>@retForm.deptNeeds[0].deptActual</td>
-    </tr>
-        for (int i = 1; i < retForm.deptNeeds.Count; i++)
+
+        </tr>
+        <tr>
+            <th>Needed</th>
+            <th>Retrieved</th>
+            <th>Dept Name</th>
+            <th>Needed</th>
+            <th>Actual</th>
+        </tr>
+        @foreach (var retForm in retForms)
         {
             <tr>
-                <td>@retForm.deptNeeds[i].deptCode</td>
-                <td>@retForm.deptNeeds[i].deptNeeded</td>
-                <td @*onchange="change retrieved amt"*@>@retForm.deptNeeds[i].deptActual</td>
+                <td rowspan="@retForm.deptNeeds.Count">@retForm.binNo</td>
+                <td rowspan="@retForm.deptNeeds.Count">@retForm.description</td>
+                <td rowspan="@retForm.deptNeeds.Count">@retForm.totalNeeded</td>
+                <td rowspan="@retForm.deptNeeds.Count" id="/@retForm.itemId">@retForm.itemId</td>
+                <td>@retForm.deptNeeds[0].deptCode</td>
+                <td>@retForm.deptNeeds[0].deptNeeded</td>
+                <td><input type="number" name="@retForm.itemId" value="@retForm.deptNeeds[0].deptNeeded" onchange="findTotal(@retForm.itemId)" min="0" /></td>
             </tr>
+            for (int i = 1; i < retForm.deptNeeds.Count; i++)
+            {
+                <tr>
+                    <td>@retForm.deptNeeds[i].deptCode</td>
+                    <td>@retForm.deptNeeds[i].deptNeeded</td>
+                    <td><input type="number" name="@retForm.itemId" value="@retForm.deptNeeds[i].deptNeeded" onchange="findTotal(@retForm.itemId)" min="0" /></td>
+                </tr>
+            }
+
         }
-        
+    </table>
+</form>
+
+<script type="text/javascript">
+    var jsRetForms = @Html.Raw(Json.Encode(ViewData["retrievalForms"]));
+
+    function findAllTotal() {
+        for (var retForm of jsRetForms) {
+
+            findTotal(retForm["itemId"]);
+        }
     }
-</table>
+
+
+
+    function findTotal(id) {
+        var arr = document.getElementsByName(id);
+        var tot = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (parseInt(arr[i].value))
+                tot += parseInt(arr[i].value);
+        }
+        document.getElementById("/"+id).innerHTML = tot;
+    }
+
+    window.onload = findAllTotal();
+
+
+</script>

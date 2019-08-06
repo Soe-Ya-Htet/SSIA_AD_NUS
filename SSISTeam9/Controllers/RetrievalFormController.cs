@@ -14,8 +14,8 @@ namespace SSISTeam9.Controllers
         // GET: RetrievalForm
         public ActionResult ViewRetrievalForm()
         {
-            List<RetrievalForm> retrievalForms = RetrievalFormService.ViewRetrievalForm(); 
-            ViewData["retrievalForms"] = retrievalForms;
+            
+            ViewData["retrievalForms"] = RetrievalFormService.ViewRetrievalForm();
             return View();
         }
 
@@ -29,8 +29,7 @@ namespace SSISTeam9.Controllers
 
 
             //using list to DAO search by list
-            RequisitionDAO.UpdateApprovedStatusByIdList(selected);
-            RequisitionDAO.UpdatePartiallyCompletedStatusByIdList(selected);
+            RetrievalFormService.UpdateStatuses(selected);
 
             return RedirectToAction("ViewRetrievalForm", "RetrievalForm");
         }  

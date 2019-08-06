@@ -101,9 +101,9 @@ namespace SSISTeam9.Controllers
             return RedirectToAction("GetPendingRequisitions");
         }
 
-        public ActionResult ViewAllOutstandingRequisitions()
+        public ActionResult ViewAllRequisitionsByStatus(string status)
         {
-            List<Requisition> requisitions = RequisitionService.ShowAllOutstandingRequisitionsByDate();
+            List<Requisition> requisitions = RequisitionService.ShowAllRequisitionsByStatusByDate(status);
             ViewData["outstandingReqs"] = requisitions;
             return View();
             

@@ -18,17 +18,27 @@
    
 
     <select onchange="location = this.options[this.selectedIndex].value;">
-        <option value="#">Outstanding</option>
-        <option value="/Requisition/ViewAllCompletedRequistion">Completed</option>
+        <option>Select</option>
+        <option value="/Requisition/ViewAllOutstandingRequisitions?status=Outstanding">Outstanding</option>
+        <option value="/Requisition/ViewAllOutstandingRequisitions?status=Completed">Completed</option>
     </select>
-    <form action="/ViewRetrievalForm" method="get">
+    <form action="/RetrievalForm/ViewRetrievalForm" method="get">
         <input type="submit" value="View RetrievalForm" />
     </form>
+    
     <form action="/RetrievalForm/CreateRetrievalForm" method="post">
-        <input type="submit"  value="Assign to Collection" />
+        @if (outstandingrequisitions[0].Status != "Completed")
+        {
+            <input type="submit" value="Assign to Collection" />
+        }
+
         <table>
             <tr>
-                <th><input type="checkbox" onClick="toggle(this)" /></th>
+                <th>
+                    @if (outstandingrequisitions[0].Status != "Completed")
+                    {<input type="checkbox" onClick="toggle(this)" />
+                    }
+                </th>
                 <th>Requisition Id</th>
                 <th>Department</th>
                 <th>Date of Request</th>
@@ -36,7 +46,13 @@
             @foreach (var req in outstandingrequisitions)
             {
                 <tr>
-                    <td><input type="checkbox" name="requisition" value="@req.ReqId"></td>
+
+                    <td>
+                        @if (req.Status != "Completed")
+                        {
+                            <input type="checkbox" name="requisition" value="@req.ReqId">
+                        }
+                    </td>
                     <td>@req.ReqCode</td>
                     <td>@req.Employee.Department.DeptCode</td>
                     <td>@req.DateOfRequest</td>

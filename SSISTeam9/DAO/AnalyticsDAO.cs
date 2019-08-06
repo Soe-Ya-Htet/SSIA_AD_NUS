@@ -62,5 +62,63 @@ namespace SSISTeam9.DAO
                 return reqs;
             }
         }
+
+        public static List<PurchaseOrderDetails> GetOrderDetailsByStationeryCategory()
+        {
+            List<PurchaseOrderDetails> pos = new List<PurchaseOrderDetails>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT MONTH(orderDate) as monthOfOrder, YEAR(orderDate) as yearOfOrder,sum(quantity) as total, pod.itemId, category from PurchaseOrder po, PurchaseOrderDetails pod, Inventory i WHERE po.orderId = pod.orderId AND pod.itemId = i.itemId AND STATUS='CLOSED'
+                            GROUP BY MONTH(orderDate), YEAR(orderDate), pod.itemId, category";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    PurchaseOrderDetails po = new PurchaseOrderDetails()
+                    {
+                        MonthOfOrder = (int)reader["monthOfOrder"],
+                        YearOfOrder = (int)reader["yearOfOrder"],
+                        Quantity = (int)reader["total"],
+                        ItemCategory = (string)reader["category"]
+                    };
+                    pos.Add(po);
+                }
+                return pos;
+            }
+        }
+
+        public static List<PurchaseOrderDetails> GetOrderDetailsBySupplier()
+        {
+            List<PurchaseOrderDetails> pos = new List<PurchaseOrderDetails>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT MONTH(orderDate) as monthOfOrder, YEAR(orderDate) as yearOfOrder,sum(quantity) as total, po.supplierId,itemId,name as supplierName from PurchaseOrder po, PurchaseOrderDetails pod, Supplier s WHERE po.orderId = pod.orderId AND po.supplierId = s.supplierId AND STATUS='CLOSED'
+                            GROUP BY MONTH(orderDate), YEAR(orderDate), po.supplierId, itemId,name";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    PurchaseOrderDetails po = new PurchaseOrderDetails()
+                    {
+                        MonthOfOrder = (int)reader["monthOfOrder"],
+                        YearOfOrder = (int)reader["yearOfOrder"],
+                        Quantity = (int)reader["total"],
+                        SupplierId = (long)reader["supplierId"],
+                        SupplierName = (string)reader["supplierName"],
+                        ItemId = (long)reader["itemId"]
+                    };
+                    pos.Add(po);
+                }
+                return pos;
+            }
+        }
     }
 }

@@ -22,7 +22,7 @@
     <div>
         <p>Default shows total requisitions by stationery category for current month (base).</p>
         <p>Change base month using dropdown below.</p>
-        @using (Html.BeginForm("DisplayChartByStationeryBySelectedMonth", "Analytics", FormMethod.Post))
+        @using (Html.BeginForm("ByStationeryCategoryRequestedForSelectedMonth", "Analytics", FormMethod.Post))
         {
             <p>Year: @year</p>
             <label for="month" value="Month: " />

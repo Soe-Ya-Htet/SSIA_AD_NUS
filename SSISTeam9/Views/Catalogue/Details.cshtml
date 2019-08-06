@@ -37,7 +37,7 @@
 
 
         <div class="button">
-            <input type="button" value="Update" style="margin-left:10px; background-color:darkorange; color:white" onclick="location.href='@Url.Action("Update","Catalogue")'">
+            <input type="button" value="Update" style="margin-left:10px; background-color:darkorange; color:white" onclick="location.href='@Url.Action("Update","Catalogue", new { itemId = catalogue.ItemId})'">
             <button style="background-color:red;">
                 @Html.ActionLink("Delete","Delete","Catalogue",
                 new { confirm = true, itemId = catalogue.ItemId },

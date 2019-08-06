@@ -50,26 +50,20 @@ namespace SSISTeam9.Controllers
 
         public ActionResult CreateCatalogue(Inventory catalogue)
         {
-            string itemCode = catalogue.ItemCode.ToUpper();
-            catalogue.ItemCode = itemCode;
 
-            long ItemId = CatalogueService.CreateCatalogueDetaills(catalogue);
+            long ItemId = 0;
+            try
+            {
+                string itemCode = catalogue.ItemCode.ToUpper();
+                catalogue.ItemCode = itemCode;
 
-            
-
-            //try
-            //{
-                
-            //    CatalogueService.CreateCatalogueDetaills(catalogue, supplierCodes);
-
-            //    List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
-            //    ViewData["catalogues"] = catalogue;               
-            //}
-            //catch (SqlException)
-            //{
-            //    TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please Verify.');</script>";
-            //    return RedirectToAction("Create");
-            //}
+                ItemId = CatalogueService.CreateCatalogueDetaills(catalogue);
+            }
+            catch (SqlException)
+            {
+                TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please Verify.');</script>";
+                return RedirectToAction("Create");
+            }
             return RedirectToAction("CreateNext", new { itemId = ItemId});
         }
 
@@ -95,38 +89,72 @@ namespace SSISTeam9.Controllers
             return RedirectToAction("All");
         }
 
-            public ActionResult Details(long itemId)
+        public ActionResult Details(long itemId)
         {
             ViewData["catalogue"] = CatalogueService.GetCatalogueById(itemId);
             ViewData["pricelist"] = PriceListService.GetPriceListByItemId(itemId);
             return View();
         }
 
-        public ActionResult Update()
+        public ActionResult Update(long itemId)
         {
+            ViewData["catalogue"] = CatalogueService.GetCatalogueById(itemId);
+            List<string> categories = CatalogueService.GetAllCategories();
+            ViewData["categories"] = categories;
+            List<string> unitsOfMeasure = CatalogueService.GetAllUnits();
+            ViewData["unitsOfMeasure"] = unitsOfMeasure;
             return View();
         }
 
-        public ActionResult UpdateDetails(Inventory catalogue, FormCollection formCollection)
+        public ActionResult UpdateCatalogue(Inventory catalogue)
         {
-            List<string> supplierCodes = new List<string>();
-            for(int i = 1; i <= 3; i++)
-            {
-                supplierCodes.Add(formCollection["supplier" + i +"Name"]);
-            }
+
+            long ItemId = catalogue.ItemId;
             try
             {
-                CatalogueService.UpdateCatalogue(catalogue, supplierCodes);
-                List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
-                ViewData["catalogues"] = catalogues;
+                string itemCode = catalogue.ItemCode.ToUpper();
+                catalogue.ItemCode = itemCode;
+
+                CatalogueService.UpdateCatalogue(catalogue);
+
             }
-            catch(SqlException)
+            catch (SqlException)
             {
                 TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please Verify.');</script>";
-                return RedirectToAction("Create");
+                return RedirectToAction("Update");
             }
-       
+            return RedirectToAction("UpdateNext", new { itemId = ItemId });
+        }
+
+
+        public ActionResult UpdateNext(long itemId)
+        {
+            ViewData["itemId"] = itemId;
+            ViewData["pricelist"] = PriceListService.GetPriceListByItemId(itemId);
+
+            if(PriceListService.GetPriceListByItemId(itemId) == null)
+            {
+                return RedirectToAction("CreateNext", new { itemId = itemId });
+            }
+            else
+            {
+                List<string> supplierNames = SupplierService.GetAllSupplierNames();
+                ViewData["supplierNames"] = supplierNames;
+                return View();
+            }            
+        }
+
+        public ActionResult UpdatePriceList(long ItemId, PriceList priceList)
+        {
+            priceList.Item = new Inventory();
+            priceList.Item.ItemId = ItemId;
+            PriceListService.UpdatePriceList(priceList);
+
+            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
+            ViewData["catalogues"] = catalogues;
             return RedirectToAction("All");
         }
+
+
     }
 }

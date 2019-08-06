@@ -39,16 +39,19 @@ namespace SSISTeam9.DAO
         }
 
 
-        public static void UpdatePriceList(long itemId, string supplierCode, int number)
+        public static void UpdatePriceList(PriceList priceList)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
 
-                string q = @"UPDATE p SET p.supplier" + number + "Id = s.supplierId " +
-                            "FROM PriceList p, Supplier s" +
-                            "WHERE s.supplierCode = '" + supplierCode +
-                            "' AND p.itemId = '" + itemId + "'";
+                string q = @"UPDATE PriceList SET supplier1Id = '" + priceList.Supplier1Id +
+                    "', supplier2Id = '" + priceList.Supplier2Id +
+                    "', supplier3Id = '" + priceList.Supplier3Id +
+                    "', supplier1UnitPrice = '" + priceList.Supplier1UnitPrice +
+                    "', supplier2UnitPrice = '" + priceList.Supplier2UnitPrice +
+                    "', supplier3UnitPrice = '" + priceList.Supplier3UnitPrice +
+                    "' WHERE itemId = '" + priceList.Item.ItemId + "'";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();

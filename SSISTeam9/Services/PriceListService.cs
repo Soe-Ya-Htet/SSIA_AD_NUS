@@ -48,5 +48,13 @@ namespace SSISTeam9.Services
 
             return priceLists;
         }
+
+        public static void UpdatePriceList(PriceList priceList)
+        {
+            priceList.Supplier1Id = SupplierService.GetSupplierId(priceList.Supplier1Name);
+            priceList.Supplier2Id = SupplierService.GetSupplierId(priceList.Supplier2Name);
+            priceList.Supplier3Id = SupplierService.GetSupplierId(priceList.Supplier3Name);
+            PriceListDAO.UpdatePriceList(priceList);
+        }
     }
 }

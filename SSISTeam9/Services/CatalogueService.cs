@@ -44,18 +44,9 @@ namespace SSISTeam9.Services
             
         }
 
-        public static void UpdateCatalogue(Inventory catalogue, List<string> supplierCodes)
+        public static void UpdateCatalogue(Inventory catalogue)
         {
-            string itemCode = catalogue.ItemCode.ToUpper();
-            catalogue.ItemCode = itemCode;
-
             CatalogueDAO.UpdateCatalogue(catalogue);
-            int number = 1;
-            foreach (string supplierCode in supplierCodes)
-            {
-                PriceListDAO.UpdatePriceList(catalogue.ItemId, supplierCode, number);
-                number++;
-            }
         }
 
         public static List<string> GetAllUnits()

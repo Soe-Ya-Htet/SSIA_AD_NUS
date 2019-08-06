@@ -305,7 +305,7 @@
     <Content Include="Views\PurchaseOrder\All.cshtml" />
     <Content Include="Views\PurchaseOrder\Edit.cshtml" />
     <Content Include="Views\PurchaseOrder\Close.cshtml" />
-    <Content Include="Views\Requisition\ViewAllOutstandingRequisitions.cshtml" />
+    <Content Include="Views\Requisition\ViewAllRequisitionsByStatus.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />

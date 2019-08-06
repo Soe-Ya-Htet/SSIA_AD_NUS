@@ -1,0 +1,73 @@
+﻿
+@using SSISTeam9.Models
+@{
+    var requisitions = (List<Requisition>)ViewData["Reqs"];
+
+    var sessionId = ViewData["sessionId"];
+
+}
+
+<script language="JavaScript">
+    function toggle(source) {
+        checkboxes = document.getElementsByName('requisition');
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
+            checkboxes[i].checked = source.checked;
+        }
+    }
+</script>
+
+
+<select onchange="location = this.options[this.selectedIndex].value;">
+    <option>Select</option>
+    <option value="/Requisition/ViewAllRequisitionsByStatus?status=Outstanding">Outstanding</option>
+    <option value="/Requisition/ViewAllRequisitionsByStatus?status=Completed">Completed</option>
+</select>
+
+@if (requisitions[0].Status != "Completed")
+{
+    <h2>Outstanding Requisitions</h2>
+}
+else
+{
+    <h2>Completed Requisitions</h2>
+}
+<form action="/RetrievalForm/ViewRetrievalForm" method="get">
+    <input type="submit" value="View RetrievalForm" />
+</form>
+
+<form action="/RetrievalForm/CreateRetrievalForm" method="post">
+    @if (requisitions[0].Status != "Completed")
+    {
+        <input type="submit" value="Assign to Collection" />
+    }
+
+    <table>
+        <tr>
+            <th>
+                @if (requisitions[0].Status != "Completed")
+                {<input type="checkbox" onClick="toggle(this)" />
+                }
+            </th>
+            <th>Requisition Id</th>
+            <th>Department</th>
+            <th>Date of Request</th>
+        </tr>
+        @foreach (var req in requisitions)
+        {
+            <tr>
+
+                <td>
+                    @if (req.Status != "Completed")
+                    {
+                        <input type="checkbox" name="requisition" value="@req.ReqId">
+                    }
+                </td>
+                <td>@req.ReqCode</td>
+                <td>@req.Employee.Department.DeptCode</td>
+                <td>@req.DateOfRequest</td>
+            </tr>
+        }
+    </table>
+</form>
+
+

@@ -12,8 +12,14 @@ namespace SSISTeam9.Services
 
         public static List<DisbursementList> ViewOutstandingDisbursementsByCollection(string collectionPt)
         {
-            DisbursementListDAO.ViewDisbursements(collectionPt);
-            return null;
+            List<DisbursementList> disbursementLists = DisbursementListDAO.ViewDisbursements(collectionPt);
+            return disbursementLists;
+        }
+
+        public static List<DisbursementListDetails> ViewDisbursementDetails(long listId)
+        {
+            List<DisbursementListDetails> disbursementListDetails = DisbursementListDetailsDAO.ViewDetails(listId);
+            return disbursementListDetails;
         }
     }
 }

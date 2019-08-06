@@ -170,9 +170,18 @@ namespace SSISTeam9.Services
             RequisitionDAO.UpdateRequisitionStatus(reqId, status, currentHead);
         }
 
-        public static List<Requisition> ShowAllOutstandingRequisitionsByDate()
+        public static List<Requisition> ShowAllRequisitionsByStatusByDate(string status)
         {
-            List<Requisition> list = RequisitionDAO.GetRequisitionsByStatuses("Approved","Partially Completed");
+            List<Requisition> list;
+            if (status == "Outstanding" || status == null)
+            {
+                list = RequisitionDAO.GetRequisitionsByStatuses("Approved", "Partially Completed");
+            }
+            else
+            {
+                list = RequisitionDAO.GetRequisitionsByStatuses("Completed");
+            }
+             
 
             if (list.Count == 0) return null;
 

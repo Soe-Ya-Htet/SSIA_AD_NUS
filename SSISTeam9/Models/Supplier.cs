@@ -11,31 +11,38 @@ namespace SSISTeam9.Models
         public long SupplierId { get; set; }
 
         [Display(Name = "Supplier Code")]
-        [Required]
+        [Required(AllowEmptyStrings = false)]
+        [RegularExpression(@".\S+.", ErrorMessage = "No white space allowed")]
         public string SupplierCode { get; set; }
 
         [Display(Name = "Supplier Name")]
-        [Required]
+        [Required(AllowEmptyStrings = false)]
+        [RegularExpression(@".\S+.", ErrorMessage = "No white space allowed")]
         public string Name { get; set; }
 
         [Display(Name = "GST Registration Number")]
-        [Required]
+        [Required(AllowEmptyStrings = false)]
+        [RegularExpression(@".\S+.", ErrorMessage = "No white space allowed")]
         public string GstNumber { get; set; }
 
         [Display(Name = "Address")]
-        [Required]
+        [Required(AllowEmptyStrings = false)]
+        [RegularExpression(@".\S+.", ErrorMessage = "No white space allowed")]
         public string Address { get; set; }
 
         [Display(Name = "Contact Name")]
-        [Required]
+        [Required(AllowEmptyStrings = false)]
+        [RegularExpression(@".\S+.", ErrorMessage = "No white space allowed")]
         public string ContactName { get; set; }
 
         [Display(Name = "Phone Number")]
-        [Required]
+        [Required(AllowEmptyStrings = false)]
+        [RegularExpression(@".\S+.", ErrorMessage = "No white space allowed")]
         public string PhoneNumber { get; set; }
 
         [Display(Name = "Fax Number")]
-        [Required]
+        [Required(AllowEmptyStrings = false)]
+        [RegularExpression(@".\S+.", ErrorMessage = "No white space allowed")]
         public string FaxNumber { get; set; }
     }
 }

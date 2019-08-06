@@ -104,7 +104,7 @@ namespace SSISTeam9.Controllers
         public ActionResult ViewAllRequisitionsByStatus(string status)
         {
             List<Requisition> requisitions = RequisitionService.ShowAllRequisitionsByStatusByDate(status);
-            ViewData["outstandingReqs"] = requisitions;
+            ViewData["Reqs"] = requisitions;
             return View();
             
         }

@@ -1,7 +1,7 @@
 ﻿
 @using SSISTeam9.Models
 @{
-    var outstandingrequisitions = (List<Requisition>)ViewData["outstandingReqs"];
+    var requisitions = (List<Requisition>)ViewData["Reqs"];
     
     var sessionId = ViewData["sessionId"];
 
@@ -19,15 +19,15 @@
 
     <select onchange="location = this.options[this.selectedIndex].value;">
         <option>Select</option>
-        <option value="/Requisition/ViewAllOutstandingRequisitions?status=Outstanding">Outstanding</option>
-        <option value="/Requisition/ViewAllOutstandingRequisitions?status=Completed">Completed</option>
+        <option value="/Requisition/ViewAllRequisitionsByStatus?status=Outstanding">Outstanding</option>
+        <option value="/Requisition/ViewAllRequisitionsByStatus?status=Completed">Completed</option>
     </select>
     <form action="/RetrievalForm/ViewRetrievalForm" method="get">
         <input type="submit" value="View RetrievalForm" />
     </form>
     
     <form action="/RetrievalForm/CreateRetrievalForm" method="post">
-        @if (outstandingrequisitions[0].Status != "Completed")
+        @if (requisitions[0].Status != "Completed")
         {
             <input type="submit" value="Assign to Collection" />
         }
@@ -35,7 +35,7 @@
         <table>
             <tr>
                 <th>
-                    @if (outstandingrequisitions[0].Status != "Completed")
+                    @if (requisitions[0].Status != "Completed")
                     {<input type="checkbox" onClick="toggle(this)" />
                     }
                 </th>
@@ -43,7 +43,7 @@
                 <th>Department</th>
                 <th>Date of Request</th>
             </tr>
-            @foreach (var req in outstandingrequisitions)
+            @foreach (var req in requisitions)
             {
                 <tr>
 

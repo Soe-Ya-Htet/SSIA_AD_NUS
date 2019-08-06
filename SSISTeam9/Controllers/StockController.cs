@@ -62,5 +62,14 @@ namespace SSISTeam9.Controllers
 
             return RedirectToAction("All");
         }
+
+
+        public ActionResult StockCard(long itemId)
+        {
+
+            //Use LinQ
+            return View();
+        }
+
     }
 }

@@ -1,7 +1,26 @@
-﻿
+﻿@using SSISTeam9.Models
 @{
     ViewBag.Title = "ViewDisbursementDetails";
 }
 
-<h2>ViewDisbursementDetails</h2>
-
+@{ 
+    var details = (List<DisbursementListDetails>)ViewData["details"];
+}
+<form action="/Disbursement/DisburseItems" method="post">
+    <table>
+        <tr>
+            <th>Item Description</th>
+            <th>Quantity</th>
+            <th>Disbursed Quantity</th>
+        </tr>
+        @foreach (var detail in details)
+        {
+            <tr>
+                <td>@detail.Item.Description</td>
+                <td>@detail.Quantity</td>
+                <td><input type="number" name="@detail.Item.ItemId" value="@detail.Quantity" /></td>
+            </tr>
+        }
+    </table>
+    <input type="submit" name="submit" value="Disburse items" />
+</form>

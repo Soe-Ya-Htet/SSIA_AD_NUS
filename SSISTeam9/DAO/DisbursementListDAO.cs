@@ -37,28 +37,50 @@ namespace SSISTeam9.DAO
 
         public static List<DisbursementList> ViewDisbursements(string collectionPt)
         {
+            List<DisbursementList> disbursementLists = new List<DisbursementList>();
+
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
                 string q;
+                
                 if (collectionPt == null)
                 {
-                    q = @"SELECT * FROM DisbursementList d, DisbursementListDetails dDets, CollectionPoint cP 
-                            WHERE d.listId = dDets.listId AND d.collectionPointId= cP.placeId  acknowledgedBy IS NULL 
+                    q = @"SELECT * FROM DisbursementList d, CollectionPoint cP, Department dept 
+                            WHERE d.collectionPointId= cP.placeId AND acknowledgedBy IS NULL AND d.deptId = dept.deptId
                             AND cP.placeId = '1'";
                 }
                 else
                 {
-                    q = @"SELECT * FROM DisbursementList d, DisbursementListDetails dDets, CollectionPoint cP 
-                            WHERE d.listId = dDets.listId AND d.collectionPointId= cP.placeId  acknowledgedBy IS NULL 
+                    q = @"SELECT * FROM DisbursementList d, CollectionPoint cP, Department dept 
+                            WHERE d.collectionPointId= cP.placeId AND acknowledgedBy IS NULL AND d.deptId = dept.deptId
                             AND cP.placeId ='" + collectionPt + "'";
                 }
+
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Department d = new Department()
+                    {
+                        DeptName = (string)reader["deptName"]
+                    };
+                    CollectionPoint cP = new CollectionPoint()
+                    {
+                        Name = (string)reader["name"]
+                    };
+                    DisbursementList disbursementList = new DisbursementList()
+                    {
+                        ListId = (long)reader["listId"],
+                        Department = d,
+                        CollectionPoint = cP
+                    };
+                    disbursementLists.Add(disbursementList);
+                }
 
 
-                return null;
+                    return disbursementLists;
             }
         }
     }

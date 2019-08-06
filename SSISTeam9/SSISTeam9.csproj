@@ -167,6 +167,7 @@
     <Compile Include="DAO\AnalyticsDAO.cs" />
     <Compile Include="DAO\CartDAO.cs" />
     <Compile Include="DAO\CatalogueDAO.cs" />
+    <Compile Include="DAO\ChargeBackDAO.cs" />
     <Compile Include="DAO\CollectionPointDAO.cs" />
     <Compile Include="DAO\DelegateDAO.cs" />
     <Compile Include="DAO\DepartmentDAO.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="DAO\RequisitionDAO.cs" />
     <Compile Include="DAO\RequisitionDetailsDAO.cs" />
     <Compile Include="DAO\RetrievalFormDAO.cs" />
+    <Compile Include="DAO\StockCardDAO.cs" />
     <Compile Include="DAO\StockDAO.cs" />
     <Compile Include="DAO\SupplierDAO.cs" />
     <Compile Include="Global.asax.cs">
@@ -186,6 +188,7 @@
     </Compile>
     <Compile Include="Models\AdjVoucher.cs" />
     <Compile Include="Models\Cart.cs" />
+    <Compile Include="Models\ChargeBack.cs" />
     <Compile Include="Models\CollectionPoint.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\Delegate.cs" />

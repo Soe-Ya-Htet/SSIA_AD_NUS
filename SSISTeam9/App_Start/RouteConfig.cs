@@ -19,8 +19,8 @@ namespace SSISTeam9
             //Convention routing
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "{controller}/{action}",
+                defaults: new { controller = "Requisition", action = "NewRequisition" }
             );
         }
     }

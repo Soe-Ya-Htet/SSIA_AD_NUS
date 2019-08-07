@@ -72,12 +72,12 @@ namespace SSISTeam9.Services
 
         public static List<Requisition> GetRequisitionByEmpId(int empId)
         {
-            throw new NotImplementedException();
+            return RequisitionDAO.GetRequisitionByEmpId(empId);
         }
 
         public static List<Requisition> GetRequisitionByDeptId(int deptId)
         {
-            throw new NotImplementedException();
+            return RequisitionDAO.GetRequisitionByDeptId(deptId);
         }
 
         public static void CreateRequisition(List<Cart> carts, long empId)

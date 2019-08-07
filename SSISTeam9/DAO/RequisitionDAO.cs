@@ -81,6 +81,74 @@ namespace SSISTeam9.DAO
 
         }
 
+        public static List<Requisition> GetRequisitionByDeptId(int deptId)
+        {
+            List<Requisition> requisitions = new List<Requisition>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"SELECT * from Requisition WHERE empId in (SELECT empId from Employee WHERE deptId = @deptId)";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@deptId", deptId);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Employee e = new Employee()
+                    {
+                        EmpId = (long)reader["empId"]
+                    };
+
+                    Requisition requisition = new Requisition()
+                    {
+                        ReqId = (long)reader["reqId"],
+                        ReqCode = (String)reader["reqCode"],
+                        DateOfRequest = (DateTime)reader["dateOfRequest"],
+                        Status = (String)reader["status"],
+                        //PickUpDate = (DateTime)reader["pickUpDate"],
+                        ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
+                        Employee = e
+                    };
+                    requisitions.Add(requisition);
+                }
+            }
+            return requisitions;
+        }
+
+        public static List<Requisition> GetRequisitionByEmpId(int empId)
+        {
+            List<Requisition> requisitions = new List<Requisition>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"SELECT * from Requisition where empId = @empId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@empId", empId);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Employee e = new Employee()
+                    {
+                        EmpId = (long)reader["empId"]
+                    };
+
+                    Requisition requisition = new Requisition()
+                    {
+                        ReqId = (long)reader["reqId"],
+                        ReqCode = (String)reader["reqCode"],
+                        DateOfRequest = (DateTime)reader["dateOfRequest"],
+                        Status = (String)reader["status"],
+                        //PickUpDate = (DateTime)reader["pickUpDate"],
+                        ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
+                        Employee = e
+                    };
+                    requisitions.Add(requisition);
+                }
+            }
+            return requisitions;
+        }
+
         public static long SaveRequisition(Requisition req)
         {
             int reqId;

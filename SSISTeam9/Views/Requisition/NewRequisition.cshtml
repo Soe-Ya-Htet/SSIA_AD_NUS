@@ -21,10 +21,10 @@
                     @Html.ActionLink("Requisition List", "RequisitionList", "Requisition", new { @class = "nav-link" })
                 </li>
                 <li class="nav-item active">
-                    @Html.ActionLink("My Requisition", "MyRequisition", "Requisition", new { @class = "nav-link" })
+                    @Html.ActionLink("My Requisition", "MyRequisition", "Requisition", new { empId = 1 }, new { @class = "nav-link" })
                 </li>
                 <li class="nav-item active">
-                    @Html.ActionLink("Department Requisition", "DeptRequisition", "Requisition", new { @class = "nav-link" })
+                    @Html.ActionLink("Department Requisition", "DeptRequisition", "Requisition", new { deptId = 1 }, new { @class = "nav-link" })
                 </li>
             </ul>
             <ul class="navbar-nav mt-2 mt-md-0">

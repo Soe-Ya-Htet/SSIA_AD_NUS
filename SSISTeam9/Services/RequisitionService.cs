@@ -99,42 +99,18 @@ namespace SSISTeam9.Services
 
         public static List<Requisition> DisplayPendingRequisitions(long deptId)
         {
-            string[] status = { "Pending Approval"};
+            string[] status = { "Pending Approval" };
             List<Requisition> list = RequisitionDAO.GetRequisitionsByStatuses(status);
-            List<Requisition> filtered=new List<Requisition>();
-            List<long> empIds = new List<long>();
-            foreach (Requisition req in list)
+            List<Requisition> filtered = new List<Requisition>();
+            if (list.Count != 0)
             {
-                empIds.Add(req.Employee.EmpId);
-                //req.Employee = EmployeeDAO.GetEmployeeById(req.Employee.EmpId);
-            }
-
-            List<Employee> employees = EmployeeDAO.GetEmployeesByIdList(empIds);
-            if (employees.Count != 0)
-            {
+                list = GetRequisitionsWithObjects(list);
                 for (int i = 0; i < list.Count; i++)
                 {
-                    list[i].Employee = employees.Find(e => e.EmpId == list[i].Employee.EmpId);
-             
-                }
-            }
-            List<long> depIds = new List<long>();
-            foreach (Requisition req in list)
-            {
-                depIds.Add(req.Employee.Department.DeptId);
-            }
-            List<Department> departments = DepartmentDAO.GetDepartmentsByIdList(depIds);
-            if (employees.Count != 0)
-            {
-                for (int i = 0; i < list.Count; i++)
-                {
-
-                    list[i].Employee.Department = departments.Find(e => e.DeptId == list[i].Employee.Department.DeptId);
                     if (list[i].Employee.Department.DeptId == deptId)
                     {
                         filtered.Add(list[i]);
                     }
-
                 }
             }
             return filtered;
@@ -182,45 +158,42 @@ namespace SSISTeam9.Services
                 list = RequisitionDAO.GetRequisitionsByStatuses("Completed");
             }
              
-
             if (list.Count == 0) return null;
+            list = GetRequisitionsWithObjects(list);
+            return list;
+        }
 
+        private static List<Requisition> GetRequisitionsWithObjects(List<Requisition> list)
+        {
+            List<Requisition> requisitions = new List<Requisition>();
             List<long> empIds = new List<long>();
             foreach (Requisition req in list)
             {
                 empIds.Add(req.Employee.EmpId);
             }
 
-            if (empIds.Count == 0) return null;
-
             List<Employee> employees = EmployeeDAO.GetEmployeesByIdList(empIds);
-            if(employees.Count != 0)
+            if (employees.Count != 0)
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    
                     list[i].Employee = employees.Find(e => e.EmpId == list[i].Employee.EmpId);
-                    
+
                 }
             }
-
             List<long> depIds = new List<long>();
             foreach (Requisition req in list)
             {
                 depIds.Add(req.Employee.Department.DeptId);
             }
-
             List<Department> departments = DepartmentDAO.GetDepartmentsByIdList(depIds);
             if (employees.Count != 0)
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    
                     list[i].Employee.Department = departments.Find(e => e.DeptId == list[i].Employee.Department.DeptId);
-                   
                 }
             }
-
             return list;
         }
     }

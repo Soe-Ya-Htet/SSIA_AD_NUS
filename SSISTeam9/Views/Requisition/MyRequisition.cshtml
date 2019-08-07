@@ -4,11 +4,6 @@
     ViewBag.Title = "MyRequisition";
 }
 
-<h2>MyRequisition</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -32,30 +27,30 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var req in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.ReqId)
+            @Html.ActionLink(req.ReqId.ToString(), "GetRequisitionDetails", new { reqId = req.ReqId })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ReqCode)
+            @Html.DisplayFor(modelreq => req.ReqCode)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DateOfRequest)
+            @Html.DisplayFor(modelreq => req.DateOfRequest)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Status)
+            @Html.DisplayFor(modelreq => req.Status)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.PickUpDate)
+            @Html.DisplayFor(modelreq => req.PickUpDate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ApprovedBy)
+            @Html.DisplayFor(modelreq => req.ApprovedBy)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Edit", "Edit", new { /* id=req.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=req.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=req.PrimaryKey */ })
         </td>
     </tr>
 }

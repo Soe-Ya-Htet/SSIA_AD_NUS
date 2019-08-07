@@ -1,15 +1,16 @@
 ﻿@{
+    ViewBag.Title = "Orders By Stationery Category";
     int month = (int)ViewData["month"];
     int year = (int)ViewData["year"];
     List<string> monthsToDisplay = (List<string>)ViewData["monthsToDisplay"];
     Dictionary<string, int> monthsInInt = (Dictionary<string, int>)ViewData["monthsInInt"];
 
-    Dictionary <string,int> dataForDisplay = (Dictionary <string, int>)ViewData["dataForDisplay"];
+    Dictionary<string, double> dataForDisplay = (Dictionary<string, double>)ViewData["dataForDisplay"];
     string title = (string)ViewData["chartTitle"];
 }
 <!DOCTYPE html>
 
-<h2>Analytics (By Stationery Category)</h2>
+<h2>Orders By Stationery Category</h2>
 <html>
 
 <head>
@@ -20,12 +21,12 @@
 </head>
 <body>
     <div>
-        <p>Default shows total requisitions by stationery category for current month (base).</p>
+        <p>Default shows total amount ordered by stationery category for current month (base).</p>
         <p>Change base month using dropdown below.</p>
-        @using (Html.BeginForm("DisplayChartByStationeryBySelectedMonth", "Analytics", FormMethod.Post))
+        @using (Html.BeginForm("ByStationeryCategoryOrderedForSelectedMonth", "Analytics", FormMethod.Post))
         {
             <p>Year: @year</p>
-            <label for="month" value="Month: " />
+            <label for="month">Month: </label>
             <select id="month" name="month">
                 @foreach (var m in monthsToDisplay)
                 {
@@ -54,7 +55,7 @@
 <script>
     let myChart = $("#barChart");
     let categories = @Html.Raw(Json.Encode(dataForDisplay.Keys));
-    let quantities = @Html.Raw(Json.Encode(dataForDisplay.Values));
+    let amounts = @Html.Raw(Json.Encode(dataForDisplay.Values));
     let displayTitle = @Html.Raw(Json.Encode(title));
 
     let reqChart = new Chart(myChart, {
@@ -62,8 +63,8 @@
         data: {
             labels: categories,
             datasets: [{
-                label: "Number of units",
-                data: quantities
+                label: "Total Amount ($)",
+                data: amounts
             }]
         },
         options: {

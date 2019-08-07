@@ -50,9 +50,10 @@ namespace SSISTeam9.Controllers
         public ActionResult Home()
         {
             List<string> analytics = new List<string>();
-            analytics.Add("By Department");
-            analytics.Add("By Stationery Category");
-            analytics.Add("By Supplier");
+            analytics.Add("Requests By Department");
+            analytics.Add("Requests By Stationery Category");
+            analytics.Add("Orders By Stationery Category");
+            analytics.Add("Orders By Supplier");
 
             ViewData["analytics"] = analytics;
 
@@ -69,17 +70,21 @@ namespace SSISTeam9.Controllers
         {
             string analytic = formCollection["analytic"];
 
-            if (analytic == "By Department")
+            if (analytic == "Requests By Department")
             {
                 return RedirectToAction("Select", "Analytics");
             }
-            else if (analytic == "By Stationery Category")
+            else if (analytic == "Requests By Stationery Category")
             {
-                return RedirectToAction("DisplayChartByStationery", "Analytics"); 
+                return RedirectToAction("ByStationeryCategoryRequested", "Analytics"); 
+            }
+            else if (analytic == "Orders By Stationery Category")
+            {
+                return RedirectToAction("ByStationeryCategoryOrdered", "Analytics");
             }
             else
             {
-                return null;
+                return RedirectToAction("DisplayChartBySupplier", "Analytics");
             }
         }
 
@@ -118,7 +123,7 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult DisplayChartByStationery(FormCollection formCollection)
+        public ActionResult ByStationeryCategoryRequested(FormCollection formCollection)
         {
             List<RequisitionDetails> reqs = AnalyticsService.GetRequisitionsByStationeryCategory();
 
@@ -142,7 +147,7 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult DisplayChartByStationeryBySelectedMonth(FormCollection formCollection)
+        public ActionResult ByStationeryCategoryRequestedForSelectedMonth(FormCollection formCollection)
         {
             List<RequisitionDetails> reqs = AnalyticsService.GetRequisitionsByStationeryCategory();
 
@@ -166,7 +171,80 @@ namespace SSISTeam9.Controllers
             ViewData["monthsToDisplay"] = monthsToDisplay;
             ViewData["chartTitle"] = "Total Quantity Requested By Stationery Category For " + months[month] + " " + currentYear;
 
-            return View("DisplayChartByStationery");
+            return View("ByStationeryCategoryRequested");
+        }
+
+        public ActionResult ByStationeryCategoryOrdered(FormCollection formCollection)
+        {
+            List<PurchaseOrderDetails> pos = AnalyticsService.GetOrderDetailsByStationeryCategory();
+
+            //To get list of pair of category and quantity for a particular month
+            Dictionary<string, double> dataForDisplay = AnalyticsService.GetCategoriesAmountsForMonth(pos, currentMonth, currentYear); 
+
+            ViewData["dataForDisplay"] = dataForDisplay;
+
+            ViewData["month"] = currentMonth;
+            ViewData["year"] = currentYear;
+            ViewData["monthsInInt"] = monthsInInt;
+            ViewData["monthsToDisplay"] = monthsToDisplay;
+            ViewData["chartTitle"] = "Total Amount Ordered By Stationery Category For " + months[currentMonth] + " " + currentYear;
+            return View();
+        }
+
+        public ActionResult ByStationeryCategoryOrderedForSelectedMonth(FormCollection formCollection)
+        {
+            List<PurchaseOrderDetails> pos = AnalyticsService.GetOrderDetailsByStationeryCategory();
+            
+            int month = monthsInInt[formCollection["month"]];
+            //To get list of pair of category and quantity for a particular month
+            Dictionary<string, double> dataForDisplay = AnalyticsService.GetCategoriesAmountsForMonth(pos, month, currentYear);
+
+            ViewData["dataForDisplay"] = dataForDisplay;
+
+            ViewData["month"] = month;
+            ViewData["year"] = currentYear;
+            ViewData["monthsInInt"] = monthsInInt;
+            ViewData["monthsToDisplay"] = monthsToDisplay;
+            ViewData["chartTitle"] = "Total Amount Ordered By Stationery Category For " + months[month] + " " + currentYear;
+            return View("ByStationeryCategoryOrdered");
+        }
+
+        public ActionResult DisplayChartBySupplier(FormCollection formCollection)
+        {
+            List<PurchaseOrderDetails> pos = AnalyticsService.GetOrderDetailsBySupplier();
+
+            //Dictionary:<supplierName,totalPricePaid>
+            Dictionary<string, double> dataForDisplay = AnalyticsService.GetSuppliersAndAmountsForMonth(pos, currentMonth, currentYear);
+            
+            ViewData["dataForDisplay"] = dataForDisplay;
+
+            ViewData["month"] = currentMonth;
+            ViewData["year"] = currentYear;
+            ViewData["monthsInInt"] = monthsInInt;
+            ViewData["monthsToDisplay"] = monthsToDisplay;
+            ViewData["chartTitle"] = "Total Amount Purchased By Supplier For " + months[currentMonth] + " " + currentYear;
+
+            return View("DisplayChartBySupplier");
+        }
+
+        public ActionResult DisplayChartBySupplierForSelectedMonth(FormCollection formCollection)
+        {
+            List<PurchaseOrderDetails> pos = AnalyticsService.GetOrderDetailsBySupplier();
+            
+            int month = monthsInInt[formCollection["month"]];
+
+            //Dictionary:<supplierName,totalPricePaid>
+            Dictionary<string, double> dataForDisplay = AnalyticsService.GetSuppliersAndAmountsForMonth(pos, month, currentYear);
+
+            ViewData["dataForDisplay"] = dataForDisplay;
+
+            ViewData["month"] = month;
+            ViewData["year"] = currentYear;
+            ViewData["monthsInInt"] = monthsInInt;
+            ViewData["monthsToDisplay"] = monthsToDisplay;
+            ViewData["chartTitle"] = "Total Amount Purchased From Each Supplier For " + months[month] + " " + currentYear;
+
+            return View("DisplayChartBySupplier");
         }
     }
 }

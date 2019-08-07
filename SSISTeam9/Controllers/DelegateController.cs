@@ -1,4 +1,5 @@
-﻿using SSISTeam9.Models;
+﻿using SSISTeam9.DAO;
+using SSISTeam9.Models;
 using SSISTeam9.Services;
 using System;
 using System.Collections.Generic;
@@ -19,15 +20,37 @@ namespace SSISTeam9.Controllers
         {
             long deptId = 1;
             long headId = DepartmentService.GetCurrentHead(deptId);
+            List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(deptId);
+            ViewData["employees"] = employees;
             if (d.Employee != null)
             {
                 d.Department = new Department();
                 d.Department.DeptId = deptId;
                 DelegateService.AddNewDelegate(d,headId);
+                return RedirectToAction("ViewRemoveDelegate");
             }
-            List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(deptId);
-            ViewData["employees"] = employees;
-            return View();
+            else
+            {
+                return View();
+            }
+            
+        }
+
+        public ActionResult ViewRemoveDelegate(string headId)
+        {
+            long deptId = 1;
+            long head = DepartmentService.GetCurrentHead(deptId);
+            Employee e = EmployeeDAO.GetEmployeeById(head);
+            ViewData["currentHead"] = e;
+            if (headId == null)
+            {
+                return View();
+            }
+            else
+            {
+                DelegateService.DelegateToPreviousHead(deptId);
+                return RedirectToAction("ViewDelegate");
+            }
         }
     }
 }

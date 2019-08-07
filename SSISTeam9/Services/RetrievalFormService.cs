@@ -16,12 +16,17 @@ namespace SSISTeam9.Services
 
             foreach (var item in retrievalForms)
             {
-                item.deptNeeds = RetrievalFormDAO.GetDeptNeeds(/*requisition,*/ item.itemId);
+                item.deptNeeds = RetrievalFormDAO.GetDeptNeeds(item.itemId);
             }
 
             return retrievalForms;
         }
 
-       
+       public static void UpdateStatuses(List<long> selected)
+        {
+            RequisitionDAO.UpdateApprovedStatusByIdList(selected);
+            RequisitionDAO.UpdatePartiallyCompletedStatusByIdList(selected);
+            //DisbursementListDAO.CreateDisbursementList(selected);
+        }
     }
 }

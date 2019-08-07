@@ -1,33 +1,41 @@
-﻿@model SSISTeam9.Models.PriceList
+﻿@model SSISTeam9.Models.Inventory
 
 @{
-    List<string> supplierNames = (List<string>)ViewData["supplierNames"];
     List<string> unitsOfMeasure = (List<string>)ViewData["unitsOfMeasure"];
+    List<string> categories = (List<string>)ViewData["categories"];
 }
 
-<h2>Create New Department</h2>
+<h2>Create New Catalogue</h2>
 
 <div>
-    @using (Html.BeginForm("CreateNew", "Catalogue", FormMethod.Post))
+    @using (Html.BeginForm("CreateCatalogue", "Catalogue", FormMethod.Post))
     {
         <table>
             <tr>
-                <td>@Html.LabelFor(x => x.Item.ItemCode) </td>
-                <td>@Html.TextBoxFor(x => x.Item.ItemCode, new { id = "item.itemCode", @class = "TextBox"  })</td>
-                <td>@Html.ValidationMessageFor(x => x.Item.ItemCode, "", new { style = "color:red" })</td>
+                <td>@Html.LabelFor(x => x.ItemCode): </td>
+                <td>@Html.TextBoxFor(x => x.ItemCode, new { id = "itemCode", @class = "TextBox"  })</td>
+                <td>@Html.ValidationMessageFor(x => x.ItemCode, "", new { style = "color:red" })</td>
             </tr>
             <tr>
-                <td>@Html.LabelFor(x => x.Item.Category) </td>
-                <td>@Html.TextBoxFor(x => x.Item.Category, new { id = "category", @class = "TextBox" })</td>
-                <td>@Html.ValidationMessageFor(x => x.Item.Category, "", new { style = "color:red" })</td>
+                <td>@Html.LabelFor(x => x.Category): </td>
+                <td>
+                    <div>
+                        <select name="category" id="category" class="TextBox">
+                            @foreach (string category in categories)
+                            {
+                                <option>@category</option>
+                            }
+                        </select>
+                    </div>
+                </td>
             </tr>
             <tr>
-                <td>@Html.LabelFor(x => x.Item.Description) </td>
-                <td>@Html.TextBoxFor(x => x.Item.Description, new { id = "description", @class = "TextBox" })</td>
-                <td>@Html.ValidationMessageFor(x => x.Item.Description, "", new { style = "color:red" })</td>
+                <td>@Html.LabelFor(x => x.Description): </td>
+                <td>@Html.TextBoxFor(x => x.Description, new { id = "description", @class = "TextBox" })</td>
+                <td>@Html.ValidationMessageFor(x => x.Description, "", new { style = "color:red" })</td>
             </tr>
             <tr>
-                <td>@Html.LabelFor(x => x.Item.UnitOfMeasure) </td>
+                <td>@Html.LabelFor(x => x.UnitOfMeasure): </td>
                 <td>
                     <div>
                         <select name="unitOfMeasure" id="unitOfMeasure" class="TextBox">
@@ -38,48 +46,10 @@
                         </select>
                     </div>
                 </td>
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(x => x.Supplier1Name) </td>
-                <td>
-                    <div>
-                        <select name="supplier1Name" id="supplier1Name" class="TextBox">
-                            @foreach (string supplierName in supplierNames)
-                            {
-                                <option>@supplierName</option>
-                            }
-                        </select>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(x => x.Supplier2Name) </td>
-                <td>
-                    <div>
-                        <select name="supplier2Name" id="supplier2Name" class="TextBox">
-                            @foreach (string supplierName in supplierNames)
-                            {
-                                <option>@supplierName</option>
-                            }
-                        </select>
-                    </div>
-                </td>
-            <tr>
-                <td>@Html.LabelFor(x => x.Supplier3Name) </td>
-                <td>
-                    <div>
-                        <select name="supplier3Name" id="supplier3Name" class="TextBox">
-                            @foreach (string supplierName in supplierNames)
-                            {
-                                <option>@supplierName</option>
-                            }
-                        </select>
-                    </div>
-                </td>
-            </tr>
+            </tr>           
             <tr>
                 <td></td>
-                <td align="right"><input type="submit" value="Save Create" style="background-color:green;color:white;"></td>
+                <td align="right"><input type="submit" value="Save and Next" style="background-color:green;color:white;"></td>
             </tr>
         </table>
 

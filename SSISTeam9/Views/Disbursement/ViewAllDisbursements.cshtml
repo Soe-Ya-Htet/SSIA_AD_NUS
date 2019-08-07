@@ -1,7 +1,58 @@
-﻿
+﻿@using SSISTeam9.Models
 @{
     ViewBag.Title = "ViewAllDisbursements";
 }
+@{
+    var disbursementLists = (List<DisbursementList>)ViewData["disbursements"];
+    var collectionPt = (string)ViewData["collectionPoint"];
+}
+<select onchange="location = this.options[this.selectedIndex].value;">
+    <option>Select</option>
+    <option value="/Disbursement/ViewAllDisbursements?collectionPt=1">Stationary Store(Admin)</option>
+    <option value="/Disbursement/ViewAllDisbursements?collectionPt=2">Management School</option>
+    <option value="/Disbursement/ViewAllDisbursements?collectionPt=3">Medical School</option>
+    <option value="/Disbursement/ViewAllDisbursements?collectionPt=4">Engineering School</option>
+    <option value="/Disbursement/ViewAllDisbursements?collectionPt=5">Science School</option>
+    <option value="/Disbursement/ViewAllDisbursements?collectionPt=6">University Hospital</option>
+</select>
+@switch (collectionPt)
+{
+    case "1":
+        <h2>Stationary Store - Administration Building</h2>
+        break;
+    case "2":
+        <h2>Management School</h2>
+        break;
+    case "3":
+        <h2>Medical School</h2>
+        break;
+    case "4":
+        <h2>Engineering School</h2>
+        break;
+    case "5":
+        <h2>Science School</h2>
+        break;
+    case "6":
+        <h2>University Hospital</h2>
+        break;
+    default:
+        <h2>Stationary Store - Administration Building</h2>
+        break;
 
-<h2>ViewAllDisbursements</h2>
+}
+    
+<table>
+    <tr>
+        <th>Dept Name</th>
+    </tr>
+    @foreach (var disbursement in disbursementLists)
+    {
+        <tr>
+
+            <td><a href="/Disbursement/ViewDisbursementDetails?listId=@disbursement.ListId">@disbursement.Department.DeptName</a></td>
+
+        </tr>
+    }
+</table>
+
 

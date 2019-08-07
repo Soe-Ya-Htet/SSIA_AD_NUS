@@ -22,5 +22,39 @@ namespace SSISTeam9.Services
             }
             return null;
         }
+
+        public static void CreatePriceListDetaills(PriceList priceList)
+        {
+            priceList.Supplier1Id = SupplierService.GetSupplierId(priceList.Supplier1Name);
+            priceList.Supplier2Id = SupplierService.GetSupplierId(priceList.Supplier2Name);
+            priceList.Supplier3Id = SupplierService.GetSupplierId(priceList.Supplier3Name);
+
+            PriceListDAO.CreatePriceList(priceList);
+        }
+
+        public static void DeletePriceList(long itemId)
+        {
+            PriceListDAO.DeletePriceList(itemId);
+        }
+
+        public static List<PriceList> GetPriceListByItemIds(List<long> itemIds)
+        {
+            List<PriceList> priceLists = new List<PriceList>();
+
+            foreach(var itemId in itemIds)
+            {
+                priceLists.Add(PriceListDAO.GetPriceListById(itemId));
+            }
+
+            return priceLists;
+        }
+
+        public static void UpdatePriceList(PriceList priceList)
+        {
+            priceList.Supplier1Id = SupplierService.GetSupplierId(priceList.Supplier1Name);
+            priceList.Supplier2Id = SupplierService.GetSupplierId(priceList.Supplier2Name);
+            priceList.Supplier3Id = SupplierService.GetSupplierId(priceList.Supplier3Name);
+            PriceListDAO.UpdatePriceList(priceList);
+        }
     }
 }

@@ -1,16 +1,16 @@
 ﻿@{
-    ViewBag.Title = "Orders By Supplier";
+    ViewBag.Title = "Requests By Stationery Category";
     int month = (int)ViewData["month"];
     int year = (int)ViewData["year"];
     List<string> monthsToDisplay = (List<string>)ViewData["monthsToDisplay"];
     Dictionary<string, int> monthsInInt = (Dictionary<string, int>)ViewData["monthsInInt"];
 
-    Dictionary<string, double> dataForDisplay = (Dictionary<string, double>)ViewData["dataForDisplay"];
+    Dictionary <string,int> dataForDisplay = (Dictionary <string, int>)ViewData["dataForDisplay"];
     string title = (string)ViewData["chartTitle"];
 }
 <!DOCTYPE html>
 
-<h2>Orders By Supplier</h2>
+<h2>Requests By Stationery Category</h2>
 <html>
 
 <head>
@@ -21,9 +21,9 @@
 </head>
 <body>
     <div>
-        <p>Default shows total orders from each supplier for current month (base).</p>
+        <p>Default shows total requisitions by stationery category for current month (base).</p>
         <p>Change base month using dropdown below.</p>
-        @using (Html.BeginForm("DisplayChartBySupplierForSelectedMonth", "Analytics", FormMethod.Post))
+        @using (Html.BeginForm("ByStationeryCategoryRequestedForSelectedMonth", "Analytics", FormMethod.Post))
         {
             <p>Year: @year</p>
             <label for="month">Month: </label>
@@ -54,17 +54,17 @@
 
 <script>
     let myChart = $("#barChart");
-    let suppliers = @Html.Raw(Json.Encode(dataForDisplay.Keys));
-    let amounts = @Html.Raw(Json.Encode(dataForDisplay.Values));
+    let categories = @Html.Raw(Json.Encode(dataForDisplay.Keys));
+    let quantities = @Html.Raw(Json.Encode(dataForDisplay.Values));
     let displayTitle = @Html.Raw(Json.Encode(title));
 
     let reqChart = new Chart(myChart, {
         type: 'bar',
         data: {
-            labels: suppliers,
+            labels: categories,
             datasets: [{
-                label: "Total Amount ($)",
-                data: amounts
+                label: "Number of units",
+                data: quantities
             }]
         },
         options: {

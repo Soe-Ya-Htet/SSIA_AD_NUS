@@ -1,4 +1,5 @@
 ﻿@{
+    ViewBag.Title = "Requests By Department";
     int month = (int)ViewData["month"];
     int year = (int)ViewData["year"];
     string department = (string)ViewData["department"];
@@ -11,7 +12,7 @@
 }
 <!DOCTYPE html>
 
-<h2>Analytics (By Department)</h2>
+<h2>Requests by @department</h2>
 <html>
 
 <head>
@@ -26,7 +27,8 @@
         <p>Change base month using dropdown below.</p>
         @using (Html.BeginForm("DisplayChartByDept", "Analytics", FormMethod.Post))
         {
-        <select id="month" name="month">
+            <label for="month">Month: </label>
+            <select id="month" name="month">
             @foreach (var m in monthsToDisplay)
             {
                 if (month == monthsInInt[m])

@@ -1,33 +1,24 @@
 ﻿@using SSISTeam9.Models;
 @{
+    ViewBag.Title = "Select Department";
     List<Department> departments = (List<Department>)ViewData["departments"];
     string month = (string)ViewData["month"];
     int year = (int)ViewData["year"];
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>Analytics (By Department)</title>
-</head>
-<body>
-
-    <h2>Select Analytics</h2>
-    <div>
-        @using (Html.BeginForm("DisplayChartByDept", "Analytics", FormMethod.Post))
-        {
-            <select id="department" name="department">
-                @foreach (var department in departments)
-                {
+<h2>Select Department</h2>
+<div>
+    @using (Html.BeginForm("DisplayChartByDept", "Analytics", FormMethod.Post))
+    {
+        <select id="department" name="department">
+            @foreach (var department in departments)
+            {
                 <option value="@department.DeptName">@department.DeptName</option>
-                }
-            </select>
-            <input type="hidden" name="month" value='@month' />
-            <input type="hidden" name="year" value='@year' />
-            <input type="submit" value="Generate" />
-        }
+            }
+        </select>
+        <input type="hidden" name="month" value='@month' />
+        <input type="hidden" name="year" value='@year' />
+        <input type="submit" value="Generate" />
+    }
 
-    </div>
-</body>
-</html>
+</div>

@@ -203,6 +203,24 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static long GetPreviousHead(long deptId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                long previousHead = 0;
+                string q = @"SELECT empId from Employee where empRole='EMPLOYEE' and empDisplayRole='HEAD' and deptId = '" + deptId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    previousHead = (long)reader[0];
+                }
+                return previousHead;
+            }
+        }
+
         //public static void CreateDepartment(string DeptCode, string DeptName, string Contact, string Telephone, string Fax, string Head)
         //{
         //    using (SqlConnection conn = new SqlConnection(Data.db_cfg))

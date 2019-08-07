@@ -1,7 +1,93 @@
-﻿
+﻿@model SSISTeam9.Models.Inventory
+
+@using SSISTeam9.Models;
 @{
-    ViewBag.Title = "Update";
+    Inventory catalogue = (Inventory)ViewData["catalogue"];
+    List<string> unitsOfMeasure = (List<string>)ViewData["unitsOfMeasure"];
+    List<string> categories = (List<string>)ViewData["categories"];
 }
 
-<h2>Update</h2>
+<h2 style="text-align:center">Update Catalogue Details</h2>
 
+<div>
+    @using (Html.BeginForm("UpdateCatalogue", "Catalogue", FormMethod.Post))
+    {
+        <table>
+            <tr>
+                <td>@Html.LabelFor(x => x.ItemCode): </td>
+                <td>@Html.TextBoxFor(x => x.ItemCode, new { id = "itemCode", @Value = catalogue.ItemCode, @class = "TextBox" })</td>
+                <td>@Html.ValidationMessageFor(x => x.ItemCode, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.Category): </td>
+                <td>
+                    <div>
+                        <select name="category" id="category" class="TextBox">
+                            @if (catalogue.Category != null)
+                            {
+                                <option>@catalogue.Category</option>
+                            }
+                            @foreach (string category in categories)
+                            {
+                                if (category != catalogue.Category)
+                                {
+                                <option>@category</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.Description): </td>
+                <td>@Html.TextBoxFor(x => x.Description, new { id = "description", @Value = catalogue.Description, @class = "TextBox" })</td>
+                <td>@Html.ValidationMessageFor(x => x.Description, "", new { style = "color:red" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.UnitOfMeasure): </td>
+                <td>
+                    <div>
+                        <select name="unitOfMeasure" id="unitOfMeasure" class="TextBox">
+                            @if (catalogue.UnitOfMeasure != null)
+                            {
+                                <option>@catalogue.UnitOfMeasure</option>
+                            }
+                            @foreach (string unitOfMeasure in unitsOfMeasure)
+                            {
+                                if (unitOfMeasure != catalogue.UnitOfMeasure)
+                                {
+                                    <option>@unitOfMeasure</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td align="right"><input type="submit" value="Save and Next" style="background-color:green;color:white;"></td>
+                @Html.Hidden("itemId", catalogue.ItemId)
+            </tr>
+        </table>
+
+
+    }
+
+</div>
+
+@Html.Raw(TempData["errorMsg"])
+
+<style>
+    td {
+        padding: 2px;
+    }
+
+    tr {
+        height: 40px;
+        padding: 2px;
+    }
+
+    .TextBox {
+        width: 250px;
+    }
+</style>

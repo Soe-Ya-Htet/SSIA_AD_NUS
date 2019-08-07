@@ -14,5 +14,13 @@ namespace SSISTeam9.Services
             EmployeeDAO.UpdateEmployeeHead(d.Employee.EmpId, currentHead);
             DepartmentDAO.UpdateDepartmentHead(d.Department.DeptId,d.Employee.EmpId);
         }
+        public static void DelegateToPreviousHead(long deptId)
+        {
+            long previousHead = DepartmentDAO.GetPreviousHead(deptId);
+            long currentHead = DepartmentDAO.GetCurrentHeadById(deptId);
+            DelegateDAO.DeleteDelegate(deptId,currentHead);
+            EmployeeDAO.ChangeEmployeeRoles(deptId);
+            DepartmentDAO.UpdateDepartmentHead(deptId, previousHead);
+        }
     }
 }

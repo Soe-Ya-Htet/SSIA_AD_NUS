@@ -8,6 +8,7 @@
 <div>
     @using (Html.BeginForm("Redirect", "Analytics", FormMethod.Post))
     {
+        <label for="analytic">Select: </label>
         <select id="analytic" name="analytic">
             @foreach (var analytic in analytics)
             {

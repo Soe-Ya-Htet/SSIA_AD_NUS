@@ -151,6 +151,7 @@
     <Compile Include="Controllers\AdjVoucherController.cs" />
     <Compile Include="Controllers\AnalyticsController.cs" />
     <Compile Include="Controllers\CatalogueController.cs" />
+    <Compile Include="Controllers\ChargeBackController.cs" />
     <Compile Include="Controllers\DelegateController.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\DisbursementController.cs" />
@@ -161,12 +162,14 @@
     <Compile Include="Controllers\RestDepartmentHeadController.cs" />
     <Compile Include="Controllers\RestStockClerkController.cs" />
     <Compile Include="Controllers\RetrievalFormController.cs" />
+    <Compile Include="Controllers\StockCardController.cs" />
     <Compile Include="Controllers\StockController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="DAO\AdjVoucherDAO.cs" />
     <Compile Include="DAO\AnalyticsDAO.cs" />
     <Compile Include="DAO\CartDAO.cs" />
     <Compile Include="DAO\CatalogueDAO.cs" />
+    <Compile Include="DAO\ChargeBackDAO.cs" />
     <Compile Include="DAO\CollectionPointDAO.cs" />
     <Compile Include="DAO\DelegateDAO.cs" />
     <Compile Include="DAO\DepartmentDAO.cs" />
@@ -179,6 +182,7 @@
     <Compile Include="DAO\RequisitionDAO.cs" />
     <Compile Include="DAO\RequisitionDetailsDAO.cs" />
     <Compile Include="DAO\RetrievalFormDAO.cs" />
+    <Compile Include="DAO\StockCardDAO.cs" />
     <Compile Include="DAO\StockDAO.cs" />
     <Compile Include="DAO\SupplierDAO.cs" />
     <Compile Include="Global.asax.cs">
@@ -186,6 +190,7 @@
     </Compile>
     <Compile Include="Models\AdjVoucher.cs" />
     <Compile Include="Models\Cart.cs" />
+    <Compile Include="Models\ChargeBack.cs" />
     <Compile Include="Models\CollectionPoint.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\Delegate.cs" />
@@ -200,12 +205,15 @@
     <Compile Include="Models\Requisition.cs" />
     <Compile Include="Models\RequisitionDetails.cs" />
     <Compile Include="Models\RetrievalForm.cs" />
+    <Compile Include="Models\StockCard.cs" />
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AnalyticsService.cs" />
     <Compile Include="Services\CatalogueService.cs" />
+    <Compile Include="Services\ChargeBackService.cs" />
     <Compile Include="Services\DelegateService.cs" />
     <Compile Include="Services\DepartmentService.cs" />
+    <Compile Include="Services\DisbursementListService.cs" />
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\IEmailService.cs" />
     <Compile Include="Services\PriceListService.cs" />
@@ -213,6 +221,7 @@
     <Compile Include="Services\RepresentativeService.cs" />
     <Compile Include="Services\RequisitionService.cs" />
     <Compile Include="Services\RetrievalFormService.cs" />
+    <Compile Include="Services\StockCardService.cs" />
     <Compile Include="Services\StockService.cs" />
     <Compile Include="Services\SupplierService.cs" />
   </ItemGroup>
@@ -296,7 +305,7 @@
     <Content Include="Views\PurchaseOrder\All.cshtml" />
     <Content Include="Views\PurchaseOrder\Edit.cshtml" />
     <Content Include="Views\PurchaseOrder\Close.cshtml" />
-    <Content Include="Views\Requisition\ViewAllOutstandingRequisitions.cshtml" />
+    <Content Include="Views\Requisition\ViewAllRequisitionsByStatus.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
@@ -326,11 +335,16 @@
     <Content Include="Views\Delegate\ViewDelegate.cshtml" />
     <Content Include="Views\Analytics\DisplayChartByDept.cshtml" />
     <Content Include="Views\Analytics\Select.cshtml" />
-    <Content Include="Views\Analytics\DisplayChartByStationery.cshtml" />
+    <Content Include="Views\Analytics\ByStationeryCategoryRequested.cshtml" />
     <Content Include="Views\Analytics\DisplayChartBySupplier.cshtml" />
     <Content Include="Views\Analytics\Home.cshtml" />
     <Content Include="Views\Requisition\MyRequisition.cshtml" />
     <Content Include="Views\Requisition\DeptRequisition.cshtml" />
+    <Content Include="Views\Catalogue\CreateNext.cshtml" />
+    <Content Include="Views\Delegate\ViewRemoveDelegate.cshtml" />
+    <Content Include="Views\Analytics\ByStationeryCategoryOrdered.cshtml" />
+    <Content Include="Views\Catalogue\UpdateNext.cshtml" />
+    <Content Include="Views\Stock\StockCard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -66,6 +66,20 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static void ChangeEmployeeRoles(long deptId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string qq = @"Update Employee Set empRole='HEAD' where empDisplayRole='HEAD' and empRole='EMPLOYEE'";
+                SqlCommand cmd = new SqlCommand(qq, conn);
+                cmd.ExecuteNonQuery();
+                string q = @"Update Employee Set empRole='EMPLOYEE' where empDisplayRole='EMPLOYEE' and empRole='HEAD'";
+                SqlCommand cmd1 = new SqlCommand(q, conn);
+                cmd1.ExecuteNonQuery();
+            }
+        }
+
         public static List<Employee> GetEmployeesByIdList(List<long> empIds)
         {
 

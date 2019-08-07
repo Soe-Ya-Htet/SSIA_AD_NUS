@@ -24,6 +24,11 @@ namespace SSISTeam9.Controllers
         {
             if (confirm)
             {
+                if (PriceListService.GetPriceListByItemId(itemId) != null)
+                {
+                    PriceListService.DeletePriceList(itemId);
+                }
+
                 CatalogueService.DeleteCatalogue(itemId);
 
                 List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
@@ -35,30 +40,52 @@ namespace SSISTeam9.Controllers
 
         public ActionResult Create()
         {
-            List<string> supplierNames = SupplierService.GetAllSupplierNames();
-            ViewData["supplierNames"] = supplierNames;
+            List<string> categories = CatalogueService.GetAllCategories();
+            ViewData["categories"] = categories;
             List<string> unitsOfMeasure = CatalogueService.GetAllUnits();
             ViewData["unitsOfMeasure"] = unitsOfMeasure;
             return View();
         }
 
-        public ActionResult CreateNew(Inventory catalogue, List<string> supplierCodes)
+
+        public ActionResult CreateCatalogue(Inventory catalogue)
         {
 
-            
+            long ItemId = 0;
             try
             {
-                PriceList test = new PriceList();
-                CatalogueService.CreateCatalogueDetaills(test, supplierCodes);
+                string itemCode = catalogue.ItemCode.ToUpper();
+                catalogue.ItemCode = itemCode;
 
-                List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
-                ViewData["catalogues"] = catalogue;               
+                ItemId = CatalogueService.CreateCatalogueDetaills(catalogue);
             }
             catch (SqlException)
             {
                 TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please Verify.');</script>";
                 return RedirectToAction("Create");
             }
+            return RedirectToAction("CreateNext", new { itemId = ItemId});
+        }
+
+
+        public ActionResult CreateNext(long itemId)
+        {
+            ViewData["itemId"] = itemId;          
+            
+            List<string> supplierNames = SupplierService.GetAllSupplierNames();
+            ViewData["supplierNames"] = supplierNames;
+            return View();
+        }
+
+
+        public ActionResult CreatePriceList(long ItemId, PriceList priceList)
+        {
+            priceList.Item = new Inventory();
+            priceList.Item.ItemId = ItemId;
+            PriceListService.CreatePriceListDetaills(priceList);
+
+            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
+            ViewData["catalogues"] = catalogues;
             return RedirectToAction("All");
         }
 
@@ -69,26 +96,65 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult Update()
+        public ActionResult Update(long itemId)
         {
+            ViewData["catalogue"] = CatalogueService.GetCatalogueById(itemId);
+            List<string> categories = CatalogueService.GetAllCategories();
+            ViewData["categories"] = categories;
+            List<string> unitsOfMeasure = CatalogueService.GetAllUnits();
+            ViewData["unitsOfMeasure"] = unitsOfMeasure;
             return View();
         }
 
-        public ActionResult UpdateDetails(Inventory catalogue, List<string> supplierCodes)
+        public ActionResult UpdateCatalogue(Inventory catalogue)
         {
+
+            long ItemId = catalogue.ItemId;
             try
             {
-                CatalogueService.UpdateCatalogue(catalogue, supplierCodes);
-                List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
-                ViewData["catalogues"] = catalogues;
+                string itemCode = catalogue.ItemCode.ToUpper();
+                catalogue.ItemCode = itemCode;
+
+                CatalogueService.UpdateCatalogue(catalogue);
+
             }
-            catch(SqlException)
+            catch (SqlException)
             {
                 TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please Verify.');</script>";
-                return RedirectToAction("Create");
+                return RedirectToAction("Update");
             }
-       
+            return RedirectToAction("UpdateNext", new { itemId = ItemId });
+        }
+
+
+        public ActionResult UpdateNext(long itemId)
+        {
+            ViewData["itemId"] = itemId;
+            ViewData["pricelist"] = PriceListService.GetPriceListByItemId(itemId);
+
+            if(PriceListService.GetPriceListByItemId(itemId) == null)
+            {
+                return RedirectToAction("CreateNext", new { itemId = itemId });
+            }
+            else
+            {
+                List<string> supplierNames = SupplierService.GetAllSupplierNames();
+                ViewData["supplierNames"] = supplierNames;
+                return View();
+            }            
+        }
+
+        public ActionResult UpdatePriceList(long ItemId, PriceList priceList)
+        {
+            priceList.Item = new Inventory();
+            priceList.Item.ItemId = ItemId;
+            PriceListService.UpdatePriceList(priceList);
+
+            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
+            ViewData["catalogues"] = catalogues;
             return RedirectToAction("All");
         }
+
+
     }
 }

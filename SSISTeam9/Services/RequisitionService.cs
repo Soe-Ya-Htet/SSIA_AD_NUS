@@ -70,6 +70,16 @@ namespace SSISTeam9.Services
             return carts;
         }
 
+        public static List<Requisition> GetRequisitionByEmpId(int empId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static List<Requisition> GetRequisitionByDeptId(int deptId)
+        {
+            throw new NotImplementedException();
+        }
+
         public static void CreateRequisition(List<Cart> carts, long empId)
         {
             Employee emp = new Employee();

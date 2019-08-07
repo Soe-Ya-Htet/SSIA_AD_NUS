@@ -68,14 +68,12 @@ namespace SSISTeam9.Controllers
 
         public ActionResult MyRequisition(int empId)
         {
-
-            return View();
+            return View(RequisitionService.GetRequisitionByEmpId(empId));
         }
         
-        public ActionResult DeptRequisition(int empId)
+        public ActionResult DeptRequisition(int deptId)
         {
-
-            return View();
+            return View(RequisitionService.GetRequisitionByDeptId(deptId));
         }
 
         public ActionResult GetPendingRequisitions()

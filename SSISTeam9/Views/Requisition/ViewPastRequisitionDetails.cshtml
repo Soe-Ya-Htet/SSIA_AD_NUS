@@ -1,7 +1,25 @@
-﻿
+﻿@model SSISTeam9.Models.RequisitionDetails
+@using SSISTeam9.Models
 @{
-    ViewBag.Title = "ViewPastRequisitionDetails";
+    var requisitionDetails = (List<RequisitionDetails>)ViewData["requisitionDetails"];
+    var reqId = (long)ViewData["reqId"];
 }
+Requisition ID : @reqId
+        <table>
+            <tr>
+                <th>Description</th>
+                <th>UnitOfMeasure</th>
+                <th>Quantity</th>
+            </tr>
 
-<h2>ViewPastRequisitionDetails</h2>
+            @foreach (var detail in requisitionDetails)
+            {
+                <tr>
 
+                    <td>@detail.Item.Description</td>
+                    <td>@detail.Item.UnitOfMeasure</td>
+                    <td>@detail.Quantity</td>
+                </tr>
+            }
+            
+        </table>

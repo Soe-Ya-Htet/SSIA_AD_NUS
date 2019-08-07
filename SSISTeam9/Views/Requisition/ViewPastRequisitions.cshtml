@@ -1,7 +1,34 @@
-﻿
+﻿@model SSISTeam9.Models.Requisition
+@using SSISTeam9.Models
 @{
-    ViewBag.Title = "ViewPastRequisitions";
+    var requisitions = (List<Requisition>)ViewData["pastRequisitions"];
+
 }
 
-<h2>ViewPastRequisitions</h2>
+@{
+    if (requisitions.Count == 0)
+    {
+        <h2>No past requisitions</h2>
+    }
+    else
+    {
+        <table>
+            <tr>
+                <th>RequisitionID</th>
+                <th>Employee Name</th>
+                <th>Requisition Status</th>
+            </tr>
 
+            @foreach (var requisition in requisitions)
+            {
+        <tr>
+
+            <td>@Html.ActionLink(@requisition.ReqId.ToString(), "ViewPastRequisitionDetails", new { reqId = @requisition.ReqId })</td>
+            <td>@requisition.Employee.EmpName</td>
+            <td>@requisition.Status</td>
+        </tr>
+            }
+        </table>
+    }
+
+}

@@ -126,6 +126,25 @@ namespace SSISTeam9.Services
             return filtered;
         }
 
+        public static List<Requisition> DisplayPastRequisitions(long deptId)
+        {
+            string[] status = { "Approved","Assigned to Collection","Partially Completed", "Partially Completed(assigned)","Completed" };
+            List<Requisition> list = RequisitionDAO.GetRequisitionsByStatuses(status);
+            List<Requisition> filtered = new List<Requisition>();
+            if (list.Count != 0)
+            {
+                list = GetRequisitionsWithObjects(list);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].Employee.Department.DeptId == deptId)
+                    {
+                        filtered.Add(list[i]);
+                    }
+                }
+            }
+            return filtered;
+        }
+
         public static List<RequisitionDetails> DisplayRequisitionDetailsByReqId(long reqId)
         {
             List<RequisitionDetails> list = RequisitionDAO.GetRequisitionDetailsByReqId(reqId);

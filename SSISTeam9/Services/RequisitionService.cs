@@ -44,7 +44,7 @@ namespace SSISTeam9.Services
 
         private static List<Cart> GetCartsWithObjects(List<Cart> carts)
         {
-            if (carts.Count == 0) return null;
+            if (carts.Count == 0) return new List<Cart>();
             List<long> empIds = new List<long>();
             List<long> itemIds = new List<long>();
             foreach (Cart c in carts)

@@ -169,5 +169,10 @@ namespace SSISTeam9.Services
         {
             PurchaseOrderDAO.ConfirmOrder(orderNumber);
         }
+
+        public static PurchaseOrder GetOrderById(long orderId)
+        {
+            return PurchaseOrderDAO.GetOrderById(orderId);
+        }
     }
 }

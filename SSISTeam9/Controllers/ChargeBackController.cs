@@ -12,7 +12,25 @@ namespace SSISTeam9.Controllers
     {
         public ActionResult ViewTable()
         {
+            
+
             return View();
         }
+
+
+        public ActionResult ByDept()
+        {
+
+
+            return View();
+        }
+
+        public ActionResult ByMonth()
+        {
+
+
+            return View();
+        }
+
     }
 }

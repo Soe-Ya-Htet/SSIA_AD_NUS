@@ -91,7 +91,20 @@ namespace SSISTeam9.Controllers
             ViewData["reqId"] = reqId;
             return View();
         }
-
+        public ActionResult ViewPastRequisitions()
+        {
+            long deptId = 1;
+            List<Requisition> requisitions = RequisitionService.DisplayPastRequisitions(deptId);
+            ViewData["pastRequisitions"] = requisitions;
+            return View();
+        }
+        public ActionResult ViewPastRequisitionDetails(long reqId)
+        {
+            List<RequisitionDetails> requisitionDetails = RequisitionService.DisplayRequisitionDetailsByReqId(reqId);
+            ViewData["requisitionDetails"] = requisitionDetails;
+            ViewData["reqId"] = reqId;
+            return View();
+        }
         public ActionResult ProcessRequisition(long reqId, string status)
         {
             long currentHead = 2;

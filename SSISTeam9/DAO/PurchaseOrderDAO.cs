@@ -263,6 +263,39 @@ namespace SSISTeam9.DAO
                 cmd.ExecuteNonQuery();
             }
         }
-        
+
+        public static PurchaseOrder GetOrderById(long orderId)
+        {
+            PurchaseOrder order = new PurchaseOrder();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from PurchaseOrder WHERE orderId = '" + orderId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    order = new PurchaseOrder()
+                    {
+                        OrderId = (long)reader["orderId"],
+                        OrderNumber = (string)reader["orderNumber"],
+                        Status = (string)reader["status"],
+                        SubmittedDate = (DateTime)reader["submittedDate"],
+                        OrderDate = (DateTime)reader["orderDate"],
+                        DeliverTo = (string)reader["deliverTo"],
+                        DeliverBy = (DateTime)reader["deliverBy"],
+                        SupplierId = (long)reader["supplierId"],
+                        EmployeeId = (long)reader["empId"]
+
+                    };
+                }
+            }
+
+            return order;
+        }
+
     }
 }

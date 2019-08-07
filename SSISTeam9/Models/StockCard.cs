@@ -14,9 +14,11 @@ namespace SSISTeam9.Models
         public DateTime Date { get; set; }
 
         public int SourceType { get; set; }
+        public long SourceId { get; set; }
         public AdjVoucher AdjVoucher { get; set; }
         public DisbursementList DisbursementList { get; set; }
         public PurchaseOrder PurchaseOrder { get; set; }
+        public string Display { get; set }
         public string Qty { get; set; }
         public string Balance { get; set; }
     }

@@ -26,5 +26,17 @@ namespace SSISTeam9.DAO
                 cmd.ExecuteNonQuery();
             }
         }
+
+        public static void DeleteDelegate(long deptId,long empId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"DELETE from Delegate where empId="+empId+" and deptId = '" + deptId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

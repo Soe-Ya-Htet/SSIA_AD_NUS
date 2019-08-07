@@ -1,7 +1,11 @@
-﻿
+﻿@using SSISTeam9.Models
 @{
-    ViewBag.Title = "ViewRemoveDelegate";
+    var currentHead = (Employee)ViewData["currentHead"];
 }
 
 <h2>ViewRemoveDelegate</h2>
 
+<form method="post" action="@Url.Action("ViewRemoveDelegate","Delegate",new { })">
+    Current Head : @currentHead.EmpName
+    <button type="submit" formaction="/Delegate/ViewRemoveDelegate?headId=@currentHead.EmpId">Remove</button>
+</form>

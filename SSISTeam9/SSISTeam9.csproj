@@ -345,6 +345,8 @@
     <Content Include="Views\Analytics\ByStationeryCategoryOrdered.cshtml" />
     <Content Include="Views\Catalogue\UpdateNext.cshtml" />
     <Content Include="Views\Stock\StockCard.cshtml" />
+    <Content Include="Views\Requisition\ViewPastRequisitions.cshtml" />
+    <Content Include="Views\Requisition\ViewPastRequisitionDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

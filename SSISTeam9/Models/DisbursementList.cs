@@ -12,5 +12,6 @@ namespace SSISTeam9.Models
         public DateTime date { get; set; }
         public Department Department { get; set; }
         public CollectionPoint CollectionPoint { get; set; }
+        public List<DisbursementListDetails> DisbursementListDetails { get; set; }
     }
 }

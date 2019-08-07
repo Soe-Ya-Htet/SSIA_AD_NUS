@@ -9,7 +9,7 @@
 
 }
 
-<form action="/CreateDisbursementLists" method="post">
+
     <table>
         <tr>
             <th rowspan="2">Bin #</th>
@@ -35,20 +35,21 @@
                 <td rowspan="@retForm.deptNeeds.Count" id="/@retForm.itemId">@retForm.itemId</td>
                 <td>@retForm.deptNeeds[0].deptCode</td>
                 <td>@retForm.deptNeeds[0].deptNeeded</td>
-                <td><input type="number" name="@retForm.itemId" value="@retForm.deptNeeds[0].deptNeeded" onchange="findTotal(@retForm.itemId)" min="0" /></td>
+                <td><input type="number"  class="@retForm.itemId" name="@retForm.deptNeeds[0].deptId" value="@retForm.deptNeeds[0].deptNeeded" onchange="findTotal(@retForm.itemId)" min="0" /></td>
             </tr>
             for (int i = 1; i < retForm.deptNeeds.Count; i++)
             {
                 <tr>
                     <td>@retForm.deptNeeds[i].deptCode</td>
                     <td>@retForm.deptNeeds[i].deptNeeded</td>
-                    <td><input type="number" name="@retForm.itemId" value="@retForm.deptNeeds[i].deptNeeded" onchange="findTotal(@retForm.itemId)" min="0" /></td>
+                    <td><input type="number" class="@retForm.itemId" name="@retForm.deptNeeds[i].deptId" value="@retForm.deptNeeds[i].deptNeeded" onchange="findTotal(@retForm.itemId)" min="0" /></td>
                 </tr>
             }
 
         }
     </table>
-</form>
+    <input type="button"  value="Submit" onclick="submitData()" />
+
 
 <script type="text/javascript">
     var jsRetForms = @Html.Raw(Json.Encode(ViewData["retrievalForms"]));
@@ -60,19 +61,55 @@
         }
     }
 
-
-
     function findTotal(id) {
-        var arr = document.getElementsByName(id);
+        var arr = document.getElementsByClassName(id);
         var tot = 0;
         for (var i = 0; i < arr.length; i++) {
             if (parseInt(arr[i].value))
                 tot += parseInt(arr[i].value);
         }
-        document.getElementById("/"+id).innerHTML = tot;
+        document.getElementById("/" + id).innerHTML = tot;
     }
 
     window.onload = findAllTotal();
 
+    function submitData() {
+        var deptCodes = new Array();
+        for (var retForm of jsRetForms) {
+            for (retF of retForm["deptNeeds"]) {
+                if (deptCodes.includes(retF["deptId"])) {
 
+                }
+                else {
+                    deptCodes.push(retF["deptId"])
+                }
+            }
+
+        }//this returns arrays deptCodes
+
+        var listOfLists = new Array();
+        for (var i = 0; i < deptCodes.length; i++) {
+            var listPerDeptCode = document.getElementsByName(deptCodes[i])
+            for (var item of listPerDeptCode) {
+                var list = { deptId: deptCodes[i], itemId: item.className, quantity: item.value }
+                listOfLists.push(list)
+            }
+        }
+
+        //var dataToPost = JSON.stringify({ methodParam: listOfLists });
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("CreateDisbursementLists", "Disbursement")",
+            contentType: 'application/json; charset=utf-8', // specify the content type
+            dataType: 'JSON', // make sure you use the correct case for dataType
+            data: JSON.stringify(listOfLists),
+            success: function (data) {
+                window.location.href = data;
+            },
+            failure: function (errMsg) {
+                alert(errMsg);
+            }
+        });
+    }
 </script>

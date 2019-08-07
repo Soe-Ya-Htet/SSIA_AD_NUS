@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SSISTeam9.Services;
+using SSISTeam9.Models;
 namespace SSISTeam9.Controllers
 {
     public class DisbursementController : Controller
@@ -22,6 +23,85 @@ namespace SSISTeam9.Controllers
 
             return View();
 
+        }
+
+        public ActionResult CreateDisbursementLists(List<entry> entries)
+        {
+            List<long> deptIds = new List<long>();
+            
+            List<DisbursementList> disbursementLists = new List<DisbursementList>();
+
+            foreach (var entry in entries)
+            {
+                if (deptIds.Contains(entry.deptId))
+                {
+
+                }
+                else
+                {
+                    deptIds.Add(entry.deptId);
+                    
+                }
+            }
+
+            foreach (var deptId in deptIds)
+            {
+                List<DisbursementListDetails> disbursementListDetails = new List<DisbursementListDetails>();
+                Department dept = new Department()
+                {
+                    DeptId = deptId
+                };
+                DisbursementList d = new DisbursementList()
+                {
+                    Department = dept,
+                    DisbursementListDetails = disbursementListDetails
+                    
+                };
+                
+
+                foreach (var entry in entries)
+                {
+                    if (entry.deptId==deptId)
+                    {
+                        Inventory i = new Inventory()
+                        {
+                            ItemId = entry.itemId,
+                            
+
+                        };
+                        DisbursementListDetails dDets = new DisbursementListDetails()
+                        {
+                            Item = i,
+                            Quantity= entry.quantity
+                            
+                        };
+                        
+                        d.DisbursementListDetails.Add(dDets);
+                    }
+                }
+                disbursementLists.Add(d);
+            }
+            DisbursementListService.CreateDisbursementLists(disbursementLists);
+
+            return Json(Url.Action("ViewAllDisbursements","Disbursement"));
+        }
+
+        //    public ActionResult UpdateDisbursementLists(List<entry> entries)
+        //    {
+        //        foreach (var item in entries)
+        //        {
+        //            DisbursementListService.UpdateDisbursementListDetails(item);
+        //        }
+
+        //        return null;
+        //    }
+
+        //}
+        public class entry
+        {
+            public long deptId { get; set; }
+            public long itemId { get; set; }
+            public int quantity { get; set; }
         }
     }
 }

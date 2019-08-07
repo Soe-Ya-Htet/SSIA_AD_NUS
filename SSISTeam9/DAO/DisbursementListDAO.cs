@@ -9,31 +9,29 @@ namespace SSISTeam9.DAO
 {
     public class DisbursementListDAO
     {
-        //    public static void CreateDisbursmentList(List<long> selected)
-        //    {
-        //        int listId;
-        //        using (SqlConnection conn = new SqlConnection(Data.db_cfg))
-        //        {
-        //            conn.Open();
-        //            string q = @"INSERT INTO DisbursmentList (deptId)" +
-        //                    "VALUES (@deptId, @reqCode, @dateOfRequest, @status)" +
-        //                    "SELECT CAST(scope_identity() AS int)";
-        //            var parms = selected.Select((s, i) => "@id" + i.ToString()).ToArray();
-        //            var inclause = string.Join(",", parms);
+        public static long CreateDisbursementList(DisbursementList disbursement)
+        {
+            int listId;
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"INSERT INTO DisbursementList (deptId,collectionPointId)" +
+                        "VALUES (@deptId, @collectionPointId)" +
+                        "SELECT CAST(scope_identity() AS int)";
 
-        //            string sql = string.Format(q, inclause);
-        //            Console.Write(sql);
 
-        //            SqlCommand cmd = new SqlCommand(sql, conn);
-        //            for (var i = 0; i < parms.Length; i++)
-        //            {
-        //                cmd.Parameters.AddWithValue(parms[i], reqIds[i]);
-        //            }
 
-        //            cmd.ExecuteNonQuery();
-        //        }
+                Console.WriteLine(q);
+                SqlCommand cmd = new SqlCommand(q, conn);
+               
+                cmd.Parameters.AddWithValue("@deptId", disbursement.Department.DeptId);
+                cmd.Parameters.AddWithValue("@collectionPointId", disbursement.Department.CollectionPoint.PlacedId);
+                listId = (int)cmd.ExecuteScalar();
 
-        //    }
+            }
+            return (long)listId;
+
+        }
 
         public static List<DisbursementList> ViewDisbursements(string collectionPt)
         {

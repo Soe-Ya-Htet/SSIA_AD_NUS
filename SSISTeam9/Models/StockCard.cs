@@ -18,7 +18,7 @@ namespace SSISTeam9.Models
         public AdjVoucher AdjVoucher { get; set; }
         public DisbursementList DisbursementList { get; set; }
         public PurchaseOrder PurchaseOrder { get; set; }
-        public string Display { get; set }
+        public string Display { get; set; }
         public string Qty { get; set; }
         public string Balance { get; set; }
     }

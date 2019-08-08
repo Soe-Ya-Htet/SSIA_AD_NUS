@@ -4,14 +4,31 @@ using System.Linq;
 using System.Web;
 using SSISTeam9.Models;
 using SSISTeam9.DAO;
+using System.Threading.Tasks;
 
 namespace SSISTeam9.Services
 {
     public class StockService
     {
-        public static List<Inventory> GetAllItemsOrdered()
+        public async static Task<List<Inventory>> GetAllItemsOrdered()
         {
-            return StockDAO.GetAllItemsOrdered();
+            List<Inventory> items = StockDAO.GetAllItemsOrdered();
+
+            //Contact Python API to get predicted re-order amount and level for item with code 'P021'
+            string data;
+            string[] preds = new string[] { };
+
+            foreach (var item in items)
+            {
+                if (item.ItemCode == "P021")
+                {
+                    data = await AnalyticsService.GetRequest("http://127.0.0.1:5000/reorder/" + item.ItemCode);
+                    preds = data.Split(new char[] { ',', '[', ']' }, StringSplitOptions.RemoveEmptyEntries);
+                    item.ReorderQty = (int)Math.Round(double.Parse(preds[0]));
+                    item.ReorderLevel = (int)Math.Round(double.Parse(preds[1]));
+                }
+            }
+            return items;
         }
 
         public static List<long> GetItemsFirstSupplierIds(List<long> itemIds)

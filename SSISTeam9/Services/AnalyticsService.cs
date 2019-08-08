@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using SSISTeam9.Models;
 using SSISTeam9.DAO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SSISTeam9.Services
 {
@@ -13,7 +15,23 @@ namespace SSISTeam9.Services
         {
             return AnalyticsDAO.GetRequisitionsByDept(department);
         }
-        
+
+        public async static Task<string> GetRequest(string url)
+        {
+            string data = "";
+            using (HttpClient client = new HttpClient())
+            {
+                using (HttpResponseMessage res = await client.GetAsync(url))
+                {
+                    if (res.IsSuccessStatusCode)
+                    {
+                        data = res.Content.ReadAsStringAsync().Result;
+                    }
+                }
+            };
+            return data;
+        }
+
         public static Dictionary<Tuple<int, int>, int> GetTotalQuantitiesByMonthAndYear(List<RequisitionDetails> reqs)
         {
             Dictionary<Tuple<int, int>, int> totalQuantitiesByMonthAndYear = new Dictionary<Tuple<int, int>, int>();

@@ -6,6 +6,7 @@
 @{ 
     var details = (List<DisbursementListDetails>)ViewData["details"];
     var listId = (long)ViewData["listId"];
+    var collectionPoint = (long)ViewData["collectionPt"];
 }
 
     <table>
@@ -43,7 +44,7 @@
 
         $.ajax({
             type: 'POST',
-            url: "@Url.Action("UpdateDisbursementLists", "Disbursement", new { listId = listId})",
+            url: "@Html.Raw(Url.Action("UpdateDisbursementLists", "Disbursement", new { listId = listId, collectionPt= collectionPoint}))",
             contentType: 'application/json; charset=utf-8', // specify the content type
             dataType: 'JSON', // make sure you use the correct case for dataType
             data: JSON.stringify(listOfLists),

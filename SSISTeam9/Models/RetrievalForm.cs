@@ -18,6 +18,7 @@ namespace SSISTeam9.Models
 
     public class DeptNeeds
     {
+        public long deptId { get; set; }
         public string deptCode { get; set; }
         public int deptNeeded { get; set; }
         public int deptActual { get; set; }

@@ -5,15 +5,18 @@ using System.Web;
 using System.Web.Mvc;
 using SSISTeam9.Models;
 using SSISTeam9.Services;
+using System.Threading.Tasks;
 
 namespace SSISTeam9.Controllers
 {
     public class StockController : Controller
     {
         // GET: Stock
-        public ActionResult All()
+        public async Task<ActionResult> All()
         {
-            List<Inventory> items = StockService.GetAllItemsOrdered();
+            //Contact Python API to get predicted re-order amount and level  for item with code 'P021'
+            //Done via StockService
+            List<Inventory> items = await StockService.GetAllItemsOrdered();
 
             //Show the quantities which are being ordered by all store staff
             items = StockService.GetPendingOrderQuantities(items); 
@@ -23,9 +26,10 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult EnterQuantities(Inventory inventory, string empId)
+        public async Task<ActionResult> EnterQuantities(Inventory inventory, string empId)
         {
-            List<Inventory> stock = StockService.GetAllItemsOrdered();
+            //Contact Python API to get predicted re-order amount and level for item with code 'P021'
+            List<Inventory> stock = await StockService.GetAllItemsOrdered();
             List<Inventory> selectedItems = new List<Inventory>();
 
             for (int i = 0; i < stock.Count; i++)

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using SSISTeam9.Services;
 using SSISTeam9.Models;
-
+using System.Threading.Tasks;
 
 namespace SSISTeam9.Controllers
 {
@@ -99,10 +99,10 @@ namespace SSISTeam9.Controllers
             ViewData["monthsInInt"] = monthsInInt;
             return View();
         }
-        
-        public ActionResult DisplayChartByDept(FormCollection formCollection)
+
+        public async Task<ActionResult> DisplayChartByDept(FormCollection formCollection)
         {
-          
+
             int month = monthsInInt[formCollection["month"]];
             int year = int.Parse(formCollection["year"]);
 
@@ -111,13 +111,64 @@ namespace SSISTeam9.Controllers
             ViewData["year"] = year;
             ViewData["monthsToDisplay"] = monthsToDisplay;
             ViewData["department"] = formCollection["department"];
-            
+
             List<RequisitionDetails> reqs = AnalyticsService.GetRequisitionsByDept(formCollection["department"]);
-            
+
+            //Export reqs to CSV
+            //StringWriter sw = new StringWriter();
+            //sw.WriteLine("\"monthOfRequest\",\"yearOfRequest\",\"quantity\"");
+
+            //Response.ClearContent();
+            //Response.AddHeader("content-disposition", "attachment;filename=dept_reqs.csv");
+            //Response.ContentType = "text/csv";
+
+            //foreach (var req in reqs)
+            //{
+            //    sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\"",
+            //                  req.MonthOfRequest,
+            //                  req.YearOfRequest,
+            //                  req.Quantity));
+            //}
+
+            //Response.Write(sw.ToString());
+            //Response.End();
+
             Dictionary<Tuple<int, int>, int> totalQuantitiesByMonthAndYear = AnalyticsService.GetTotalQuantitiesByMonthAndYear(reqs);
             //For months with no value, to fill it with 0.
             Dictionary<string, int> monthsAndQuantitiesForChart = AnalyticsService.FillEmptyData(totalQuantitiesByMonthAndYear, months, month, year);
 
+            //Contact Python API to get predictions for next 3 months for only English Dept
+            string data;
+            string[] preds = new string[] { };
+            if (formCollection["department"] == "English Dept")
+            {
+                data = await AnalyticsService.GetRequest("http://127.0.0.1:5000/" + formCollection["department"]);
+                preds = data.Split(new char[] { ',', '[', ']' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+
+            //Put predictions in dictionary for displaying
+            if (month == currentMonth && formCollection["department"] == "English Dept")
+            {
+                if (month == 12)
+                {
+                    monthsAndQuantitiesForChart[months[month] + " " + year + " (Predicted)"] = (int)Math.Round(double.Parse(preds[0]));
+                    monthsAndQuantitiesForChart[months[1] + " " + (year + 1) + " (Predicted)"] = (int)Math.Round(double.Parse(preds[1]));
+                    monthsAndQuantitiesForChart[months[2] + " " + (year + 1) + " (Predicted)"] = (int)Math.Round(double.Parse(preds[2]));
+                }
+                else if (month == 11)
+                {
+                    monthsAndQuantitiesForChart[months[month] + " " + year + " (Predicted)"] = (int)Math.Round(double.Parse(preds[0]));
+                    monthsAndQuantitiesForChart[months[month + 1] + " " + year + " (Predicted)"] = (int)Math.Round(double.Parse(preds[1]));
+                    monthsAndQuantitiesForChart[months[1] + " " + (year + 1) + " (Predicted)"] = (int)Math.Round(double.Parse(preds[2]));
+                }
+                else
+                {
+                    monthsAndQuantitiesForChart[months[month] + " " + year + " (Predicted)"] = (int)Math.Round(double.Parse(preds[0]));
+                    monthsAndQuantitiesForChart[months[month + 1] + " " + year + " (Predicted)"] = (int)Math.Round(double.Parse(preds[1]));
+                    monthsAndQuantitiesForChart[months[month + 2] + " " + year + " (Predicted)"] = (int)Math.Round(double.Parse(preds[2]));
+                }
+            }
+         
             ViewData["monthsAndQuantitiesForChart"] = monthsAndQuantitiesForChart;
 
             return View();

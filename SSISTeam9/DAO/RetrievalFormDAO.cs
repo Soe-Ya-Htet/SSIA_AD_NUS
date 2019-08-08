@@ -53,10 +53,10 @@ namespace SSISTeam9.DAO
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
-                string q = @"SELECT SUM(quantity) as needed, d.deptCode 
+                string q = @"SELECT SUM(quantity) as needed, d.deptCode, d.deptId 
                             FROM RequisitionDetails r, Inventory i, Requisition req, Employee e, Department d 
                             WHERE /*reqId IN ({0})*/ req.status IN ('Assigned', 'Partially Completed(Assigned)') AND  r.itemId='" +itemId + "' AND r.itemId=i.itemId AND r.reqId=req.reqId AND req.empId=e.empId AND e.deptId=d.deptId " +
-                            "GROUP BY r.itemId, d.deptCode " +
+                            "GROUP BY r.itemId, d.deptCode, d.deptId " +
                             "ORDER BY d.deptCode";
 
                 
@@ -73,6 +73,7 @@ namespace SSISTeam9.DAO
                     {
                         deptCode = (string)reader["deptCode"],
                         deptNeeded = (int)reader["needed"],
+                        deptId = (long)reader["deptId"]
                     };
                     deptNeedsList.Add(deptNeeds);
                 }

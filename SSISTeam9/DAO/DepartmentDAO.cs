@@ -29,6 +29,7 @@ namespace SSISTeam9.DAO
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+
                     Department department = new Department()
                     {
                         DeptId = (long)reader["deptId"],
@@ -38,6 +39,8 @@ namespace SSISTeam9.DAO
                         Telephone = (string)reader["telephone"],
                         Fax = (reader["fax"] == DBNull.Value) ? "Nil" : (string)reader["fax"],
                         Head = (reader["head"] == DBNull.Value) ? "Nil" : (string)reader["head"]
+                        
+                        
                     };
                     department.Representative = new Employee();
                     department.Representative.EmpName = (reader["rep"] == DBNull.Value) ? " " : (string)reader["rep"];
@@ -61,7 +64,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT d.deptId, d.deptCode, d.deptName, c.empName AS contact, 
+                string q = @"SELECT d.deptId, d.deptCode, d.deptName, d.collectionPointId, c.empName AS contact, 
                             d.telephone, d.fax, h.empName AS head, e.empName AS rep, cp.name AS collectionPoint
                             FROM Department d
                             LEFT JOIN Employee c ON d.contact IS NULL OR d.contact = c.empId
@@ -83,11 +86,13 @@ namespace SSISTeam9.DAO
                         Telephone = (string)reader["telephone"],
                         Fax = (reader["fax"] == DBNull.Value) ? "Nil" : (string)reader["fax"],
                         Head = (reader["head"] == DBNull.Value) ? "Nil" : (string)reader["head"]
+
                     };
                     department.Representative = new Employee();
                     department.Representative.EmpName = (reader["rep"] == DBNull.Value) ? " " : (string)reader["rep"];
-                    department.CollectionPoint = new CollectionPoint();
+                    department.CollectionPoint = new CollectionPoint();           
                     department.CollectionPoint.Name = (reader["collectionPoint"] == DBNull.Value) ? " " : (string)reader["collectionPoint"];
+                    department.CollectionPoint.PlacedId = (department.CollectionPoint.Name == " ") ? 1 : (long)reader["collectionPointId"];
                 }
                 return department;
             }
@@ -130,13 +135,13 @@ namespace SSISTeam9.DAO
 
                 reader.Close();
 
-                string q = @"INSERT INTO department (deptCode,deptName,contact,telephone,fax,head)" + 
+                string q = @"INSERT INTO department (deptCode,deptName,contact,telephone,fax,head,collectionPointId,representativeId)" + 
                             "VALUES ('" +  department.DeptCode +
                             "','" + department.DeptName +
                             "','" + contact +
                             "','" + department.Telephone +
                             "','" + department.Fax +
-                            "','" + head + "')";
+                            "','" + head + "','1','1')";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();

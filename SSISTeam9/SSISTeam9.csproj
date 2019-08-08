@@ -347,6 +347,8 @@
     <Content Include="Views\Stock\StockCard.cshtml" />
     <Content Include="Views\Requisition\ViewPastRequisitions.cshtml" />
     <Content Include="Views\Requisition\ViewPastRequisitionDetails.cshtml" />
+    <Content Include="Views\ChargeBack\ViewTable.cshtml" />
+    <Content Include="Views\ChargeBack\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

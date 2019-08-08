@@ -381,6 +381,26 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static long GetDeptIdByName(string deptName)
+        {
+            long deptId = 0;
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT deptId from Department WHERE deptName = '" + deptName + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    deptId = (long)reader["deptId"];
+                }
+            }
+            return deptId;
+        }
+
 
     }
 }

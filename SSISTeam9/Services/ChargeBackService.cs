@@ -11,12 +11,22 @@ namespace SSISTeam9.Services
     {
         public static List<ChargeBack> GetChargeBackByDept(long deptId, int year)
         {
-            return ChargeBackDAO.GetChargeBackByDept(deptId, year);
+            List<ChargeBack> chargeBacks = ChargeBackDAO.GetChargeBackByDept(deptId, year);
+            foreach(ChargeBack chargeBack in chargeBacks)
+            {
+                chargeBack.DeptName = DepartmentService.GetDepartmentById(deptId).DeptName;
+            }
+            return chargeBacks;
         }
 
         public static List<ChargeBack> GetChargeBackByMonth(int month)
-        {
-            return ChargeBackDAO.GetChargeBackByMonth(month);
+        {            
+            List<ChargeBack> chargeBacks = ChargeBackDAO.GetChargeBackByMonth(month);
+            foreach (ChargeBack chargeBack in chargeBacks)
+            {
+                chargeBack.DeptName = DepartmentService.GetDepartmentById(chargeBack.DeptId).DeptName;
+            }
+            return chargeBacks;
         }
 
         public static ChargeBack GetDistinctChargeBack(long deptId, int month)
@@ -29,7 +39,7 @@ namespace SSISTeam9.Services
             ChargeBackDAO.CreateChargeBack(chargeBack);
         }
 
-        public static void UpdateChargeBack(int amount, long deptId)
+        public static void UpdateChargeBack(long amount, long deptId)
         {
             ChargeBackDAO.UpdateChargeBack(amount, deptId);
         }

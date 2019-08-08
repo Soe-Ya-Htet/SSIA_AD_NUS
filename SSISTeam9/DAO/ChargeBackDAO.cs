@@ -28,7 +28,7 @@ namespace SSISTeam9.DAO
                         YearOfOrder = (int)reader["yearOfOrder"],
                         MonthOfOrder = (int)reader["monthOfOrder"],
                         DeptId = (long)reader["deptId"],
-                        Amount = (int)reader["amount"]
+                        Amount = (long)reader["amount"]
                     };
                     chargeBacks.Add(chargeBack);
                 }
@@ -55,7 +55,7 @@ namespace SSISTeam9.DAO
                         YearOfOrder = (int)reader["yearOfOrder"],
                         MonthOfOrder = (int)reader["monthOfOrder"],
                         DeptId = (long)reader["deptId"],
-                        Amount = (int)reader["amount"]
+                        Amount = (long)reader["amount"]
                     };
                     chargeBacks.Add(chargeBack);
                 }
@@ -84,7 +84,7 @@ namespace SSISTeam9.DAO
                         YearOfOrder = (int)reader["yearOfOrder"],
                         MonthOfOrder = (int)reader["monthOfOrder"],
                         DeptId = (long)reader["deptId"],
-                        Amount = (int)reader["amount"]
+                        Amount = (long)reader["amount"]
                     };
                 }
             }
@@ -108,7 +108,7 @@ namespace SSISTeam9.DAO
             }
         }
 
-        public static void UpdateChargeBack(int amount, long deptId)
+        public static void UpdateChargeBack(long amount, long deptId)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {

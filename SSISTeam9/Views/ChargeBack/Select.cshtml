@@ -1,7 +1,129 @@
-﻿
+﻿@model SSISTeam9.Models.ChargeBack
+
+@using SSISTeam9.Models;
+
 @{
-    ViewBag.Title = "Select";
+    List<ChargeBack> chargeBacks = (List<ChargeBack>)ViewData["chargeBacks"];
+    List<string> months = (List<string>)ViewData["months"];
+    List<int> years = (List<int>)ViewData["years"];
+    List<string> depts = (List<string>)ViewData["depts"];
+    int? mode = (int?)TempData["mode"];
+    int? monthOfOrder = (int?)ViewData["monthOfOrder"];
+    string deptName = (string)ViewData["deptName"];
+    int? yearOfOrder = (int?)ViewData["yearOfOrder"];
 }
 
-<h2>Select</h2>
+<h2 style="text-align:center">ChargeBack Details</h2>
 
+<div>
+    @using (Html.BeginForm("Generate", "ChargeBack", new { mode = 1 }, FormMethod.Post))
+    {
+        <table>
+            <tr>
+                <td>Generate By Month</td>
+                <td>
+                    <div>
+                        <select name="monthOfOrder" id="monthOfOrder" style="width: 180px">
+                            @for (int i = 0; i < 12; i++)
+                            {
+                                <option value="@(i+1)">@months[i]</option>
+                            }
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <p align="left"><input type="submit" value="Search" onclick="location.href='@Url.Action("Generate", "ChargeBack", new { mode = 1 })'"></p>
+                </td>
+            </tr>
+        </table>
+    }
+    @using (Html.BeginForm("Generate", "ChargeBack", new { mode = 2 }, FormMethod.Post))
+    {
+        <table>
+            <tr>
+                <td>Generate By Month</td>
+                <td>
+                    <div>
+                        <select name="yearOfOrder" id="yearOfOrder" style="width: 180px">
+                            @foreach (int year in years)
+                            {
+                                <option>@year</option>
+                            }
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <select name="deptName" id="deptName" style="width: 180px">
+                            @foreach (string dept in depts)
+                            {
+                                <option>@dept</option>
+                            }
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <p align="right"><input type="submit" value="Search"></p>
+                </td>
+
+        </table>
+    }
+
+</div>
+@if (chargeBacks == null || chargeBacks.Count == 0)
+{
+    <br /><br />
+    <p style="font-size:14px; text-align:center">No ChargeBack to display</p>
+
+}
+else
+{
+    if (mode == 1)
+    {
+        <p style="text-align:center">Generate Charge Back for All Departments in @months[(int)monthOfOrder - 1]</p>
+        <table align="center">
+            <tr align="center">
+                <th>Department Name</th>
+                <th>ChargeBack</th>
+            </tr>
+            @foreach (var c in chargeBacks)
+            {
+                <tr align="center">
+                    <td>@c.DeptName</td>
+                    <td>@c.Amount</td>
+                    <td></td>
+                </tr>
+            }
+        </table>
+
+    }
+    else
+    {
+        <p style="text-align:center">Generate Charge Back for @deptName in @yearOfOrder</p>
+        <table align="center">
+            <tr align="center">
+                <th>Month</th>
+                <th>ChargeBack</th>
+            </tr>
+            @foreach (var c in chargeBacks)
+            {
+                <tr align="center">
+                    <td>@months[c.MonthOfOrder - 1]</td>
+                    <td>@c.Amount</td>
+                    <td></td>
+                </tr>
+            }
+        </table>
+    }
+}
+
+<style>
+    td {
+        padding: 2px;
+    }
+
+    tr {
+        height: 40px;
+        padding: 2px;
+    }
+</style>

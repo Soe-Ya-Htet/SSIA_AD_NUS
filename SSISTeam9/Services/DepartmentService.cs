@@ -59,5 +59,15 @@ namespace SSISTeam9.Services
         {
             return DepartmentDAO.GetCurrentHeadById(deptId);
         }
+
+        public static List<string> GetAllDepartmentNames()
+        {
+            return DepartmentDAO.GetAllDepartmentNames();
+        }
+
+        public static long GetDeptIdByName(string deptName)
+        {
+            return DepartmentDAO.GetDeptIdByName(deptName);
+        }
     }
 }

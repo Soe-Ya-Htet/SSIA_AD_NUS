@@ -185,6 +185,7 @@
     <Compile Include="DAO\StockCardDAO.cs" />
     <Compile Include="DAO\StockDAO.cs" />
     <Compile Include="DAO\SupplierDAO.cs" />
+    <Compile Include="Filters\BasicAuthenticationAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -352,7 +353,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Filters\" />
     <Folder Include="Views\AdjVoucher\" />
     <Folder Include="Views\RestStockClerk\" />
   </ItemGroup>

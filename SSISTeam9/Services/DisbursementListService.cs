@@ -36,10 +36,10 @@ namespace SSISTeam9.Services
             
         }
 
-        //public static void UpdateDisbursementListDetails(entry entry)
-        //{
+        public static void UpdateDisbursementListDetails(long listId, DisbursementListDetails disbursementListDetails)
+        {
 
-        //    DisbursementListDetailsDAO.UpdateDetails(entry);
-        //}
+            DisbursementListDetailsDAO.UpdateDetailById(listId,disbursementListDetails);
+        }
     }
 }

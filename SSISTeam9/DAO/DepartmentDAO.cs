@@ -77,10 +77,6 @@ namespace SSISTeam9.DAO
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    CollectionPoint cP = new CollectionPoint()
-                    {
-                        PlacedId = (long)reader["collectionPointId"]
-                    };
                     department = new Department()
                     {
                         DeptId = (long)reader["deptId"],
@@ -89,16 +85,14 @@ namespace SSISTeam9.DAO
                         Contact = (reader["contact"] == DBNull.Value) ? "Nil" : (string)reader["contact"],
                         Telephone = (string)reader["telephone"],
                         Fax = (reader["fax"] == DBNull.Value) ? "Nil" : (string)reader["fax"],
-                        Head = (reader["head"] == DBNull.Value) ? "Nil" : (string)reader["head"],
-                        CollectionPoint = cP
-                        
+                        Head = (reader["head"] == DBNull.Value) ? "Nil" : (string)reader["head"]
 
                     };
                     department.Representative = new Employee();
                     department.Representative.EmpName = (reader["rep"] == DBNull.Value) ? " " : (string)reader["rep"];
-                    //department.CollectionPoint = new CollectionPoint();
-                    //department.CollectionPoint.Name = (reader["collectionPoint"] == DBNull.Value) ? " " : (string)reader["collectionPoint"];
-                    //Roy commented out these lines because they were giving me problems with collectionPointId
+                    department.CollectionPoint = new CollectionPoint();           
+                    department.CollectionPoint.Name = (reader["collectionPoint"] == DBNull.Value) ? " " : (string)reader["collectionPoint"];
+                    department.CollectionPoint.PlacedId = (department.CollectionPoint.Name == " ") ? 1 : (long)reader["collectionPointId"];
                 }
                 return department;
             }
@@ -141,13 +135,13 @@ namespace SSISTeam9.DAO
 
                 reader.Close();
 
-                string q = @"INSERT INTO department (deptCode,deptName,contact,telephone,fax,head)" + 
+                string q = @"INSERT INTO department (deptCode,deptName,contact,telephone,fax,head,collectionPointId,representativeId)" + 
                             "VALUES ('" +  department.DeptCode +
                             "','" + department.DeptName +
                             "','" + contact +
                             "','" + department.Telephone +
                             "','" + department.Fax +
-                            "','" + head + "')";
+                            "','" + head + "','1','1')";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();

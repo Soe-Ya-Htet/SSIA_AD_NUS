@@ -62,19 +62,22 @@ namespace SSISTeam9.DAO
                 
             }
         }
-        //public static void UpdateDetails(entry entry)
-        //{
-        //    using (SqlConnection conn = new SqlConnection(Data.db_cfg))
-        //    {
-        //        conn.Open();
+        public static void UpdateDetailById(long listId, DisbursementListDetails disbursementListDetails)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
 
 
-        //        string q = "UPDATE DisbursementListDetails dDets, DisbursementList d WHERE dDets.listId = d.listId AND acknowledgedBy IS NULL AND dDets.itemId ='" +entry.itemId+ "'";
+                string q = "UPDATE DisbursementListDetails SET quantity="+ disbursementListDetails.Quantity + " WHERE listId=" + listId + "AND itemId=" + disbursementListDetails.Item.ItemId;
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
 
 
-        //    }
+            }
 
 
-        //}
+        }
     }
 }

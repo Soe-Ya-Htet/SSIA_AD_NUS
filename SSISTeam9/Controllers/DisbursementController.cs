@@ -14,18 +14,22 @@ namespace SSISTeam9.Controllers
         {
             ViewData["disbursements"] = DisbursementListService.ViewOutstandingDisbursementsByCollection(collectionPt);
             ViewData["collectionPoint"] = collectionPt;
+            
             return View();
         }
 
-        public ActionResult ViewDisbursementDetails(long listId)
+        public ActionResult ViewDisbursementDetails(long listId, long collectionPt)
         {
+            
             ViewData["details"] = DisbursementListService.ViewDisbursementDetails(listId);
+            ViewData["listId"] = listId;
+            ViewData["collectionPt"] = collectionPt;
 
             return View();
 
         }
 
-        public ActionResult CreateDisbursementLists(List<entry> entries)
+        public ActionResult CreateDisbursementLists(List<Entry> entries)
         {
             List<long> deptIds = new List<long>();
             
@@ -86,18 +90,33 @@ namespace SSISTeam9.Controllers
             return Json(Url.Action("ViewAllDisbursements","Disbursement"));
         }
 
-        //    public ActionResult UpdateDisbursementLists(List<entry> entries)
-        //    {
-        //        foreach (var item in entries)
-        //        {
-        //            DisbursementListService.UpdateDisbursementListDetails(item);
-        //        }
+        public ActionResult UpdateDisbursementLists(long listId, long collectionPt, List<PerItem> items)
+        {
+            foreach (var item in items)
+            {
+                Inventory i = new Inventory()
+                {
+                    ItemId = item.itemId
+                };
+                DisbursementListDetails disbursementDetails = new DisbursementListDetails()
+                {
+                    Quantity = item.quantity,
+                    Item = i
+                };
+                DisbursementListService.UpdateDisbursementListDetails(listId, disbursementDetails);
+            }
 
-        //        return null;
-        //    }
+            
+            return Json(Url.Action("ViewAllDisbursements", "Disbursement", new {collectionPt = collectionPt }));
+        }
 
-        //}
-        public class entry
+    public class PerItem
+        {
+            public long itemId { get; set; }
+            public int quantity { get; set; }
+        }
+    
+    public class Entry
         {
             public long deptId { get; set; }
             public long itemId { get; set; }

@@ -348,6 +348,7 @@
     <Content Include="Views\Requisition\ViewPastRequisitions.cshtml" />
     <Content Include="Views\Requisition\ViewPastRequisitionDetails.cshtml" />
     <Content Include="Views\ChargeBack\ViewTable.cshtml" />
+    <Content Include="Views\ChargeBack\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -390,9 +391,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>61152</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:62043/</IISUrl>
+          <IISUrl>http://localhost:61152/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

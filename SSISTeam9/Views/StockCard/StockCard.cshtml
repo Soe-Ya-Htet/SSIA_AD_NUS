@@ -10,5 +10,29 @@
 
 <h2 style="text-align:center">Stock Card</h2>
 
-<p>Item Code: @catalogue.ItemCode</p><br />
-<p></p>
+<table>
+    <tr>
+        <td>Item Code: @catalogue.ItemCode</td>
+    </tr>
+    <tr>
+        <td>Item Description: @catalogue.Description</td>
+    </tr>
+    <tr>
+        <td>Bin#: @catalogue.BinNo</td>
+    </tr>
+    <tr>
+        <td>Unit Of Measure: @catalogue.UnitOfMeasure</td>
+    </tr>
+    @if (priceList != null)
+    {
+    <tr>
+        <td>First Supplier: <b>@priceList.Supplier1Code</b></td>
+    </tr>
+    <tr>
+        <td>Second Supplier: <b>@priceList.Supplier2Code</b></td>
+    </tr>
+    <tr>
+        <td>Third Supplier: <b>@priceList.Supplier3Code</b></td>
+    </tr>
+    }
+</table>

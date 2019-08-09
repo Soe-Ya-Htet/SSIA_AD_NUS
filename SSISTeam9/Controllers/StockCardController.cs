@@ -10,11 +10,12 @@ namespace SSISTeam9.Controllers
 {
     public class StockCardController : Controller
     {
-        public ActionResult All()
+        public ActionResult StockCard(long itemId)
         {
-            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
-
-            ViewData["catalogues"] = catalogues;
+               
+            ViewData["catalogue"] = CatalogueService.GetCatalogueById(itemId);
+            ViewData["priceList"] = PriceListService.GetPriceListByItemId(itemId);
+            ViewData["stockCards"] = StockCardService.GetStockCardById(itemId);
             return View();
         }
     }

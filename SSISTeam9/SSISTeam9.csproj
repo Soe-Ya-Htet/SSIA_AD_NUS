@@ -345,10 +345,10 @@
     <Content Include="Views\Delegate\ViewRemoveDelegate.cshtml" />
     <Content Include="Views\Analytics\ByStationeryCategoryOrdered.cshtml" />
     <Content Include="Views\Catalogue\UpdateNext.cshtml" />
-    <Content Include="Views\Stock\StockCard.cshtml" />
     <Content Include="Views\Requisition\ViewPastRequisitions.cshtml" />
     <Content Include="Views\Requisition\ViewPastRequisitionDetails.cshtml" />
     <Content Include="Views\ChargeBack\Select.cshtml" />
+    <Content Include="Views\StockCard\StockCard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

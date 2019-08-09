@@ -13,12 +13,20 @@ namespace SSISTeam9.Controllers
         public ActionResult ViewAllDisbursements(string collectionPt)
         {
             ViewData["disbursements"] = DisbursementListService.ViewOutstandingDisbursementsByCollection(collectionPt);
-            ViewData["collectionPoint"] = collectionPt;
+            if (collectionPt == null)
+            {
+                ViewData["collectionPoint"] = "1";
+            }
+            else
+            {
+                ViewData["collectionPoint"] = collectionPt;
+            }
+            
             
             return View();
         }
 
-        public ActionResult ViewDisbursementDetails(long listId, long collectionPt)
+        public ActionResult ViewDisbursementDetails(long listId, string collectionPt)
         {
             
             ViewData["details"] = DisbursementListService.ViewDisbursementDetails(listId);

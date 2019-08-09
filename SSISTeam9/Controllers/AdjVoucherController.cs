@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SSISTeam9.Models;
 
 namespace SSISTeam9.Controllers
 {
@@ -11,7 +12,14 @@ namespace SSISTeam9.Controllers
         // GET: AdjVoucher
         public ActionResult Index()
         {
-            return View();
+            List<AdjVoucher> adjVouchers = new List<AdjVoucher>();
+            return View(adjVouchers);
         }
+
+        public ActionResult Generate(List<AdjVoucher> adjVouchers)
+        {
+            return View("Index");
+        }
+
     }
 }

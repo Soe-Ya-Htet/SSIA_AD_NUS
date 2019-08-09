@@ -349,10 +349,10 @@
     <Content Include="Views\Requisition\ViewPastRequisitionDetails.cshtml" />
     <Content Include="Views\ChargeBack\Select.cshtml" />
     <Content Include="Views\StockCard\StockCard.cshtml" />
+    <Content Include="Views\AdjVoucher\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\AdjVoucher\" />
     <Folder Include="Views\RestStockClerk\" />
   </ItemGroup>
   <ItemGroup>

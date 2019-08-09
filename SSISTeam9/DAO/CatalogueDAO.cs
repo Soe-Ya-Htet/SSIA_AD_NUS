@@ -17,7 +17,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from Inventory";
+                string q = @"SELECT * from Inventory WHERE flag != 1";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -48,7 +48,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from Inventory where itemId IN ({0})";
+                string q = @"SELECT * from Inventory where itemId IN ({0}) AND flag != 1";
 
                 var parms = itemIds.Select((s, i) => "@id" + i.ToString()).ToArray();
                 var inclause = string.Join(",", parms);
@@ -97,7 +97,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from Inventory WHERE itemId = '" + ItemId + "'";
+                string q = @"SELECT * from Inventory WHERE itemId = '" + ItemId + "' AND flag != 1";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -130,7 +130,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from Inventory WHERE description LIKE '%" + Description + "%'";
+                string q = @"SELECT * from Inventory WHERE description LIKE '%" + Description + "%' AND flag != 1";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -226,8 +226,8 @@ namespace SSISTeam9.DAO
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
-
-                string q = @"DELETE from Inventory where itemId = '" + ItemId + "'";
+                //Update flag = 1 to indicate deleted item
+                string q = @"UPDATE Inventory SET flag = 1 where itemId = '" + ItemId + "'";
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();
             }
@@ -257,11 +257,11 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"INSERT INTO Inventory (itemCode,category,description,unitOfMeasure,stockLevel,reorderLevel,reorderQty)" +
+                string q = @"INSERT INTO Inventory (itemCode,category,description,unitOfMeasure,stockLevel,reorderLevel,reorderQty,flag)" +
                             "VALUES ('" + Catalogue.ItemCode +
                             "','" + Catalogue.Category +
                             "','" + Catalogue.Description +
-                            "','" + Catalogue.UnitOfMeasure+ "','0','0','0')" +
+                            "','" + Catalogue.UnitOfMeasure+ "','0','0','0','0')" +
                             "SELECT CAST(scope_identity() AS int)";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
@@ -278,7 +278,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from Inventory where itemId IN ({0})";
+                string q = @"SELECT * from Inventory where itemId IN ({0}) AND flag != 1";
 
                 var parms = inventoryIds.Select((s, i) => "@id" + i.ToString()).ToArray();
                 var inclause = string.Join(",", parms);

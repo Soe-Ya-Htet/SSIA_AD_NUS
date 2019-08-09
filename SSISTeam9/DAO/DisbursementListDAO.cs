@@ -81,5 +81,35 @@ namespace SSISTeam9.DAO
                     return disbursementLists;
             }
         }
+        
+
+        //The following code is for ChargeBack controller
+        public static DisbursementList GetDisbursementListByListId(long listId)
+        {
+            DisbursementList disbursementList = null;
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from DisbursementList WHERE listId = '" + listId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    disbursementList = new DisbursementList()
+                    {
+                        date = (DateTime)reader["date"]
+                    };
+                    disbursementList.Department = new Department()
+                    {
+                        DeptId = (long)reader["deptId"]
+                    };
+                }
+            }
+            return disbursementList;
+        }
+
     }
 }

@@ -12,7 +12,7 @@ namespace SSISTeam9.Models
         public int YearOfOrder { get; set; }
         public long DeptId { get; set; }
         public string DeptName { get; set; }
-        public long Amount { get; set; }
+        public double Amount { get; set; }
 
         public months Months { get; set; }
         public enum months

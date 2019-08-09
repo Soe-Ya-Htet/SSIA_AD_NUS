@@ -27,15 +27,15 @@ namespace SSISTeam9.Models
 
         [Display(Name = "Unit Price from First Supplier")]
         [Required]
-        public string Supplier1UnitPrice { get; set; }
+        public double Supplier1UnitPrice { get; set; }
 
         [Display(Name = "Unit Price from Second Supplier")]
         [Required]
-        public string Supplier2UnitPrice { get; set; }
+        public double Supplier2UnitPrice { get; set; }
 
         [Display(Name = "Unit Price from Third Supplier")]
         [Required]
-        public string Supplier3UnitPrice { get; set; }
+        public double Supplier3UnitPrice { get; set; }
 
         public string Supplier1Code { get; set; }
         public string Supplier2Code { get; set; }

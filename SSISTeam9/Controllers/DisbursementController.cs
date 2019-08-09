@@ -112,6 +112,20 @@ namespace SSISTeam9.Controllers
                     Item = i
                 };
                 DisbursementListService.UpdateDisbursementListDetails(listId, disbursementDetails);
+
+
+                //By the time update DisbursementList, calculate the amount of this list, update ChargeBack table
+                //Attention: DisbursementList can only disburse once, date for that list is not null
+                PriceList priceList = PriceListService.GetPriceListByItemId(i.ItemId);
+                double price = 0;
+                if (priceList != null)
+                {
+                    price = priceList.Supplier1UnitPrice;
+                }
+
+                double amount = price * disbursementDetails.Quantity;
+                DisbursementList disbursementList = DisbursementListService.GetDisbursementListByListId(listId);
+                ChargeBackService.UpdateChargeBackData(amount, disbursementList);
             }
 
             

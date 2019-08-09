@@ -41,5 +41,11 @@ namespace SSISTeam9.Services
 
             DisbursementListDetailsDAO.UpdateDetailById(listId,disbursementListDetails);
         }
+
+        //The following code is for ChargeBack controller
+        public static DisbursementList GetDisbursementListByListId(long listId)
+        {
+            return DisbursementListDAO.GetDisbursementListByListId(listId);
+        }
     }
 }

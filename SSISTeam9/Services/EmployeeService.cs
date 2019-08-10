@@ -21,12 +21,12 @@ namespace SSISTeam9.Services
 
         public static bool IsActiveSessionId(string sessionId)
         {
-            return EmployeeDAO.IsActiveSessionId(sessionId;
+            return EmployeeDAO.IsActiveSessionId(sessionId);
         }
 
         public static void RemoveSession(string sessionId)
         {
-            return EmployeeDAO.RemoveSession(sessionId);
+            EmployeeDAO.RemoveSession(sessionId);
         }
 
     }

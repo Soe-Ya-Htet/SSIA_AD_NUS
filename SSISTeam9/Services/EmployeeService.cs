@@ -19,6 +19,11 @@ namespace SSISTeam9.Services
             return EmployeeDAO.GetUserBySessionId(sessionId);
         }
 
+        public static Employee GetEmployeeById(long empId)
+        {
+            return EmployeeDAO.GetEmployeeById(empId);
+        }
+
         public static string CreateSession(string userName)
         {
             return EmployeeDAO.CreateSession(userName);

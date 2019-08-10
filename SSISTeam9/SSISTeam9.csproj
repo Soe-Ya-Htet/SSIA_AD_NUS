@@ -579,6 +579,8 @@
     <Compile Include="Controllers\RepresentativeController.cs" />
     <Compile Include="Controllers\RequisitionController.cs" />
     <Compile Include="Controllers\RestDepartmentHeadController.cs" />
+    <Compile Include="Controllers\RestLoginController.cs" />
+    <Compile Include="Controllers\RestRepresentativeController.cs" />
     <Compile Include="Controllers\RestStockClerkController.cs" />
     <Compile Include="Controllers\RetrievalFormController.cs" />
     <Compile Include="Controllers\StockCardController.cs" />
@@ -777,9 +779,12 @@
     <Content Include="Views\StoreClerk\Home.cshtml" />
     <Content Include="Views\StoreMS\Home.cshtml" />
     <Content Include="Views\Home\NotAuthorised.cshtml" />
+    <Content Include="Views\Stock\Check.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\RestLogin\" />
+    <Folder Include="Views\RestRepresentative\" />
     <Folder Include="Views\RestStockClerk\" />
   </ItemGroup>
   <ItemGroup>

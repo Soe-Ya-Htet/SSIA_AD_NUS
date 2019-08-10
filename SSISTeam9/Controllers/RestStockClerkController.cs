@@ -59,7 +59,6 @@ namespace SSISTeam9.Controllers
 
                 };
 
-
                 foreach (var entry in entries)
                 {
                     if (entry.deptId == deptId)
@@ -82,6 +81,7 @@ namespace SSISTeam9.Controllers
                 }
                 disbursementLists.Add(d);
             }
+
             DisbursementListService.CreateDisbursementLists(disbursementLists);
 
             return Json("Success", JsonRequestBehavior.AllowGet);

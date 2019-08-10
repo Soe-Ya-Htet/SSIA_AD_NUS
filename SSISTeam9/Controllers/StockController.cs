@@ -67,5 +67,17 @@ namespace SSISTeam9.Controllers
 
             return RedirectToAction("All", new {username = userName, sessionid = sessionId});
         }
+
+
+        //Stock taking in order to generate Adjustment Voucher
+        public ActionResult Check()
+        {
+            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
+
+            ViewData["catalogues"] = catalogues;
+
+            return View();
+        }
+
     }
 }

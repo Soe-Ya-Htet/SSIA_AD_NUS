@@ -16,7 +16,7 @@ namespace SSISTeam9.Controllers
         private readonly int deptId = 1;
         private readonly int headId = 2;
 
-        private IEmailService emailService;
+        private readonly IEmailService emailService;
 
         public RestDepartmentHeadController(IEmailService emailService)
         {
@@ -68,7 +68,6 @@ namespace SSISTeam9.Controllers
             long currentRepId = DepartmentService.GetCurrentRep(deptId);
             List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(deptId);
             Employee emp = employees.Find(e => e.EmpId == currentRepId);
-            employees.Remove(emp);
 
             Dictionary<string, object> repDict = new Dictionary<string, object>
             {

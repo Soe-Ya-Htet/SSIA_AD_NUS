@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Net.Http;
 using System.Net;
+using SSISTeam9.Models;
 
 namespace SSISTeam9.Filters
 {
@@ -13,6 +14,12 @@ namespace SSISTeam9.Filters
     {
         public override void OnAuthorization(HttpActionContext actionContext)
         {
+            Uri uri = actionContext.Request.RequestUri;
+            if(uri.AbsoluteUri.Substring(uri.AbsoluteUri.IndexOf("/rest/"), uri.AbsoluteUri.Length).StartsWith("login"))
+            {
+                return;
+            }
+
             var authHeader = actionContext.Request.Headers.Authorization;
             if(authHeader != null)
             {

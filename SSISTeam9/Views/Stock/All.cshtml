@@ -5,7 +5,6 @@
     ViewBag.Title = "View All Inventory Items";
     List<Inventory> items = (List<Inventory>)ViewData["items"];
     var counter = 0;
-    Employee employee = (Employee)ViewData["employee"];
     string sessionId = (string)ViewData["sessionId"];
 }
 
@@ -18,7 +17,7 @@
 }
 else
 {
-    using (Html.BeginForm("EnterQuantities", "Stock", routeValues: new { username = employee.UserName, sessionid = sessionId }
+    using (Html.BeginForm("EnterQuantities", "Stock", routeValues: new { sessionid = sessionId }
     , method: FormMethod.Post))
     {
         <table>
@@ -61,8 +60,7 @@ else
                 counter = counter + 1;
             }
             <tr>
-                <td><input type="hidden" name="sessionId" value="@sessionId" /></td>
-                <td colspan="7" align="right"><input type="submit" value="Generate Purchase Orders"></td>
+                <td colspan="8" align="right"><input type="submit" value="Generate Purchase Orders"></td>
             </tr>
         </table>
     }

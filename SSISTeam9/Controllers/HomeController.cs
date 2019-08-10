@@ -27,7 +27,7 @@ namespace SSISTeam9.Controllers
 
             string sessionId = EmployeeService.CreateSession(userName);
 
-            return RedirectToAction("All", "Home", new { username = userName, sessionid = sessionId });
+            return RedirectToAction("All", "Home", new { sessionid = sessionId });
         }
 
         public ActionResult Logout(string sessionId)
@@ -36,7 +36,7 @@ namespace SSISTeam9.Controllers
             return RedirectToAction("Login", "Home");
         }
 
-        public ActionResult All(string username, string sessionid)
+        public ActionResult All(string sessionid)
         {
             if (sessionid == null)
             {
@@ -44,22 +44,23 @@ namespace SSISTeam9.Controllers
             }
 
             string empRole = EmployeeService.GetUserBySessionId(sessionid).EmpRole;
+            string userName = EmployeeService.GetUserBySessionId(sessionid).UserName;
 
             if (empRole == "STORE_CLERK")
             {
-                ViewData["userName"] = username;
+                ViewData["userName"] = userName;
                 ViewData["sessionId"] = sessionid;
                 return View("~/Views/StoreClerk/Home.cshtml");
             }
             else if (empRole == "STORE_SUPERVISOR" || empRole == "STORE_MANAGER")
             {
-                ViewData["userName"] = username;
+                ViewData["userName"] = userName;
                 ViewData["sessionId"] = sessionid;
                 return View("~/Views/StoreMS/Home.cshtml");
             }
             else
             {
-                ViewData["userName"] = username;
+                ViewData["userName"] = userName;
                 ViewData["sessionId"] = sessionid;
                 return null; //For other departments' employees landing page
             }

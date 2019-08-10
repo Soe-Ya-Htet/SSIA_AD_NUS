@@ -4,8 +4,7 @@
 @{
     ViewBag.Title = "View All Purchase Orders";
     List<PurchaseOrder> orders = (List<PurchaseOrder>)ViewData["orders"];
-
-    string userName = (string) ViewData["userName"];
+    
     string sessionId = (string)ViewData["sessionId"];
 }
 
@@ -18,7 +17,7 @@
 }
 else
 {
-    using (Html.BeginForm("Edit", "PurchaseOrder", routeValues: new { username = userName, sessionid = sessionId }
+    using (Html.BeginForm("Edit", "PurchaseOrder", routeValues: new { sessionid = sessionId }
     , method: FormMethod.Post))
     {
         <table>

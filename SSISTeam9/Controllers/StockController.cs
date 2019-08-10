@@ -13,7 +13,7 @@ namespace SSISTeam9.Controllers
     [StoreAuthorisationFilter]
     public class StockController : Controller
     {
-        public async Task<ActionResult> All(string userName, string sessionId)
+        public async Task<ActionResult> All(string sessionId)
         {
             //Contact Python API to get predicted re-order amount and level  for item with code 'P021'
             //Done via StockService
@@ -21,14 +21,13 @@ namespace SSISTeam9.Controllers
 
             //Show the quantities which are being ordered by all store staff
             items = StockService.GetPendingOrderQuantities(items); 
-
-            ViewData["employee"] = EmployeeService.GetUserBySessionId(sessionId); 
+            
             ViewData["items"] = items;
             ViewData["sessionId"] = sessionId;
             return View();
         }
 
-        public async Task<ActionResult> EnterQuantities(Inventory inventory, string userName, string sessionId)
+        public async Task<ActionResult> EnterQuantities(Inventory inventory, string sessionId)
         {
             //Contact Python API to get predicted re-order amount and level for item with code 'P021'
             List<Inventory> stock = await StockService.GetAllItemsOrdered();
@@ -41,14 +40,13 @@ namespace SSISTeam9.Controllers
                     selectedItems.Add(stock[i]);
                 }
             }
-
-            ViewData["employee"] = EmployeeService.GetUserBySessionId(sessionId); 
+            
             ViewData["selectedItems"] = selectedItems;
             ViewData["sessionId"] = sessionId;
             return View();
         }
         
-        public ActionResult CreatePurchaseOrders(Inventory item, FormCollection formCollection, string userName, string sessionId)
+        public ActionResult CreatePurchaseOrders(Inventory item, FormCollection formCollection, string sessionId)
         {
             List<int> itemsQuantities = new List<int>();
             List<long> itemIds = new List<long>();
@@ -65,7 +63,7 @@ namespace SSISTeam9.Controllers
             List<long> itemsFirstSupplierIds = StockService.GetItemsFirstSupplierIds(itemIds);
             StockService.CreatePurchaseOrders(empId,itemIds,itemsFirstSupplierIds,itemsQuantities);
 
-            return RedirectToAction("All", new {username = userName, sessionid = sessionId});
+            return RedirectToAction("All", new {sessionid = sessionId});
         }
 
 

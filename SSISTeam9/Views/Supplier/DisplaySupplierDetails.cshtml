@@ -4,12 +4,14 @@
 @{
     ViewBag.Title = "Update Supplier Details";
     Supplier supplier = (Supplier)ViewData["supplier"];
+    
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2>Update Supplier Details</h2>
 
 <div>
-    @using (Html.BeginForm("Update", "Supplier", FormMethod.Post))
+    @using (Html.BeginForm("Update", "Supplier", routeValues: new { sessionid = sessionId }, method: FormMethod.Post))
     {
         <table>
             <tr>
@@ -51,7 +53,7 @@
                 <td>
                     <button>
                         @Html.ActionLink("Delete Supplier","Delete","Supplier",
-                        new { confirm = true, supplierCode = supplier.SupplierCode },
+                        new { confirm = true, supplierCode = supplier.SupplierCode, sessionid = sessionId },
                         new { onclick = "return confirm('Do you really want to delete this supplier?')" })
                     </button>
                     <!-- <input type="button" value="Delete Supplier" onclick="location.href='/Supplier/Delete?supplierCode=@supplier.SupplierCode'">-->

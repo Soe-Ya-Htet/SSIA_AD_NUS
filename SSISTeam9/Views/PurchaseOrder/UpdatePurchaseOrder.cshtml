@@ -11,7 +11,6 @@
 
     var counter = 0;
     
-    string userName = (string)ViewData["userName"];
     string sessionId = (string)ViewData["sessionId"];
 }
 
@@ -19,7 +18,7 @@
 {
     <h2>Update Delivery Details</h2>
     <div>
-        @using (Html.BeginForm("UpdatePurchaseOrderDeliveryDetails", "PurchaseOrder", routeValues: new { username = userName, sessionid = sessionId }
+        @using (Html.BeginForm("UpdatePurchaseOrderDeliveryDetails", "PurchaseOrder", routeValues: new { sessionid = sessionId }
         , method: FormMethod.Post))
         {
         @Html.HiddenFor(m => m.OrderNumber, new { id = "orderNumber" })
@@ -35,7 +34,7 @@ else
 {
     <h2>Update Quantity and/or Select Alternative Supplier</h2>
     <div>
-        @using (Html.BeginForm("ConfirmUpdate", "PurchaseOrder", routeValues: new { username = userName, sessionid = sessionId }
+        @using (Html.BeginForm("ConfirmUpdate", "PurchaseOrder", routeValues: new { sessionid = sessionId }
         , method: FormMethod.Post))
         {
             <table>

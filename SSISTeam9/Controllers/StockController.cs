@@ -6,13 +6,14 @@ using System.Web.Mvc;
 using SSISTeam9.Models;
 using SSISTeam9.Services;
 using System.Threading.Tasks;
+using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
+    [StoreAuthorisationFilter]
     public class StockController : Controller
     {
-        // GET: Stock
-        public async Task<ActionResult> All()
+        public async Task<ActionResult> All(string userName, string sessionId)
         {
             //Contact Python API to get predicted re-order amount and level  for item with code 'P021'
             //Done via StockService
@@ -21,7 +22,7 @@ namespace SSISTeam9.Controllers
             //Show the quantities which are being ordered by all store staff
             items = StockService.GetPendingOrderQuantities(items); 
 
-            ViewData["empId"] = "3"; //to change once log in/log out is implemented
+            ViewData["empId"] = EmployeeService.GetUserBySessionId(sessionId).EmpId.ToString(); 
             ViewData["items"] = items;
             return View();
         }
@@ -44,7 +45,7 @@ namespace SSISTeam9.Controllers
             ViewData["selectedItems"] = selectedItems;
             return View();
         }
-
+        
         public ActionResult CreatePurchaseOrders(Inventory item, FormCollection formCollection)
         {
             List<int> itemsQuantities = new List<int>();
@@ -65,6 +66,17 @@ namespace SSISTeam9.Controllers
             StockService.CreatePurchaseOrders(empId,itemIds,itemsFirstSupplierIds,itemsQuantities);
 
             return RedirectToAction("All");
+        }
+
+
+        //Stock taking in order to generate Adjustment Voucher
+        public ActionResult Check()
+        {
+            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
+
+            ViewData["catalogues"] = catalogues;
+
+            return View();
         }
 
     }

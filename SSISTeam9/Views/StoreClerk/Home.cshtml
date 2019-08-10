@@ -1,7 +1,23 @@
 ﻿
 @{
     ViewBag.Title = "Home";
+    string userName = (string)ViewData["userName"];
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2>Home</h2>
 
+<a href="~/Requisition/ViewAllRequisitionsByStatus?userName=@userName&sessionId=@sessionId">Requisitions</a>
+<a href="">Inventory</a>
+<a href="~/Stock/All?userName=@userName&sessionId=@sessionId">Stock</a>
+<a href="~/PurchaseOrder/All?userName=@userName&sessionId=@sessionId">Purchase Orders</a>
+<a href="~/Analytics/Home?userName=@userName&sessionId=@sessionId">Analytics</a>
+<a href="~/Catalogue/All?userName=@userName&sessionId=@sessionId">Catalogue</a>
+<a href="~/Supplier/All?userName=@userName&sessionId=@sessionId">Suppliers</a>
+<a href="~/Department/All?userName=@userName&sessionId=@sessionId">Departments</a>
+<a href="">Charge Back</a>
+
+<p>Logged in as: @userName</p>
+<form method="post">
+    <input style="background-color:transparent; border-width:0px" type="submit" name="Logout" value='Logout' formaction="/Home/Logout?sessionid=@sessionId" />
+</form>

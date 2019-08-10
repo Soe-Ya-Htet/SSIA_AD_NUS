@@ -25,12 +25,12 @@ namespace SSISTeam9.DAO
                 {
                     StockCard stockCard = new StockCard()
                     {
-                        ItemId = (long)reader[1],
-                        Date = (DateTime)reader[2],
-                        SourceType = (int)reader[3],
-                        SourceId = (long)reader[4],
-                        Qty = (string)reader[5],
-                        Balance = (int)reader[6]
+                        ItemId = (long)reader[0],
+                        Date = (DateTime)reader[1],
+                        SourceType = (int)reader[2],
+                        SourceId = (long)reader[3],
+                        Qty = (string)reader[4],
+                        Balance = (int)reader[5]
                     };
                     stockCards.Add(stockCard);
                 }

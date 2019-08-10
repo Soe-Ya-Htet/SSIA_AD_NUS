@@ -66,7 +66,8 @@ namespace SSISTeam9.Controllers
                 DisbursementList d = new DisbursementList()
                 {
                     Department = dept,
-                    DisbursementListDetails = disbursementListDetails
+                    DisbursementListDetails = disbursementListDetails,
+                    date = entries[0].collectionDate
                     
                 };
                 
@@ -151,6 +152,7 @@ namespace SSISTeam9.Controllers
             public long deptId { get; set; }
             public long itemId { get; set; }
             public int quantity { get; set; }
+            public DateTime collectionDate { get; set; }
         }
     }
 }

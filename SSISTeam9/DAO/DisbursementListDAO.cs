@@ -15,8 +15,8 @@ namespace SSISTeam9.DAO
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
-                string q = @"INSERT INTO DisbursementList (deptId,collectionPointId)" +
-                        "VALUES (@deptId, @collectionPointId)" +
+                string q = @"INSERT INTO DisbursementList (deptId,collectionPointId,date)" +
+                        "VALUES (@deptId, @collectionPointId, @date)" +
                         "SELECT CAST(scope_identity() AS int)";
 
 
@@ -26,6 +26,7 @@ namespace SSISTeam9.DAO
                
                 cmd.Parameters.AddWithValue("@deptId", disbursement.Department.DeptId);
                 cmd.Parameters.AddWithValue("@collectionPointId", disbursement.Department.CollectionPoint.PlacedId);
+                cmd.Parameters.AddWithValue("@date", disbursement.date);
                 listId = (int)cmd.ExecuteScalar();
 
             }

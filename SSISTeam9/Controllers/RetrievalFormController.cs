@@ -16,7 +16,7 @@ namespace SSISTeam9.Controllers
         {
             
             ViewData["retrievalForms"] = RetrievalFormService.ViewRetrievalForm();
-            if (DisbursementListService.CheckForPendingDisbursements() != null)
+            if (DisbursementListService.CheckForPendingDisbursements().Count != 0)
             {
                 ViewData["alreadyAssigned"] = "YES";
             }

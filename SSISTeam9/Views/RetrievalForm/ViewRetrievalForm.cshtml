@@ -9,7 +9,7 @@
 
 }
 
-@if (retForms != null && alrAssigned == "NO")
+@if (retForms.Count != 0 && alrAssigned == "NO")
 {
     <table>
         <tr>
@@ -49,9 +49,10 @@
 
         }
     </table>
+    <input type="date" name="date" value="" id="collectionDate" />
     <input type="button" value="Submit" onclick="submitData()" />
 }
-else if(retForms != null && alrAssigned == "YES")
+else if(retForms.Count != 0 && alrAssigned == "YES")
 {
     <div>Items already retrieved</div>
 }
@@ -98,11 +99,12 @@ else
 
         }//this returns arrays deptCodes
 
+        var collectionDate = document.getElementById("collectionDate").value
         var listOfLists = new Array();
         for (var i = 0; i < deptCodes.length; i++) {
             var listPerDeptCode = document.getElementsByName(deptCodes[i])
             for (var item of listPerDeptCode) {
-                var list = { deptId: deptCodes[i], itemId: item.className, quantity: item.value }
+                var list = { deptId: deptCodes[i], itemId: item.className, quantity: item.value, collectionDate: collectionDate }
                 listOfLists.push(list)
             }
         }

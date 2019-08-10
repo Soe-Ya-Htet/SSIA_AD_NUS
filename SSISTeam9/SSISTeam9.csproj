@@ -351,6 +351,7 @@
     <Content Include="Views\ChargeBack\Select.cshtml" />
     <Content Include="Views\StockCard\StockCard.cshtml" />
     <Content Include="Views\AdjVoucher\Index.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

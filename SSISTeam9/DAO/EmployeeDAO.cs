@@ -76,6 +76,38 @@ namespace SSISTeam9.DAO
                 cmd.ExecuteNonQuery();
             }
         }
+
+        public static Employee GetUserBySessionId(string sessionId)
+        {
+            Employee employee = new Employee();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from Employee where sessionId = '" + sessionId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    employee = new Employee()
+                    {
+                        EmpId = (long)reader["empId"],
+                        DeptId = (long)reader["deptId"],
+                        EmpName = (string)reader["empName"],
+                        EmpRole = (string)reader["empRole"],
+                        EmpDisplayRole = (string)reader["empDisplayRole"],
+                        UserName = (string)reader["userName"],
+                        Password = (string)reader["password"],
+                        Email = (reader["email"] == DBNull.Value) ? null : (string)reader["email"],
+                        SessionId = (reader["email"] == DBNull.Value) ? null : (string)reader["sessionId"]
+                    };
+                }
+                return employee;
+            }
+        }
+
         public static Employee GetEmployeeById(long empId)
         {
             Employee employee = new Employee();

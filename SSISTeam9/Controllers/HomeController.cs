@@ -27,21 +27,47 @@ namespace SSISTeam9.Controllers
 
             string sessionId = EmployeeService.CreateSession(userName);
 
-            if (user.EmpRole == "STORE_CLERK")
-            {
-                return RedirectToAction("Home", "StoreClerk", new { username = userName, sessionid = sessionId });
-            }
-            else if (user.EmpRole == "STORE_SUPERVISOR" || user.EmpRole == "STORE_MANAGER")
-            {
-                return RedirectToAction("Home", "StoreMS", new { username = userName, sessionid = sessionId });
-            }
-            return null;
+            return RedirectToAction("All", "Home", new { username = userName, sessionid = sessionId });
         }
 
         public ActionResult Logout(string sessionId)
         {
             EmployeeService.RemoveSession(sessionId);
             return RedirectToAction("Login", "Home");
+        }
+
+        public ActionResult All(string username, string sessionid)
+        {
+            if (sessionid == null)
+            {
+                RedirectToAction("Login");
+            }
+
+            string empRole = EmployeeService.GetUserBySessionId(sessionid).EmpRole;
+
+            if (empRole == "STORE_CLERK")
+            {
+                ViewData["userName"] = username;
+                ViewData["sessionId"] = sessionid;
+                return View("~/Views/StoreClerk/Home.cshtml");
+            }
+            else if (empRole == "STORE_SUPERVISOR" || empRole == "STORE_MANAGER")
+            {
+                ViewData["userName"] = username;
+                ViewData["sessionId"] = sessionid;
+                return View("~/Views/StoreMS/Home.cshtml");
+            }
+            else
+            {
+                ViewData["userName"] = username;
+                ViewData["sessionId"] = sessionid;
+                return null; //For other departments' employees landing page
+            }
+        }
+
+        public ActionResult NotAuthorised()
+        {
+            return View();
         }
     }
 }

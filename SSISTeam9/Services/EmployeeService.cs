@@ -14,6 +14,11 @@ namespace SSISTeam9.Services
             return EmployeeDAO.GetUserPassword(userName);
         }
 
+        public static Employee GetUserBySessionId(string sessionId)
+        {
+            return EmployeeDAO.GetUserBySessionId(sessionId);
+        }
+
         public static string CreateSession(string userName)
         {
             return EmployeeDAO.CreateSession(userName);
@@ -28,6 +33,5 @@ namespace SSISTeam9.Services
         {
             EmployeeDAO.RemoveSession(sessionId);
         }
-
     }
 }

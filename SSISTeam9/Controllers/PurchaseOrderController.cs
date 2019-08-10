@@ -167,6 +167,11 @@ namespace SSISTeam9.Controllers
             ViewData["order"] = order;
             return View("Closed");
         }
-        
+
+        public ActionResult UpdatePurchaseOrderDeliveryDetails(PurchaseOrder order)
+        {
+            PurchaseOrderService.UpdatePurchaseOrderDeliveryDetails(order);
+            return RedirectToAction("All");
+        }
     }
 }

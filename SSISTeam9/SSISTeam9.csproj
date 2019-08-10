@@ -206,6 +206,7 @@
     <Compile Include="Models\Requisition.cs" />
     <Compile Include="Models\RequisitionDetails.cs" />
     <Compile Include="Models\RetrievalForm.cs" />
+    <Compile Include="Models\Session.cs" />
     <Compile Include="Models\StockCard.cs" />
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

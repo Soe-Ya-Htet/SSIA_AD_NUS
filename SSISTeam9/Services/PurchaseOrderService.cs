@@ -174,5 +174,11 @@ namespace SSISTeam9.Services
         {
             return PurchaseOrderDAO.GetOrderById(orderId);
         }
+
+        public static void UpdatePurchaseOrderDeliveryDetails(PurchaseOrder order)
+        {
+            PurchaseOrder orderForId = PurchaseOrderDAO.GetOrderDetails(order.OrderNumber);
+            PurchaseOrderDAO.UpdatePurchaseOrderDeliveryDetails(orderForId.OrderId, order.DeliverTo, order.DeliverBy);
+        } 
     }
 }

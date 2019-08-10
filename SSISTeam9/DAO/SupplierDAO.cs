@@ -192,9 +192,9 @@ namespace SSISTeam9.DAO
                         Supplier1Id = (long)reader["supplier1Id"],
                         Supplier2Id = (long)reader["supplier2Id"],
                         Supplier3Id = (long)reader["supplier3Id"],
-                        Supplier1UnitPrice = (long)reader["supplier1UnitPrice"],
-                        Supplier2UnitPrice = (long)reader["supplier2UnitPrice"],
-                        Supplier3UnitPrice = (long)reader["supplier3UnitPrice"],
+                        Supplier1UnitPrice = (double)reader["supplier1UnitPrice"],
+                        Supplier2UnitPrice = (double)reader["supplier2UnitPrice"],
+                        Supplier3UnitPrice = (double)reader["supplier3UnitPrice"],
                         Supplier1Name = "",
                         Supplier2Name = "",
                         Supplier3Name = ""

@@ -9,7 +9,7 @@ namespace SSISTeam9.DAO
 {
     public class PurchaseOrderDAO
     {
-        public static List<PurchaseOrder> GetAllOrders()
+        public static List<PurchaseOrder> GetAllOrders(long empId)
         {
             List<PurchaseOrder> orders = new List<PurchaseOrder>();
 
@@ -17,7 +17,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from PurchaseOrder";
+                string q = @"SELECT * from PurchaseOrder WHERE empId = '" + empId + "' ORDER BY orderNumber desc";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();

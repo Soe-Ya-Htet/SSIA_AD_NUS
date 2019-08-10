@@ -15,6 +15,8 @@ namespace SSISTeam9.Filters
         public void OnAuthorization(AuthorizationContext context)
         {
             string sessionId = HttpContext.Current.Request["sessionId"];
+            string userName = HttpContext.Current.Request["userName"];
+            string userRole = EmployeeService.GetUserBySessionId(sessionId).EmpRole;
 
             if (!EmployeeService.IsActiveSessionId(sessionId))
             {
@@ -26,19 +28,25 @@ namespace SSISTeam9.Filters
                     }
                 );
             }
-            else
+            else if (userRole == "EMPLOYEE" || userRole == "HEAD")
             {
-                string userRole = EmployeeService.GetUserBySessionId(sessionId).EmpRole;
-                if (userRole == "EMPLOYEE" || userRole == "HEAD")
-                {
-                    context.Result = new RedirectToRouteResult(
-                        new RouteValueDictionary
-                        {
+                context.Result = new RedirectToRouteResult(
+                       new RouteValueDictionary
+                       {
                         { "controller", "Home" },
                         { "action", "NotAuthorised" }
-                        }
-                    );
-                }
+                       }
+                   );
+            }
+            else if (EmployeeService.GetUserBySessionId(sessionId).UserName != userName)
+            {
+                context.Result = new RedirectToRouteResult(
+                       new RouteValueDictionary
+                       {
+                        { "controller", "Home" },
+                        { "action", "Login" }
+                       }
+                   );
             }
         }
     }

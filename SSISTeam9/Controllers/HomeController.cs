@@ -22,16 +22,25 @@ namespace SSISTeam9.Controllers
 
             Employee user = EmployeeService.GetUserPassword(userName);
 
+            if (user.Password != password)
+                return View();
+
             string sessionId = EmployeeService.CreateSession(userName);
 
-
-
-            return RedirectToAction("ViewProducts", "Gallery", new { username = UserName, sessionid = SessionId });
+            if (user.EmpRole == "STORE_CLERK")
+            {
+                return RedirectToAction("Home", "StoreClerk", new { username = userName, sessionid = sessionId });
+            }
+            else if (user.EmpRole == "STORE_SUPERVISOR" || user.EmpRole == "STORE_MANAGER")
+            {
+                return RedirectToAction("Home", "StoreMS", new { username = userName, sessionid = sessionId });
+            }
+            return null;
         }
 
         public ActionResult Logout(string sessionId)
         {
-            ShoppingCart.Models.Session.RemoveSession(sessionId);
+            EmployeeService.RemoveSession(sessionId);
             return RedirectToAction("Login", "Home");
         }
     }

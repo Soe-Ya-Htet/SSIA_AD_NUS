@@ -9,9 +9,16 @@ namespace SSISTeam9.Controllers
     public class StoreClerkController : Controller
     {
         //Store Clerk landing page
-        public ActionResult Index()
+        public ActionResult Home(string userName, string sessionId)
         {
-            return View();
+            if (userName == null || sessionId == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                return View();
+            }
         }
     }
 }

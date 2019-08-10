@@ -32,8 +32,8 @@ namespace SSISTeam9.DAO
                         EmpDisplayRole = (string)reader["empDisplayRole"],
                         UserName = (string)reader["userName"],
                         Password = (string)reader["password"],
-                        Email = (string)reader["email"],
-                        SessionId = (string)reader["sessionId"]
+                        Email = (reader["email"] == DBNull.Value) ? null : (string)reader["email"],
+                        SessionId = (reader["email"] == DBNull.Value) ? null : (string)reader["sessionId"]
                     };
                 }
                 return employee;

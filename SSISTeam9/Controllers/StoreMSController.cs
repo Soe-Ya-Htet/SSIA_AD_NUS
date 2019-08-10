@@ -10,9 +10,16 @@ namespace SSISTeam9.Controllers
     {
         //Store Manager and Supervisor landing page
         //Will have an additional tab to view adjustment voucher for approval
-        public ActionResult Index()
+        public ActionResult Home(string userName, string sessionId)
         {
-            return View();
+            if (userName == null || sessionId == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                return View();
+            }
         }
     }
 }

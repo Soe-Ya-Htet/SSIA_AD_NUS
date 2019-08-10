@@ -6,13 +6,15 @@ using System.Web.Mvc;
 using SSISTeam9.Models;
 using SSISTeam9.Services;
 using SSISTeam9.DAO;
+using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
+    [StoreAuthorisationFilter]
     public class RetrievalFormController : Controller
     {
         // GET: RetrievalForm
-        public ActionResult ViewRetrievalForm()
+        public ActionResult ViewRetrievalForm(string sessionId)
         {
             
             ViewData["retrievalForms"] = RetrievalFormService.ViewRetrievalForm();
@@ -24,10 +26,12 @@ namespace SSISTeam9.Controllers
             {
                 ViewData["alreadyAssigned"] = "NO";
             }
+            ViewData["sessionId"] = sessionId;
+            
             return View();
         }
 
-        public ActionResult CreateRetrievalForm(long[] requisition)
+        public ActionResult CreateRetrievalForm(long[] requisition, string sessionId)
         {
             List<long> selected = new List<long>();
             foreach (var id in requisition)
@@ -39,7 +43,7 @@ namespace SSISTeam9.Controllers
             //using list to DAO search by list
             RetrievalFormService.UpdateStatuses(selected);
 
-            return RedirectToAction("ViewRetrievalForm", "RetrievalForm");
+            return RedirectToAction("ViewRetrievalForm", "RetrievalForm", new { sessionId = sessionId });
         }  
     }
 }

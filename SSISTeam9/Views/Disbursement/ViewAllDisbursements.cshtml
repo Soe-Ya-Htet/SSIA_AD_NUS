@@ -5,15 +5,16 @@
 @{
     var disbursementLists = (List<DisbursementList>)ViewData["disbursements"];
     var collectionPt = (string)ViewData["collectionPoint"];
+    var sessionId = (string)ViewData["sessionId"];
 }
 <select onchange="location = this.options[this.selectedIndex].value;">
     <option>Select</option>
-    <option value="/Disbursement/ViewAllDisbursements?collectionPt=1">Stationary Store(Admin)</option>
-    <option value="/Disbursement/ViewAllDisbursements?collectionPt=2">Management School</option>
-    <option value="/Disbursement/ViewAllDisbursements?collectionPt=3">Medical School</option>
-    <option value="/Disbursement/ViewAllDisbursements?collectionPt=4">Engineering School</option>
-    <option value="/Disbursement/ViewAllDisbursements?collectionPt=5">Science School</option>
-    <option value="/Disbursement/ViewAllDisbursements?collectionPt=6">University Hospital</option>
+    <option value="/Disbursement/ViewAllDisbursements?collectionPt=@collectionPt&sessionId=@sessionId">Stationary Store(Admin)</option>
+    <option value="/Disbursement/ViewAllDisbursements?collectionPt=@collectionPt&sessionId=@sessionId">Management School</option>
+    <option value="/Disbursement/ViewAllDisbursements?collectionPt=@collectionPt&sessionId=@sessionId">Medical School</option>
+    <option value="/Disbursement/ViewAllDisbursements?collectionPt=@collectionPt&sessionId=@sessionId">Engineering School</option>
+    <option value="/Disbursement/ViewAllDisbursements?collectionPt=@collectionPt&sessionId=@sessionId">Science School</option>
+    <option value="/Disbursement/ViewAllDisbursements?collectionPt=@collectionPt&sessionId=@sessionId">University Hospital</option>
 </select>
 @switch (collectionPt)
 {
@@ -51,7 +52,7 @@
         {
             <tr>
 
-                <td><a href="/Disbursement/ViewDisbursementDetails?listId=@disbursement.ListId&collectionPt=@collectionPt">@disbursement.Department.DeptName</a></td>
+                <td><a href="/Disbursement/ViewDisbursementDetails?listId=@disbursement.ListId&collectionPt=@collectionPt&sessionId=@sessionId">@disbursement.Department.DeptName</a></td>
 
             </tr>
         }

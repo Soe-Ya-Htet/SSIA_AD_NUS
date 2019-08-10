@@ -3,32 +3,49 @@
     ViewBag.Title = "ViewDisbursementDetails";
 }
 
-@{ 
+@{
     var details = (List<DisbursementListDetails>)ViewData["details"];
     var listId = (long)ViewData["listId"];
     var collectionPoint = (string)ViewData["collectionPt"];
+    var sessionId = (string)ViewData["sessionId"];
+    var empRole = (string)ViewData["empRole"];
 }
 
-    <table>
+<table>
+    <tr>
+        <th>Item Description</th>
+        <th>Quantity</th>
+        <th>Disbursed Quantity</th>
+    </tr>
+    @foreach (var detail in details)
+    {
         <tr>
-            <th>Item Description</th>
-            <th>Quantity</th>
-            <th>Disbursed Quantity</th>
-        </tr>
-        @foreach (var detail in details)
-        {
-            <tr>
-                <td>@detail.Item.Description</td>
+            <td>@detail.Item.Description</td>
+            <td>@detail.Quantity</td>
+            @if (empRole == "STORE_CLERK" || empRole == "STORE_SUPERVISOR" || empRole == "STORE_MANAGER")
+            {
+                <td><input type="number" class="input" name="@detail.Item.ItemId" value="@detail.Quantity" /></td>
+            }
+            else
+            {
                 <td>@detail.Quantity</td>
-                <td><input type="number" class="input"  name="@detail.Item.ItemId" value="@detail.Quantity" /></td>
-            </tr>
-        }
-    </table>
+            }
+        </tr>
+    }
+</table>
+@if (empRole == "STORE_CLERK" || empRole == "STORE_SUPERVISOR" || empRole == "STORE_MANAGER")
+{
     <input type="button" value="Disburse items" onclick="submitData()" />
+}
+else
+{
+    <input type="button" name="Acknowledge" value="Acknowledge" />
+}
+
 
 
 <script type="text/javascript">
-    
+
 
     function submitData()
     {
@@ -39,12 +56,12 @@
             var list = { itemId: item.name, quantity: item.value }
             listOfLists.push(list)
         }
-    
+
 
 
         $.ajax({
             type: 'POST',
-            url: "@Html.Raw(Url.Action("UpdateDisbursementLists", "Disbursement", new { listId = listId, collectionPt= collectionPoint}))",
+            url: "@Html.Raw(Url.Action("UpdateDisbursementLists", "Disbursement", new { listId = listId, collectionPt= collectionPoint, sessionId = sessionId}))",
             contentType: 'application/json; charset=utf-8', // specify the content type
             dataType: 'JSON', // make sure you use the correct case for dataType
             data: JSON.stringify(listOfLists),

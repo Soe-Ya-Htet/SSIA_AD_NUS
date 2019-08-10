@@ -5,12 +5,15 @@ using System.Web;
 using System.Web.Mvc;
 using SSISTeam9.Services;
 using SSISTeam9.Models;
+using SSISTeam9.Filters;
+
 namespace SSISTeam9.Controllers
 {
     public class DisbursementController : Controller
     {
         // GET: Disbursement
-        public ActionResult ViewAllDisbursements(string collectionPt)
+        [StoreAuthorisationFilter]
+        public ActionResult ViewAllDisbursements(string collectionPt,string sessionId)
         {
             ViewData["disbursements"] = DisbursementListService.ViewOutstandingDisbursementsByCollection(collectionPt);
             if (collectionPt == null)
@@ -21,23 +24,24 @@ namespace SSISTeam9.Controllers
             {
                 ViewData["collectionPoint"] = collectionPt;
             }
-            
-            
+
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 
-        public ActionResult ViewDisbursementDetails(long listId, string collectionPt)
+        public ActionResult ViewDisbursementDetails(long listId, string collectionPt, string sessionId)
         {
             
             ViewData["details"] = DisbursementListService.ViewDisbursementDetails(listId);
             ViewData["listId"] = listId;
             ViewData["collectionPt"] = collectionPt;
-
+            ViewData["sessionId"] = sessionId;
+            ViewData["empRole"] = EmployeeService.GetUserBySessionId(sessionId).EmpRole;
             return View();
 
         }
-
-        public ActionResult CreateDisbursementLists(List<Entry> entries)
+        [StoreAuthorisationFilter]
+        public ActionResult CreateDisbursementLists(List<Entry> entries, string sessionId)
         {
             List<long> deptIds = new List<long>();
             
@@ -96,10 +100,10 @@ namespace SSISTeam9.Controllers
             }
             DisbursementListService.CreateDisbursementLists(disbursementLists);
 
-            return Json(Url.Action("ViewAllDisbursements","Disbursement"));
+            return Json(Url.Action("ViewAllDisbursements","Disbursement", new { sessionId = sessionId }));
         }
-
-        public ActionResult UpdateDisbursementLists(long listId, long collectionPt, List<PerItem> items)
+        [StoreAuthorisationFilter]
+        public ActionResult UpdateDisbursementLists(long listId, long collectionPt, List<PerItem> items, string sessionId)
         {
             foreach (var item in items)
             {
@@ -138,7 +142,7 @@ namespace SSISTeam9.Controllers
             }
 
 
-            return Json(Url.Action("ViewAllDisbursements", "Disbursement", new {collectionPt = collectionPt }));
+            return Json(Url.Action("ViewAllDisbursements", "Disbursement", new {collectionPt = collectionPt, sessionId= sessionId }));
         }
 
     public class PerItem

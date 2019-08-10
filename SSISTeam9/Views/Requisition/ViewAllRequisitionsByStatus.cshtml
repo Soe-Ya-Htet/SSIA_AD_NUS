@@ -21,8 +21,8 @@
 
 <select onchange="location = this.options[this.selectedIndex].value;">
     <option>Select</option>
-    <option value="/Requisition/ViewAllRequisitionsByStatus?status=Outstanding">Outstanding</option>
-    <option value="/Requisition/ViewAllRequisitionsByStatus?status=Completed">Completed</option>
+    <option value="/Requisition/ViewAllRequisitionsByStatus?status=Outstanding&sessionId=@sessionId">Outstanding</option>
+    <option value="/Requisition/ViewAllRequisitionsByStatus?status=Completed&sessionId=@sessionId">Completed</option>
 </select>
 
 @if (status != "Completed")

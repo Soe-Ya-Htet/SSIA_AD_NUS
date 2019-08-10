@@ -217,6 +217,7 @@
     <Compile Include="Services\DepartmentService.cs" />
     <Compile Include="Services\DisbursementListService.cs" />
     <Compile Include="Services\EmailService.cs" />
+    <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\IEmailService.cs" />
     <Compile Include="Services\PriceListService.cs" />
     <Compile Include="Services\PurchaseOrderService.cs" />

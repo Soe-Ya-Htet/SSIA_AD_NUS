@@ -164,6 +164,8 @@
     <Compile Include="Controllers\RetrievalFormController.cs" />
     <Compile Include="Controllers\StockCardController.cs" />
     <Compile Include="Controllers\StockController.cs" />
+    <Compile Include="Controllers\StoreClerkController.cs" />
+    <Compile Include="Controllers\StoreMSController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="DAO\AdjVoucherDAO.cs" />
     <Compile Include="DAO\AnalyticsDAO.cs" />
@@ -352,6 +354,8 @@
     <Content Include="Views\StockCard\StockCard.cshtml" />
     <Content Include="Views\AdjVoucher\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\StoreClerk\Home.cshtml" />
+    <Content Include="Views\StoreMS\Home.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

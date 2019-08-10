@@ -15,14 +15,16 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult Login(string UserName, string Password)
+        public ActionResult Login(string userName, string password)
         {
-            if (UserName == null)
+            if (userName == null)
                 return View();
 
-            Employee user = EmployeeService.GetUserPassword(UserName);
+            Employee user = EmployeeService.GetUserPassword(userName);
 
-            string sessionId = Session.CreateSession(UserName);
+            string sessionId = EmployeeService.CreateSession(userName);
+
+
 
             return RedirectToAction("ViewProducts", "Gallery", new { username = UserName, sessionid = SessionId });
         }

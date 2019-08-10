@@ -1,4 +1,5 @@
-﻿using SSISTeam9.Models;
+﻿using SSISTeam9.Filters;
+using SSISTeam9.Models;
 using SSISTeam9.Services;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using Delegate = SSISTeam9.Models.Delegate;
 
 namespace SSISTeam9.Controllers
 {
-
+    [BasicAuthenticationAttribute]
     [RoutePrefix("rest/dept_head")]
     public class RestDepartmentHeadController : Controller
     {
@@ -87,7 +88,6 @@ namespace SSISTeam9.Controllers
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
         [Route("pending_order/approve/{reqId:int}")]
         public JsonResult ApproveOrder(int reqId)
         {
@@ -95,7 +95,6 @@ namespace SSISTeam9.Controllers
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
         [Route("pending_order/reject/{reqId:int}")]
         public JsonResult RejectOrder(int reqId)
         {

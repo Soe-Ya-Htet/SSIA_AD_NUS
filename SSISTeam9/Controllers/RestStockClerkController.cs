@@ -1,4 +1,5 @@
-﻿using SSISTeam9.Models;
+﻿using SSISTeam9.Filters;
+using SSISTeam9.Models;
 using SSISTeam9.Services;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using static SSISTeam9.Controllers.DisbursementController;
 
 namespace SSISTeam9.Controllers
 {
+    [BasicAuthenticationAttribute]
     [RoutePrefix("rest/stock_clerk")]
     public class RestStockClerkController : Controller
     {
@@ -28,36 +30,15 @@ namespace SSISTeam9.Controllers
         [Route("disbursement/generate")]
         public ActionResult GenerateDisbursement(List<Entry> entries)
         {
-            List<long> deptIds = new List<long>();
+            HashSet<long> deptIds = new HashSet<long>();
 
             List<DisbursementList> disbursementLists = new List<DisbursementList>();
 
-            foreach (var entry in entries)
-            {
-                if (deptIds.Contains(entry.deptId))
-                {
-
-                }
-                else
-                {
-                    deptIds.Add(entry.deptId);
-
-                }
-            }
+            entries.ForEach(e => deptIds.Add(e.deptId));
 
             foreach (var deptId in deptIds)
             {
                 List<DisbursementListDetails> disbursementListDetails = new List<DisbursementListDetails>();
-                Department dept = new Department()
-                {
-                    DeptId = deptId
-                };
-                DisbursementList d = new DisbursementList()
-                {
-                    Department = dept,
-                    DisbursementListDetails = disbursementListDetails
-
-                };
 
                 foreach (var entry in entries)
                 {
@@ -66,19 +47,26 @@ namespace SSISTeam9.Controllers
                         Inventory i = new Inventory()
                         {
                             ItemId = entry.itemId,
-
-
                         };
                         DisbursementListDetails dDets = new DisbursementListDetails()
                         {
                             Item = i,
                             Quantity = entry.quantity
-
                         };
 
-                        d.DisbursementListDetails.Add(dDets);
+                        disbursementListDetails.Add(dDets);
                     }
                 }
+
+                DisbursementList d = new DisbursementList()
+                {
+                    Department = new Department()
+                    {
+                        DeptId = deptId
+                    },
+                    DisbursementListDetails = disbursementListDetails
+                };
+
                 disbursementLists.Add(d);
             }
 

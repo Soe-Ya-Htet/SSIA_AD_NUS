@@ -651,6 +651,8 @@
     <Compile Include="Services\StockService.cs" />
     <Compile Include="Services\SupplierService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utility\AuthUtil.cs" />
+    <Compile Include="Utility\UserPrincipal.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />

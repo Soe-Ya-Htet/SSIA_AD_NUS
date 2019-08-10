@@ -10,7 +10,7 @@ using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
-    [StoreAuthorisationFilter]
+    //[StoreAuthorisationFilter]
     public class StockController : Controller
     {
         public async Task<ActionResult> All(string userName, string sessionId)
@@ -69,14 +69,28 @@ namespace SSISTeam9.Controllers
         }
 
 
-        //Stock taking in order to generate Adjustment Voucher
+        //The following code used for Stock taking in order to generate Adjustment Voucher
         public ActionResult Check()
         {
-            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
+            List<Inventory> inventories = CatalogueService.GetAllCatalogue();
 
-            ViewData["catalogues"] = catalogues;
+            ViewData["inventories"] = inventories;
 
             return View();
+        }
+
+        public ActionResult Generate(List<Inventory> inventories)
+        {
+            foreach(Inventory inventory in inventories)
+            {
+                int qty = inventory.ActualStock - inventory.StockLevel;
+                if(qty != 0)
+                {
+                    StockService.CreateAdjVoucher(inventory.ItemId, qty);
+                }
+            }
+
+            return RedirectToAction("Check");
         }
 
     }

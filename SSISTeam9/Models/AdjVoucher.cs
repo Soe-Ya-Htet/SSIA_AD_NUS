@@ -13,5 +13,8 @@ namespace SSISTeam9.Models
         public int AdjQty { get; set; }
         public string Reason { get; set; }
         public Inventory Item { get; set; }
+
+        //0-pending 1-approved 2-rejected
+        public int status { get; set; }
     }
 }

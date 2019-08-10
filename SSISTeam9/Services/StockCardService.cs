@@ -17,18 +17,34 @@ namespace SSISTeam9.Services
                 switch (stockCard.SourceType)
                 {
                     case 1:
-                        stockCard.AdjVoucher.AdjId = stockCard.SourceId;
+                        stockCard.AdjVoucher = new AdjVoucher
+                        {
+                            AdjId = stockCard.SourceId
+                        };
                         stockCard.Display = "Stock Adjustment";
                         break;
                     case 2:
-                        stockCard.DisbursementList.Department.DeptId = stockCard.SourceId;
+                        stockCard.DisbursementList = new DisbursementList()
+                        {
+                            Department = new Department()
+                            {
+                                DeptId = stockCard.SourceId
+                            }
+                        };
                         Department department = DepartmentService.GetDepartmentById(stockCard.DisbursementList.Department.DeptId);
                         stockCard.Display = department.DeptName;
                         break;
                     case 3:
-                        stockCard.PurchaseOrder.OrderId = stockCard.SourceId;
+                        stockCard.PurchaseOrder = new PurchaseOrder()
+                        {
+                            OrderId = stockCard.SourceId                          
+                        };
                         stockCard.PurchaseOrder.SupplierId = PurchaseOrderService.GetOrderById(stockCard.PurchaseOrder.OrderId).SupplierId;
                         Supplier supplier = SupplierService.GetSupplierById(stockCard.PurchaseOrder.SupplierId);
+                        if(supplier.SupplierCode == null)
+                        {
+                            supplier.SupplierCode = "Nil";
+                        }
                         stockCard.Display = "Supplier - " + supplier.SupplierCode;
                         break;
                 }
@@ -63,5 +79,6 @@ namespace SSISTeam9.Services
             }
 
         }
+
     }
 }

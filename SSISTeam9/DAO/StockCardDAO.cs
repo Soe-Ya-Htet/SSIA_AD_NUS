@@ -17,7 +17,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from StockCard WHERE itemId = '" + ItemId +"'";
+                string q = @"SELECT * FROM StockCard​ WHERE itemId = '" + ItemId + "'  ORDER BY date";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -25,13 +25,12 @@ namespace SSISTeam9.DAO
                 {
                     StockCard stockCard = new StockCard()
                     {
-                        CardId = (long)reader["cardId"],
-                        ItemId = (long)reader["itemId"],
-                        Date = (DateTime)reader["date"],
-                        SourceType = (int)reader["sourceType"],
-                        SourceId = (long)reader["sourceId"],
-                        Qty = (string)reader["qty"],
-                        Balance = (int)reader["balance"]
+                        ItemId = (long)reader[1],
+                        Date = (DateTime)reader[2],
+                        SourceType = (int)reader[3],
+                        SourceId = (long)reader[4],
+                        Qty = (string)reader[5],
+                        Balance = (int)reader[6]
                     };
                     stockCards.Add(stockCard);
                 }

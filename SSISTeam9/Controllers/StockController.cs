@@ -10,7 +10,7 @@ using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
-    //[StoreAuthorisationFilter]
+    [StoreAuthorisationFilter]
     public class StockController : Controller
     {
         public async Task<ActionResult> All(string userName, string sessionId)

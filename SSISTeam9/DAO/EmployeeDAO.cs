@@ -125,11 +125,14 @@ namespace SSISTeam9.DAO
                     employee = new Employee()
                     {
                         EmpId = (long)reader["empId"],
+                        DeptId = (long)reader["deptId"],
                         EmpName = (string)reader["empName"],
                         EmpRole = (string)reader["empRole"],
                         EmpDisplayRole = (string)reader["empDisplayRole"],
                         UserName = (string)reader["userName"],
-                        Password = (string)reader["password"]
+                        Password = (string)reader["password"],
+                        Email = (reader["email"] == DBNull.Value) ? null : (string)reader["email"],
+                        SessionId = (reader["email"] == DBNull.Value) ? null : (string)reader["sessionId"]
 
                     };
                 }

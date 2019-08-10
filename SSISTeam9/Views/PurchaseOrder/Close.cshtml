@@ -7,12 +7,16 @@
     double total = 0;
     long itemSupplierId = 0;
     var counter = 0;
+
+    string userName = (string)ViewData["userName"];
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2>Purchase Order</h2>
 
 <div>
-    @using (Html.BeginForm("ConfirmClose", "PurchaseOrder", FormMethod.Post))
+    @using (Html.BeginForm("ConfirmClose", "PurchaseOrder", routeValues: new { username = userName, sessionid = sessionId }
+    , method: FormMethod.Post))
     {
     <table>
         <tr>
@@ -96,7 +100,7 @@
             <td colspan="5" align="right">
                 <button>
                     @Html.ActionLink("Delete PO", "Delete", "PurchaseOrder",
-                    new { confirm = true, orderNumber = order.OrderNumber },
+                    new { confirm = true, orderNumber = order.OrderNumber, userName = userName, sessionId = sessionId },
                     new { onclick = "return confirm('Do you really want to delete this purchase order?')" })
                 </button>
             </td>

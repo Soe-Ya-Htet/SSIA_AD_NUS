@@ -152,5 +152,25 @@ namespace SSISTeam9.DAO
                 }
             }
         }
+
+
+        //The following method is used to create AdjVoucher after stock taking
+        public static void CreateAdjVoucher(long itemId, int qty)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string date = DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day;
+
+                string q = @"INSERT INTO AdjVoucher (itemId,date,authorisedBy,adjQty)" +
+                            "VALUES ('" + itemId +
+                            "','" + date +
+                            "','0','" + qty + "')";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
     }
 }

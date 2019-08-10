@@ -6,12 +6,16 @@
     PurchaseOrder order = (PurchaseOrder)ViewData["order"];
     var counter = 0;
     double total = 0;
+
+    string userName = (string)ViewData["userName"];
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2>Update Purchase Order</h2>
 
 <div>
-    @using (Html.BeginForm("UpdatePurchaseOrder", "PurchaseOrder", FormMethod.Post))
+    @using (Html.BeginForm("UpdatePurchaseOrder", "PurchaseOrder", routeValues: new { username = userName, sessionid = sessionId }
+    , method: FormMethod.Post))
     {
     <table>
         <tr>
@@ -81,6 +85,9 @@
                         <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
                         total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice);
                     }
+                    <td>
+                        <input type="hidden" name="orderNumber" value="@order.OrderNumber" />
+                    </td>
                 </tr>
                 counter = counter + 1;
             }
@@ -95,7 +102,7 @@
                 <td colspan="6" align="right">
                 <button>
                       @Html.ActionLink("Confirm Order", "ConfirmOrder", "PurchaseOrder",
-                      new { confirm = true, orderNumber = order.OrderNumber },
+                      new { confirm = true, orderNumber = order.OrderNumber, userName = userName, sessionId = sessionId },
                       new { onclick = "return confirm('Confirmed?')" })
                 </button>
                 </td>
@@ -104,7 +111,7 @@
                 <td colspan="6" align="right">
                 <button>
                       @Html.ActionLink("Delete PO", "Delete", "PurchaseOrder",
-                      new { confirm = true, orderNumber = order.OrderNumber },
+                      new { confirm = true, orderNumber = order.OrderNumber, userName = userName, sessionId = sessionId },
                       new { onclick = "return confirm('Do you really want to delete this purchase order?')" })
                 </button>
                 </td>

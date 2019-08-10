@@ -42,6 +42,11 @@ namespace SSISTeam9.Services
             DisbursementListDetailsDAO.UpdateDetailById(listId,disbursementListDetails);
         }
 
+        public static List<DisbursementList> CheckForPendingDisbursements()
+        {
+            return DisbursementListDAO.CheckForPendingDisbursements();
+        }
+
         //The following code is for ChargeBack controller
         public static DisbursementList GetDisbursementListByListId(long listId)
         {

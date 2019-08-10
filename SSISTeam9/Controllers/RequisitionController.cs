@@ -115,7 +115,16 @@ namespace SSISTeam9.Controllers
         public ActionResult ViewAllRequisitionsByStatus(string status)
         {
             List<Requisition> requisitions = RequisitionService.ShowAllRequisitionsByStatusByDate(status);
+            if (DisbursementListService.CheckForPendingDisbursements() != null)
+            {
+                ViewData["alreadyAssigned"] = "YES";
+            }
+            else
+            {
+                ViewData["alreadyAssigned"] = "NO";
+            }
             ViewData["Reqs"] = requisitions;
+            ViewData["status"] = status;
             return View();
             
         }

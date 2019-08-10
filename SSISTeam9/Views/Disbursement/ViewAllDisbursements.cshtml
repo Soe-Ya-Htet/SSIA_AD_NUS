@@ -40,19 +40,27 @@
         break;
 
 }
-    
-<table>
-    <tr>
-        <th>Dept Name</th>
-    </tr>
-    @foreach (var disbursement in disbursementLists)
-    {
+
+@if (disbursementLists != null)
+{
+    <table>
         <tr>
-
-            <td><a href="/Disbursement/ViewDisbursementDetails?listId=@disbursement.ListId&collectionPt=@collectionPt">@disbursement.Department.DeptName</a></td>
-
+            <th>Dept Name</th>
         </tr>
-    }
-</table>
+        @foreach (var disbursement in disbursementLists)
+        {
+            <tr>
+
+                <td><a href="/Disbursement/ViewDisbursementDetails?listId=@disbursement.ListId&collectionPt=@collectionPt">@disbursement.Department.DeptName</a></td>
+
+            </tr>
+        }
+    </table>
+
+}
+else
+{
+      <div>No Disbursement lists to display</div>
+}
 
 

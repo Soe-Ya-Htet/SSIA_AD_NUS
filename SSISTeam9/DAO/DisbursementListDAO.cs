@@ -81,7 +81,35 @@ namespace SSISTeam9.DAO
                     return disbursementLists;
             }
         }
-        
+
+        public static List<DisbursementList> CheckForPendingDisbursements()
+        {
+
+            List<DisbursementList> disbursementLists = new List<DisbursementList>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"SELECT * FROM DisbursementList WHERE acknowledgedBy IS NULL";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    
+                    DisbursementList disbursementList = new DisbursementList()
+                    {
+                        ListId = (long)reader["listId"]
+                        
+                    };
+                    disbursementLists.Add(disbursementList);
+                }
+
+
+                return disbursementLists;
+            }
+        }
 
         //The following code is for ChargeBack controller
         public static DisbursementList GetDisbursementListByListId(long listId)

@@ -18,15 +18,18 @@ namespace SSISTeam9.Services
                 {
                     case 1:
                         stockCard.AdjVoucher.AdjId = stockCard.SourceId;
+                        stockCard.Display = "Stock Adjustment";
                         break;
                     case 2:
-                        stockCard.DisbursementList.ListId = stockCard.SourceId;
+                        stockCard.DisbursementList.Department.DeptId = stockCard.SourceId;
+                        Department department = DepartmentService.GetDepartmentById(stockCard.DisbursementList.Department.DeptId);
+                        stockCard.Display = department.DeptName;
                         break;
                     case 3:
                         stockCard.PurchaseOrder.OrderId = stockCard.SourceId;
                         stockCard.PurchaseOrder.SupplierId = PurchaseOrderService.GetOrderById(stockCard.PurchaseOrder.OrderId).SupplierId;
-                        string SupplierCode = SupplierService.GetSupplierById(stockCard.PurchaseOrder.SupplierId).SupplierCode;
-                        stockCard.Display = "Supplier - " + SupplierCode;
+                        Supplier supplier = SupplierService.GetSupplierById(stockCard.PurchaseOrder.SupplierId);
+                        stockCard.Display = "Supplier - " + supplier.SupplierCode;
                         break;
                 }
             }
@@ -36,6 +39,29 @@ namespace SSISTeam9.Services
         public static void CreateStockCardFromDisburse(DisbursementListDetails disbursementDetails, DisbursementList disbursementList, int balance)
         {
             StockCardDAO.CreateStockCardFromDisburse(disbursementDetails, disbursementList, balance);
+        }
+
+
+        public static void CreateStockCardFromOrder(PurchaseOrder order, List<long> itemIds, List<int> itemQuantities)
+        {
+            int totalQuantity = itemQuantities.Sum(m => m);
+            if (totalQuantity != 0)
+            {
+                for (int i = 0; i < itemIds.Count; i++)
+                {
+                    if (itemQuantities[i] != 0)
+                    {
+                        StockCard stockCard = new StockCard();
+                        stockCard.Date = DateTime.Now;
+                        stockCard.ItemId = itemIds[i];
+                        stockCard.SourceId = order.SupplierId;
+                        stockCard.Qty = "+ " + itemQuantities[i];
+                        stockCard.Balance = CatalogueService.GetCatalogueById(itemIds[i]).StockLevel + itemQuantities[i];
+                        StockCardDAO.CreateStockCardFromOrder(stockCard);
+                    }
+                }
+            }
+
         }
     }
 }

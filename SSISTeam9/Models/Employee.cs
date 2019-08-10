@@ -9,6 +9,7 @@ namespace SSISTeam9.Models
     public class Employee
     {
         public long EmpId { get; set; }
+        public long DeptId { get; set; }
         public string EmpName { get; set; }
         public string EmpRole { get; set; }
         public string EmpDisplayRole { get; set; }
@@ -19,6 +20,8 @@ namespace SSISTeam9.Models
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+
+        public string Email { get; set; }
 
         public Department Department { get; set; }
         public string SessionId { get; set; }

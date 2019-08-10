@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SSISTeam9.Models;
+using SSISTeam9.Services;
 
 namespace SSISTeam9.Controllers
 {
@@ -18,21 +20,9 @@ namespace SSISTeam9.Controllers
             if (UserName == null)
                 return View();
 
-            UserInfo user = UserData.GetUserPassword(UserName);
+            Employee user = EmployeeService.GetUserPassword(UserName);
 
-            //Check if MD5 hash of entered pwd matches that in system.
-            using (MD5 md5Hash = MD5.Create())
-            {
-                string hashPwd = MD5Hash.GetMd5Hash(md5Hash, Password);
-
-                if (user == null)
-                    return View();
-
-                if (user.Password != hashPwd)
-                    return View();
-            }
-
-            string SessionId = ShoppingCart.Models.Session.CreateSession(UserName);
+            string sessionId = Session.CreateSession(UserName);
 
             return RedirectToAction("ViewProducts", "Gallery", new { username = UserName, sessionid = SessionId });
         }

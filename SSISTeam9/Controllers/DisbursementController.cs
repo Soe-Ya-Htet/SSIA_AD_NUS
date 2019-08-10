@@ -113,9 +113,10 @@ namespace SSISTeam9.Controllers
                 };
                 DisbursementListService.UpdateDisbursementListDetails(listId, disbursementDetails);
 
-
-                //By the time update DisbursementList, calculate the amount of this list, update ChargeBack table
                 //Attention: DisbursementList can only disburse once, date for that list is not null
+
+                /*The following code is for ChargeBack table*/
+                //By the time disburse item, calculate the amount of this list, update ChargeBack table               
                 PriceList priceList = PriceListService.GetPriceListByItemId(i.ItemId);
                 double price = 0;
                 if (priceList != null)
@@ -126,9 +127,16 @@ namespace SSISTeam9.Controllers
                 double amount = price * disbursementDetails.Quantity;
                 DisbursementList disbursementList = DisbursementListService.GetDisbursementListByListId(listId);
                 ChargeBackService.UpdateChargeBackData(amount, disbursementList);
+
+                /*The following code is for StockCard table*/
+                //By the time disburse item, update StockCard table with itemId, deptId and date, souceType = 2
+
+                int balance = CatalogueService.GetCatalogueById(disbursementDetails.Item.ItemId).StockLevel - disbursementDetails.Quantity;
+                StockCardService.CreateStockCardFromDisburse(disbursementDetails, disbursementList, balance);
+                              
             }
 
-            
+
             return Json(Url.Action("ViewAllDisbursements", "Disbursement", new {collectionPt = collectionPt }));
         }
 

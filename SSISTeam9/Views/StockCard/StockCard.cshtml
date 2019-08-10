@@ -36,3 +36,22 @@
     </tr>
     }
 </table>
+
+<table align="center">
+    <tr align="center">
+        <th>Date</th>
+        <th>Department/Supplier</th>
+        <th>Quantity</th>
+        <th>Balance</th>
+    </tr>
+    @foreach (StockCard s in stockCards)
+    {
+        <tr align="center">
+            <td>@s.Date.Day/@s.Date.Month/@s.Date.Year</td>
+            <td>@s.Display</td>
+            <td>@s.Qty</td>
+            <td>@s.Balance</td>
+        </tr>
+    }
+
+</table>

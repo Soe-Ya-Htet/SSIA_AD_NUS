@@ -17,7 +17,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from StockCard WHERE itemId = '" + ItemId +"'";
+                string q = @"SELECT * FROM StockCard​ WHERE itemId = '" + ItemId + "'  ORDER BY date";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -25,13 +25,12 @@ namespace SSISTeam9.DAO
                 {
                     StockCard stockCard = new StockCard()
                     {
-                        CardId = (long)reader["cardId"],
-                        ItemId = (long)reader["itemId"],
-                        Date = (DateTime)reader["date"],
-                        SourceType = (int)reader["sourceType"],
-                        SourceId = (long)reader["sourceId"],
-                        Qty = (string)reader["qty"],
-                        Balance = (int)reader["balance"]
+                        ItemId = (long)reader[1],
+                        Date = (DateTime)reader[2],
+                        SourceType = (int)reader[3],
+                        SourceId = (long)reader[4],
+                        Qty = (string)reader[5],
+                        Balance = (int)reader[6]
                     };
                     stockCards.Add(stockCard);
                 }
@@ -53,6 +52,26 @@ namespace SSISTeam9.DAO
                             "','2','" + disbursementList.Department.DeptId +
                             "','- " + disbursementDetails.Quantity +
                             "','" + balance + "')";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void CreateStockCardFromOrder(StockCard stockCard)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"INSERT INTO StockCard (itemId,date,sourceType,sourceId,qty,balance)" +
+                            "VALUES ('" + stockCard.ItemId +
+                            "','" + stockCard.Date.Year +
+                            "-" + stockCard.Date.Month +
+                            "-" + stockCard.Date.Day +
+                            "','3','" + stockCard.SourceId +
+                            "','" + stockCard.Qty +
+                            "','" + stockCard.Balance + "')";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();

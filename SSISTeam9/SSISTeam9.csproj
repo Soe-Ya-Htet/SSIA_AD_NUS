@@ -607,6 +607,7 @@
     <Compile Include="DAO\StockDAO.cs" />
     <Compile Include="DAO\SupplierDAO.cs" />
     <Compile Include="Filters\BasicAuthenticationAttribute.cs" />
+    <Compile Include="Filters\StoreAuthorisationFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

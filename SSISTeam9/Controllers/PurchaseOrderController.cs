@@ -153,10 +153,16 @@ namespace SSISTeam9.Controllers
                 itemIds.Add(long.Parse(formCollection["item_" + i]));
             }
 
+
+            /*The following code is for StockCard table*/
+            //By the time close order, update StockCard table with itemId, deptId and date, souceType = 3
+            StockCardService.CreateStockCardFromOrder(order, itemIds, itemsQuantities);
+
             //SET status to close and update quantities (if any) accordingly
             //Stock level is also updated accordingly
             PurchaseOrderService.ClosePurchaseOrder(order, itemIds, itemsQuantities);
 
+            
             return RedirectToAction("All");
         }
 

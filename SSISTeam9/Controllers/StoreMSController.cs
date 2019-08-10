@@ -18,6 +18,8 @@ namespace SSISTeam9.Controllers
             }
             else
             {
+                ViewData["userName"] = userName;
+                ViewData["sessionId"] = sessionId;
                 return View();
             }
         }

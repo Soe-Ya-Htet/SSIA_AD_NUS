@@ -31,7 +31,7 @@ namespace SSISTeam9.DAO
                         SourceType = (int)reader["sourceType"],
                         SourceId = (long)reader["sourceId"],
                         Qty = (string)reader["qty"],
-                        Balance = (string)reader["balance"]
+                        Balance = (int)reader["balance"]
                     };
                     stockCards.Add(stockCard);
                 }
@@ -39,6 +39,25 @@ namespace SSISTeam9.DAO
             return stockCards;
         }
 
+        public static void CreateStockCardFromDisburse(DisbursementListDetails disbursementDetails, DisbursementList disbursementList, int balance)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"INSERT INTO StockCard (itemId,date,sourceType,sourceId,qty,balance)" +
+                            "VALUES ('" + disbursementDetails.Item.ItemId +
+                            "','" + disbursementList.date.Year +
+                            "-" + disbursementList.date.Month +
+                            "-" + disbursementList.date.Day +
+                            "','2','" + disbursementList.Department.DeptId +
+                            "','- " + disbursementDetails.Quantity +
+                            "','" + balance + "')";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
 
     }
 }

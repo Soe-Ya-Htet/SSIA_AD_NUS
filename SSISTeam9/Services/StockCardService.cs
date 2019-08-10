@@ -32,5 +32,10 @@ namespace SSISTeam9.Services
             }
             return stockCards;
         }
+
+        public static void CreateStockCardFromDisburse(DisbursementListDetails disbursementDetails, DisbursementList disbursementList, int balance)
+        {
+            StockCardDAO.CreateStockCardFromDisburse(disbursementDetails, disbursementList, balance);
+        }
     }
 }

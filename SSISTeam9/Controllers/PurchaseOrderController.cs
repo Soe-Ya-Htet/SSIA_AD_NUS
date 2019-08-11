@@ -51,11 +51,7 @@ namespace SSISTeam9.Controllers
             if (confirm)
             {
                 PurchaseOrderService.ConfirmOrder(orderNumber);
-
-                //List<PurchaseOrder> orders = PurchaseOrderService.GetAllOrders(EmployeeService.GetUserBySessionId(sessionId).EmpId);
                 
-                //ViewData["sessionId"] = sessionId;
-                //ViewData["orders"] = orders;
                 return RedirectToAction("All", new { sessionid = sessionId });
             }
             return null;

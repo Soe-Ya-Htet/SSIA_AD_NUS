@@ -40,7 +40,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from RequisitionDetails where reqId=" + reqId;
+                string q = @"SELECT r.*,i.flag from RequisitionDetails r, Inventory i where r.itemId=i.itemId and reqId=" + reqId;
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -48,7 +48,8 @@ namespace SSISTeam9.DAO
                 {
                     Inventory i = new Inventory()
                     {
-                        ItemId = (long)reader["itemId"]
+                        ItemId = (long)reader["itemId"],
+                        Flag = (int)reader["flag"]
                     };
                     RequisitionDetails requisitionDetail = new RequisitionDetails()
                     {

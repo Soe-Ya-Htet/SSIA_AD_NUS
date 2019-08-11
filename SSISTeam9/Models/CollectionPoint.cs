@@ -9,6 +9,6 @@ namespace SSISTeam9.Models
     {
         public long PlacedId { get; set; }
         public string Name { get; set; }
-        public DateTime Time { get; set; }
+        public TimeSpan Time { get; set; }
     }
 }

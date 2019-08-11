@@ -35,7 +35,7 @@ namespace SSISTeam9.Services
             item.ItemId = itemId;
             cart.Employee = emp;
             cart.Item = item;
-            cart.Quantity = 1;
+            cart.Quantity = quantity;
             List<Cart> carts = CartDAO.GetAllCart();
             carts = GetCartsWithObjects(carts);
 
@@ -84,7 +84,10 @@ namespace SSISTeam9.Services
             reqDetails = RequisitionDetailsDAO.GetRequisitionDetailsByReqId(reqId);
             foreach (RequisitionDetails r in reqDetails)
             {
-                SaveToCart(r.Item.ItemId, empId, r.Quantity);
+                if(r.Item.Flag == 0)
+                {
+                    SaveToCart(r.Item.ItemId, empId, r.Quantity);
+                }
             }
         }
 
@@ -179,10 +182,7 @@ namespace SSISTeam9.Services
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (list[i].Item.ItemId == items[i].ItemId)
-                    {
-                        list[i].Item = items[i];
-                    }
+                    list[i].Item = items.Find(item => item.ItemId == list[i].Item.ItemId);
                 }
             }
             return list;

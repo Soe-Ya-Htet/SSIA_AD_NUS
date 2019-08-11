@@ -27,7 +27,7 @@
                     @Html.ActionLink("Department Requisition", "DeptRequisition", "Requisition", new { deptId = 1 }, new { @class = "nav-link" })
                 </li>
                 <li class="nav-item active">
-                    @Html.ActionLink("Disbursement List", "DeptRequisition", "Requisition", new { deptId = 1 }, new { @class = "nav-link" })
+                    @Html.ActionLink("Disbursement List", "RepDisbursementList", "Disbursement", new { deptId = 1 }, new { @class = "nav-link" })
                 </li>
             </ul>
             <ul class="navbar-nav mt-2 mt-md-0">
@@ -48,7 +48,7 @@
 <section class="products">
 
     @foreach (var item in Model)
-                        {
+    {
         <div class="product-card">
             <div class="product-info">
                 <center><img style="width: 150px; height:100px" src="" /></center>

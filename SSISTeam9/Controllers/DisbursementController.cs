@@ -145,6 +145,31 @@ namespace SSISTeam9.Controllers
             return Json(Url.Action("ViewAllDisbursements", "Disbursement", new {collectionPt = collectionPt, sessionId= sessionId }));
         }
 
+        public ActionResult RepDisbursementList(long deptId)
+        {
+            DisbursementList disbursementList = new DisbursementList();
+            List<DisbursementListDetails> disDetailList = new List<DisbursementListDetails>();
+            disbursementList = DisbursementListService.GetDisbursementListByDeptId(deptId);
+            if (disbursementList.ListId != 0)
+            {
+                disDetailList = DisbursementListService.ViewDisbursementDetails(disbursementList.ListId);
+            }
+            List<CollectionPoint> collectionPoints = DisbursementListService.GetAllCollectionPoints();
+            ViewData["disbursement"] = disbursementList;
+            ViewData["disDetailList"] = disDetailList;
+            ViewData["collectionPoints"] = collectionPoints;
+            return View();
+        }
+
+        public ActionResult ChangeCollectionPoint(long deptId, DisbursementList disbursement,FormCollection frm)
+        {
+            CollectionPoint c = new CollectionPoint();
+            c.PlacedId = long.Parse(frm["collect"].ToString());
+            disbursement.CollectionPoint = c;
+            DisbursementListService.ChangeCollectionPoint(disbursement);
+            return RedirectToAction("RepDisbursementList",new { deptId = deptId});
+        }
+
     public class PerItem
         {
             public long itemId { get; set; }

@@ -1,0 +1,111 @@
+﻿@model SSISTeam9.Models.DisbursementList
+@using SSISTeam9.Models
+
+@{
+    ViewBag.Title = "RepDisbursementList";
+    DisbursementList disbursementList = (DisbursementList)ViewData["disbursement"];
+    List<DisbursementListDetails> disDetailList = (List<DisbursementListDetails>)ViewData["disDetailList"];
+    List<CollectionPoint> collectionPoints = (List<CollectionPoint>)ViewData["collectionPoints"];
+}
+
+@{
+    if (disDetailList.Count == 0)
+    {
+        <h2>No Disbursement List yet!</h2>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col">
+                <h2>Disbursement List</h2>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <div class="float-right">
+                            Collection Date :
+                        </div>
+                    </div>
+                    <div class="col">
+                        @disbursementList.date
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="float-right">
+                            Collecition Point :
+                        </div>
+                    </div>
+                    <div class="col">
+                        @disbursementList.CollectionPoint.Name
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <table class="table">
+            <tr>
+                <th>
+                    Item Description
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Unit of Measure
+                </th>
+            </tr>
+
+            @foreach (var dis in disDetailList)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => dis.Item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => dis.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => dis.Item.UnitOfMeasure)
+                    </td>
+                </tr>
+            }
+
+        </table>
+        <br />
+        <h4>Change Collection Point</h4>
+        <form method="post">
+
+        </form>
+        using (Html.BeginForm("ChangeCollectionPoint", "Disbursement", new { deptId = disbursementList.Department.DeptId} ,FormMethod.Post, null))
+        {
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @foreach (var point in collectionPoints)
+                        {
+                                if (point.PlacedId == disbursementList.CollectionPoint.PlacedId)
+                                {
+                                <input type="radio" name="collect" value="@point.PlacedId" checked /> @point.Name
+                                }
+                                else
+                                {
+                                <input type="radio" name="collect" value="@point.PlacedId" /> @point.Name
+                                }
+                            <br/>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Change" class="btn btn-default" />
+                        @Html.Hidden("listId",disbursementList.ListId)
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+}

@@ -17,7 +17,6 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-
                 string q = "SELECT * FROM DisbursementListDetails d, Inventory i WHERE d.itemId = i.itemId AND listId =" + listId;
 
                 SqlCommand cmd = new SqlCommand(q, conn);
@@ -28,14 +27,13 @@ namespace SSISTeam9.DAO
                     Inventory i = new Inventory()
                     {
                         ItemId = (long)reader["itemId"],
-                        Description = (string)reader["description"]
+                        Description = (string)reader["description"],
+                        UnitOfMeasure = (string)reader["unitOfMeasure"]
                     };
                     DisbursementListDetails detail = new DisbursementListDetails
                     {
                         Quantity = (int)reader["quantity"],
                         Item = i
-
-
                     };
                     disbursementListDetails.Add(detail);
                 }

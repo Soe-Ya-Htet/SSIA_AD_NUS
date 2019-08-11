@@ -278,7 +278,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from Inventory where itemId IN ({0}) AND flag != 1";
+                string q = @"SELECT * from Inventory where itemId IN ({0})";
 
                 var parms = inventoryIds.Select((s, i) => "@id" + i.ToString()).ToArray();
                 var inclause = string.Join(",", parms);

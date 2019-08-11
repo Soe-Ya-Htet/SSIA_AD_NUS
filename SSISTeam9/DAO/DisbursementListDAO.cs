@@ -83,6 +83,54 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static DisbursementList GetGeneratedDisbursementListByDeptId(long deptId)
+        {
+            DisbursementList disbursementList = new DisbursementList();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT d.*,c.name,c.placeId from DisbursementList d,CollectionPoint c WHERE "+
+                            "d.deptId = @deptId and d.acknowledgedBy = 0 and d.collectionPointId = c.placeId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@deptId", deptId);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    disbursementList = new DisbursementList()
+                    {
+                        date = (DateTime)reader["date"],
+                        ListId = (long)reader["listId"]
+
+                    };
+                    disbursementList.Department = new Department()
+                    {
+                        DeptId = (long)reader["deptId"]
+                    };
+                    disbursementList.CollectionPoint = new CollectionPoint()
+                    {
+                        PlacedId = (long)reader["placeId"],
+                        Name = (string)reader["name"]
+                    };
+                }
+            }
+            return disbursementList;
+        }
+
+        public static void UpdateCollectionPoint(DisbursementList disbursement)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"Update DisbursementList Set collectionPointId = @cPointId where listId = @listId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@cPointId",disbursement.CollectionPoint.PlacedId);
+                cmd.Parameters.AddWithValue("@listId",disbursement.ListId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public static List<DisbursementList> CheckForPendingDisbursements()
         {
 

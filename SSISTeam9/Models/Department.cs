@@ -11,7 +11,8 @@ namespace SSISTeam9.Models
         public long DeptId { get; set; }
 
         [Display(Name = "Department Code")]
-        [Required]
+        [Required(AllowEmptyStrings = false)]
+        [RegularExpression(@".\S+.", ErrorMessage = "No white space allowed")]
         public string DeptCode { get; set; }
 
         [Display(Name = "Department Name")]

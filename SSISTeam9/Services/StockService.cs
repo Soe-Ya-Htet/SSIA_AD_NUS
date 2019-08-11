@@ -28,6 +28,8 @@ namespace SSISTeam9.Services
                     item.ReorderLevel = (int)Math.Round(double.Parse(preds[1]));
                 }
             }
+            //Using Comparable to sort by (stockLevel - reorderLevel)
+            items.Sort();
             return items;
         }
 

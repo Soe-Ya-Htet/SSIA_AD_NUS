@@ -9,6 +9,8 @@
     Dictionary<string, int> monthsAndQuantitiesForChart = (Dictionary<string, int>)ViewData["monthsAndQuantitiesForChart"];
 
     var title = "Total Quantity Requested By " + department;
+
+    string sessionId = (string)ViewData["sessionId"];
 }
 <!DOCTYPE html>
 
@@ -25,24 +27,25 @@
     <div>
         <p>Default shows line chart for current month (base) and preceding two months.</p>
         <p>Change base month using dropdown below.</p>
-        @using (Html.BeginForm("DisplayChartByDept", "Analytics", FormMethod.Post))
+        @using (Html.BeginForm("DisplayChartByDept", "Analytics", new { sessionid = sessionId }, method: FormMethod.Post))
         {
             <label for="month">Month: </label>
             <select id="month" name="month">
-            @foreach (var m in monthsToDisplay)
-            {
-                if (month == monthsInInt[m])
+                @foreach (var m in monthsToDisplay)
                 {
-                    <option value="@m" selected>@m</option>
+                    if (month == monthsInInt[m])
+                    {
+                        <option value="@m" selected>@m</option>
+                    }
+                    else
+                    {
+                        <option value="@m">@m</option>
+                    }
                 }
-                else
-                {
-                    <option value="@m">@m</option>
-                }
-            }
-        </select>
+            </select>
             <input type="hidden" name="year" value='@year' />
             <input type="hidden" name="department" id="department" value="@department" />
+            <input type="hidden" name="sessionId" value="@sessionId" />
             <input type="submit" value="Generate" />
         }
 

@@ -1,12 +1,14 @@
 ﻿@{
     ViewBag.Title = "Home";
     List<string> analytics = (List<string>)ViewData["analytics"];
+
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2>Analytics</h2>
 
 <div>
-    @using (Html.BeginForm("Redirect", "Analytics", FormMethod.Post))
+    @using (Html.BeginForm("Redirect", "Analytics", routeValues: new { sessionid = sessionId}, method: FormMethod.Post))
     {
         <label for="analytic">Select: </label>
         <select id="analytic" name="analytic">
@@ -15,6 +17,7 @@
                 <option value="@analytic">@analytic</option>
             }
         </select>
+        <input type="hidden" name="sessionId" value="@sessionId" />
         <input type="submit" value="Generate" />
     }
 

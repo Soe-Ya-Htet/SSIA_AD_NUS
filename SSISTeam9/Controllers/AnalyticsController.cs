@@ -6,9 +6,11 @@ using System.Web.Mvc;
 using SSISTeam9.Services;
 using SSISTeam9.Models;
 using System.Threading.Tasks;
+using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
+    [StoreAuthorisationFilter]
     public class AnalyticsController : Controller
     {
         public static int currentMonth = DateTime.Now.Month;
@@ -47,7 +49,7 @@ namespace SSISTeam9.Controllers
             ["Dec"] = 12,
         };
 
-        public ActionResult Home()
+        public ActionResult Home(string sessionId)
         {
             List<string> analytics = new List<string>();
             analytics.Add("Requests By Department");
@@ -63,44 +65,47 @@ namespace SSISTeam9.Controllers
                 monthsToDisplay.Add(months[i]);
             }
 
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 
-        public ActionResult Redirect(FormCollection formCollection)
+        public ActionResult Redirect(FormCollection formCollection, string sessionId)
         {
             string analytic = formCollection["analytic"];
 
             if (analytic == "Requests By Department")
             {
-                return RedirectToAction("Select", "Analytics");
+                return RedirectToAction("Select", "Analytics", new { sessionid = sessionId});
             }
             else if (analytic == "Requests By Stationery Category")
             {
-                return RedirectToAction("ByStationeryCategoryRequested", "Analytics"); 
+                return RedirectToAction("ByStationeryCategoryRequested", "Analytics", new { sessionid = sessionId }); 
             }
             else if (analytic == "Orders By Stationery Category")
             {
-                return RedirectToAction("ByStationeryCategoryOrdered", "Analytics");
+                return RedirectToAction("ByStationeryCategoryOrdered", "Analytics", new { sessionid = sessionId });
             }
             else
             {
-                return RedirectToAction("DisplayChartBySupplier", "Analytics");
+                return RedirectToAction("DisplayChartBySupplier", "Analytics", new { sessionid = sessionId });
             }
         }
 
-        public ActionResult Select()
+        public ActionResult Select(string sessionId)
         {
-            List<Department> departments = DepartmentService.GetAllDepartment();
+            List<string> departments = DepartmentService.GetAllDepartmentNames();
            
             ViewData["month"] = months[currentMonth];
             ViewData["year"] = currentYear;
             ViewData["departments"] = departments;
             ViewData["monthsToDisplay"] = monthsToDisplay;
             ViewData["monthsInInt"] = monthsInInt;
+
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 
-        public async Task<ActionResult> DisplayChartByDept(FormCollection formCollection)
+        public async Task<ActionResult> DisplayChartByDept(FormCollection formCollection, string sessionId)
         {
 
             int month = monthsInInt[formCollection["month"]];
@@ -170,11 +175,12 @@ namespace SSISTeam9.Controllers
             }
          
             ViewData["monthsAndQuantitiesForChart"] = monthsAndQuantitiesForChart;
+            ViewData["sessionId"] = sessionId;
 
             return View();
         }
 
-        public ActionResult ByStationeryCategoryRequested(FormCollection formCollection)
+        public ActionResult ByStationeryCategoryRequested(FormCollection formCollection, string sessionId)
         {
             List<RequisitionDetails> reqs = AnalyticsService.GetRequisitionsByStationeryCategory();
 
@@ -195,10 +201,11 @@ namespace SSISTeam9.Controllers
             ViewData["monthsInInt"] = monthsInInt;
             ViewData["monthsToDisplay"] = monthsToDisplay;
             ViewData["chartTitle"] = "Total Quantity Requested By Stationery Category For " + months[currentMonth] + " " + currentYear;
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 
-        public ActionResult ByStationeryCategoryRequestedForSelectedMonth(FormCollection formCollection)
+        public ActionResult ByStationeryCategoryRequestedForSelectedMonth(FormCollection formCollection, string sessionId)
         {
             List<RequisitionDetails> reqs = AnalyticsService.GetRequisitionsByStationeryCategory();
 
@@ -221,11 +228,12 @@ namespace SSISTeam9.Controllers
             ViewData["monthsInInt"] = monthsInInt;
             ViewData["monthsToDisplay"] = monthsToDisplay;
             ViewData["chartTitle"] = "Total Quantity Requested By Stationery Category For " + months[month] + " " + currentYear;
+            ViewData["sessionId"] = sessionId;
 
             return View("ByStationeryCategoryRequested");
         }
 
-        public ActionResult ByStationeryCategoryOrdered(FormCollection formCollection)
+        public ActionResult ByStationeryCategoryOrdered(FormCollection formCollection, string sessionId)
         {
             List<PurchaseOrderDetails> pos = AnalyticsService.GetOrderDetailsByStationeryCategory();
 
@@ -239,10 +247,12 @@ namespace SSISTeam9.Controllers
             ViewData["monthsInInt"] = monthsInInt;
             ViewData["monthsToDisplay"] = monthsToDisplay;
             ViewData["chartTitle"] = "Total Amount Ordered By Stationery Category For " + months[currentMonth] + " " + currentYear;
+            ViewData["sessionId"] = sessionId;
+
             return View();
         }
 
-        public ActionResult ByStationeryCategoryOrderedForSelectedMonth(FormCollection formCollection)
+        public ActionResult ByStationeryCategoryOrderedForSelectedMonth(FormCollection formCollection, string sessionId)
         {
             List<PurchaseOrderDetails> pos = AnalyticsService.GetOrderDetailsByStationeryCategory();
             
@@ -257,10 +267,12 @@ namespace SSISTeam9.Controllers
             ViewData["monthsInInt"] = monthsInInt;
             ViewData["monthsToDisplay"] = monthsToDisplay;
             ViewData["chartTitle"] = "Total Amount Ordered By Stationery Category For " + months[month] + " " + currentYear;
+            ViewData["sessionId"] = sessionId;
+
             return View("ByStationeryCategoryOrdered");
         }
 
-        public ActionResult DisplayChartBySupplier(FormCollection formCollection)
+        public ActionResult DisplayChartBySupplier(FormCollection formCollection, string sessionId)
         {
             List<PurchaseOrderDetails> pos = AnalyticsService.GetOrderDetailsBySupplier();
 
@@ -274,11 +286,12 @@ namespace SSISTeam9.Controllers
             ViewData["monthsInInt"] = monthsInInt;
             ViewData["monthsToDisplay"] = monthsToDisplay;
             ViewData["chartTitle"] = "Total Amount Purchased By Supplier For " + months[currentMonth] + " " + currentYear;
+            ViewData["sessionId"] = sessionId;
 
             return View("DisplayChartBySupplier");
         }
 
-        public ActionResult DisplayChartBySupplierForSelectedMonth(FormCollection formCollection)
+        public ActionResult DisplayChartBySupplierForSelectedMonth(FormCollection formCollection, string sessionId)
         {
             List<PurchaseOrderDetails> pos = AnalyticsService.GetOrderDetailsBySupplier();
             
@@ -294,6 +307,7 @@ namespace SSISTeam9.Controllers
             ViewData["monthsInInt"] = monthsInInt;
             ViewData["monthsToDisplay"] = monthsToDisplay;
             ViewData["chartTitle"] = "Total Amount Purchased From Each Supplier For " + months[month] + " " + currentYear;
+            ViewData["sessionId"] = sessionId;
 
             return View("DisplayChartBySupplier");
         }

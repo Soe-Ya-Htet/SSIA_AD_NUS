@@ -51,11 +51,7 @@ namespace SSISTeam9.Controllers
             if (confirm)
             {
                 PurchaseOrderService.ConfirmOrder(orderNumber);
-
-                //List<PurchaseOrder> orders = PurchaseOrderService.GetAllOrders(EmployeeService.GetUserBySessionId(sessionId).EmpId);
                 
-                //ViewData["sessionId"] = sessionId;
-                //ViewData["orders"] = orders;
                 return RedirectToAction("All", new { sessionid = sessionId });
             }
             return null;
@@ -137,6 +133,7 @@ namespace SSISTeam9.Controllers
             return RedirectToAction("All", new { sessionid = sessionId });
         }
 
+        [PendingDeliveryOrderFilter] //To prevent another store colleague to close/delete your order by amending order number in url
         public ActionResult Close(string orderNumber, string sessionId)
         {
             PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);

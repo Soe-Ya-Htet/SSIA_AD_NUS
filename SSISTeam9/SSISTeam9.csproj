@@ -607,6 +607,7 @@
     <Compile Include="DAO\StockDAO.cs" />
     <Compile Include="DAO\SupplierDAO.cs" />
     <Compile Include="Filters\BasicAuthenticationAttribute.cs" />
+    <Compile Include="Filters\PendingDeliveryOrderFilter.cs" />
     <Compile Include="Filters\StoreAuthorisationFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -784,7 +785,7 @@
     <Content Include="Views\Home\NotAuthorised.cshtml" />
     <Content Include="Views\Stock\Check.cshtml" />
     <Content Include="Views\AdjVoucher\Adjust.cshtml" />
-    <Content Include="Views\AdjVoucher\Generate.cshtml" />
+    <Content Include="Views\AdjVoucher\Authorise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

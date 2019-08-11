@@ -587,7 +587,6 @@
     <Compile Include="Controllers\StockController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="DAO\AdjVoucherDAO.cs" />
-    <Compile Include="DAO\AdjVoucherDetailsDAO.cs" />
     <Compile Include="DAO\AnalyticsDAO.cs" />
     <Compile Include="DAO\CartDAO.cs" />
     <Compile Include="DAO\CatalogueDAO.cs" />

@@ -3,13 +3,15 @@
     ViewBag.Title = "ViewRetrievalForm";
 }
 
-@{ 
+@{
     var retForms = (List<RetrievalForm>)ViewData["retrievalForms"];
-    
+    var alrAssigned = (string)ViewData["alreadyAssigned"];
+    var sessionId = (string)ViewData["sessionId"];
 
 }
 
-
+@if (retForms.Count != 0 && alrAssigned == "NO")
+{
     <table>
         <tr>
             <th rowspan="2">Bin #</th>
@@ -35,7 +37,7 @@
                 <td rowspan="@retForm.deptNeeds.Count" id="/@retForm.itemId">@retForm.itemId</td>
                 <td>@retForm.deptNeeds[0].deptCode</td>
                 <td>@retForm.deptNeeds[0].deptNeeded</td>
-                <td><input type="number"  class="@retForm.itemId" name="@retForm.deptNeeds[0].deptId" value="@retForm.deptNeeds[0].deptNeeded" onchange="findTotal(@retForm.itemId)" min="0" /></td>
+                <td><input type="number" class="@retForm.itemId" name="@retForm.deptNeeds[0].deptId" value="@retForm.deptNeeds[0].deptNeeded" onchange="findTotal(@retForm.itemId)" min="0" /></td>
             </tr>
             for (int i = 1; i < retForm.deptNeeds.Count; i++)
             {
@@ -48,7 +50,18 @@
 
         }
     </table>
-    <input type="button"  value="Submit" onclick="submitData()" />
+    <input type="date" name="date" value="" id="collectionDate" />
+    <input type="button" value="Submit" onclick="submitData()" />
+}
+else if(retForms.Count != 0 && alrAssigned == "YES")
+{
+    <div>Items already retrieved</div>
+}
+else
+{
+    <div>No items to retrieve</div>
+}
+
 
 
 <script type="text/javascript">
@@ -87,19 +100,20 @@
 
         }//this returns arrays deptCodes
 
+        var collectionDate = document.getElementById("collectionDate").value
         var listOfLists = new Array();
         for (var i = 0; i < deptCodes.length; i++) {
             var listPerDeptCode = document.getElementsByName(deptCodes[i])
             for (var item of listPerDeptCode) {
-                var list = { deptId: deptCodes[i], itemId: item.className, quantity: item.value }
+                var list = { deptId: deptCodes[i], itemId: item.className, quantity: item.value, collectionDate: collectionDate }
                 listOfLists.push(list)
             }
         }
 
-        
+
         $.ajax({
             type: 'POST',
-            url: "@Url.Action("CreateDisbursementLists", "Disbursement")",
+            url: "@Url.Action("CreateDisbursementLists", "Disbursement", new { sessionId = sessionId })",
             contentType: 'application/json; charset=utf-8', // specify the content type
             dataType: 'JSON', // make sure you use the correct case for dataType
             data: JSON.stringify(listOfLists),

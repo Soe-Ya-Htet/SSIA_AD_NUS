@@ -1,0 +1,41 @@
+﻿@model IEnumerable<SSISTeam9.Models.AdjVoucher>
+
+@using (Html.BeginForm("Generate", "AdjVoucher", FormMethod.Post))
+{
+    <table class="table">
+        <tr>
+            <th>Item Code</th>
+            <th>Description</th>
+            <th>Quantity Adjusted</th>
+            <th>Reason</th>
+            <th>Unit Price</th>
+            <th>Total Price</th>
+        </tr>
+
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item.ItemCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AdjQty)
+                </td>
+                <td>
+                    @Html.TextBoxFor(modelItem => item.Reason)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item.ItemSuppliersDetails.Supplier1UnitPrice)
+                </td>
+                <td>
+                    @item.AdjQty * @item.Item.ItemSuppliersDetails.Supplier1UnitPrice
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <input type="submit" value="Generate Adjustment Voucher"/>
+}

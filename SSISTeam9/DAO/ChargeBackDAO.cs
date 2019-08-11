@@ -28,7 +28,7 @@ namespace SSISTeam9.DAO
                         YearOfOrder = (int)reader["yearOfOrder"],
                         MonthOfOrder = (int)reader["monthOfOrder"],
                         DeptId = (long)reader["deptId"],
-                        Amount = (long)reader["amount"]
+                        Amount = (double)reader["amount"]
                     };
                     chargeBacks.Add(chargeBack);
                 }
@@ -55,7 +55,7 @@ namespace SSISTeam9.DAO
                         YearOfOrder = (int)reader["yearOfOrder"],
                         MonthOfOrder = (int)reader["monthOfOrder"],
                         DeptId = (long)reader["deptId"],
-                        Amount = (long)reader["amount"]
+                        Amount = (double)reader["amount"]
                     };
                     chargeBacks.Add(chargeBack);
                 }
@@ -84,31 +84,32 @@ namespace SSISTeam9.DAO
                         YearOfOrder = (int)reader["yearOfOrder"],
                         MonthOfOrder = (int)reader["monthOfOrder"],
                         DeptId = (long)reader["deptId"],
-                        Amount = (long)reader["amount"]
+                        Amount = (double)reader["amount"]
                     };
                 }
             }
             return chargeBack;
         }
 
-        public static void CreateChargeBack(ChargeBack chargeBack)
+        public static void CreateChargeBack(double amount, DisbursementList disbursementList)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
 
                 string q = @"INSERT INTO ChargeBack (deptId,date,amount)" +
-                            "VALUES ('" + chargeBack.DeptId +
-                            "','" + chargeBack.YearOfOrder +
-                            "-" + chargeBack.MonthOfOrder +
-                            "-01'" + chargeBack.Amount + "')";
+                            "VALUES ('" + disbursementList.Department.DeptId +
+                            "','" + disbursementList.date.Year +
+                            "-" + disbursementList.date.Month +
+                            "-01'" + amount + "')";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();
             }
         }
 
-        public static void UpdateChargeBack(long amount, long deptId)
+
+        public static void UpdateChargeBack(double amount, long deptId)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {

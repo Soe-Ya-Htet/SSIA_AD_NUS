@@ -164,15 +164,15 @@ namespace SSISTeam9.Services
             {
                 if (pos[i].SupplierId == priceLists[i].Supplier1Id)
                 {
-                    pos[i].UnitPricePaid = double.Parse(priceLists[i].Supplier1UnitPrice);
+                    pos[i].UnitPricePaid = priceLists[i].Supplier1UnitPrice;
                 }
                 else if (pos[i].SupplierId == priceLists[i].Supplier2Id)
                 {
-                    pos[i].UnitPricePaid = double.Parse(priceLists[i].Supplier2UnitPrice);
+                    pos[i].UnitPricePaid = priceLists[i].Supplier2UnitPrice;
                 }
                 else if (pos[i].SupplierId == priceLists[i].Supplier3Id)
                 {
-                    pos[i].UnitPricePaid = double.Parse(priceLists[i].Supplier3UnitPrice);
+                    pos[i].UnitPricePaid = priceLists[i].Supplier3UnitPrice;
                 }
             }
             return pos;
@@ -218,15 +218,15 @@ namespace SSISTeam9.Services
             {
                 if (pos[i].SupplierId == priceLists[i].Supplier1Id)
                 {
-                    pos[i].UnitPricePaid = double.Parse(priceLists[i].Supplier1UnitPrice);
+                    pos[i].UnitPricePaid = priceLists[i].Supplier1UnitPrice;
                 }
                 else if (pos[i].SupplierId == priceLists[i].Supplier2Id)
                 {
-                    pos[i].UnitPricePaid = double.Parse(priceLists[i].Supplier2UnitPrice);
+                    pos[i].UnitPricePaid = priceLists[i].Supplier2UnitPrice;
                 }
                 else if (pos[i].SupplierId == priceLists[i].Supplier3Id)
                 {
-                    pos[i].UnitPricePaid = double.Parse(priceLists[i].Supplier3UnitPrice);
+                    pos[i].UnitPricePaid = priceLists[i].Supplier3UnitPrice;
                 }
             }
             return pos;

@@ -15,8 +15,8 @@ namespace SSISTeam9.DAO
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
-                string q = @"INSERT INTO DisbursementList (deptId,collectionPointId)" +
-                        "VALUES (@deptId, @collectionPointId)" +
+                string q = @"INSERT INTO DisbursementList (deptId,collectionPointId,date)" +
+                        "VALUES (@deptId, @collectionPointId, @date)" +
                         "SELECT CAST(scope_identity() AS int)";
 
 
@@ -26,6 +26,7 @@ namespace SSISTeam9.DAO
                
                 cmd.Parameters.AddWithValue("@deptId", disbursement.Department.DeptId);
                 cmd.Parameters.AddWithValue("@collectionPointId", disbursement.Department.CollectionPoint.PlacedId);
+                cmd.Parameters.AddWithValue("@date", disbursement.date);
                 listId = (int)cmd.ExecuteScalar();
 
             }
@@ -81,5 +82,63 @@ namespace SSISTeam9.DAO
                     return disbursementLists;
             }
         }
+
+        public static List<DisbursementList> CheckForPendingDisbursements()
+        {
+
+            List<DisbursementList> disbursementLists = new List<DisbursementList>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"SELECT * FROM DisbursementList WHERE acknowledgedBy IS NULL";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    
+                    DisbursementList disbursementList = new DisbursementList()
+                    {
+                        ListId = (long)reader["listId"]
+                        
+                    };
+                    disbursementLists.Add(disbursementList);
+                }
+
+
+                return disbursementLists;
+            }
+        }
+
+        //The following code is for ChargeBack controller
+        public static DisbursementList GetDisbursementListByListId(long listId)
+        {
+            DisbursementList disbursementList = null;
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from DisbursementList WHERE listId = '" + listId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    disbursementList = new DisbursementList()
+                    {
+                        date = (DateTime)reader["date"]
+                    };
+                    disbursementList.Department = new Department()
+                    {
+                        DeptId = (long)reader["deptId"]
+                    };
+                }
+            }
+            return disbursementList;
+        }
+
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SSISTeam9.Models;
+using SSISTeam9.Services;
 
 namespace SSISTeam9.Controllers
 {
@@ -13,17 +15,59 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Login(string userName, string password)
         {
-            ViewBag.Message = "Your application description page.";
+            if (userName == null)
+                return View();
 
-            return View();
+            Employee user = EmployeeService.GetUserPassword(userName);
+
+            if (user.Password != password)
+                return View();
+
+            string sessionId = EmployeeService.CreateSession(userName);
+
+            return RedirectToAction("All", "Home", new { sessionid = sessionId });
         }
 
-        public ActionResult Contact()
+        public ActionResult Logout(string sessionId)
         {
-            ViewBag.Message = "Your contact page.";
+            EmployeeService.RemoveSession(sessionId);
+            return RedirectToAction("Login", "Home");
+        }
 
+        public ActionResult All(string sessionid)
+        {
+            if (sessionid == null)
+            {
+                RedirectToAction("Login");
+            }
+
+            string empRole = EmployeeService.GetUserBySessionId(sessionid).EmpRole;
+            string userName = EmployeeService.GetUserBySessionId(sessionid).UserName;
+
+            if (empRole == "STORE_CLERK")
+            {
+                ViewData["userName"] = userName;
+                ViewData["sessionId"] = sessionid;
+                return View("~/Views/StoreClerk/Home.cshtml");
+            }
+            else if (empRole == "STORE_SUPERVISOR" || empRole == "STORE_MANAGER")
+            {
+                ViewData["userName"] = userName;
+                ViewData["sessionId"] = sessionid;
+                return View("~/Views/StoreMS/Home.cshtml");
+            }
+            else
+            {
+                ViewData["userName"] = userName;
+                ViewData["sessionId"] = sessionid;
+                return null; //For other departments' employees landing page
+            }
+        }
+
+        public ActionResult NotAuthorised()
+        {
             return View();
         }
     }

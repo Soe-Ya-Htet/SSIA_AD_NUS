@@ -6,13 +6,14 @@ using System.Web.Mvc;
 using SSISTeam9.Models;
 using SSISTeam9.Services;
 using System.Threading.Tasks;
+using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
+    [StoreAuthorisationFilter]
     public class StockController : Controller
     {
-        // GET: Stock
-        public async Task<ActionResult> All()
+        public async Task<ActionResult> All(string sessionId)
         {
             //Contact Python API to get predicted re-order amount and level  for item with code 'P021'
             //Done via StockService
@@ -20,13 +21,13 @@ namespace SSISTeam9.Controllers
 
             //Show the quantities which are being ordered by all store staff
             items = StockService.GetPendingOrderQuantities(items); 
-
-            ViewData["empId"] = "3"; //to change once log in/log out is implemented
+            
             ViewData["items"] = items;
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 
-        public async Task<ActionResult> EnterQuantities(Inventory inventory, string empId)
+        public async Task<ActionResult> EnterQuantities(Inventory inventory, string sessionId)
         {
             //Contact Python API to get predicted re-order amount and level for item with code 'P021'
             List<Inventory> stock = await StockService.GetAllItemsOrdered();
@@ -39,32 +40,55 @@ namespace SSISTeam9.Controllers
                     selectedItems.Add(stock[i]);
                 }
             }
-
-            ViewData["empId"] = empId;
+            
             ViewData["selectedItems"] = selectedItems;
+            ViewData["sessionId"] = sessionId;
             return View();
         }
-
-        public ActionResult CreatePurchaseOrders(Inventory item, FormCollection formCollection)
+        
+        public ActionResult CreatePurchaseOrders(Inventory item, FormCollection formCollection, string sessionId)
         {
             List<int> itemsQuantities = new List<int>();
             List<long> itemIds = new List<long>();
 
             string counter = formCollection["counter"];
-            string empId = formCollection["empId"];
+            string empId = EmployeeService.GetUserBySessionId(sessionId).EmpId.ToString();
 
-            for(int i = 0; i < int.Parse(counter); i++)
+            for (int i = 0; i < int.Parse(counter); i++)
             {
                 itemsQuantities.Add(int.Parse(formCollection["quantity_" + i]));
                 itemIds.Add(StockService.GetItemId(formCollection["item_" + i]));
             }
-
-            //To create Service method to create. Group items with same first supplier together...
-
+            
             List<long> itemsFirstSupplierIds = StockService.GetItemsFirstSupplierIds(itemIds);
             StockService.CreatePurchaseOrders(empId,itemIds,itemsFirstSupplierIds,itemsQuantities);
 
-            return RedirectToAction("All");
+            return RedirectToAction("All", new {sessionid = sessionId});
+        }
+
+
+        //The following code used for Stock taking in order to generate Adjustment Voucher
+        public ActionResult Check()
+        {
+            List<Inventory> inventories = CatalogueService.GetAllCatalogue();
+
+            ViewData["inventories"] = inventories;
+
+            return View();
+        }
+
+        public ActionResult Generate(List<Inventory> inventories)
+        {
+            foreach(Inventory inventory in inventories)
+            {
+                int qty = inventory.ActualStock - inventory.StockLevel;
+                if(qty != 0)
+                {
+                    StockService.CreateAdjVoucher(inventory.ItemId, qty);
+                }
+            }
+
+            return RedirectToAction("Check");
         }
 
     }

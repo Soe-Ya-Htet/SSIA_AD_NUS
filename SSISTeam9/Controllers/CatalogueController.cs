@@ -80,13 +80,21 @@ namespace SSISTeam9.Controllers
 
         public ActionResult CreatePriceList(long ItemId, PriceList priceList)
         {
-            priceList.Item = new Inventory();
-            priceList.Item.ItemId = ItemId;
-            PriceListService.CreatePriceListDetaills(priceList);
+            if(priceList.Supplier1Name == priceList.Supplier2Name || priceList.Supplier2Name == priceList.Supplier3Name || priceList.Supplier3Name == priceList.Supplier1Name)
+            {
+                TempData["errorMsg"] = "<script>alert('Please select three different suppliers.');</script>";
+                return RedirectToAction("CreateNext", new { itemId = ItemId});
+            }
+            else
+            {
+                priceList.Item = new Inventory();
+                priceList.Item.ItemId = ItemId;
+                PriceListService.CreatePriceListDetaills(priceList);
 
-            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
-            ViewData["catalogues"] = catalogues;
-            return RedirectToAction("All");
+                List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
+                ViewData["catalogues"] = catalogues;
+                return RedirectToAction("All");
+            }           
         }
 
         public ActionResult Details(long itemId)
@@ -109,20 +117,9 @@ namespace SSISTeam9.Controllers
         public ActionResult UpdateCatalogue(Inventory catalogue)
         {
 
-            long ItemId = catalogue.ItemId;
-            try
-            {
-                string itemCode = catalogue.ItemCode.ToUpper();
-                catalogue.ItemCode = itemCode;
+            long ItemId = catalogue.ItemId;          
 
-                CatalogueService.UpdateCatalogue(catalogue);
-
-            }
-            catch (SqlException)
-            {
-                TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please Verify.');</script>";
-                return RedirectToAction("Update");
-            }
+            CatalogueService.UpdateCatalogue(catalogue);
             return RedirectToAction("UpdateNext", new { itemId = ItemId });
         }
 
@@ -146,13 +143,22 @@ namespace SSISTeam9.Controllers
 
         public ActionResult UpdatePriceList(long ItemId, PriceList priceList)
         {
-            priceList.Item = new Inventory();
-            priceList.Item.ItemId = ItemId;
-            PriceListService.UpdatePriceList(priceList);
+            if (priceList.Supplier1Name == priceList.Supplier2Name || priceList.Supplier2Name == priceList.Supplier3Name || priceList.Supplier3Name == priceList.Supplier1Name)
+            {
+                TempData["errorMsg"] = "<script>alert('Please select three different suppliers.');</script>";
+                return RedirectToAction("UpdateNext", new { itemId = ItemId });
+            }
+            else
+            {
+                priceList.Item = new Inventory();
+                priceList.Item.ItemId = ItemId;
+                PriceListService.UpdatePriceList(priceList);
 
-            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
-            ViewData["catalogues"] = catalogues;
-            return RedirectToAction("All");
+                List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
+                ViewData["catalogues"] = catalogues;
+                return RedirectToAction("All");
+            }
+            
         }
 
 

@@ -1,0 +1,32 @@
+﻿@model SSISTeam9.Models.Employee
+
+<title>
+    Login Page
+</title>
+
+@using (Html.BeginForm("Login", "Home", FormMethod.Post))
+{
+    <table style="margin-left: auto;margin-right: auto;margin-top:10px">
+        <tr>
+            <td>@Html.LabelFor(x => x.UserName)&nbsp;</td>
+            <td>@Html.TextBoxFor(x => x.UserName)</td>
+            <td>@Html.ValidationMessageFor(x => x.UserName, "", new { style = "color:red" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.Password)&nbsp;</td>
+            <td>@Html.PasswordFor(x => x.Password)</td>
+            <td>@Html.ValidationMessageFor(x => x.Password, "", new { style = "color:red" })</td>
+        </tr>
+
+        <tr>
+            <td colspan="2" align="right"><input type="Submit" value="Login" /></td>
+        </tr>
+    </table>
+}
+
+<style>
+    td, tr {
+        padding: 3px
+    }
+</style>
+

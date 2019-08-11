@@ -1,0 +1,53 @@
+﻿@model List<SSISTeam9.Models.Inventory>
+
+
+@using SSISTeam9.Models;
+@{
+    List<Inventory> inventories = (List<Inventory>)ViewData["inventories"];
+}
+
+<h2 style="text-align:center">Stock Check</h2>
+
+@if (inventories.Count == 0)
+{
+    <br /><br />
+    <p style="font-size:14px">No catalogues to display</p>
+}
+else
+{
+    <table align="center">
+        <tr align="center">
+            <th>Item Number</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Unit Of Measure</th>
+            <th>Last Stock</th>
+            <th>Actual Stock</th>
+        </tr>
+        @using (Html.BeginForm("Generate", "Stock", FormMethod.Post))
+        {
+            for(int i = 0; i < inventories.Count; i++)
+            {
+                <tr align="center">
+                    <td>@inventories[i].ItemCode</td>
+                    <td>@inventories[i].Category</td>
+                    <td>@inventories[i].Description</td>
+                    <td>@inventories[i].UnitOfMeasure</td>
+                    <td>@inventories[i].StockLevel</td>
+                    <td>@Html.TextBoxFor(x => x[i].ActualStock, new { id = "actualStock", @Value = inventories[i].StockLevel })</td>
+                    <td style="display:none">
+                        @Html.TextBoxFor(x => x[i].ItemId, new { id = "itemId", @Value = inventories[i].ItemId })
+                        @Html.TextBoxFor(x => x[i].StockLevel, new { id = "stockLevel", @Value = inventories[i].StockLevel })
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <td align="right"><input type="submit" value="Generate Adjustment Voucher"></td>
+            </tr>
+        }
+
+    </table>
+}
+

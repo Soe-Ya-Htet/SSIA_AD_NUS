@@ -17,6 +17,7 @@ namespace SSISTeam9.Models
         public int StockLevel { get; set; }
         public int ReorderLevel { get; set; }
         public int ReorderQty { get; set; }
+        public int ActualStock { get; set; }
 
         [Display(Name = "Category")]
         [Required]

@@ -5,9 +5,11 @@ using System.Web;
 using System.Web.Mvc;
 using SSISTeam9.Services;
 using SSISTeam9.Models;
+using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
+    [StoreAuthorisationFilter]
     public class PurchaseOrderController : Controller
     {
         // GET: PurchaseOrder
@@ -16,37 +18,50 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult All()
+        public ActionResult All(string sessionId)
         {
-            List<PurchaseOrder> orders = PurchaseOrderService.GetAllOrders();
-
+            Employee user = EmployeeService.GetUserBySessionId(sessionId);
+            List<PurchaseOrder> orders = PurchaseOrderService.GetAllOrders(user.EmpId);
+            
+            ViewData["sessionId"] = sessionId;
             ViewData["orders"] = orders;
             return View();
         }
 
-        public ActionResult Edit(string orderNumber)
+        public ActionResult Edit(PurchaseOrder selectedOrder, string sessionId)
         {
-            PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
+            PurchaseOrder order = PurchaseOrderService.GetOrderDetails(selectedOrder.OrderNumber);
             
+            if (order.Status == "Pending Delivery")
+            {
+                return RedirectToAction("Close", new { orderNumber = selectedOrder.OrderNumber, sessionid = sessionId });
+            }
+            else if (order.Status == "Closed")
+            {
+                return RedirectToAction("ViewClosedPO", new { orderNumber = selectedOrder.OrderNumber, sessionid = sessionId });
+            }
+            
+            ViewData["sessionId"] = sessionId;
             ViewData["order"] = order;
             return View();
         }
 
-        public ActionResult ConfirmOrder(bool confirm, string orderNumber)
+        public ActionResult ConfirmOrder(bool confirm, string orderNumber, string sessionId)
         {
             if (confirm)
             {
                 PurchaseOrderService.ConfirmOrder(orderNumber);
 
-                List<PurchaseOrder> orders = PurchaseOrderService.GetAllOrders();
-
-                ViewData["orders"] = orders;
-                return View("All");
+                //List<PurchaseOrder> orders = PurchaseOrderService.GetAllOrders(EmployeeService.GetUserBySessionId(sessionId).EmpId);
+                
+                //ViewData["sessionId"] = sessionId;
+                //ViewData["orders"] = orders;
+                return RedirectToAction("All", new { sessionid = sessionId });
             }
             return null;
         }
 
-        public ActionResult UpdatePurchaseOrder(PurchaseOrder order, FormCollection formCollection)
+        public ActionResult UpdatePurchaseOrder(PurchaseOrder order, FormCollection formCollection, string sessionId)
         {
             PurchaseOrder selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
 
@@ -78,11 +93,12 @@ namespace SSISTeam9.Controllers
             ViewData["order"] = selectedOrder;
             ViewData["deliverTo"] = formCollection["deliverTo"];
             ViewData["deliverBy"] = formCollection["deliverBy"];
+            ViewData["sessionId"] = sessionId;
 
             return View();
         }
 
-        public ActionResult ConfirmUpdate(PurchaseOrder order, FormCollection formCollection)
+        public ActionResult ConfirmUpdate(PurchaseOrder order, FormCollection formCollection, string sessionId)
         {
             PurchaseOrder selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
 
@@ -106,41 +122,42 @@ namespace SSISTeam9.Controllers
             {
                 selectedAltSuppliersIds.Add(SupplierService.GetSupplierId(c));
             }
-            PurchaseOrderService.UpdatePurchaseOrder(selectedOrder, selectedItemIds, updateQuantities, int.Parse(counter), order.DeliverTo, order.DeliverBy);
-
-            selectedOrder = PurchaseOrderService.GetOrderDetails(order.OrderNumber);
-
+            int totalQuantity = PurchaseOrderService.UpdatePurchaseOrder(selectedOrder, selectedItemIds, updateQuantities, int.Parse(counter), order.DeliverTo, order.DeliverBy);
+            
             if (newQuantities.Sum(m => int.Parse(m)) != 0)
             {
                 PurchaseOrderService.CreatePurchaseOrders(selectedOrder, selectedItemIds, selectedAltSuppliersIds, newQuantities, int.Parse(counter));
             }
             
-            return RedirectToAction("All");
+            //if no more items in current Purchase Order, to remove record from Purchase Order and Purchase Order Details
+            if (totalQuantity == 0)
+            {
+                PurchaseOrderService.DeletePurchaseOrder(selectedOrder.OrderNumber);
+            }
+            return RedirectToAction("All", new { sessionid = sessionId });
         }
 
-        public ActionResult Close(string orderNumber)
+        public ActionResult Close(string orderNumber, string sessionId)
         {
             PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
             
             ViewData["order"] = order;
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 
-        public ActionResult Delete(bool confirm, string orderNumber)
+        public ActionResult Delete(bool confirm, string orderNumber, string sessionId)
         {
             if (confirm)
             {
                 PurchaseOrderService.DeletePurchaseOrder(orderNumber);
-
-                List<PurchaseOrder> orders = PurchaseOrderService.GetAllOrders();
-
-                ViewData["orders"] = orders;
-                return View("All");
+                
+                return RedirectToAction("All", new { sessionid = sessionId });
             }
             return null;
         }
 
-        public ActionResult ConfirmClose(PurchaseOrder orderToClose, FormCollection formCollection)
+        public ActionResult ConfirmClose(PurchaseOrder orderToClose, FormCollection formCollection, string sessionId)
         {
             PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderToClose.OrderNumber);
             
@@ -153,20 +170,30 @@ namespace SSISTeam9.Controllers
                 itemIds.Add(long.Parse(formCollection["item_" + i]));
             }
 
+            /*The following code is for StockCard table*/
+            //By the time close order, update StockCard table with itemId, deptId and date, souceType = 3
+            StockCardService.CreateStockCardFromOrder(order, itemIds, itemsQuantities);
+
             //SET status to close and update quantities (if any) accordingly
             //Stock level is also updated accordingly
             PurchaseOrderService.ClosePurchaseOrder(order, itemIds, itemsQuantities);
-
-            return RedirectToAction("All");
+            
+            return RedirectToAction("All", new { sessionid = sessionId });
         }
 
-        public ActionResult ViewClosedPO(string orderNumber)
+        public ActionResult ViewClosedPO(string orderNumber, string sessionId)
         {
             PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
 
             ViewData["order"] = order;
             return View("Closed");
         }
-        
+
+        public ActionResult UpdatePurchaseOrderDeliveryDetails(PurchaseOrder order, string sessionId)
+        {
+            PurchaseOrderService.UpdatePurchaseOrderDeliveryDetails(order);
+            
+            return RedirectToAction("All", new { sessionid = sessionId });
+        }
     }
 }

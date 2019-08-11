@@ -8,9 +8,7 @@
     List<int> years = (List<int>)ViewData["years"];
     List<string> depts = (List<string>)ViewData["depts"];
     int? mode = (int?)TempData["mode"];
-    int? monthOfOrder = (int?)ViewData["monthOfOrder"];
-    string deptName = (string)ViewData["deptName"];
-    int? yearOfOrder = (int?)ViewData["yearOfOrder"];
+    ChargeBack chargeback = (ChargeBack)ViewData["chargeback"];
 }
 
 <h2 style="text-align:center">ChargeBack Details</h2>
@@ -18,9 +16,9 @@
 <div>
     @using (Html.BeginForm("Generate", "ChargeBack", new { mode = 1 }, FormMethod.Post))
     {
-        <table>
-            <tr>
-                <td>Generate By Month</td>
+        <table align="center">
+            <tr align="center">
+                <td>By Month</td>
                 <td>
                     <div>
                         <select name="monthOfOrder" id="monthOfOrder" style="width: 180px">
@@ -32,16 +30,16 @@
                     </div>
                 </td>
                 <td>
-                    <p align="left"><input type="submit" value="Search" onclick="location.href='@Url.Action("Generate", "ChargeBack", new { mode = 1 })'"></p>
+                    <p align="left"><input type="submit" value="Generate"></p>
                 </td>
             </tr>
         </table>
     }
     @using (Html.BeginForm("Generate", "ChargeBack", new { mode = 2 }, FormMethod.Post))
     {
-        <table>
-            <tr>
-                <td>Generate By Month</td>
+        <table align="center">
+            <tr align="center">
+                <td>By Department</td>
                 <td>
                     <div>
                         <select name="yearOfOrder" id="yearOfOrder" style="width: 180px">
@@ -63,7 +61,7 @@
                     </div>
                 </td>
                 <td>
-                    <p align="right"><input type="submit" value="Search"></p>
+                    <p align="right"><input type="submit" value="Generate"></p>
                 </td>
 
         </table>
@@ -80,7 +78,7 @@ else
 {
     if (mode == 1)
     {
-        <p style="text-align:center">Generate Charge Back for All Departments in @months[(int)monthOfOrder - 1]</p>
+        <p style="text-align:center">Charge Back Details for All Departments in @months[chargeback.MonthOfOrder - 1]</p>
         <table align="center">
             <tr align="center">
                 <th>Department Name</th>
@@ -89,8 +87,8 @@ else
             @foreach (var c in chargeBacks)
             {
                 <tr align="center">
-                    <td>@c.DeptName</td>
-                    <td>@c.Amount</td>
+                    <td><a href="/Requisition/DeptRequisition?deptId=@c.DeptId">@c.DeptName </a></td>
+                    <td>$@c.Amount</td>
                     <td></td>
                 </tr>
             }
@@ -99,7 +97,7 @@ else
     }
     else
     {
-        <p style="text-align:center">Generate Charge Back for @deptName in @yearOfOrder</p>
+        <p style="text-align:center">Charge Back Details for <a href="/Requisition/DeptRequisition?deptId=@chargeback.DeptId">@chargeback.DeptName </a>in @chargeback.YearOfOrder</p>
         <table align="center">
             <tr align="center">
                 <th>Month</th>
@@ -109,7 +107,7 @@ else
             {
                 <tr align="center">
                     <td>@months[c.MonthOfOrder - 1]</td>
-                    <td>@c.Amount</td>
+                    <td>$@c.Amount</td>
                     <td></td>
                 </tr>
             }

@@ -81,5 +81,10 @@ namespace SSISTeam9.Services
             }
         }
 
+        public static void CreateAdjVoucher(long itemId, int qty)
+        {
+            StockDAO.CreateAdjVoucher(itemId, qty);
+        }
+
     }
 }

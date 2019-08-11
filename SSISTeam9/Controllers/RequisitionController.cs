@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SSISTeam9.Filters;
 
 
 namespace SSISTeam9.Controllers
@@ -112,11 +113,21 @@ namespace SSISTeam9.Controllers
             RequisitionService.ProcessRequisition(reqId, status, currentHead);
             return RedirectToAction("GetPendingRequisitions");
         }
-
-        public ActionResult ViewAllRequisitionsByStatus(string status)
+        [StoreAuthorisationFilter]
+        public ActionResult ViewAllRequisitionsByStatus(string status,string sessionId)
         {
             List<Requisition> requisitions = RequisitionService.ShowAllRequisitionsByStatusByDate(status);
+            if (DisbursementListService.CheckForPendingDisbursements().Count != 0)
+            {
+                ViewData["alreadyAssigned"] = "YES";
+            }
+            else
+            {
+                ViewData["alreadyAssigned"] = "NO";
+            }
             ViewData["Reqs"] = requisitions;
+            ViewData["status"] = status;
+            ViewData["sessionId"] = sessionId;
             return View();
             
         }

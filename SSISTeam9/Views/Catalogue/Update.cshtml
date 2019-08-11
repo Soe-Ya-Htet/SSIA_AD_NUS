@@ -15,8 +15,7 @@
         <table>
             <tr>
                 <td>@Html.LabelFor(x => x.ItemCode): </td>
-                <td>@Html.TextBoxFor(x => x.ItemCode, new { id = "itemCode", @Value = catalogue.ItemCode, @class = "TextBox" })</td>
-                <td>@Html.ValidationMessageFor(x => x.ItemCode, "", new { style = "color:red" })</td>
+                <td>@catalogue.ItemCode</td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Category): </td>

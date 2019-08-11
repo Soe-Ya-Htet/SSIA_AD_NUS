@@ -1,40 +1,53 @@
-﻿using SSISTeam9.Models;
+﻿using SSISTeam9.Filters;
+using SSISTeam9.Models;
 using SSISTeam9.Services;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Delegate = SSISTeam9.Models.Delegate;
 
 namespace SSISTeam9.Controllers
 {
-
+    [BasicAuthenticationAttribute]
     [RoutePrefix("rest/dept_head")]
     public class RestDepartmentHeadController : Controller
     {
         private readonly int deptId = 1;
+        private readonly int headId = 2;
 
-        private IEmailService emailService;
+        private readonly IEmailService emailService;
 
         public RestDepartmentHeadController(IEmailService emailService)
         {
             this.emailService = emailService;
         }
 
-        [Route("index")]
+        [Route("employees")]
         public JsonResult Index()
         {
-            Task.Run(() => emailService.SendEmail(""));
+            //Task.Run(() => emailService.SendEmail(""));
 
-            return Json("Memory Loss", JsonRequestBehavior.AllowGet);
+            List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(deptId);
+
+            Dictionary<string, List<Employee>> repDict = new Dictionary<string, List<Employee>>
+            {
+                { "repList", employees }
+            };
+
+            return Json(repDict, JsonRequestBehavior.AllowGet);
         }
 
         [Route("pending_orders")]
         public JsonResult GetAllPendingOrders()
         {
-            List<Requisition> requisitions = RequisitionService.DisplayPendingRequisitions(deptId);
-            Dictionary<string, List<Requisition>> reqOrderDict = new Dictionary<string, List<Requisition>> { };
-            reqOrderDict.Add("reqList", requisitions);
+            //List<Requisition> requisitions = RequisitionService.DisplayPendingRequisitions(deptId);
+            List<Requisition> requisitions = GetAllPendingOrderReqs(deptId);
+            Dictionary<string, List<Requisition>> reqOrderDict = new Dictionary<string, List<Requisition>>
+            {
+                { "reqList", requisitions }
+            };
             return Json(reqOrderDict, JsonRequestBehavior.AllowGet);
         }
 
@@ -42,8 +55,10 @@ namespace SSISTeam9.Controllers
         public JsonResult GetPendingOrderDetailsById(int id)
         {
             List<RequisitionDetails> requisitionOrderDetails = RequisitionService.DisplayRequisitionDetailsByReqId(id);
-            Dictionary<string, List<RequisitionDetails>> reqOrderDict = new Dictionary<string, List<RequisitionDetails>> { };
-            reqOrderDict.Add("reqDataList", requisitionOrderDetails);
+            Dictionary<string, List<RequisitionDetails>> reqOrderDict = new Dictionary<string, List<RequisitionDetails>>
+            {
+                { "reqDataList", requisitionOrderDetails }
+            };
             return Json(reqOrderDict, JsonRequestBehavior.AllowGet);
         }
 
@@ -54,11 +69,12 @@ namespace SSISTeam9.Controllers
             long currentRepId = DepartmentService.GetCurrentRep(deptId);
             List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(deptId);
             Employee emp = employees.Find(e => e.EmpId == currentRepId);
-            employees.Remove(emp);
 
-            Dictionary<string, object> repDict = new Dictionary<string, object> { };
-            repDict.Add("repList", employees);
-            repDict.Add("curRep", emp);
+            Dictionary<string, object> repDict = new Dictionary<string, object>
+            {
+                { "repList", employees },
+                { "curRep", emp }
+            };
             return Json(repDict, JsonRequestBehavior.AllowGet);
         }
 
@@ -72,18 +88,18 @@ namespace SSISTeam9.Controllers
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        [Route("pending_order/approve")]
-        public JsonResult ApproveOrder(int id)
+        [Route("pending_order/approve/{reqId:int}")]
+        public JsonResult ApproveOrder(int reqId)
         {
-            return Json("Memory Loss", JsonRequestBehavior.AllowGet);
+            RequisitionService.ProcessRequisition(reqId, "Approved", headId);
+            return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        [Route("pending_order/reject")]
-        public JsonResult RejectOrder()
+        [Route("pending_order/reject/{reqId:int}")]
+        public JsonResult RejectOrder(int reqId)
         {
-            return Json("Memory Loss", JsonRequestBehavior.AllowGet);
+            RequisitionService.ProcessRequisition(reqId, "Rejected", headId);
+            return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
         [Route("past_orders")]
@@ -91,32 +107,40 @@ namespace SSISTeam9.Controllers
         {
             //List<Requisition> reqs = RequisitionService.GetRequisitionByDeptId(deptId);
             List<Requisition> reqs = GetAllPastOrderReqs(deptId);
-            Dictionary<string, List<Requisition>> reqDict = new Dictionary<string, List<Requisition>> { };
-            reqDict.Add("reqList", reqs);
+            Dictionary<string, List<Requisition>> reqDict = new Dictionary<string, List<Requisition>>
+            {
+                { "reqList", reqs }
+            };
             return Json(reqDict, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [Route("auth/delegate")]
-        public JsonResult DelegateAuthority()
+        public JsonResult DelegateAuthority(Delegate delegat)
         {
-            return Json("Memory Loss", JsonRequestBehavior.AllowGet);
+            delegat.Department = new Department
+            {
+                DeptId = deptId
+            };
+            DelegateService.AddNewDelegate(delegat, headId);
+
+            return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
         private List<Requisition> GetAllPastOrderReqs(int deptId)
         {
             string sql = @"SELECT r.*, e.empName FROM Requisition r, Employee e WHERE r.empId=e.empId AND e.deptId=@deptId AND r.status != @status";
-            return GetAllReqs(deptId, sql, "Pending Approval");
+            return GetAllReqs(deptId, sql);
         }
 
         private List<Requisition> GetAllPendingOrderReqs(int deptId)
         {
             string sql = @"SELECT r.*, e.empName FROM Requisition r, Employee e WHERE r.empId=e.empId AND e.deptId=@deptId AND r.status = @status";
-            return GetAllReqs(deptId, sql, "Pending Approval");
+            return GetAllReqs(deptId, sql);
 
         }
 
-        private List<Requisition> GetAllReqs(int deptId, string sql, string status)
+        private List<Requisition> GetAllReqs(int deptId, string sql)
         {
             List<Requisition> reqs = new List<Requisition>();
 
@@ -125,14 +149,14 @@ namespace SSISTeam9.Controllers
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@deptId", deptId);
-                cmd.Parameters.AddWithValue("@status", status);
+                cmd.Parameters.AddWithValue("@status", "Pending Approval");
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
                     Employee e = new Employee()
                     {
                         EmpId = (long)reader["empId"],
-                        EmpName = (string) reader["empName"]
+                        EmpName = (string)reader["empName"]
                     };
 
                     Requisition requisition = new Requisition()
@@ -151,5 +175,6 @@ namespace SSISTeam9.Controllers
 
             return reqs;
         }
+
     }
 }

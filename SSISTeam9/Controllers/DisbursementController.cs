@@ -5,31 +5,43 @@ using System.Web;
 using System.Web.Mvc;
 using SSISTeam9.Services;
 using SSISTeam9.Models;
+using SSISTeam9.Filters;
+
 namespace SSISTeam9.Controllers
 {
     public class DisbursementController : Controller
     {
         // GET: Disbursement
-        public ActionResult ViewAllDisbursements(string collectionPt)
+        [StoreAuthorisationFilter]
+        public ActionResult ViewAllDisbursements(string collectionPt,string sessionId)
         {
             ViewData["disbursements"] = DisbursementListService.ViewOutstandingDisbursementsByCollection(collectionPt);
-            ViewData["collectionPoint"] = collectionPt;
-            
+            if (collectionPt == null)
+            {
+                ViewData["collectionPoint"] = "1";
+            }
+            else
+            {
+                ViewData["collectionPoint"] = collectionPt;
+            }
+
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 
-        public ActionResult ViewDisbursementDetails(long listId, long collectionPt)
+        public ActionResult ViewDisbursementDetails(long listId, string collectionPt, string sessionId)
         {
             
             ViewData["details"] = DisbursementListService.ViewDisbursementDetails(listId);
             ViewData["listId"] = listId;
             ViewData["collectionPt"] = collectionPt;
-
+            ViewData["sessionId"] = sessionId;
+            ViewData["empRole"] = EmployeeService.GetUserBySessionId(sessionId).EmpRole;
             return View();
 
         }
-
-        public ActionResult CreateDisbursementLists(List<Entry> entries)
+        [StoreAuthorisationFilter]
+        public ActionResult CreateDisbursementLists(List<Entry> entries, string sessionId)
         {
             List<long> deptIds = new List<long>();
             
@@ -58,7 +70,8 @@ namespace SSISTeam9.Controllers
                 DisbursementList d = new DisbursementList()
                 {
                     Department = dept,
-                    DisbursementListDetails = disbursementListDetails
+                    DisbursementListDetails = disbursementListDetails,
+                    date = entries[0].collectionDate
                     
                 };
                 
@@ -87,10 +100,10 @@ namespace SSISTeam9.Controllers
             }
             DisbursementListService.CreateDisbursementLists(disbursementLists);
 
-            return Json(Url.Action("ViewAllDisbursements","Disbursement"));
+            return Json(Url.Action("ViewAllDisbursements","Disbursement", new { sessionId = sessionId }));
         }
-
-        public ActionResult UpdateDisbursementLists(long listId, long collectionPt, List<PerItem> items)
+        [StoreAuthorisationFilter]
+        public ActionResult UpdateDisbursementLists(long listId, long collectionPt, List<PerItem> items, string sessionId)
         {
             foreach (var item in items)
             {
@@ -104,10 +117,32 @@ namespace SSISTeam9.Controllers
                     Item = i
                 };
                 DisbursementListService.UpdateDisbursementListDetails(listId, disbursementDetails);
+
+                //Attention: DisbursementList can only disburse once, date for that list is not null
+
+                /*The following code is for ChargeBack table*/
+                //By the time disburse item, calculate the amount of this list, update ChargeBack table               
+                PriceList priceList = PriceListService.GetPriceListByItemId(i.ItemId);
+                double price = 0;
+                if (priceList != null)
+                {
+                    price = priceList.Supplier1UnitPrice;
+                }
+
+                double amount = price * disbursementDetails.Quantity;
+                DisbursementList disbursementList = DisbursementListService.GetDisbursementListByListId(listId);
+                ChargeBackService.UpdateChargeBackData(amount, disbursementList);
+
+                /*The following code is for StockCard table*/
+                //By the time disburse item, update StockCard table with itemId, deptId and date, souceType = 2
+
+                int balance = CatalogueService.GetCatalogueById(disbursementDetails.Item.ItemId).StockLevel - disbursementDetails.Quantity;
+                StockCardService.CreateStockCardFromDisburse(disbursementDetails, disbursementList, balance);
+                              
             }
 
-            
-            return Json(Url.Action("ViewAllDisbursements", "Disbursement", new {collectionPt = collectionPt }));
+
+            return Json(Url.Action("ViewAllDisbursements", "Disbursement", new {collectionPt = collectionPt, sessionId= sessionId }));
         }
 
     public class PerItem
@@ -121,6 +156,7 @@ namespace SSISTeam9.Controllers
             public long deptId { get; set; }
             public long itemId { get; set; }
             public int quantity { get; set; }
+            public DateTime collectionDate { get; set; }
         }
     }
 }

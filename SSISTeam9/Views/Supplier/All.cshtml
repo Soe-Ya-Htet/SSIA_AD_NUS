@@ -2,6 +2,8 @@
 @{
     ViewBag.Title = "Supplier List";
     List<Supplier> suppliers = (List<Supplier>)ViewData["suppliers"];
+    
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2>Suppliers</h2>
@@ -25,7 +27,7 @@ else
         @foreach (var supplier in suppliers)
         {
         <tr>
-            <td><a href ="/Supplier/DisplaySupplierDetails?supplierCode=@supplier.SupplierCode">@supplier.SupplierCode</a></td>
+            <td><a href ="/Supplier/DisplaySupplierDetails?supplierCode=@supplier.SupplierCode&sessionId=@sessionId">@supplier.SupplierCode</a></td>
             <td>@supplier.Name</td>
             <td>@supplier.GstNumber</td>
             <td>@supplier.Address</td>
@@ -35,7 +37,7 @@ else
         </tr>
         }
         <tr>
-            <td colspan="7" align="right"><input type="button" value="Create New Supplier" onclick="location.href='@Url.Action("CreateForm","Supplier")'"></td>
+            <td colspan="7" align="right"><input type="button" value="Create New Supplier" onclick="location.href='@Url.Action("CreateForm","Supplier", routeValues: new { sessionid = sessionId })'"></td>
         </tr>
     </table>
 }

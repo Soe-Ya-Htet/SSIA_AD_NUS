@@ -10,9 +10,9 @@ namespace SSISTeam9.Services
 {
     public class PurchaseOrderService
     {
-        public static List<PurchaseOrder> GetAllOrders()
+        public static List<PurchaseOrder> GetAllOrders(long empId)
         {
-            List<PurchaseOrder> orders = PurchaseOrderDAO.GetAllOrders();
+            List<PurchaseOrder> orders = PurchaseOrderDAO.GetAllOrders(empId);
 
             foreach (var order in orders)
             {
@@ -88,32 +88,24 @@ namespace SSISTeam9.Services
             StockDAO.UpdateInventoryStock(itemAndNewStock);
         }
 
-        public static void UpdatePurchaseOrder(PurchaseOrder order, List<string>itemIds, List<string> updatedQuantities, int itemCount, string deliverTo, DateTime deliverBy)
+        public static int UpdatePurchaseOrder(PurchaseOrder order, List<string>itemIds, List<string> updatedQuantities, int itemCount, string deliverTo, DateTime deliverBy)
         {
-            int totalQuantity = updatedQuantities.Sum(m => int.Parse(m));
-            
-            //if no more items in Purchase Order, to remove record from Purchase Order and Purchase Order Details
-            if (totalQuantity == 0)
-            {
-                PurchaseOrderDAO.DeleteAllPurchaseOrderDetails(order.OrderId);
-                PurchaseOrderDAO.DeletePurchaseOrder(order.OrderId);
-            }
-            else
-            {
-                PurchaseOrderDAO.UpdatePurchaseOrderDeliveryDetails(order.OrderId, deliverTo, deliverBy);
+            PurchaseOrderDAO.UpdatePurchaseOrderDeliveryDetails(order.OrderId, deliverTo, deliverBy);
 
-                for (int i = 0; i < itemCount; i++)
+            for (int i = 0; i < itemCount; i++)
+            {
+                if (int.Parse(updatedQuantities[i]) == 0)
                 {
-                    if (int.Parse(updatedQuantities[i]) == 0)
-                    {
-                        PurchaseOrderDAO.DeleteItemFromPurchaseOrder(order.OrderId, long.Parse(itemIds[i]));
-                    }
-                    else if (order.ItemDetails[i].Quantity != int.Parse(updatedQuantities[i]))
-                    {
-                        PurchaseOrderDAO.UpdatePurchaseOrderItemQuantity(order.OrderId, long.Parse(itemIds[i]), int.Parse(updatedQuantities[i]));
-                    }
+                    PurchaseOrderDAO.DeleteItemFromPurchaseOrder(order.OrderId, long.Parse(itemIds[i]));
+                }
+                else if (order.ItemDetails[i].Quantity != int.Parse(updatedQuantities[i]))
+                {
+                    PurchaseOrderDAO.UpdatePurchaseOrderItemQuantity(order.OrderId, long.Parse(itemIds[i]), int.Parse(updatedQuantities[i]));
                 }
             }
+
+            //if no items left, to delete PO.
+            return updatedQuantities.Sum(m => int.Parse(m));
         }
 
         public static void CreatePurchaseOrders(PurchaseOrder order, List<string> itemIds, List<long> altSuppliers, List<string> quantities, int itemCount)
@@ -174,5 +166,11 @@ namespace SSISTeam9.Services
         {
             return PurchaseOrderDAO.GetOrderById(orderId);
         }
+
+        public static void UpdatePurchaseOrderDeliveryDetails(PurchaseOrder order)
+        {
+            PurchaseOrder orderForId = PurchaseOrderDAO.GetOrderDetails(order.OrderNumber);
+            PurchaseOrderDAO.UpdatePurchaseOrderDeliveryDetails(orderForId.OrderId, order.DeliverTo, order.DeliverBy);
+        } 
     }
 }

@@ -1,0 +1,57 @@
+﻿@model SSISTeam9.Models.StockCard
+
+@using SSISTeam9.Models;
+
+@{
+    Inventory catalogue = (Inventory)ViewData["catalogue"];
+    PriceList priceList = (PriceList)ViewData["priceList"];
+    List<StockCard> stockCards = (List<StockCard>)ViewData["stockCards"];
+}
+
+<h2 style="text-align:center">Stock Card</h2>
+
+<table>
+    <tr>
+        <td>Item Code: @catalogue.ItemCode</td>
+    </tr>
+    <tr>
+        <td>Item Description: @catalogue.Description</td>
+    </tr>
+    <tr>
+        <td>Bin#: @catalogue.BinNo</td>
+    </tr>
+    <tr>
+        <td>Unit Of Measure: @catalogue.UnitOfMeasure</td>
+    </tr>
+    @if (priceList != null)
+    {
+    <tr>
+        <td>First Supplier: <b>@priceList.Supplier1Code</b></td>
+    </tr>
+    <tr>
+        <td>Second Supplier: <b>@priceList.Supplier2Code</b></td>
+    </tr>
+    <tr>
+        <td>Third Supplier: <b>@priceList.Supplier3Code</b></td>
+    </tr>
+    }
+</table>
+
+<table align="center">
+    <tr align="center">
+        <th>Date</th>
+        <th>Department/Supplier</th>
+        <th>Quantity</th>
+        <th>Balance</th>
+    </tr>
+    @foreach (StockCard s in stockCards)
+    {
+        <tr align="center">
+            <td>@s.Date.Day/@s.Date.Month/@s.Date.Year</td>
+            <td>@s.Display</td>
+            <td>@s.Qty</td>
+            <td>@s.Balance</td>
+        </tr>
+    }
+
+</table>

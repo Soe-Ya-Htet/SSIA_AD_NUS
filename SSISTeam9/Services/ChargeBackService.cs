@@ -34,27 +34,33 @@ namespace SSISTeam9.Services
             return ChargeBackDAO.GetDistinctChargeBack(deptId, month);
         }
 
-        public static void CreateChargeBack(ChargeBack chargeBack)
+        public static void CreateChargeBack(double amount, DisbursementList disbursementList)
         {
-            ChargeBackDAO.CreateChargeBack(chargeBack);
+            ChargeBackDAO.CreateChargeBack(amount, disbursementList);
         }
 
-        public static void UpdateChargeBack(long amount, long deptId)
+        public static void UpdateChargeBackData(double amount, DisbursementList disbursementList)
+        {
+            int month = disbursementList.date.Month;
+            ChargeBack chargeBack = GetDistinctChargeBack(disbursementList.Department.DeptId, month);
+            if (chargeBack != null)
+            {
+                double currentAmount = chargeBack.Amount;
+                double latestAmount = currentAmount + amount;
+                UpdateChargeBack(latestAmount, disbursementList.Department.DeptId);
+            }
+            else
+            {
+                CreateChargeBack(amount, disbursementList);
+            }
+        }
+
+
+        public static void UpdateChargeBack(double amount, long deptId)
         {
             ChargeBackDAO.UpdateChargeBack(amount, deptId);
         }
 
-        public static void UpdateChargeBack(ChargeBack chargeBack)
-        {
-            if(GetDistinctChargeBack(chargeBack.DeptId,chargeBack.MonthOfOrder) != null)
-            {
-                UpdateChargeBack(chargeBack.Amount, chargeBack.DeptId);
-            }
-            else
-            {
-                CreateChargeBack(chargeBack);
-            }
-        }
 
     }
 }

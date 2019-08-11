@@ -32,12 +32,8 @@ namespace SSISTeam9.Controllers
             ViewData["chargeBacks"] = chargeBacks;
             int? mode = (int?)TempData["mode"];
             ViewData["mode"] = mode;
-            int? monthOfOrder = (int?)TempData["monthOfOrder"];
-            ViewData["monthOfOrder"] = monthOfOrder;
-            string deptName = (string)TempData["dept"];
-            ViewData["deptName"] = deptName;
-            int? yearOfOrder = (int?)TempData["yearOfOrder"];
-            ViewData["yearOfOrder"] = yearOfOrder;
+            ChargeBack chargeback = (ChargeBack)TempData["chargeback"];
+            ViewData["chargeback"] = chargeback;
             return View();
         }
 
@@ -49,7 +45,7 @@ namespace SSISTeam9.Controllers
                 List<ChargeBack> chargeBacks = ChargeBackService.GetChargeBackByMonth(chargeBack.MonthOfOrder);
                 TempData["chargeBacks"] = chargeBacks;
                 TempData["mode"] = mode;
-                TempData["monthOfOrder"] = chargeBack.MonthOfOrder;
+                TempData["chargeback"] = chargeBack;
             }
             if(mode == 2)
             {
@@ -57,39 +53,14 @@ namespace SSISTeam9.Controllers
                 List<ChargeBack> chargeBacks = ChargeBackService.GetChargeBackByDept(chargeBack.DeptId, chargeBack.YearOfOrder);
                 TempData["chargeBacks"] = chargeBacks;
                 TempData["mode"] = mode;
-                TempData["dept"] = chargeBack.DeptName;
-                TempData["yearOfOrder"] = chargeBack.YearOfOrder;
+                TempData["chargeback"] = chargeBack;
             }
         
             return RedirectToAction("Select");
         }
 
 
-        public ActionResult ViewTable(int mode, ChargeBack chargeBack)
-        {
-            if(mode == 1)
-            {
-                List<ChargeBack> chargeBacks = ChargeBackService.GetChargeBackByMonth(chargeBack.MonthOfOrder);
-
-                ViewData["chargeBacks"] = chargeBacks;
-            }
-            ViewData["mode"] = mode;
-            return View();
-
-        }
-
-
-        public ActionResult ByDept()
-        {
-
-
-            return View();
-        }
-
-        public ActionResult ByMonth(ChargeBack chargeBack)
-        {
-            return RedirectToAction("ViewTable", new { status = 1, chargeBack});
-        }
+       
 
     }
 }

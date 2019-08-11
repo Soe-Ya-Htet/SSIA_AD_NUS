@@ -1,11 +1,13 @@
 ﻿@model SSISTeam9.Models.Supplier
 @{ 
     ViewBag.Title = "Create New Supplier";
+    
+    string sessionId = (string)ViewData["sessionId"];
 }
 <h2>Create New Supplier</h2>
 
 <div>
-    @using (Html.BeginForm("CreateNew", "Supplier", FormMethod.Post))
+    @using (Html.BeginForm("CreateNew", "Supplier", routeValues: new { sessionid = sessionId }, method: FormMethod.Post))
     {
         <table>
             <tr>

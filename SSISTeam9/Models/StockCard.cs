@@ -19,7 +19,7 @@ namespace SSISTeam9.Models
         public DisbursementList DisbursementList { get; set; }
         public PurchaseOrder PurchaseOrder { get; set; }
         public string Display { get; set; }
-        public string Qty { get; set; }
-        public string Balance { get; set; }
+        public string Qty { get; set; } //Qty need string tyep, for AdjVoucher insert in + or -
+        public int Balance { get; set; }
     }
 }

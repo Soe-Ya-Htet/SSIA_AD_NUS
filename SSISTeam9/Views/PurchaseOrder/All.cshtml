@@ -4,6 +4,8 @@
 @{
     ViewBag.Title = "View All Purchase Orders";
     List<PurchaseOrder> orders = (List<PurchaseOrder>)ViewData["orders"];
+    
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2>Purchase Orders</h2>
@@ -15,7 +17,8 @@
 }
 else
 {
-    using (Html.BeginForm("Edit", "PurchaseOrder", FormMethod.Post))
+    using (Html.BeginForm("Edit", "PurchaseOrder", routeValues: new { sessionid = sessionId }
+    , method: FormMethod.Post))
     {
         <table>
             <tr>
@@ -30,18 +33,7 @@ else
             {
             <tr>
                 <td>
-                    @if (@order.Status == "Pending Supplier Confirmation")
-                    {
-                        <a href="/PurchaseOrder/Edit?orderNumber=@order.OrderNumber">@order.OrderNumber</a>
-                    }
-                    else if (@order.Status == "Pending Delivery")
-                    {
-                        <a href="/PurchaseOrder/Close?orderNumber=@order.OrderNumber">@order.OrderNumber</a>
-                    }
-                    else if (@order.Status == "Closed")
-                    {
-                        <a href = "/PurchaseOrder/ViewClosedPO?orderNumber=@order.OrderNumber" > @order.OrderNumber </a>
-                    }
+                    <input type="submit" name="orderNumber" value="@order.OrderNumber" style="background:none;border:0;color:#333EFF;text-decoration:underline;">
                 </td>
                 <td>@order.SubmittedDate.ToString("dd MMM yyyy")</td>
                 <td>@order.OrderDate.ToString("dd MMM yyyy")</td>

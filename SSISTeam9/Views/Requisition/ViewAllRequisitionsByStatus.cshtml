@@ -2,6 +2,8 @@
 @using SSISTeam9.Models
 @{
     var requisitions = (List<Requisition>)ViewData["Reqs"];
+    var status = (string)ViewData["status"];
+    var alrAssigned = (string)ViewData["alreadyAssigned"];
 
     var sessionId = ViewData["sessionId"];
 
@@ -19,11 +21,11 @@
 
 <select onchange="location = this.options[this.selectedIndex].value;">
     <option>Select</option>
-    <option value="/Requisition/ViewAllRequisitionsByStatus?status=Outstanding">Outstanding</option>
-    <option value="/Requisition/ViewAllRequisitionsByStatus?status=Completed">Completed</option>
+    <option value="/Requisition/ViewAllRequisitionsByStatus?status=Outstanding&sessionId=@sessionId">Outstanding</option>
+    <option value="/Requisition/ViewAllRequisitionsByStatus?status=Completed&sessionId=@sessionId">Completed</option>
 </select>
 
-@if (requisitions[0].Status != "Completed")
+@if (status != "Completed")
 {
     <h2>Outstanding Requisitions</h2>
 }
@@ -32,42 +34,51 @@ else
     <h2>Completed Requisitions</h2>
 }
 <form action="/RetrievalForm/ViewRetrievalForm" method="get">
-    <input type="submit" value="View RetrievalForm" />
+    <input type="submit" value="View Retrieval Form" />
 </form>
 
-<form action="/RetrievalForm/CreateRetrievalForm" method="post">
-    @if (requisitions[0].Status != "Completed")
-    {
-        <input type="submit" value="Assign to Collection" />
-    }
 
-    <table>
-        <tr>
-            <th>
-                @if (requisitions[0].Status != "Completed")
-                {<input type="checkbox" onClick="toggle(this)" />
-                }
-            </th>
-            <th>Requisition Id</th>
-            <th>Department</th>
-            <th>Date of Request</th>
-        </tr>
-        @foreach (var req in requisitions)
+
+@if (requisitions != null)
+{
+    <form action="/RetrievalForm/CreateRetrievalForm" method="post">
+        @if (status != "Completed" && alrAssigned == "NO")
         {
-            <tr>
-
-                <td>
-                    @if (req.Status != "Completed")
-                    {
-                        <input type="checkbox" name="requisition" value="@req.ReqId">
-                    }
-                </td>
-                <td><a href="/Requisition/GetRequisitionDetails?reqId=@req.ReqId">@req.ReqCode</a></td>
-                <td>@req.Employee.Department.DeptCode</td>
-                <td>@req.DateOfRequest</td>
-            </tr>
+            <input type="submit" value="Assign to Collection" />
         }
-    </table>
-</form>
+        <table>
+            <tr>
+                <th>
+                    @if (status != "Completed" && alrAssigned == "NO")
+                    {<input type="checkbox" onClick="toggle(this)" />
+                    }
+                </th>
+                <th>Requisition Id</th>
+                <th>Department</th>
+                <th>Date of Request</th>
+            </tr>
+            @foreach (var req in requisitions)
+            {
+                <tr>
+
+                    <td>
+                        @if (req.Status != "Completed" && alrAssigned == "NO")
+                        {
+                            <input type="checkbox" name="requisition" value="@req.ReqId">
+                        }
+                    </td>
+                    <td><a href="/Requisition/GetRequisitionDetails?reqId=@req.ReqId">@req.ReqCode</a></td>
+                    <td>@req.Employee.Department.DeptCode</td>
+                    <td>@req.DateOfRequest</td>
+                </tr>
+            }
+        </table>
+    </form>
+}
+else
+{
+    <div>No Requisitions to Display</div>
+}
+
 
 

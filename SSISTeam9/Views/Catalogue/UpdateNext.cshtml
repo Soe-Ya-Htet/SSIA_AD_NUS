@@ -21,14 +21,11 @@
                             {
                                 <option>@pricelist.Supplier1Name</option>
                             }
-                            else
+                            @foreach (string supplierName in supplierNames)
                             {
-                                foreach (string supplierName in supplierNames)
+                                if (supplierName != pricelist.Supplier1Name)
                                 {
-                                    if (supplierName != pricelist.Supplier1Name)
-                                    {
-                                        <option>@supplierName</option>
-                                    }
+                                    <option>@supplierName</option>
                                 }
                             }
                         </select>
@@ -50,15 +47,12 @@
                             {
                                 <option>@pricelist.Supplier2Name</option>
                             }
-                            else
+                            @foreach (string supplierName in supplierNames)
                             {
-                                foreach (string supplierName in supplierNames)
-                                {
-                                    if (supplierName != pricelist.Supplier2Name)
-                                    {
-                                        <option>@supplierName</option>
-                                    }
-                                }
+                            if (supplierName != pricelist.Supplier2Name)
+                            {
+                            <option>@supplierName</option>
+                            }
                             }
                         </select>
                     </div>
@@ -78,15 +72,12 @@
                             {
                                 <option>@pricelist.Supplier3Name</option>
                             }
-                            else
+                            @foreach (string supplierName in supplierNames)
                             {
-                                foreach (string supplierName in supplierNames)
-                                {
-                                    if (supplierName != pricelist.Supplier3Name)
-                                    {
-                                        <option>@supplierName</option>
-                                    }
-                                }
+                            if (supplierName != pricelist.Supplier3Name)
+                            {
+                            <option>@supplierName</option>
+                            }
                             }
                         </select>
                     </div>

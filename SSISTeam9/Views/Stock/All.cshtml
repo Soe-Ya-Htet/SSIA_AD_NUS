@@ -5,7 +5,7 @@
     ViewBag.Title = "View All Inventory Items";
     List<Inventory> items = (List<Inventory>)ViewData["items"];
     var counter = 0;
-    string employeeId = (string)ViewData["empId"];
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2>Stock</h2>
@@ -17,7 +17,8 @@
 }
 else
 {
-    using (Html.BeginForm("EnterQuantities", "Stock", FormMethod.Post))
+    using (Html.BeginForm("EnterQuantities", "Stock", routeValues: new { sessionid = sessionId }
+    , method: FormMethod.Post))
     {
         <table>
             <tr>
@@ -36,7 +37,7 @@ else
                 @if (item.StockLevel < item.ReorderLevel)
                 {
                     <td>@Html.CheckBoxFor(m => m.CheckedItems[counter], new { id = "selectedOrderItem" })</td>
-                    <td style="color:red">@item.ItemCode</td>
+                    <td style="color:red"><a href="/StockCard/StockCard?itemId=@item.ItemId">@item.ItemCode</a></td>
                     <td style="color:red">@item.Category</td>
                     <td style="color:red">@item.Description</td>
                     <td style="color:red">@item.UnitOfMeasure</td>
@@ -47,7 +48,7 @@ else
                 else
                 {
                     <td>@Html.CheckBoxFor(m => m.CheckedItems[counter], new { id = "selectedOrderItem" })</td>
-                    <td>@item.ItemCode</td>
+                    <td><a href="/StockCard/StockCard?itemId=@item.ItemId">@item.ItemCode</a></td>
                     <td>@item.Category</td>
                     <td>@item.Description</td>
                     <td>@item.UnitOfMeasure</td>
@@ -59,8 +60,7 @@ else
                 counter = counter + 1;
             }
             <tr>
-                <td><input type="hidden" name="empId" value="@employeeId" /></td>
-                <td colspan="7" align="right"><input type="submit" value="Generate Purchase Orders"></td>
+                <td colspan="8" align="right"><input type="submit" value="Generate Purchase Orders"></td>
             </tr>
         </table>
     }

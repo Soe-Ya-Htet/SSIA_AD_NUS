@@ -137,6 +137,7 @@ namespace SSISTeam9.Controllers
             return RedirectToAction("All", new { sessionid = sessionId });
         }
 
+        [PendingDeliveryOrderFilter] //To prevent another store colleague to close/delete your order by amending order number in url
         public ActionResult Close(string orderNumber, string sessionId)
         {
             PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);

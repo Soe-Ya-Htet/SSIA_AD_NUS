@@ -74,7 +74,10 @@ namespace SSISTeam9.Controllers
 
             ViewData["inventories"] = inventories;
 
-            return View();
+            AdjInventoryViewModel model = new AdjInventoryViewModel();
+            model.Inventories.AddRange(inventories);
+
+            return View(inventories);
         }
 
         public ActionResult Generate(List<Inventory> inventories)

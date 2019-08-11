@@ -22,7 +22,7 @@ namespace SSISTeam9.DAO
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                if (reader.Read())
                 {
                     pricelist = new PriceList()
                     {                        

@@ -613,7 +613,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AdjVoucher.cs" />
-    <Compile Include="Models\AdjVoucherDetails.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\ChargeBack.cs" />
     <Compile Include="Models\CollectionPoint.cs" />
@@ -785,8 +784,6 @@
     <Content Include="Views\StoreMS\Home.cshtml" />
     <Content Include="Views\Home\NotAuthorised.cshtml" />
     <Content Include="Views\Stock\Check.cshtml" />
-    <Content Include="Views\AdjVoucher\Adjust.cshtml" />
-    <Content Include="Views\AdjVoucher\Authorise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

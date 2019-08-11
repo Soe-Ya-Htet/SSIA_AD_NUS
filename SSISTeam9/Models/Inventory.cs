@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SSISTeam9.Models
 {
-    public class Inventory
+    public class Inventory: IComparable<Inventory>
     {
         public long ItemId { get; set; }
 
@@ -38,5 +38,10 @@ namespace SSISTeam9.Models
         public List<bool> CheckedItems { get; set; }
         public List<Inventory> Items { get; set; }
         public int Flag { get; set; }
+
+        public int CompareTo(Inventory other)
+        {
+            return (this.StockLevel - this.ReorderLevel).CompareTo(other.StockLevel - other.ReorderLevel);
+        }
     }
 }

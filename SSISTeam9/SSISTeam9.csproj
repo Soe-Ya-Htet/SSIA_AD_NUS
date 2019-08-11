@@ -614,6 +614,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AdjVoucher.cs" />
+    <Compile Include="Models\AdjVoucherDetails.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\ChargeBack.cs" />
     <Compile Include="Models\CollectionPoint.cs" />

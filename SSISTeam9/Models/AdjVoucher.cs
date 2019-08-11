@@ -14,6 +14,8 @@ namespace SSISTeam9.Models
         public string Reason { get; set; }
         public Inventory Item { get; set; }
 
+        public double TotalPrice { get; set; }
+
         //0-pending 1-approved 2-rejected
         public int status { get; set; }
     }

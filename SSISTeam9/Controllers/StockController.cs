@@ -74,7 +74,7 @@ namespace SSISTeam9.Controllers
 
             ViewData["inventories"] = inventories;
 
-            return View();
+            return View(inventories);
         }
 
         public ActionResult Generate(List<Inventory> inventories)

@@ -15,7 +15,7 @@
 }
 else
 {
-    <table align="center">
+    @*<table align="center">
         <tr align="center">
             <th>Item Number</th>
             <th>Category</th>
@@ -25,29 +25,79 @@ else
             <th>Actual Stock</th>
         </tr>
         @using (Html.BeginForm("Generate", "Stock", FormMethod.Post))
-        {
-            for(int i = 0; i < inventories.Count; i++)
-            {
-                <tr align="center">
-                    <td>@inventories[i].ItemCode</td>
-                    <td>@inventories[i].Category</td>
-                    <td>@inventories[i].Description</td>
-                    <td>@inventories[i].UnitOfMeasure</td>
-                    <td>@inventories[i].StockLevel</td>
-                    <td>@Html.TextBoxFor(x => x[i].ActualStock, new { id = "actualStock", @Value = inventories[i].StockLevel })</td>
-                    <td style="display:none">
-                        @Html.TextBoxFor(x => x[i].ItemId, new { id = "itemId", @Value = inventories[i].ItemId })
-                        @Html.TextBoxFor(x => x[i].StockLevel, new { id = "stockLevel", @Value = inventories[i].StockLevel })
-                    </td>
-                </tr>
-            }
-            <tr>
-                <td></td>
-                <td></td>
-                <td align="right"><input type="submit" value="Generate Adjustment Voucher"></td>
-            </tr>
-        }
+                {
+                    for (int i = 0; i < inventories.Count; i++)
+                    {
+                        <tr align="center">
+                            <td>@inventories[i].ItemCode</td>
+                            <td>@inventories[i].Category</td>
+                            <td>@inventories[i].Description</td>
+                            <td>@inventories[i].UnitOfMeasure</td>
+                            <td>@inventories[i].StockLevel</td>
+                            <td>@Html.TextBoxFor(x => x[i].ActualStock, new { id = "actualStock", @Value = inventories[i].StockLevel })</td>
+                            <td style="display:none">
+                                @Html.TextBoxFor(x => x[i].ItemId, new { id = "itemId", @Value = inventories[i].ItemId })
+                                @Html.TextBoxFor(x => x[i].StockLevel, new { id = "stockLevel", @Value = inventories[i].StockLevel })
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td align="right"><input type="submit" value="Generate Adjustment Voucher"></td>
+                    </tr>
+                }
 
-    </table>
+        </table>*@
+
+    using (Html.BeginForm("Index", "AdjVoucher", Model, FormMethod.Post))
+    {
+        <table class="table">
+            
+            <thead>
+            <tr align="center">
+                <th>Item Number</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Unit Of Measure</th>
+                <th>Last Stock</th>
+                <th>Actual Stock</th>
+            </tr>
+
+            </thead>
+            
+            <tbody>
+            
+            @if (Model != null)
+            {
+                for (var i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(x => Model[i].ItemCode)</td>
+                        <td>@Html.DisplayFor(x => Model[i].Category)</td>
+                        <td>@Html.DisplayFor(x => Model[i].Description)</td>
+                        <td>@Html.DisplayFor(x => Model[i].UnitOfMeasure)</td>
+                        <td>@Html.DisplayFor(x => Model[i].StockLevel)</td>
+                        <td>@Html.TextBoxFor(x => Model[i].ActualStock, new {@Value = Model[i].StockLevel})</td>
+                        <td>
+                            @Html.HiddenFor(x => Model[i].ItemCode)
+                            @Html.HiddenFor(x => Model[i].ItemId)
+                            @Html.HiddenFor(x => Model[i].StockLevel)
+                            @Html.HiddenFor(x => Model[i].Description)
+                            @Html.HiddenFor(x => Model[i].UnitOfMeasure)
+                            @Html.HiddenFor(x => Model[i].Category)
+                        </td>
+                    </tr>
+                }
+            }
+
+
+            </tbody>
+
+
+        </table>
+        <input type="submit" value="Generate Adjustment Voucher" />
+    }
+
 }
 

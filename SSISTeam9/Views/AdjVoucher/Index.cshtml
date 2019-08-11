@@ -1,9 +1,11 @@
-﻿@model IEnumerable<SSISTeam9.Models.AdjVoucher>
+﻿@model List<SSISTeam9.Models.AdjVoucher>
 
-@using (Html.BeginForm("Generate", "AdjVoucher", FormMethod.Post))
+@using (Html.BeginForm("Generate", "AdjVoucher", Model, FormMethod.Post))
 {
     <table class="table">
-        <tr>
+
+        <thead>
+        <tr align="center">
             <th>Item Code</th>
             <th>Description</th>
             <th>Quantity Adjusted</th>
@@ -12,30 +14,34 @@
             <th>Total Price</th>
         </tr>
 
-        @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Item.ItemCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AdjQty)
-                </td>
-                <td>
-                    @Html.TextBoxFor(modelItem => item.Reason)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Item.ItemSuppliersDetails.Supplier1UnitPrice)
-                </td>
-                <td>
-                    @item.AdjQty * @item.Item.ItemSuppliersDetails.Supplier1UnitPrice
-                </td>
-            </tr>
+        </thead>
+
+        <tbody>
+
+        @if (Model != null)
+        {
+            for (var i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(x => Model[i].Item.ItemCode)</td>
+                    <td>@Html.DisplayFor(x => Model[i].Item.Description)</td>
+
+                    <td>@Html.DisplayFor(x => Model[i].AdjQty)</td>
+                    <td>@Html.TextBoxFor(x => Model[i].Reason)</td>
+                    <td>@Model[i].Item.ItemSuppliersDetails.Supplier1UnitPrice / @Model[i].Item.UnitOfMeasure</td>
+                    <td>@Html.DisplayFor(x => Model[i].TotalPrice)</td>
+                    @Html.HiddenFor(x => Model[i].Item.ItemCode)
+                    @Html.HiddenFor(x => Model[i].Item.ItemId)
+                    @Html.HiddenFor(x => Model[i].AdjQty)
+                    @Html.HiddenFor(x => Model[i].Item.Description)
+                    @Html.HiddenFor(x => Model[i].TotalPrice)
+                </tr>
+            }
         }
 
-    </table>
+        </tbody>
 
+
+    </table>
     <input type="submit" value="Generate Adjustment Voucher"/>
 }

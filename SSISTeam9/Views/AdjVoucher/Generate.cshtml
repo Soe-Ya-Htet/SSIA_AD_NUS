@@ -1,0 +1,25 @@
+﻿@model List<SSISTeam9.Models.AdjVoucher>
+
+@using (Html.BeginForm())
+{
+    <table class="table">
+
+        <thead>
+            <tr align="center">
+                <th>Item Code</th>
+                <th>Description</th>
+                <th>Quantity Adjusted</th>
+                <th>Reason</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+        <tr><td>@ViewBag.Msg
+        </td></tr>
+        </tbody>
+
+    </table>
+}

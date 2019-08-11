@@ -10,7 +10,7 @@ using Delegate = SSISTeam9.Models.Delegate;
 
 namespace SSISTeam9.Controllers
 {
-    [BasicAuthenticationAttribute]
+    //[BasicAuthenticationAttribute]
     [RoutePrefix("rest/dept_head")]
     public class RestDepartmentHeadController : Controller
     {
@@ -125,6 +125,48 @@ namespace SSISTeam9.Controllers
             DelegateService.AddNewDelegate(delegat, headId);
 
             return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+        [Route("auth/delegate/info")]
+        public JsonResult DelegateAuthorityInfo()
+        {
+
+            Delegate del = GetDelegateInfoByDeptId(deptId);
+
+            return Json(del, JsonRequestBehavior.AllowGet);
+        }
+
+        private Delegate GetDelegateInfoByDeptId(int deptId)
+        {
+            Delegate del = null;
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string sql = @"SELECT * FROM Delegate WHERE deptId=@deptId";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@deptId", deptId);
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    del = new Delegate
+                    {
+                        Employee = new Employee
+                        {
+                            EmpId = (long)reader["empId"]
+                        },
+                        Department = new Department
+                        {
+                            DeptId = (long)reader["deptId"]
+                        },
+                        FromDate = (DateTime)reader["fromDate"],
+                        ToDate = (DateTime)reader["toDate"]
+                    };
+                }
+            }
+            return del;
+
         }
 
         private List<Requisition> GetAllPastOrderReqs(int deptId)

@@ -621,6 +621,7 @@
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\DisbursementList.cs" />
     <Compile Include="Models\DisbursementListDetails.cs" />
+    <Compile Include="Models\EmailNotification.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\PriceList.cs" />

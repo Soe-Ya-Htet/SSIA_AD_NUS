@@ -10,7 +10,7 @@ using static SSISTeam9.Controllers.DisbursementController;
 
 namespace SSISTeam9.Controllers
 {
-    [BasicAuthenticationAttribute]
+    //[BasicAuthenticationAttribute]
     [RoutePrefix("rest/stock_clerk")]
     public class RestStockClerkController : Controller
     {
@@ -62,9 +62,10 @@ namespace SSISTeam9.Controllers
                 {
                     Department = new Department()
                     {
-                        DeptId = deptId
+                        DeptId = deptId,
                     },
-                    DisbursementListDetails = disbursementListDetails
+                    DisbursementListDetails = disbursementListDetails,
+                    date = DateTime.Now
                 };
 
                 disbursementLists.Add(d);

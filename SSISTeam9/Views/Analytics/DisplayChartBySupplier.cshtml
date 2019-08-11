@@ -7,6 +7,7 @@
 
     Dictionary<string, double> dataForDisplay = (Dictionary<string, double>)ViewData["dataForDisplay"];
     string title = (string)ViewData["chartTitle"];
+    string sessionId = (string)ViewData["sessionId"];
 }
 <!DOCTYPE html>
 
@@ -23,7 +24,7 @@
     <div>
         <p>Default shows total orders from each supplier for current month (base).</p>
         <p>Change base month using dropdown below.</p>
-        @using (Html.BeginForm("DisplayChartBySupplierForSelectedMonth", "Analytics", FormMethod.Post))
+        @using (Html.BeginForm("DisplayChartBySupplierForSelectedMonth", "Analytics", new { sessionid = sessionId }, method: FormMethod.Post))
         {
             <p>Year: @year</p>
             <label for="month">Month: </label>
@@ -41,6 +42,7 @@
                 }
             </select>
             <input type="hidden" name="year" value='@year' />
+            <input type="hidden" name="sessionId" value="@sessionId" />
             <input type="submit" value="Generate" />
         }
 

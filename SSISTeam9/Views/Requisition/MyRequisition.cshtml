@@ -4,55 +4,96 @@
     ViewBag.Title = "MyRequisition";
 }
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ReqId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReqCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateOfRequest)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PickUpDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ApprovedBy)
-        </th>
-        <th></th>
-    </tr>
+<link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
+<header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    @Html.ActionLink("New Requisition", "NewRequisition", "Requisition", new { @style = "display:block;padding:.5rem 1rem" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Requisition List", "RequisitionList", "Requisition", new { empId = 1 }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("My Requisition", "MyRequisition", "Requisition", new { empId = 1 }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Department Requisition", "DeptRequisition", "Requisition", new { deptId = 1 }, new { @class = "nav-link" })
+                </li>
+            </ul>
+            <ul class="navbar-nav mt-2 mt-md-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#"><h6>Logout</h6></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
 
-@foreach (var req in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink(req.ReqId.ToString(), "GetRequisitionDetails", new { reqId = req.ReqId })
-        </td>
-        <td>
-            @Html.DisplayFor(modelreq => req.ReqCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelreq => req.DateOfRequest)
-        </td>
-        <td>
-            @Html.DisplayFor(modelreq => req.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelreq => req.PickUpDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelreq => req.ApprovedBy)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=req.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=req.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=req.PrimaryKey */ })
-        </td>
-    </tr>
+@{
+    if (Model.ToArray().Length == 0)
+    {
+        <h2>You don't have any requisition yet!</h2>
+    }
+    else
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReqId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReqCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfRequest)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PickUpDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ApprovedBy)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var req in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(req.ReqId.ToString(), "GetRequisitionDetails", new { reqId = req.ReqId })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelreq => req.ReqCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelreq => req.DateOfRequest)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelreq => req.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelreq => req.PickUpDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelreq => req.ApprovedBy)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=req.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=req.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=req.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    }
 }
-
-</table>

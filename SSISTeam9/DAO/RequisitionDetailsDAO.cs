@@ -32,5 +32,35 @@ namespace SSISTeam9.DAO
                 }
             }
         }
+
+        public static List<RequisitionDetails> GetRequisitionDetailsByReqId(long reqId)
+        {
+            List<RequisitionDetails> reqDetails = new List<RequisitionDetails>();
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from RequisitionDetails where reqId=" + reqId;
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Inventory i = new Inventory()
+                    {
+                        ItemId = (long)reader["itemId"]
+                    };
+                    RequisitionDetails requisitionDetail = new RequisitionDetails()
+                    {
+                        Quantity = (int)reader["quantity"],
+                        Item = i
+                    };
+
+                    reqDetails.Add(requisitionDetail);
+                }
+            }
+            return reqDetails;
+
+        }
     }
 }

@@ -26,8 +26,16 @@ namespace SSISTeam9.Services
             return carts;
         }
 
-        public static void SaveToCart(Cart cart)
+        public static void SaveToCart(long itemId, long empId, int quantity)
         {
+            Cart cart = new Cart();
+            Employee emp = new Employee();
+            emp.EmpId = empId;
+            Inventory item = new Inventory();
+            item.ItemId = itemId;
+            cart.Employee = emp;
+            cart.Item = item;
+            cart.Quantity = 1;
             List<Cart> carts = CartDAO.GetAllCart();
             carts = GetCartsWithObjects(carts);
 
@@ -70,6 +78,16 @@ namespace SSISTeam9.Services
             return carts;
         }
 
+        public static void ReorderCart(int reqId, int empId)
+        {
+            List<RequisitionDetails> reqDetails = new List<RequisitionDetails>();
+            reqDetails = RequisitionDetailsDAO.GetRequisitionDetailsByReqId(reqId);
+            foreach (RequisitionDetails r in reqDetails)
+            {
+                SaveToCart(r.Item.ItemId, empId, r.Quantity);
+            }
+        }
+
         public static List<Requisition> GetRequisitionByEmpId(int empId)
         {
             return RequisitionDAO.GetRequisitionByEmpId(empId);
@@ -82,10 +100,11 @@ namespace SSISTeam9.Services
 
         public static void CreateRequisition(List<Cart> carts, long empId)
         {
+            List<long> reqs = RequisitionDAO.GetAllRequisitions();
             Employee emp = new Employee();
             emp.EmpId = empId;
             Requisition req = new Requisition();
-            req.ReqCode = DateTime.Now.Date.ToString();
+            req.ReqCode = string.Format(String.Format("#R{0:0000000000}", reqs.Max()+1));
             req.DateOfRequest = DateTime.Now.Date;
             req.Status = "Pending Approval";
             req.Employee = emp;

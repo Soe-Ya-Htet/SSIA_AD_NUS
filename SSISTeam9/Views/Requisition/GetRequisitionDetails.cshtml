@@ -30,6 +30,7 @@ Requisition ID : @reqId
                 <td></td>
                 <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@appStatus"><span>Approve</span></button></td>
                 <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@rejStatus"><span>Reject</span></button></td>
+                <td><button type="submit" id=reqId formaction="/Requisition/Reorder?reqId=@reqId&empId=1"><span>Reorder</span></button></td>                
             </tr>
         </table>
     </form>

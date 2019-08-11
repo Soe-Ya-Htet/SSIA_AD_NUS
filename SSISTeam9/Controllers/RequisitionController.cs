@@ -28,22 +28,15 @@ namespace SSISTeam9.Controllers
 
         public ActionResult AddtoCart(int itemId)
         {
-            Cart cart = new Cart();
-            Employee emp = new Employee();
-            emp.EmpId = 1;
-            Inventory item = new Inventory();
-            item.ItemId = itemId;
-            cart.Employee = emp;
-            cart.Item = item;
-            cart.Quantity = 1;
-            RequisitionService.SaveToCart(cart);
-
+            int empId = 1;
+            int quantity = 1;
+            RequisitionService.SaveToCart(itemId, empId, quantity);
             return Redirect(Request.UrlReferrer.ToString());
         }
 
-        public ActionResult RequisitionList()
+        public ActionResult RequisitionList(long empId)
         {
-            List<Cart> empCarts =  RequisitionService.GetCartsByEmpId(1);
+            List<Cart> empCarts =  RequisitionService.GetCartsByEmpId(empId);
             return View(empCarts);
         }
 
@@ -74,6 +67,14 @@ namespace SSISTeam9.Controllers
         public ActionResult DeptRequisition(int deptId)
         {
             return View(RequisitionService.GetRequisitionByDeptId(deptId));
+        }
+
+        public ActionResult Reorder(int reqId,int empId)
+        {
+
+            RequisitionService.ReorderCart(reqId, empId);
+
+            return RedirectToAction("RequisitionList", "Requisition", new { empId });
         }
 
         public ActionResult GetPendingRequisitions()

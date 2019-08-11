@@ -115,6 +115,24 @@ namespace SSISTeam9.DAO
             return requisitions;
         }
 
+        public static List<long> GetAllRequisitions()
+        {
+            List<long> reqIds = new List<long>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"SELECT reqId from Requisition";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    reqIds.Add((long)reader["reqId"]);
+                }
+            }
+            return reqIds;
+        }
+
         public static List<Requisition> GetRequisitionByEmpId(int empId)
         {
             List<Requisition> requisitions = new List<Requisition>();

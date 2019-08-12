@@ -4,12 +4,13 @@
 @{
     Department department = (Department)ViewData["department"];
     List<string> empNames = (List<string>)ViewData["empNames"];
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2 style="text-align:center">Update Department Details</h2>
 
 <div>
-    @using (Html.BeginForm("Update", "Department", FormMethod.Post))
+    @using (Html.BeginForm("Update", "Department", routeValues: new { sessionid = sessionId }, method: FormMethod.Post))
     {
         <table>
             <tr>
@@ -84,7 +85,7 @@
                 <td>
                     <button style="background-color:red;">
                         @Html.ActionLink("Delete Department","Delete","Department",
-                        new { confirm = true, deptId = department.DeptId },
+                        new { confirm = true, deptId = department.DeptId, sessionid = sessionId },
                         new { Style = "color:White;", onclick = "return confirm('Do you really want to delete this department?')" })
                     </button>
                 </td>

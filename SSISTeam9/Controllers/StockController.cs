@@ -15,7 +15,7 @@ namespace SSISTeam9.Controllers
     {
         public async Task<ActionResult> All(string sessionId)
         {
-            //Contact Python API to get predicted re-order amount and level  for item with code 'P021'
+            //Contact Python API to get predicted re-order amount and level  for item with code 'P021' and 'P030'
             //Done via StockService
             List<Inventory> items = await StockService.GetAllItemsOrdered();
 
@@ -29,7 +29,7 @@ namespace SSISTeam9.Controllers
 
         public async Task<ActionResult> EnterQuantities(Inventory inventory, string sessionId)
         {
-            //Contact Python API to get predicted re-order amount and level for item with code 'P021'
+            //Contact Python API to get predicted re-order amount and level for item with code 'P021' and 'P030'
             List<Inventory> stock = await StockService.GetAllItemsOrdered();
             List<Inventory> selectedItems = new List<Inventory>();
 

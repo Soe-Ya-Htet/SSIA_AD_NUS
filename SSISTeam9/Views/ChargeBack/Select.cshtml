@@ -3,6 +3,8 @@
 @using SSISTeam9.Models;
 
 @{
+    ViewBag.Title = "Charge Back";
+
     List<ChargeBack> chargeBacks = (List<ChargeBack>)ViewData["chargeBacks"];
     List<string> months = (List<string>)ViewData["months"];
     List<int> years = (List<int>)ViewData["years"];

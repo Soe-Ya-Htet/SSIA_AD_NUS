@@ -16,7 +16,7 @@
                     @Html.ActionLink("Requisitions", "ViewAllRequisitionsByStatus", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
                 </li>
                 <li class="nav-item active">
-                    @Html.ActionLink("Inventory", "", "", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    @Html.ActionLink("Inventory", "Check", "Stock", new { sessionId = sessionId }, new { @class = "nav-link" })
                 </li>
                 <li class="nav-item active">
                     @Html.ActionLink("Stock", "All", "Stock", new { sessionId = sessionId }, new { @class = "nav-link" })
@@ -37,7 +37,7 @@
                     @Html.ActionLink("Departments", "All", "Department", new { sessionId = sessionId }, new { @class = "nav-link" })
                 </li>
                 <li class="nav-item active">
-                    @Html.ActionLink("Charge Back", "", "", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    @Html.ActionLink("Charge Back", "Select", "ChargeBack", new { sessionId = sessionId }, new { @class = "nav-link" })
                 </li>
             </ul>
             <ul class="navbar-nav mt-2 mt-md-0">
@@ -50,19 +50,6 @@
     </nav>
 </header>
 
-<h2>Home</h2>
+<p style="text-align:right">Logged in as: @userName</p>
 
-<a href="~/Requisition/ViewAllRequisitionsByStatus?sessionId=@sessionId">Requisitions</a>
-<a href="">Inventory</a>
-<a href="~/Stock/All?sessionid=@sessionId">Stock</a>
-<a href="~/PurchaseOrder/All?sessionid=@sessionId">Purchase Orders</a>
-<a href="~/Analytics/Home?sessionid=@sessionId">Analytics</a>
-<a href="~/Catalogue/All?sessionid=@sessionId">Catalogue</a>
-<a href="~/Supplier/All?sessionid=@sessionId">Suppliers</a>
-<a href="~/Department/All?sessionid=@sessionId">Departments</a>
-<a href="~/ChargeBack/Select?sessionid=@sessionId">Charge Back</a>
-
-<p>Logged in as: @userName</p>
-<form method="post">
-    <input style="background-color:transparent; border-width:0px" type="submit" name="Logout" value='Logout' formaction="/Home/Logout?sessionid=@sessionId" />
-</form>
+<img src="~/Content/storehome.jpeg" style="text-align:center"/>

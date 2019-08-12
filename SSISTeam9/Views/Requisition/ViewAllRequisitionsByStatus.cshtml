@@ -1,6 +1,8 @@
 ﻿
 @using SSISTeam9.Models
 @{
+    ViewBag.Title = "View All Requisitions";
+
     var requisitions = (List<Requisition>)ViewData["Reqs"];
     var status = (string)ViewData["status"];
     var alrAssigned = (string)ViewData["alreadyAssigned"];

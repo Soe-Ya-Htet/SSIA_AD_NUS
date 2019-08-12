@@ -5,7 +5,7 @@
 }
 
 <h2 style="text-align:center">Catalogues List</h2>
-<a class="btn btn-light"  href="javascript:window.print()">Print Catalogues</a>
+<a class="btn btn-light" href="javascript:window.print()">Print Catalogues</a>
 
 @if (catalogues.Count == 0)
 {
@@ -15,9 +15,6 @@
 else
 {
     <table align="center">
-        <tr>
-            <td><input type="button" value="Create New Catalogue" style="background-color:forestgreen; color:white" onclick="location.href='@Url.Action("Create","Catalogue", routeValues: new { sessionid = sessionId })'"></td>
-        </tr>
         <tr align="center">
             <th>Item Number</th>
             <th>Category</th>
@@ -27,7 +24,7 @@ else
         @foreach (var c in catalogues)
         {
             <tr align="center">
-                <td><a href="/Catalogue/Details?itemId=@c.ItemId&sessionId=@sessionId">@c.ItemCode </a></td>
+                <td>@c.ItemCode</td>
                 <td>@c.Category</td>
                 <td>@c.Description</td>
                 <td>@c.UnitOfMeasure</td>

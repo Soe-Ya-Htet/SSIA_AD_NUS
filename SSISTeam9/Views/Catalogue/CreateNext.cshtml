@@ -3,11 +3,12 @@
 @{
     List<string> supplierNames = (List<string>)ViewData["supplierNames"];
     long itemId = (long)ViewData["itemId"];
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2>Create New Price List</h2>
 <div>
-    @using (Html.BeginForm("CreatePriceList", "Catalogue", new { ItemId = itemId }, FormMethod.Post))
+    @using (Html.BeginForm("CreatePriceList", "Catalogue", routeValues: new { ItemId = itemId, sessionid = sessionId }, method: FormMethod.Post))
     {
         <table>
             <tr>

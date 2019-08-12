@@ -1,5 +1,4 @@
-﻿
-@using SSISTeam9.Models
+﻿@using SSISTeam9.Models
 @{
     var requisitions = (List<Requisition>)ViewData["Reqs"];
     var status = (string)ViewData["status"];
@@ -8,6 +7,8 @@
     var sessionId = ViewData["sessionId"];
 
 }
+<link href="../Shared/Tables.css" rel="stylesheet" type="text/css"/>
+
 
 <script language="JavaScript">
     function toggle(source) {
@@ -44,7 +45,7 @@ else
 
 @if (requisitions != null)
 {
-    <form action="/RetrievalForm/CreateRetrievalForm" method="post">
+    <form action="/RetrievalForm/CreateRetrievalForm?sessionId=@sessionId" method="post">
         @if (status != "Completed" && alrAssigned == "NO")
         {
             <input type="submit" value="Assign to Collection" />

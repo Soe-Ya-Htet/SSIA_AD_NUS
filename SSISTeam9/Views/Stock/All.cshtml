@@ -1,7 +1,8 @@
 ﻿@model SSISTeam9.Models.Inventory
 
 @using SSISTeam9.Models;
-@{
+@{ 
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "View All Inventory Items";
     List<Inventory> items = (List<Inventory>)ViewData["items"];
     var counter = 0;

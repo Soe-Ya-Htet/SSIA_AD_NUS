@@ -10,7 +10,7 @@ using Delegate = SSISTeam9.Models.Delegate;
 
 namespace SSISTeam9.Controllers
 {
-    //[BasicAuthenticationAttribute]
+    [BasicAuthenticationAttribute]
     [RoutePrefix("rest/dept_head")]
     public class RestDepartmentHeadController : Controller
     {

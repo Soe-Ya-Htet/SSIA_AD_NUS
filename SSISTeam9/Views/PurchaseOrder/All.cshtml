@@ -2,9 +2,10 @@
 
 @using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "View All Purchase Orders";
     List<PurchaseOrder> orders = (List<PurchaseOrder>)ViewData["orders"];
-    
+
     string sessionId = (string)ViewData["sessionId"];
 }
 

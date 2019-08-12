@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Store.cshtml";
+
+    string userName = (string)ViewData["userName"];
+    string sessionId = (string)ViewData["sessionId"];
+}
+
+<p style="text-align:right">Logged in as: @userName</p>
+
+<img src="~/Content/storehome.jpeg" style="text-align:center"/>

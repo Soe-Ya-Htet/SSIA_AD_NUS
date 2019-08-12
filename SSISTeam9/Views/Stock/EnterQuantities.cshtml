@@ -2,6 +2,7 @@
 
 @using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "Create Purchase Order";
     List<Inventory> selectedItems = (List<Inventory>)ViewData["selectedItems"];
     var counter = 0;

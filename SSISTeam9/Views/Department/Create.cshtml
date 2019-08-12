@@ -1,6 +1,8 @@
 ﻿@model SSISTeam9.Models.Department
 
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Create New Department";
     List<string> empNames = (List<string>)ViewData["empNames"];
     string sessionId = (string)ViewData["sessionId"];
 }

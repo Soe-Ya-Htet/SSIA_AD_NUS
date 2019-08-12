@@ -2,6 +2,7 @@
 
 @using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "Update Quantity and/or Select Alternative Supplier";
     List<Inventory> selectedItems = (List<Inventory>)ViewData["selectedItems"];
     PurchaseOrder selectedOrder = (PurchaseOrder)ViewData["order"];
@@ -10,7 +11,7 @@
     string deliverBy = (string)ViewData["deliverBy"];
 
     var counter = 0;
-    
+
     string sessionId = (string)ViewData["sessionId"];
 }
 

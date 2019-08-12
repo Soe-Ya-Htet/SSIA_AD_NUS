@@ -21,8 +21,12 @@ namespace SSISTeam9.Utility
 
         public static Employee GetCurrentLoggedUser()
         {
-            var principal = Thread.CurrentPrincipal;
-            return ((UserPrincipal)principal).Emp;
+            //var principal = Thread.CurrentPrincipal;
+            //return ((UserPrincipal)principal).Emp;
+
+            UserPrincipal principal = (UserPrincipal) Thread.CurrentPrincipal;
+            return principal.Emp;
+
         }
 
         public static void InvalidateUser()

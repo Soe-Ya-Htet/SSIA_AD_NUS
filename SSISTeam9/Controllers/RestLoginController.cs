@@ -2,6 +2,7 @@
 using SSISTeam9.Filters;
 using SSISTeam9.Models;
 using SSISTeam9.Utility;
+using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading;
 using System.Web.Mvc;
@@ -16,17 +17,31 @@ namespace SSISTeam9.Controllers
         [HttpPost]
         public ActionResult PostLogin(Employee emp)
         {
+            Dictionary<string, object> resDict = new Dictionary<string, object>();
+
             Employee emp2 = EmployeeDAO.GetUserPassword(emp.UserName);
-            if(emp2 == null || !emp.Password.Equals(emp2.Password))
+            if(emp2 == null || string.IsNullOrEmpty(emp2.UserName))
             {
-                return Json("Failed", JsonRequestBehavior.AllowGet);
+                resDict.Add("login", false);
+                resDict.Add("msg", "Username not found");
+            }
+            else if (!emp.Password.Equals(emp2.Password))
+            {
+                resDict.Add("login", false);
+                resDict.Add("msg", "Incorrect password");
+            } else
+            {
+                resDict.Add("login", true);
+                resDict.Add("msg", "Login success");
+                resDict.Add("emp", emp2);
+                AuthUtil.CreatePrincipal(emp2);
             }
 
-            AuthUtil.CreatePrincipal(emp);
-            return Json("Login", JsonRequestBehavior.AllowGet);
+            return Json(resDict, JsonRequestBehavior.AllowGet);
         }
 
         [BasicAuthenticationAttribute(rExecuted = false)]
+        [HttpPost]
         [Route("logout")]
         public ActionResult PostLogout()
         {

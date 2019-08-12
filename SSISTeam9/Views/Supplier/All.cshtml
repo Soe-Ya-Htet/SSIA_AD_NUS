@@ -7,7 +7,7 @@
     string sessionId = (string)ViewData["sessionId"];
 }
 
-<h2>Suppliers</h2>
+<h3>Suppliers</h3>
 
 @if (suppliers.Count == 0){
     <br /><br />
@@ -15,7 +15,7 @@
 }
 else
 {
-    <table>
+    <table class="table table-bordered">
         <tr>
             <th>Supplier Code</th>
             <th>Supplier Name</th>

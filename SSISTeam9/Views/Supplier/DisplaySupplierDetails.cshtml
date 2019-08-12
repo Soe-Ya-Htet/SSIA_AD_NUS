@@ -9,7 +9,7 @@
     string sessionId = (string)ViewData["sessionId"];
 }
 
-<h2>Update Supplier Details</h2>
+<h3>Update Supplier Details</h3>
 
 <div>
     @using (Html.BeginForm("Update", "Supplier", routeValues: new { sessionid = sessionId }, method: FormMethod.Post))
@@ -52,14 +52,14 @@
             </tr>
             <tr>
                 <td>
-                    <button>
+                    <button class="btn btn-danger">
                         @Html.ActionLink("Delete Supplier","Delete","Supplier",
                         new { confirm = true, supplierCode = supplier.SupplierCode, sessionid = sessionId },
-                        new { onclick = "return confirm('Do you really want to delete this supplier?')" })
+                        new { onclick = "return confirm('Do you really want to delete this supplier?')"})
                     </button>
                     <!-- <input type="button" value="Delete Supplier" onclick="location.href='/Supplier/Delete?supplierCode=@supplier.SupplierCode'">-->
                 </td>
-                <td align="right"><input type="submit" value="Save Update(s)"></td>
+                <td align="right"><input type="submit" value="Save Update(s)" class="btn btn-success"></td>
                 @Html.Hidden("supplierId", supplier.SupplierId)
             </tr>
         </table>

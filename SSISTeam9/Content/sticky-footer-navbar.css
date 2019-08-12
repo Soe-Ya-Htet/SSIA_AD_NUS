@@ -24,7 +24,7 @@ code {
   background-image: none;
 }
 
-a {
+.nav-link {
     color: #000;
-    font-size: 13px;
+    font-size: 12px;
 }

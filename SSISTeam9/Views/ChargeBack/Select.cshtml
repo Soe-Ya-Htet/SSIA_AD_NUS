@@ -9,12 +9,13 @@
     List<string> depts = (List<string>)ViewData["depts"];
     int? mode = (int?)TempData["mode"];
     ChargeBack chargeback = (ChargeBack)ViewData["chargeback"];
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2 style="text-align:center">ChargeBack Details</h2>
 
 <div>
-    @using (Html.BeginForm("Generate", "ChargeBack", new { mode = 1 }, FormMethod.Post))
+    @using (Html.BeginForm("Generate", "ChargeBack", new { mode = 1, sessionId = sessionId }, FormMethod.Post))
     {
         <table align="center">
             <tr align="center">
@@ -35,7 +36,7 @@
             </tr>
         </table>
     }
-    @using (Html.BeginForm("Generate", "ChargeBack", new { mode = 2 }, FormMethod.Post))
+    @using (Html.BeginForm("Generate", "ChargeBack", new { mode = 2, sessionId = sessionId }, FormMethod.Post))
     {
         <table align="center">
             <tr align="center">

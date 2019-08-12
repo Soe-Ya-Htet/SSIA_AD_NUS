@@ -56,9 +56,9 @@
                 <h5 style="text-align:center">@item.Description</h5>
                 <h6 style="text-align:center; width:200px">@item.UnitOfMeasure</h6>
                 <form style="text-align:center" method="post">
-                    <input type="submit" value="Add to Cart" formaction="/Requisition/AddtoCart?itemId=@item.ItemId&sessionId=@sessionId">
-                    <input type="submit" value="Remove from cart" formaction="/Gallery/RemovefromCart?productId=@item.ItemId">
-                    <input type="hidden" value="Empty cart" formaction="/Gallery/EmptyCart?productId=@item.ItemId">
+                    <input class="rounded" type="submit" value="Add to Cart" formaction="/Requisition/AddtoCart?itemId=@item.ItemId&sessionId=@sessionId">
+                    <input class="rounded" type="submit" value="Remove from cart" formaction="/Gallery/RemovefromCart?productId=@item.ItemId">
+                    <input class="rounded" type="hidden" value="Empty cart" formaction="/Gallery/EmptyCart?productId=@item.ItemId">
                 </form>
             </div>
         </div>

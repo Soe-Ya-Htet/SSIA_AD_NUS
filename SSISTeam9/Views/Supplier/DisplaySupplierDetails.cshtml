@@ -14,7 +14,7 @@
 <div>
     @using (Html.BeginForm("Update", "Supplier", routeValues: new { sessionid = sessionId }, method: FormMethod.Post))
     {
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <td>@Html.LabelFor(m => m.SupplierCode) </td>
                 <td>@Html.TextBoxFor(m => m.SupplierCode, new { id = "supplierCode", @Value = supplier.SupplierCode })</td>
@@ -59,7 +59,7 @@
                     </button>
                     <!-- <input type="button" value="Delete Supplier" onclick="location.href='/Supplier/Delete?supplierCode=@supplier.SupplierCode'">-->
                 </td>
-                <td align="right"><input type="submit" value="Save Update(s)"></td>
+                <td align="right"><input class="rounded" type="submit" value="Save Update(s)"></td>
                 @Html.Hidden("supplierId", supplier.SupplierId)
             </tr>
         </table>

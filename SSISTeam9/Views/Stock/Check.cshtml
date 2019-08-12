@@ -53,7 +53,7 @@ else
 
     using (Html.BeginForm("Index", "AdjVoucher", Model, FormMethod.Post))
     {
-        <table class="table">
+        <table class="table table-bordered">
             
             <thead>
             <tr align="center">
@@ -97,7 +97,7 @@ else
 
 
         </table>
-        <input type="submit" value="Generate Adjustment Voucher" />
+        <input class="rounded" type="submit" value="Generate Adjustment Voucher" />
     }
 
 }

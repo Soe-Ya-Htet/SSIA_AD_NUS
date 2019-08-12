@@ -23,7 +23,7 @@
         
             @if (pricelist != null)
             {   
-                <table>
+                <table class="table table-bordered">
                     <tr>
                         <td>First Supplier's Name: @pricelist.Supplier1Name</td>
                         <td>Price: $@pricelist.Supplier1UnitPrice</td>
@@ -40,7 +40,7 @@
             }
 
 
-        <div class="button">
+        <div class="button rounded">
             <input type="button" value="Update" style="margin-left:10px; background-color:darkorange; color:white" onclick="location.href='@Url.Action("Update","Catalogue", new { itemId = catalogue.ItemId, sessionid = sessionId})'">
             <button style="background-color:red;">
                 @Html.ActionLink("Delete","Delete","Catalogue",

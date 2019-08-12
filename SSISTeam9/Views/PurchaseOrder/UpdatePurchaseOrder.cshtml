@@ -38,7 +38,7 @@ else
         @using (Html.BeginForm("ConfirmUpdate", "PurchaseOrder", routeValues: new { sessionid = sessionId }
         , method: FormMethod.Post))
         {
-            <table>
+            <table class="table table-bordered">
                 <tr>
                     <th>Change Supplier To</th>
                     <th>Item Number</th>
@@ -98,7 +98,7 @@ else
                 }
                 <tr>
                     <td><input type="hidden" name="counter" value="@counter" /></td>
-                    <td colspan="6" align="right"><input type="submit" value="Confirm Changes"></td>
+                    <td colspan="6" align="right"><input class="rounded" type="submit" value="Confirm Changes"></td>
                 </tr>
 
             </table>

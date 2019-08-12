@@ -98,7 +98,7 @@ namespace SSISTeam9.Controllers
         }
 
         [DepartmentFilter]
-        public ActionResult GetPendingRequisitions()
+        public ActionResult GetPendingRequisitions(string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             long deptId = emp.DeptId;
@@ -121,7 +121,7 @@ namespace SSISTeam9.Controllers
         }
 
         [DepartmentFilter]
-        public ActionResult ViewPastRequisitions()
+        public ActionResult ViewPastRequisitions(string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             long deptId = emp.DeptId;
@@ -132,7 +132,7 @@ namespace SSISTeam9.Controllers
         }
 
         [DepartmentFilter]
-        public ActionResult ViewPastRequisitionDetails(long reqId)
+        public ActionResult ViewPastRequisitionDetails(long reqId, string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             List<RequisitionDetails> requisitionDetails = RequisitionService.DisplayRequisitionDetailsByReqId(reqId);
@@ -143,7 +143,7 @@ namespace SSISTeam9.Controllers
         }
 
         [DepartmentFilter]
-        public ActionResult ProcessRequisition(long reqId, string status)
+        public ActionResult ProcessRequisition(long reqId, string status, string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             long currentHead = emp.EmpId;

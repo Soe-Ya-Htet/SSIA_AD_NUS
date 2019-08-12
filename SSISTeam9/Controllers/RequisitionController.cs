@@ -9,16 +9,15 @@ using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
-    [DepartmentFilter]
     public class RequisitionController : Controller
     {
-
         // GET: Requisition
         public ActionResult Index()
         {
             return View();
         }
-
+        
+        [DepartmentFilter]
         public ActionResult NewRequisition(string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -30,7 +29,8 @@ namespace SSISTeam9.Controllers
 
             return View(itemList);
         }
-
+        
+        [DepartmentFilter]
         public ActionResult AddtoCart(int itemId, string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -39,6 +39,7 @@ namespace SSISTeam9.Controllers
             return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionId });
         }
 
+        [DepartmentFilter]
         public ActionResult RequisitionList(string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -48,6 +49,7 @@ namespace SSISTeam9.Controllers
             return View(empCarts);
         }
 
+        [DepartmentFilter]
         public ActionResult CreateRequisition(string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -67,6 +69,7 @@ namespace SSISTeam9.Controllers
             return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionId });
         }
 
+        [DepartmentFilter]
         public ActionResult MyRequisition(string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -74,7 +77,8 @@ namespace SSISTeam9.Controllers
             ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
             return View(RequisitionService.GetRequisitionByEmpId(emp.EmpId));
         }
-        
+
+        [DepartmentFilter]
         public ActionResult DeptRequisition(string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -83,6 +87,7 @@ namespace SSISTeam9.Controllers
             return View(RequisitionService.GetRequisitionByDeptId(emp.DeptId));
         }
 
+        [DepartmentFilter]
         public ActionResult Reorder(int reqId,string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -92,6 +97,7 @@ namespace SSISTeam9.Controllers
             return RedirectToAction("RequisitionList", "Requisition", new { sessionId = sessionId });
         }
 
+        [DepartmentFilter]
         public ActionResult GetPendingRequisitions()
         {
             long deptId = 1;
@@ -100,6 +106,7 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
+        [DepartmentFilter]
         public ActionResult GetRequisitionDetails(long reqId,string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -110,6 +117,8 @@ namespace SSISTeam9.Controllers
             ViewData["reqId"] = reqId;
             return View();
         }
+
+        [DepartmentFilter]
         public ActionResult ViewPastRequisitions()
         {
             long deptId = 1;
@@ -117,6 +126,8 @@ namespace SSISTeam9.Controllers
             ViewData["pastRequisitions"] = requisitions;
             return View();
         }
+
+        [DepartmentFilter]
         public ActionResult ViewPastRequisitionDetails(long reqId)
         {
             List<RequisitionDetails> requisitionDetails = RequisitionService.DisplayRequisitionDetailsByReqId(reqId);
@@ -124,12 +135,15 @@ namespace SSISTeam9.Controllers
             ViewData["reqId"] = reqId;
             return View();
         }
+
+        [DepartmentFilter]
         public ActionResult ProcessRequisition(long reqId, string status)
         {
             long currentHead = 2;
             RequisitionService.ProcessRequisition(reqId, status, currentHead);
             return RedirectToAction("GetPendingRequisitions");
         }
+
         [StoreAuthorisationFilter]
         public ActionResult ViewAllRequisitionsByStatus(string status,string sessionId)
         {
@@ -146,10 +160,6 @@ namespace SSISTeam9.Controllers
             ViewData["status"] = status;
             ViewData["sessionId"] = sessionId;
             return View();
-            
         }
-
-
-        
     }
 }

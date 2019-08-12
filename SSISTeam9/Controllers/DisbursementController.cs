@@ -145,11 +145,12 @@ namespace SSISTeam9.Controllers
             return Json(Url.Action("ViewAllDisbursements", "Disbursement", new {collectionPt = collectionPt, sessionId= sessionId }));
         }
 
-        public ActionResult RepDisbursementList(long deptId)
+        public ActionResult RepDisbursementList(string sessionId)
         {
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             DisbursementList disbursementList = new DisbursementList();
             List<DisbursementListDetails> disDetailList = new List<DisbursementListDetails>();
-            disbursementList = DisbursementListService.GetDisbursementListByDeptId(deptId);
+            disbursementList = DisbursementListService.GetDisbursementListByDeptId(emp.DeptId);
             if (disbursementList.ListId != 0)
             {
                 disDetailList = DisbursementListService.ViewDisbursementDetails(disbursementList.ListId);
@@ -158,16 +159,18 @@ namespace SSISTeam9.Controllers
             ViewData["disbursement"] = disbursementList;
             ViewData["disDetailList"] = disDetailList;
             ViewData["collectionPoints"] = collectionPoints;
+            ViewData["sessionId"] = sessionId;
+            ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
             return View();
         }
 
-        public ActionResult ChangeCollectionPoint(long deptId, DisbursementList disbursement,FormCollection frm)
+        public ActionResult ChangeCollectionPoint(string sessionId, DisbursementList disbursement,FormCollection frm)
         {
             CollectionPoint c = new CollectionPoint();
             c.PlacedId = long.Parse(frm["collect"].ToString());
             disbursement.CollectionPoint = c;
             DisbursementListService.ChangeCollectionPoint(disbursement);
-            return RedirectToAction("RepDisbursementList",new { deptId = deptId});
+            return RedirectToAction("RepDisbursementList",new { sessionId = sessionId});
         }
 
     public class PerItem

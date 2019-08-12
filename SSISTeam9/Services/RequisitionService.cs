@@ -78,7 +78,7 @@ namespace SSISTeam9.Services
             return carts;
         }
 
-        public static void ReorderCart(int reqId, int empId)
+        public static void ReorderCart(int reqId, long empId)
         {
             List<RequisitionDetails> reqDetails = new List<RequisitionDetails>();
             reqDetails = RequisitionDetailsDAO.GetRequisitionDetailsByReqId(reqId);
@@ -91,12 +91,12 @@ namespace SSISTeam9.Services
             }
         }
 
-        public static List<Requisition> GetRequisitionByEmpId(int empId)
+        public static List<Requisition> GetRequisitionByEmpId(long empId)
         {
             return RequisitionDAO.GetRequisitionByEmpId(empId);
         }
 
-        public static List<Requisition> GetRequisitionByDeptId(int deptId)
+        public static List<Requisition> GetRequisitionByDeptId(long deptId)
         {
             return RequisitionDAO.GetRequisitionByDeptId(deptId);
         }

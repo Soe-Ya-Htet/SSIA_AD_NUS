@@ -81,7 +81,7 @@ namespace SSISTeam9.DAO
 
         }
 
-        public static List<Requisition> GetRequisitionByDeptId(int deptId)
+        public static List<Requisition> GetRequisitionByDeptId(long deptId)
         {
             List<Requisition> requisitions = new List<Requisition>();
 
@@ -133,7 +133,7 @@ namespace SSISTeam9.DAO
             return reqIds;
         }
 
-        public static List<Requisition> GetRequisitionByEmpId(int empId)
+        public static List<Requisition> GetRequisitionByEmpId(long empId)
         {
             List<Requisition> requisitions = new List<Requisition>();
 

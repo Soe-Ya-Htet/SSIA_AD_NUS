@@ -19,31 +19,39 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult NewRequisition()
+        public ActionResult NewRequisition(string sessionId)
         {
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             List<Inventory> itemList = RequisitionService.GetAllInventory();
+            ViewData["emp"] = emp;
+            ViewData["sessionId"] = sessionId;
             ViewData["itemList"] = itemList;
+            ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
 
             return View(itemList);
         }
 
-        public ActionResult AddtoCart(int itemId)
+        public ActionResult AddtoCart(int itemId, string sessionId)
         {
-            int empId = 1;
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             int quantity = 1;
-            RequisitionService.SaveToCart(itemId, empId, quantity);
-            return Redirect(Request.UrlReferrer.ToString());
+            RequisitionService.SaveToCart(itemId, emp.EmpId, quantity);
+            return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionId });
         }
 
-        public ActionResult RequisitionList(long empId)
+        public ActionResult RequisitionList(string sessionId)
         {
-            List<Cart> empCarts =  RequisitionService.GetCartsByEmpId(empId);
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
+            List<Cart> empCarts =  RequisitionService.GetCartsByEmpId(emp.EmpId);
+            ViewData["sessionId"] = sessionId;
+            ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
             return View(empCarts);
         }
 
-        public ActionResult CreateRequisition(int empId)
+        public ActionResult CreateRequisition(string sessionId)
         {
-            List<Cart> empCarts = RequisitionService.GetCartsByEmpId((long)empId);
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
+            List<Cart> empCarts = RequisitionService.GetCartsByEmpId(emp.EmpId);
             List<Cart> cartsToRequest = new List<Cart>();
             foreach (string key in Request.Form.AllKeys)
             {
@@ -55,27 +63,33 @@ namespace SSISTeam9.Controllers
                 cartsToRequest.Add(cart);
             }
 
-            //long empId = 1;
-            RequisitionService.CreateRequisition(cartsToRequest, empId);
-            return RedirectToAction("NewRequisition","Requisition");
+            RequisitionService.CreateRequisition(cartsToRequest, emp.EmpId);
+            return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionId });
         }
 
-        public ActionResult MyRequisition(int empId)
+        public ActionResult MyRequisition(string sessionId)
         {
-            return View(RequisitionService.GetRequisitionByEmpId(empId));
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
+            ViewData["sessionId"] = sessionId;
+            ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
+            return View(RequisitionService.GetRequisitionByEmpId(emp.EmpId));
         }
         
-        public ActionResult DeptRequisition(int deptId)
+        public ActionResult DeptRequisition(string sessionId)
         {
-            return View(RequisitionService.GetRequisitionByDeptId(deptId));
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
+            ViewData["sessionId"] = sessionId;
+            ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
+            return View(RequisitionService.GetRequisitionByDeptId(emp.DeptId));
         }
 
-        public ActionResult Reorder(int reqId,int empId)
+        public ActionResult Reorder(int reqId,string sessionId)
         {
-
-            RequisitionService.ReorderCart(reqId, empId);
-
-            return RedirectToAction("RequisitionList", "Requisition", new { empId });
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
+            RequisitionService.ReorderCart(reqId, emp.EmpId);
+            ViewData["sessionId"] = sessionId;
+            ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
+            return RedirectToAction("RequisitionList", "Requisition", new { sessionId = sessionId });
         }
 
         public ActionResult GetPendingRequisitions()
@@ -86,9 +100,12 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        public ActionResult GetRequisitionDetails(long reqId)
+        public ActionResult GetRequisitionDetails(long reqId,string sessionId)
         {
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             List<RequisitionDetails> requisitionDetails = RequisitionService.DisplayRequisitionDetailsByReqId(reqId);
+            ViewData["sessionId"] = sessionId;
+            ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
             ViewData["requisitionDetails"] = requisitionDetails;
             ViewData["reqId"] = reqId;
             return View();

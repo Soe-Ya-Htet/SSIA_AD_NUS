@@ -2,33 +2,39 @@
 
 @{
     ViewBag.Title = "DeptRequisition";
+    string sessionId = (string)ViewData["sessionId"];
+    bool isRep = (bool)ViewData["isRep"];
 }
 
 <link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
-<header>
+<header style="padding-bottom: 30px;">
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark fixed-top">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    @Html.ActionLink("New Requisition", "NewRequisition", "Requisition", new { @style = "display:block;padding:.5rem 1rem" })
+                    @Html.ActionLink("New Requisition", "NewRequisition", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
                 </li>
                 <li class="nav-item active">
-                    @Html.ActionLink("Requisition List", "RequisitionList", "Requisition", new { empId = 1 }, new { @class = "nav-link" })
+                    @Html.ActionLink("Requisition List", "RequisitionList", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
                 </li>
                 <li class="nav-item active">
-                    @Html.ActionLink("My Requisition", "MyRequisition", "Requisition", new { empId = 1 }, new { @class = "nav-link" })
+                    @Html.ActionLink("My Requisition", "MyRequisition", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
                 </li>
                 <li class="nav-item active">
-                    @Html.ActionLink("Department Requisition", "DeptRequisition", "Requisition", new { deptId = 1 }, new { @class = "nav-link" })
+                    @Html.ActionLink("Department Requisition", "DeptRequisition", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
                 </li>
+                @if (isRep)
+                {
+                    <li class="nav-item active">
+                        @Html.ActionLink("Disbursement List", "RepDisbursementList", "Disbursement", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                }
             </ul>
             <ul class="navbar-nav mt-2 mt-md-0">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#"><h6>Logout</h6></a>
+                    @Html.ActionLink("Logout", "Logout", "Home", new { sessionId = sessionId }, new { @class = "nav-link" })
                 </li>
             </ul>
         </div>
@@ -42,6 +48,8 @@
     }
     else
     {
+        <h2>Department Requisitions</h2>
+        <hr />
         <table class="table">
             <tr>
                 <th>
@@ -69,7 +77,7 @@
             {
                 <tr>
                     <td>
-                        @Html.ActionLink(req.ReqId.ToString(), "GetRequisitionDetails", new { reqId = req.ReqId })
+                        @Html.ActionLink(req.ReqId.ToString(), "GetRequisitionDetails", new { reqId = req.ReqId, sessionId = sessionId })
                     </td>
                     <td>
                         @Html.DisplayFor(modelreq => req.ReqCode)

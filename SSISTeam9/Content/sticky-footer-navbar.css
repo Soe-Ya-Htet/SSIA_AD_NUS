@@ -23,3 +23,8 @@ code {
   background-color: #237a20;
   background-image: none;
 }
+
+a {
+    color: #000;
+    font-size: 13px;
+}

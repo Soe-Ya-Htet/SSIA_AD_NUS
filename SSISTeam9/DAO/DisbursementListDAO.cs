@@ -92,7 +92,7 @@ namespace SSISTeam9.DAO
                 conn.Open();
 
                 string q = @"SELECT d.*,c.name,c.placeId from DisbursementList d,CollectionPoint c WHERE "+
-                            "d.deptId = @deptId and d.acknowledgedBy = 0 and d.collectionPointId = c.placeId";
+                            "d.deptId = @deptId and d.acknowledgedBy IS NULL and d.collectionPointId = c.placeId";
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.Parameters.AddWithValue("@deptId", deptId);
                 SqlDataReader reader = cmd.ExecuteReader();

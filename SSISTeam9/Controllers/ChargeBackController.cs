@@ -5,12 +5,14 @@ using System.Web;
 using System.Web.Mvc;
 using SSISTeam9.Models;
 using SSISTeam9.Services;
+using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
     public class ChargeBackController : Controller
     {
-        public ActionResult Select()
+        [StoreAuthorisationFilter]
+        public ActionResult Select(string sessionId)
         {
             List<string> months = new List<string>
             {
@@ -34,10 +36,11 @@ namespace SSISTeam9.Controllers
             ViewData["mode"] = mode;
             ChargeBack chargeback = (ChargeBack)TempData["chargeback"];
             ViewData["chargeback"] = chargeback;
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 
-        public ActionResult Generate(int mode, ChargeBack chargeBack)
+        public ActionResult Generate(int mode, ChargeBack chargeBack, string sessionId)
         {
 
             if (mode == 1)
@@ -46,6 +49,7 @@ namespace SSISTeam9.Controllers
                 TempData["chargeBacks"] = chargeBacks;
                 TempData["mode"] = mode;
                 TempData["chargeback"] = chargeBack;
+                ViewData["sessionId"] = sessionId;
             }
             if(mode == 2)
             {
@@ -54,9 +58,10 @@ namespace SSISTeam9.Controllers
                 TempData["chargeBacks"] = chargeBacks;
                 TempData["mode"] = mode;
                 TempData["chargeback"] = chargeBack;
+                ViewData["sessionId"] = sessionId;
             }
         
-            return RedirectToAction("Select");
+            return RedirectToAction("Select", new { sessionid = sessionId });
         }
 
 

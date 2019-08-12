@@ -20,7 +20,7 @@ namespace SSISTeam9
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}",
-                defaults: new { controller = "Requisition", action = "NewRequisition" }
+                defaults: new { controller = "Home", action = "Login" }
             );
         }
     }

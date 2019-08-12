@@ -646,10 +646,12 @@
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\IEmailService.cs" />
+    <Compile Include="Services\IRestService.cs" />
     <Compile Include="Services\PriceListService.cs" />
     <Compile Include="Services\PurchaseOrderService.cs" />
     <Compile Include="Services\RepresentativeService.cs" />
     <Compile Include="Services\RequisitionService.cs" />
+    <Compile Include="Services\RestService.cs" />
     <Compile Include="Services\RetrievalFormService.cs" />
     <Compile Include="Services\StockCardService.cs" />
     <Compile Include="Services\StockService.cs" />

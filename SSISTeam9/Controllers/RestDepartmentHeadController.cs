@@ -1,6 +1,7 @@
 ﻿using SSISTeam9.Filters;
 using SSISTeam9.Models;
 using SSISTeam9.Services;
+using SSISTeam9.Utility;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -14,8 +15,8 @@ namespace SSISTeam9.Controllers
     [RoutePrefix("rest/dept_head")]
     public class RestDepartmentHeadController : Controller
     {
-        private readonly int deptId = 1;
-        private readonly int headId = 2;
+        //private readonly int deptId = 1;
+        //private readonly int headId = 2;
 
         private readonly IEmailService emailService;
 
@@ -25,16 +26,22 @@ namespace SSISTeam9.Controllers
         }
 
         [Route("employees")]
-        public JsonResult Index()
+        public JsonResult GetEmployees()
         {
             //Task.Run(() => emailService.SendEmail(""));
 
-            List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(deptId);
+            Dictionary<string, List<Employee>> repDict = new Dictionary<string, List<Employee>>();
 
-            Dictionary<string, List<Employee>> repDict = new Dictionary<string, List<Employee>>
+            Employee user = AuthUtil.GetCurrentLoggedUser();
+            if(user == null)
             {
-                { "repList", employees }
-            };
+                repDict.Add("repList", new List<Employee>());
+            }
+            else
+            {
+                List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(user.EmpId);
+                repDict.Add("repList", employees);
+            }
 
             return Json(repDict, JsonRequestBehavior.AllowGet);
         }
@@ -42,12 +49,19 @@ namespace SSISTeam9.Controllers
         [Route("pending_orders")]
         public JsonResult GetAllPendingOrders()
         {
-            //List<Requisition> requisitions = RequisitionService.DisplayPendingRequisitions(deptId);
-            List<Requisition> requisitions = GetAllPendingOrderReqs(deptId);
-            Dictionary<string, List<Requisition>> reqOrderDict = new Dictionary<string, List<Requisition>>
+            Dictionary<string, List<Requisition>> reqOrderDict = new Dictionary<string, List<Requisition>>();
+
+            Employee user = AuthUtil.GetCurrentLoggedUser();
+            if (user == null)
             {
-                { "reqList", requisitions }
-            };
+                reqOrderDict.Add("reqList", new List<Requisition>());
+            }
+            else
+            {
+                List<Requisition> requisitions = GetAllPendingOrderReqs((int)user.EmpId);
+                reqOrderDict.Add("reqList", requisitions);
+            }
+
             return Json(reqOrderDict, JsonRequestBehavior.AllowGet);
         }
 
@@ -66,24 +80,38 @@ namespace SSISTeam9.Controllers
         public JsonResult GetAllRepresentatives()
         {
 
-            long currentRepId = DepartmentService.GetCurrentRep(deptId);
-            List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(deptId);
-            Employee emp = employees.Find(e => e.EmpId == currentRepId);
+            Dictionary<string, object> repDict = new Dictionary<string, object>();
 
-            Dictionary<string, object> repDict = new Dictionary<string, object>
+            Employee user = AuthUtil.GetCurrentLoggedUser();
+            if(user == null)
             {
-                { "repList", employees },
-                { "curRep", emp }
-            };
+                repDict.Add("repList", new List<Employee>());
+                repDict.Add("curRep", new Employee());
+            }
+            else
+            {
+                long currentRepId = DepartmentService.GetCurrentRep(user.EmpId);
+                List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(user.EmpId);
+                Employee emp = employees.Find(e => e.EmpId == currentRepId);
+                repDict.Add("repList", employees);
+                repDict.Add("curRep", emp);
+            }
+
             return Json(repDict, JsonRequestBehavior.AllowGet);
         }
 
         [Route("representative/change/{id:long}")]
         public JsonResult ChangeRepresentative(long id)
         {
-            long currentRep = DepartmentService.GetCurrentRep(deptId);
+            Employee user = AuthUtil.GetCurrentLoggedUser();
+            if(user == null)
+            {
+                return Json("Failed", JsonRequestBehavior.AllowGet);
+            }
+
+            long currentRep = DepartmentService.GetCurrentRep(user.EmpId);
             long newRep = id;
-            RepresentativeService.UpdateEmployeeRole(newRep, currentRep, deptId);
+            RepresentativeService.UpdateEmployeeRole(newRep, currentRep, user.EmpId);
 
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
@@ -91,6 +119,14 @@ namespace SSISTeam9.Controllers
         [Route("pending_order/approve/{reqId:int}")]
         public JsonResult ApproveOrder(int reqId)
         {
+            Employee user = AuthUtil.GetCurrentLoggedUser();
+            if(user == null)
+            {
+                return Json("Failed", JsonRequestBehavior.AllowGet);
+            }
+
+            long headId = DepartmentService.GetCurrentHead(user.EmpId);
+
             RequisitionService.ProcessRequisition(reqId, "Approved", headId);
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
@@ -98,6 +134,14 @@ namespace SSISTeam9.Controllers
         [Route("pending_order/reject/{reqId:int}")]
         public JsonResult RejectOrder(int reqId)
         {
+            Employee user = AuthUtil.GetCurrentLoggedUser();
+            if (user == null)
+            {
+                return Json("Failed", JsonRequestBehavior.AllowGet);
+            }
+
+            long headId = DepartmentService.GetCurrentHead(user.EmpId);
+
             RequisitionService.ProcessRequisition(reqId, "Rejected", headId);
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
@@ -105,12 +149,19 @@ namespace SSISTeam9.Controllers
         [Route("past_orders")]
         public JsonResult GetAllPastOrders()
         {
-            //List<Requisition> reqs = RequisitionService.GetRequisitionByDeptId(deptId);
-            List<Requisition> reqs = GetAllPastOrderReqs(deptId);
-            Dictionary<string, List<Requisition>> reqDict = new Dictionary<string, List<Requisition>>
+            Dictionary<string, List<Requisition>> reqDict = new Dictionary<string, List<Requisition>>();
+
+            Employee user = AuthUtil.GetCurrentLoggedUser();
+            if(user == null)
             {
-                { "reqList", reqs }
-            };
+                reqDict.Add("reqList", new List<Requisition>());
+            }
+            else
+            {
+                List<Requisition> reqs = GetAllPastOrderReqs((int)user.EmpId);
+                reqDict.Add("reqList", reqs);
+            }
+
             return Json(reqDict, JsonRequestBehavior.AllowGet);
         }
 
@@ -118,10 +169,19 @@ namespace SSISTeam9.Controllers
         [Route("auth/delegate")]
         public JsonResult DelegateAuthority(Delegate delegat)
         {
+            Employee user = AuthUtil.GetCurrentLoggedUser();
+            if (user == null)
+            {
+                return Json("Failed", JsonRequestBehavior.AllowGet);
+            }
+
             delegat.Department = new Department
             {
-                DeptId = deptId
+                DeptId = user.EmpId
             };
+
+            long headId = DepartmentService.GetCurrentHead(user.EmpId);
+
             DelegateService.AddNewDelegate(delegat, headId);
 
             return Json("Success", JsonRequestBehavior.AllowGet);
@@ -131,7 +191,14 @@ namespace SSISTeam9.Controllers
         public JsonResult DelegateAuthorityInfo()
         {
 
-            Delegate del = GetDelegateInfoByDeptId(deptId);
+            Employee user = AuthUtil.GetCurrentLoggedUser();
+
+            if (user == null)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+
+            Delegate del = GetDelegateInfoByDeptId((int)user.EmpId);
 
             return Json(del, JsonRequestBehavior.AllowGet);
         }

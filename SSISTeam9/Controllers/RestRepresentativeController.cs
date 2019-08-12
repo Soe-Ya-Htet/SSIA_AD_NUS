@@ -1,6 +1,7 @@
 ﻿using SSISTeam9.DAO;
 using SSISTeam9.Filters;
 using SSISTeam9.Models;
+using SSISTeam9.Utility;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -14,25 +15,37 @@ namespace SSISTeam9.Controllers
     [RoutePrefix("rest/representative")]
     public class RestRepresentativeController : Controller
     {
-        private readonly int repId = 1;
-        private readonly int deptId = 1;
+        //private readonly int repId = 1;
+        //private readonly int deptId = 1;
 
         [Route("disbursement/acknowledge/{id:long}")]
         public ActionResult Acknowledge(long id)
         {
-            AcknowledgeDisbursement(id, repId);
+            Employee emp = AuthUtil.GetCurrentLoggedUser();
+            if(emp == null)
+            {
+                return Json("Failed", JsonRequestBehavior.AllowGet);
+            }
+
+            AcknowledgeDisbursement(id, emp.EmpId);
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
         [Route("disbursements/pending")]
         public ActionResult GetAllPendingDisbursements()
         {
-            List<DisbursementList> disbursements = GetAllPendingDisbursementList(deptId);
+            Dictionary<string, List<DisbursementList>> disDict = new Dictionary<string, List<DisbursementList>>();
 
-            Dictionary<string, List<DisbursementList>> disDict = new Dictionary<string, List<DisbursementList>>
+            Employee emp = AuthUtil.GetCurrentLoggedUser();
+            if (emp == null)
             {
-                { "disbursementList", disbursements }
-            };
+                disDict.Add("disbursementList", new List<DisbursementList>());
+            }
+            else
+            {
+                List<DisbursementList> disbursements = GetAllPendingDisbursementList(emp.DeptId);
+                disDict.Add("disbursementList", disbursements);
+            }
 
             return Json(disDict, JsonRequestBehavior.AllowGet);
         }
@@ -40,12 +53,18 @@ namespace SSISTeam9.Controllers
         [Route("disbursements/past")]
         public ActionResult GetAllPastDisbursements()
         {
-            List<DisbursementList> disbursements = GetAllPastDisbursementList(deptId, repId);
+            Dictionary<string, List<DisbursementList>> disDict = new Dictionary<string, List<DisbursementList>>();
 
-            Dictionary<string, List<DisbursementList>> disDict = new Dictionary<string, List<DisbursementList>>
+            Employee emp = AuthUtil.GetCurrentLoggedUser();
+            if (emp == null)
             {
-                { "disbursementList", disbursements }
-            };
+                disDict.Add("disbursementList", new List<DisbursementList>());
+            }
+            else
+            {
+                List<DisbursementList> disbursements = GetAllPastDisbursementList(emp.DeptId, emp.EmpId);
+                disDict.Add("disbursementList", disbursements);
+            }
 
             return Json(disDict, JsonRequestBehavior.AllowGet);
         }

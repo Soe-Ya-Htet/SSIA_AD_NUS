@@ -5,11 +5,13 @@
     PriceList pricelist = (PriceList)ViewData["pricelist"];
     List<string> supplierNames = (List<string>)ViewData["supplierNames"];
     long itemId = (long)ViewData["itemId"];
+    string sessionId = (string)ViewData["sessionId"];
 }
+
 
 <h2>Update Price List</h2>
 <div>
-    @using (Html.BeginForm("UpdatePriceList", "Catalogue", new { ItemId = itemId }, FormMethod.Post))
+    @using (Html.BeginForm("UpdatePriceList", "Catalogue", new { ItemId = itemId, sessionId = sessionId }, FormMethod.Post))
     {
         <table>
             <tr>

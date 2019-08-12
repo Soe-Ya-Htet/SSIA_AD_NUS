@@ -55,7 +55,13 @@ namespace SSISTeam9.Controllers
                 ViewData["sessionId"] = sessionid;
                 return View("~/Views/StoreClerk/Home.cshtml");
             }
-            else if (empRole == "STORE_SUPERVISOR" || empRole == "STORE_MANAGER")
+            else if (empRole == "STORE_SUPERVISOR")
+            {
+                ViewData["userName"] = userName;
+                ViewData["sessionId"] = sessionid;
+                return View("~/Views/StoreMS/Home.cshtml");
+            }
+            else if (empRole == "STORE_MANAGER")
             {
                 ViewData["userName"] = userName;
                 ViewData["sessionId"] = sessionid;

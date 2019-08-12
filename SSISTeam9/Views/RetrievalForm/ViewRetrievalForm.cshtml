@@ -9,7 +9,7 @@
     var sessionId = (string)ViewData["sessionId"];
 
 }
-<link href="~/Views/Shared/Tables.css" rel="stylesheet" />
+<link href="../Shared/Tables.css" rel="stylesheet" type="text/css" />
 
 @if (retForms.Count != 0 && alrAssigned == "NO")
 {
@@ -18,7 +18,7 @@
             <th rowspan="2">Bin #</th>
             <th rowspan="2">Stationary Description</th>
             <th colspan="2">Total Quantity</th>
-            <th colspan="2">BreakDown By Department</th>
+            <th colspan="3">BreakDown By Department</th>
 
 
         </tr>
@@ -52,7 +52,7 @@
         }
     </table>
     <input type="date" name="date" value="" id="collectionDate" />
-    <input type="button" value="Submit" onclick="submitData()" />
+    <input class="btn-success" type="button" value="Submit" onclick="submitData()" />
 }
 else if(retForms.Count != 0 && alrAssigned == "YES")
 {

@@ -12,9 +12,10 @@ using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
-    [StoreAuthorisationFilter]
+    [CatalogueFilter]
     public class CatalogueController : Controller
     {
+        //For store employee to view and add catalogue
         public ActionResult All(string sessionId)
         {
             List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
@@ -23,6 +24,17 @@ namespace SSISTeam9.Controllers
             ViewData["sessionId"] = sessionId;
             return View();
         }
+
+        //For normal employee to view catalogue
+        public ActionResult AllForViewOnly(string sessionId)
+        {
+            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
+
+            ViewData["catalogues"] = catalogues;
+            ViewData["sessionId"] = sessionId;
+            return View();
+        }
+
 
         public ActionResult Delete(bool confirm, long itemId, string sessionId)
         {
@@ -103,6 +115,7 @@ namespace SSISTeam9.Controllers
             }           
         }
 
+        //For store employee to view catalogue details and update & delete catalogue
         public ActionResult Details(long itemId, string sessionId)
         {
             ViewData["catalogue"] = CatalogueService.GetCatalogueById(itemId);
@@ -110,6 +123,7 @@ namespace SSISTeam9.Controllers
             ViewData["sessionId"] = sessionId;
             return View();
         }
+
 
         public ActionResult Update(long itemId, string sessionId)
         {

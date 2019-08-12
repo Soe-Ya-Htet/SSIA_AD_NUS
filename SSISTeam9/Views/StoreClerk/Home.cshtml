@@ -5,6 +5,51 @@
     string sessionId = (string)ViewData["sessionId"];
 }
 
+<!-- Fixed navbar -->
+<link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
+<header style="padding-bottom: 30px;">
+    <nav class="strnavbar navbar navbar-expand-md navbar-dark fixed-top">
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    @Html.ActionLink("Requisitions", "ViewAllRequisitionsByStatus", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Inventory", "", "", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Stock", "All", "Stock", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Purchase Orders", "All", "PurchaseOrder", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Analytics", "Home", "Analytics", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Catalogue", "All", "Catalogue", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Suppliers", "All", "Supplier", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Departments", "All", "Department", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Charge Back", "", "", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+            </ul>
+            <ul class="navbar-nav mt-2 mt-md-0">
+
+                <li class="nav-item active">
+                    @Html.ActionLink("Logout", "Logout", "Home", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
 <h2>Home</h2>
 
 <a href="~/Requisition/ViewAllRequisitionsByStatus?sessionId=@sessionId">Requisitions</a>

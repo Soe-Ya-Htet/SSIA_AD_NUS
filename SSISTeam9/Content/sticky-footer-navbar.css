@@ -19,9 +19,14 @@ code {
   font-size: 80%;
 }
 
-.navbar {
+.dptnavbar {
   background-color: #237a20;
   background-image: none;
+}
+
+.strnavbar {
+    background-color: #1e1f1e;
+    background-image: none;
 }
 
 .nav-link {

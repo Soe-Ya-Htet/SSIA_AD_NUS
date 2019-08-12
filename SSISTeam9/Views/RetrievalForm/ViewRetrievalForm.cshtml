@@ -9,11 +9,11 @@
     var sessionId = (string)ViewData["sessionId"];
 
 }
-<link href="../Shared/Tables.css" rel="stylesheet" type="text/css" />
+
 
 @if (retForms.Count != 0 && alrAssigned == "NO")
 {
-    <table>
+    <table class="table table-bordered">
         <tr>
             <th rowspan="2">Bin #</th>
             <th rowspan="2">Stationary Description</th>
@@ -51,16 +51,19 @@
 
         }
     </table>
-    <input type="date" name="date" value="" id="collectionDate" />
-    <input class="btn-success" type="button" value="Submit" onclick="submitData()" />
+    <div class="row justify-content-end">
+        <input type="date" name="date" id="collectionDate" required />
+        <input class="btn-success rounded" type="button" value="Submit" onclick="submitData()" />
+    </div>
+    
 }
 else if(retForms.Count != 0 && alrAssigned == "YES")
 {
-    <div>Items already retrieved</div>
+    <div style="text-align:center">Items already retrieved</div>
 }
 else
 {
-    <div>No items to retrieve</div>
+    <div style="text-align:center">No items to retrieve</div>
 }
 
 

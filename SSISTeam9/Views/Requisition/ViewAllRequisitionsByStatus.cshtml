@@ -23,68 +23,65 @@
 </script>
 
 
-<select onchange="location = this.options[this.selectedIndex].value;">
-    <option>Select</option>
-    <option value="/Requisition/ViewAllRequisitionsByStatus?status=Outstanding&sessionId=@sessionId">Outstanding</option>
-    <option value="/Requisition/ViewAllRequisitionsByStatus?status=Completed&sessionId=@sessionId">Completed</option>
-</select>
 
-@if (status != "Completed")
-{
-    <h2>Outstanding Requisitions</h2>
-}
-else
-{
-    <h2>Completed Requisitions</h2>
-}
-
-    <button type="submit" onclick="location.href='@Url.Action("ViewRetrievalForm", "RetrievalForm", new { sessionId = sessionId })'">View Retrieval Form</button>
-
-
-
+    @if (status != "Completed")
+    {
+        <h2>Outstanding Requisitions</h2>
+    }
+    else
+    {
+        <h2 class="row">Completed Requisitions</h2>
+    }
+    <div class="row justify-content-between">
+        <select onchange="location = this.options[this.selectedIndex].value;">
+            <option>Select</option>
+            <option value="/Requisition/ViewAllRequisitionsByStatus?status=Outstanding&sessionId=@sessionId">Outstanding</option>
+            <option value="/Requisition/ViewAllRequisitionsByStatus?status=Completed&sessionId=@sessionId">Completed</option>
+        </select>
+        <button class="rounded" type="submit" onclick="location.href='@Url.Action("ViewRetrievalForm", "RetrievalForm", new { sessionId = sessionId })'">View Retrieval Form</button>
+    </div>
 
 
-
-@if (requisitions != null)
-{
-    <form action="/RetrievalForm/CreateRetrievalForm?sessionId=@sessionId" method="post">
-        @if (status != "Completed" && alrAssigned == "NO")
-        {
-            <input type="submit" value="Assign to Collection" />
-        }
-        <table>
-            <tr>
-                <th>
-                    @if (status != "Completed" && alrAssigned == "NO")
-                    {<input type="checkbox" onClick="toggle(this)" />
-                    }
-                </th>
-                <th>Requisition Id</th>
-                <th>Department</th>
-                <th>Date of Request</th>
-            </tr>
-            @foreach (var req in requisitions)
+    @if (requisitions != null)
+    {
+        <form class="row" action="/RetrievalForm/CreateRetrievalForm?sessionId=@sessionId" method="post">
+            @if (status != "Completed" && alrAssigned == "NO")
             {
-                <tr>
-
-                    <td>
-                        @if (req.Status != "Completed" && alrAssigned == "NO")
-                        {
-                            <input type="checkbox" name="requisition" value="@req.ReqId">
-                        }
-                    </td>
-                    <td><a href="/Requisition/GetRequisitionDetails?reqId=@req.ReqId">@req.ReqCode</a></td>
-                    <td>@req.Employee.Department.DeptCode</td>
-                    <td>@req.DateOfRequest</td>
-                </tr>
+                <input type="submit" value="Assign to Collection" />
             }
-        </table>
-    </form>
-}
-else
-{
-    <div>No Requisitions to Display</div>
-}
+            <table class="table table-bordered">
+                <tr>
+                    <th>
+                        @if (status != "Completed" && alrAssigned == "NO")
+                        {<input type="checkbox" onClick="toggle(this)" />
+                        }
+                    </th>
+                    <th>Requisition Id</th>
+                    <th>Department</th>
+                    <th>Date of Request</th>
+                </tr>
+                @foreach (var req in requisitions)
+                {
+                    <tr>
+
+                        <td>
+                            @if (req.Status != "Completed" && alrAssigned == "NO")
+                            {
+                                <input type="checkbox" name="requisition" value="@req.ReqId">
+                            }
+                        </td>
+                        <td><a href="/Requisition/GetRequisitionDetails?reqId=@req.ReqId">@req.ReqCode</a></td>
+                        <td>@req.Employee.Department.DeptCode</td>
+                        <td>@req.DateOfRequest</td>
+                    </tr>
+                }
+            </table>
+        </form>
+    }
+    else
+    {
+        <div style="text-align:center">No Requisitions to Display</div>
+    }
 
 
 

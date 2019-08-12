@@ -6,7 +6,45 @@
     DisbursementList disbursementList = (DisbursementList)ViewData["disbursement"];
     List<DisbursementListDetails> disDetailList = (List<DisbursementListDetails>)ViewData["disDetailList"];
     List<CollectionPoint> collectionPoints = (List<CollectionPoint>)ViewData["collectionPoints"];
+    string sessionId = (string)ViewData["sessionId"];
+    bool isRep = (bool)ViewData["isRep"];
 }
+
+<!-- Fixed navbar -->
+<link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
+<header style="padding-bottom: 30px;">
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    @Html.ActionLink("New Requisition", "NewRequisition", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Requisition List", "RequisitionList", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("My Requisition", "MyRequisition", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Department Requisition", "DeptRequisition", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                @if (isRep)
+                {
+                    <li class="nav-item active">
+                        @Html.ActionLink("Disbursement List", "RepDisbursementList", "Disbursement", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                }
+            </ul>
+            <ul class="navbar-nav mt-2 mt-md-0">
+                <li class="nav-item active">
+                    @Html.ActionLink("Logout", "Logout", "Home", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
 
 @{
     if (disDetailList.Count == 0)
@@ -74,10 +112,8 @@
         </table>
         <br />
         <h4>Change Collection Point</h4>
-        <form method="post">
-
-        </form>
-        using (Html.BeginForm("ChangeCollectionPoint", "Disbursement", new { deptId = disbursementList.Department.DeptId} ,FormMethod.Post, null))
+        <form method="post"></form>
+        using (Html.BeginForm("ChangeCollectionPoint", "Disbursement", new { sessionId = sessionId }, FormMethod.Post, null))
         {
 
             <div class="form-horizontal">
@@ -85,15 +121,15 @@
                     <div class="col-md-10">
                         @foreach (var point in collectionPoints)
                         {
-                                if (point.PlacedId == disbursementList.CollectionPoint.PlacedId)
-                                {
+                            if (point.PlacedId == disbursementList.CollectionPoint.PlacedId)
+                            {
                                 <input type="radio" name="collect" value="@point.PlacedId" checked /> @point.Name
-                                }
-                                else
-                                {
+                            }
+                            else
+                            {
                                 <input type="radio" name="collect" value="@point.PlacedId" /> @point.Name
-                                }
-                            <br/>
+                            }
+                            <br />
                         }
                     </div>
                 </div>
@@ -101,7 +137,7 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Change" class="btn btn-default" />
-                        @Html.Hidden("listId",disbursementList.ListId)
+                        @Html.Hidden("listId", disbursementList.ListId)
                     </div>
                 </div>
             </div>

@@ -43,8 +43,11 @@ namespace SSISTeam9.Controllers
                 RedirectToAction("Login");
             }
 
-            string empRole = EmployeeService.GetUserBySessionId(sessionid).EmpRole;
-            string userName = EmployeeService.GetUserBySessionId(sessionid).UserName;
+            // for login employee sessin data
+            Employee emp = EmployeeService.GetUserBySessionId(sessionid);
+            string empRole = emp.EmpRole;
+            string userName = emp.UserName;
+            string empDisplayRole = emp.EmpDisplayRole;
 
             if (empRole == "STORE_CLERK")
             {
@@ -64,11 +67,15 @@ namespace SSISTeam9.Controllers
                 ViewData["sessionId"] = sessionid;
                 return View("~/Views/StoreMS/Home.cshtml");
             }
+            else if ((empRole == "EMPLOYEE" || empRole == "REPRESENTATIVE") && (empDisplayRole != "HEAD"))
+            {
+                return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionid});
+            }
             else
             {
                 ViewData["userName"] = userName;
                 ViewData["sessionId"] = sessionid;
-                return null; //For other departments' employees landing page
+                return null; //For departments' head landing page
             }
         }
 

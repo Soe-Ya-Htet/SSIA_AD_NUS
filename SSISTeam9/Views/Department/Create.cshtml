@@ -2,12 +2,13 @@
 
 @{
     List<string> empNames = (List<string>)ViewData["empNames"];
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2>Create New Department</h2>
 
 <div>
-    @using (Html.BeginForm("CreateNew", "Department", FormMethod.Post))
+    @using (Html.BeginForm("CreateNew", "Department", routeValues: new { sessionid = sessionId }, method: FormMethod.Post))
     {
         <table>
             <tr>

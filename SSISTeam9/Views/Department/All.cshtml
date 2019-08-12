@@ -2,6 +2,8 @@
 
 @{
     List<Department> departments = (List<Department>)ViewData["departments"];
+
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2>Department List</h2>
@@ -19,7 +21,7 @@ else
             {
                 <div class="department-list">
                     <p>
-                        Department Code: <a href="/Department/Details?deptId=@d.DeptId">@d.DeptCode</a><br>
+                        Department Code: <a href="/Department/Details?deptId=@d.DeptId&sessionId=@sessionId">@d.DeptCode</a><br>
                         Department Name: @d.DeptName<br>
                         Contact Name: @d.Contact<br>
                         Telephone No.: @d.Telephone<br>
@@ -32,7 +34,7 @@ else
             }
         </div>
         <div>
-            <p align="center"><input type="button" value="Create New Department" onclick="location.href='@Url.Action("Create","Department")'"></p>
+            <p align="center"><input type="button" value="Create New Department" onclick="location.href='@Url.Action("Create","Department", routeValues: new { sessionid = sessionId })'"></p>
         </div>
     </section>
 

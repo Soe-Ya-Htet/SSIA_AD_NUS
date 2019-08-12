@@ -142,17 +142,17 @@ namespace SSISTeam9.Controllers
             //For months with no value, to fill it with 0.
             Dictionary<string, int> monthsAndQuantitiesForChart = AnalyticsService.FillEmptyData(totalQuantitiesByMonthAndYear, months, month, year);
 
-            //Contact Python API to get predictions for next 3 months for only English Dept
+            //Contact Python API to get predictions for next 3 months for only English Dept, Commerce Dept and Computer Science
             string data;
             string[] preds = new string[] { };
-            if (formCollection["department"] == "English Dept")
+            if (formCollection["department"] == "English Dept" || formCollection["department"] == "Commerce Dept" || formCollection["department"] == "Computer Science")
             {
                 data = await AnalyticsService.GetRequest("http://127.0.0.1:5000/" + formCollection["department"]);
                 preds = data.Split(new char[] { ',', '[', ']' }, StringSplitOptions.RemoveEmptyEntries);
             }
 
             //Put predictions in dictionary for displaying
-            if (month == currentMonth && formCollection["department"] == "English Dept")
+            if (month == currentMonth && (formCollection["department"] == "English Dept"|| formCollection["department"] == "Commerce Dept" || formCollection["department"] == "Computer Science"))
             {
                 if (month == 12)
                 {

@@ -14,13 +14,13 @@ namespace SSISTeam9.Services
         {
             List<Inventory> items = StockDAO.GetAllItemsOrdered();
 
-            //Contact Python API to get predicted re-order amount and level for item with code 'P021'
+            //Contact Python API to get predicted re-order amount and level for item with code 'P021' and 'P030'
             string data;
             string[] preds = new string[] { };
 
             foreach (var item in items)
             {
-                if (item.ItemCode == "P021")
+                if (item.ItemCode == "P021" || item.ItemCode == "P030")
                 {
                     data = await AnalyticsService.GetRequest("http://127.0.0.1:5000/reorder/" + item.ItemCode);
                     preds = data.Split(new char[] { ',', '[', ']' }, StringSplitOptions.RemoveEmptyEntries);

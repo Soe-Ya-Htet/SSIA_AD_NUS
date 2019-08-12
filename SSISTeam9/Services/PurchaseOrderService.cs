@@ -103,8 +103,6 @@ namespace SSISTeam9.Services
                     PurchaseOrderDAO.UpdatePurchaseOrderItemQuantity(order.OrderId, long.Parse(itemIds[i]), int.Parse(updatedQuantities[i]));
                 }
             }
-
-            //if no items left, to delete PO.
             return updatedQuantities.Sum(m => int.Parse(m));
         }
 

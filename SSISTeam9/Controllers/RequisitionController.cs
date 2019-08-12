@@ -7,9 +7,9 @@ using System.Web;
 using System.Web.Mvc;
 using SSISTeam9.Filters;
 
-
 namespace SSISTeam9.Controllers
 {
+    [DepartmentFilter]
     public class RequisitionController : Controller
     {
 

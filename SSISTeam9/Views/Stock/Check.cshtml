@@ -81,7 +81,7 @@ else
                         <td>@Html.DisplayFor(x => Model[i].UnitOfMeasure)</td>
                         <td>@Html.DisplayFor(x => Model[i].StockLevel)</td>
                         <td>@Html.TextBoxFor(x => Model[i].ActualStock, new {@Value = Model[i].StockLevel})</td>
-                        <td style="display:none;">
+                        <td >
                             @Html.HiddenFor(x => Model[i].ItemCode)
                             @Html.HiddenFor(x => Model[i].ItemId)
                             @Html.HiddenFor(x => Model[i].StockLevel)

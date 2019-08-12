@@ -18,7 +18,7 @@ Current Representative : @repEmp.EmpName
 
 <form action="~/Representative/ChangeRepresentative" method="post">
     <input type="hidden" value="@sessionId" name="sessionId"/>
-    <table>
+    <table class="table table-bordered">
         <tr>
             <td>
                 <select name="employee" id="empList">
@@ -32,7 +32,7 @@ Current Representative : @repEmp.EmpName
                 </select>
             </td>
             <td>
-                <button type="submit" id="">Change</button>
+                <button class="rounded" type="submit" id="">Change</button>
             </td>
         </tr>
     </table>

@@ -12,7 +12,7 @@
 Requisition ID : @reqId
 @{
     <form method="post">
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <th>Description</th>
                 <th>UnitOfMeasure</th>
@@ -30,9 +30,9 @@ Requisition ID : @reqId
             }
         <tr>
             <td></td>
-            <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@rejStatus&sessionId=@sessionId"><span>Reject</span></button></td>
-            <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@appStatus&sessionId=@sessionId"><span>Approve</span></button></td>
-            <td><button type="submit" id=reqId formaction="/Requisition/Reorder?reqId=@reqId&sessionId=@sessionId"><span>Reorder</span></button></td>
+            <td><button class="rounded" type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@rejStatus&sessionId=@sessionId"><span>Reject</span></button></td>
+            <td><button class="rounded" type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@appStatus&sessionId=@sessionId"><span>Approve</span></button></td>
+            <td><button class="rounded" type="submit" id=reqId formaction="/Requisition/Reorder?reqId=@reqId&sessionId=@sessionId"><span>Reorder</span></button></td>
         </tr>
         </table>
     </form>

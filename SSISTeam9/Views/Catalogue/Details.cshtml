@@ -2,6 +2,8 @@
 
 @using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Catalogue Details";
     Inventory catalogue = (Inventory)ViewData["catalogue"];
     PriceList pricelist = (PriceList)ViewData["pricelist"];
 

@@ -2,6 +2,7 @@
 
 @using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "Closed Purchase Order";
     PurchaseOrder order = (PurchaseOrder)ViewData["order"];
     double total = 0;

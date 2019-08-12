@@ -2,9 +2,10 @@
 
 @using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "Update Supplier Details";
     Supplier supplier = (Supplier)ViewData["supplier"];
-    
+
     string sessionId = (string)ViewData["sessionId"];
 }
 

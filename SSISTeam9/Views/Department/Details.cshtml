@@ -2,6 +2,8 @@
 
 @using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Update Department Details";
     Department department = (Department)ViewData["department"];
     List<string> empNames = (List<string>)ViewData["empNames"];
     string sessionId = (string)ViewData["sessionId"];

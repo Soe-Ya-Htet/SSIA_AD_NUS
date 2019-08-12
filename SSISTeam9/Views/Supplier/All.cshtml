@@ -1,8 +1,9 @@
 ﻿@using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "Supplier List";
     List<Supplier> suppliers = (List<Supplier>)ViewData["suppliers"];
-    
+
     string sessionId = (string)ViewData["sessionId"];
 }
 

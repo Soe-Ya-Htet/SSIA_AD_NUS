@@ -1,6 +1,7 @@
 ﻿@using SSISTeam9.Models;
 @{
-    ViewBag.Title = "Catalogue";
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Catalogue List";
     List<Inventory> catalogues = (List<Inventory>)ViewData["catalogues"];
     string sessionId = (string)ViewData["sessionId"];
 }

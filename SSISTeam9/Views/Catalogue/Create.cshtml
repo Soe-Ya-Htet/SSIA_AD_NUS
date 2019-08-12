@@ -1,6 +1,8 @@
 ﻿@model SSISTeam9.Models.Inventory
 
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Create New Catalogue";
     List<string> unitsOfMeasure = (List<string>)ViewData["unitsOfMeasure"];
     List<string> categories = (List<string>)ViewData["categories"];
     string sessionId = (string)ViewData["sessionId"];

@@ -2,11 +2,12 @@
 
 @using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "Update Purchase Order";
     PurchaseOrder order = (PurchaseOrder)ViewData["order"];
     var counter = 0;
     double total = 0;
-    
+
     string sessionId = (string)ViewData["sessionId"];
 }
 

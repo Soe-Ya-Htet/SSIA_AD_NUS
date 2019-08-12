@@ -7,21 +7,25 @@ using System.Data.SqlClient;
 using SSISTeam9.Models;
 using SSISTeam9.DAO;
 using SSISTeam9.Services;
+using SSISTeam9.Filters;
+
 
 namespace SSISTeam9.Controllers
 {
+    [StoreAuthorisationFilter]
     public class DepartmentController : Controller
     {
 
-        public ActionResult All()
+        public ActionResult All(string sessionId)
         {
             List<Department> departments = DepartmentService.GetAllDepartment();
 
             ViewData["departments"] = departments;
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 
-        public ActionResult Delete(bool confirm, long deptId)
+        public ActionResult Delete(bool confirm, long deptId, string sessionId)
         {
             if (confirm)
             {
@@ -29,18 +33,19 @@ namespace SSISTeam9.Controllers
 
                 List<Department> departments = DepartmentService.GetAllDepartment();
                 ViewData["departments"] = departments;
-                return RedirectToAction("All");
+                return RedirectToAction("All", new { sessionid = sessionId });
             }
             return null;
         }
 
-        public ActionResult Create()
+        public ActionResult Create(string sessionId)
         {
             ViewData["empNames"] = EmployeeDAO.GetAllEmployeeNames();
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 
-        public ActionResult CreateNew(Department department)
+        public ActionResult CreateNew(Department department, string sessionId)
         {
 
             try
@@ -55,17 +60,18 @@ namespace SSISTeam9.Controllers
                 TempData["errorMsg"] = "<script>alert('Department code already exists! Please Verify.');</script>";
                 return RedirectToAction("Create");
             }
-            return RedirectToAction("All");
+            return RedirectToAction("All", new { sessionid = sessionId });
         }
 
-        public ActionResult Details(long deptId)
+        public ActionResult Details(long deptId, string sessionId)
         {
             ViewData["department"] = DepartmentService.GetDepartmentById(deptId);
             ViewData["empNames"] = EmployeeDAO.GetAllEmployeeNames();
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 
-        public ActionResult Update(Department department)
+        public ActionResult Update(Department department, string sessionId)
         {
             
             try
@@ -74,12 +80,12 @@ namespace SSISTeam9.Controllers
 
                 List<Department> departments = DepartmentService.GetAllDepartment();
                 ViewData["departments"] = departments;
-                return RedirectToAction("All");
+                return RedirectToAction("All", new { sessionid = sessionId });
             }
             catch (SqlException)
             {
                 TempData["errorMsg"] = "<script>alert('Department code already exists! Please Verify.');</script>";
-                return RedirectToAction("Details", new { deptId = department.DeptId });
+                return RedirectToAction("Details", new { deptId = department.DeptId, sessionid = sessionId });
             }
         }
     }

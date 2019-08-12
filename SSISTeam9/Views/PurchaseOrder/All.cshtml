@@ -3,13 +3,13 @@
 @using SSISTeam9.Models;
 @{
     Layout = "~/Views/Shared/_Store.cshtml";
-    ViewBag.Title = "View All Purchase Orders";
+    ViewBag.Title = "All Purchase Orders";
     List<PurchaseOrder> orders = (List<PurchaseOrder>)ViewData["orders"];
 
     string sessionId = (string)ViewData["sessionId"];
 }
 
-<h2>Purchase Orders</h2>
+<h3>Purchase Orders</h3>
 
 @if (orders.Count == 0)
 {
@@ -21,7 +21,7 @@ else
     using (Html.BeginForm("Edit", "PurchaseOrder", routeValues: new { sessionid = sessionId }
     , method: FormMethod.Post))
     {
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <th>PO Number</th>
                 <th>Submitted Date</th>

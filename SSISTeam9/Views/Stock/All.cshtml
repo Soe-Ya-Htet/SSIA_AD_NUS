@@ -9,7 +9,7 @@
     string sessionId = (string)ViewData["sessionId"];
 }
 
-<h2>Stock</h2>
+<h3>Stock</h3>
 
 @if (items.Count == 0)
 {
@@ -21,7 +21,7 @@ else
     using (Html.BeginForm("EnterQuantities", "Stock", routeValues: new { sessionid = sessionId }
     , method: FormMethod.Post))
     {
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <th>Check Item to Order</th>
                 <th>Item Code</th>

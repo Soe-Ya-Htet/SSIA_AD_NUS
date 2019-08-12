@@ -12,13 +12,13 @@
     string sessionId = (string)ViewData["sessionId"];
 }
 
-<h2>Purchase Order</h2>
+<h3>Purchase Order</h3>
 
 <div>
     @using (Html.BeginForm("ConfirmClose", "PurchaseOrder", routeValues: new { sessionid = sessionId }
     , method: FormMethod.Post))
     {
-    <table>
+    <table class="table table-bordered">
         <tr>
             <td colspan="3" align="left">Supplier name: @order.Supplier.Name </td>
             <td colspan="2" align="right">PO Number: @order.OrderNumber</td>

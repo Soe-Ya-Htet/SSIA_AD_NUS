@@ -65,6 +65,54 @@ namespace SSISTeam9.Controllers
             {
                 return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionid});
             }
+            else if ((empRole=="HEAD" && empDisplayRole=="HEAD"))
+            {
+                return RedirectToAction("GetPendingRequisitions","Requisition",new { sessionId=sessionid});
+            }
+            else if ((empRole=="EMPLOYEE" && empDisplayRole=="HEAD"))
+            {
+                bool between = DelegateService.CheckDate(emp.DeptId);
+                bool after = DelegateService.AfterDate(emp.DeptId);
+                if (between && !after)
+                {
+                    return RedirectToAction("ViewRemoveDelegate", "Delegate", new { sessionId = sessionid });
+                }
+                else if(!between && !after)
+                {
+                    return RedirectToAction("GetPendingRequisitions", "Requisition", new { sessionId = sessionid });
+                }
+                else if(!between && after)
+                {
+                    DelegateService.DelegateToPreviousHead(emp.DeptId);
+                    return RedirectToAction("GetPendingRequisitions", "Requisition", new { sessionId = sessionid });
+                }
+                else {
+                    return RedirectToAction("GetPendingRequisitions", "Requisition", new { sessionId = sessionid });
+                }
+            }
+            else if((empRole=="HEAD" && empDisplayRole == "EMPLOYEE"))
+            {
+                bool between = DelegateService.CheckDate(emp.DeptId);
+                bool after = DelegateService.AfterDate(emp.DeptId);
+                if (between && !after)
+                {
+                    return RedirectToAction("GetPendingRequisitions", "Requisition", new { sessionId = sessionid });
+                }
+                else if (!between && !after)
+                {
+                    return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionid });
+                }
+                else if (!between && after)
+                {
+                    DelegateService.DelegateToPreviousHead(emp.DeptId);
+                    return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionid });
+                }
+                else
+                {
+                    return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionid });
+                }
+
+            }
             else
             {
                 ViewData["userName"] = userName;

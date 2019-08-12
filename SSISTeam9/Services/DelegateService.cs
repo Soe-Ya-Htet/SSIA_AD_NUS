@@ -22,5 +22,33 @@ namespace SSISTeam9.Services
             EmployeeDAO.ChangeEmployeeRoles(deptId);
             DepartmentDAO.UpdateDepartmentHead(deptId, previousHead);
         }
+
+        public static bool CheckDate(long deptId)
+        {
+            DateTime now = System.DateTime.Now;
+            Models.Delegate d = DelegateDAO.GetDelegateByDept(deptId);
+            if(now>=d.FromDate && now <= d.ToDate)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool AfterDate(long deptId)
+        {
+            DateTime now = System.DateTime.Now;
+            Models.Delegate d = DelegateDAO.GetDelegateByDept(deptId);
+            if (now >= d.ToDate)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

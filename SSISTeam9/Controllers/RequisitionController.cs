@@ -92,11 +92,13 @@ namespace SSISTeam9.Controllers
             return RedirectToAction("RequisitionList", "Requisition", new { sessionId = sessionId });
         }
 
-        public ActionResult GetPendingRequisitions()
+        public ActionResult GetPendingRequisitions(string sessionId)
         {
-            long deptId = 1;
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
+            long deptId = emp.DeptId;
             List<Requisition> requisitions = RequisitionService.DisplayPendingRequisitions(deptId);
             ViewData["requisitionsToProcess"] = requisitions;
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 
@@ -110,24 +112,30 @@ namespace SSISTeam9.Controllers
             ViewData["reqId"] = reqId;
             return View();
         }
-        public ActionResult ViewPastRequisitions()
+        public ActionResult ViewPastRequisitions(string sessionId)
         {
-            long deptId = 1;
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
+            long deptId = emp.DeptId;
             List<Requisition> requisitions = RequisitionService.DisplayPastRequisitions(deptId);
             ViewData["pastRequisitions"] = requisitions;
+            ViewData["sessionId"] = sessionId;
             return View();
         }
-        public ActionResult ViewPastRequisitionDetails(long reqId)
+        public ActionResult ViewPastRequisitionDetails(long reqId,string sessionId)
         {
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             List<RequisitionDetails> requisitionDetails = RequisitionService.DisplayRequisitionDetailsByReqId(reqId);
             ViewData["requisitionDetails"] = requisitionDetails;
+            ViewData["sessionId"] = sessionId;
             ViewData["reqId"] = reqId;
             return View();
         }
-        public ActionResult ProcessRequisition(long reqId, string status)
+        public ActionResult ProcessRequisition(long reqId, string status,string sessionId)
         {
-            long currentHead = 2;
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
+            long currentHead = emp.EmpId;
             RequisitionService.ProcessRequisition(reqId, status, currentHead);
+            ViewData["sessionId"] = sessionId;
             return RedirectToAction("GetPendingRequisitions");
         }
         [StoreAuthorisationFilter]

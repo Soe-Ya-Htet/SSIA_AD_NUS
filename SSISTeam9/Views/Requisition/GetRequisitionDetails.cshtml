@@ -28,12 +28,12 @@ Requisition ID : @reqId
                     <td>@detail.Quantity</td>
                 </tr>
             }
-            <tr>
-                <td></td>
-                <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@appStatus"><span>Approve</span></button></td>
-                <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@rejStatus"><span>Reject</span></button></td>
-                <td><button type="submit" id=reqId formaction="/Requisition/Reorder?reqId=@reqId&sessionId=@sessionId"><span>Reorder</span></button></td>                
-            </tr>
+        <tr>
+            <td></td>
+            <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@rejStatus&sessionId=@sessionId"><span>Reject</span></button></td>
+            <td><button type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@appStatus&sessionId=@sessionId"><span>Approve</span></button></td>
+            <td><button type="submit" id=reqId formaction="/Requisition/Reorder?reqId=@reqId&sessionId=@sessionId"><span>Reorder</span></button></td>
+        </tr>
         </table>
     </form>
 

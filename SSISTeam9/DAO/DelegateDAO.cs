@@ -33,9 +33,35 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"DELETE from Delegate where empId="+empId+" and deptId = '" + deptId + "'";
+                string q = @"DELETE from Delegate where empId=@empId and deptId =@deptId";
                 SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@empId", empId);
+                cmd.Parameters.AddWithValue("@deptId", deptId);
                 cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static Models.Delegate GetDelegateByDept(long deptId)
+        {
+            Models.Delegate d = new Models.Delegate();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from Delegate where deptId =@depId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@depId", deptId);
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    d = new Models.Delegate()
+                    {
+                       FromDate=(DateTime)reader["fromDate"],
+                       ToDate=(DateTime)reader["toDate"]
+                    };
+                }
+                return d;
             }
         }
     }

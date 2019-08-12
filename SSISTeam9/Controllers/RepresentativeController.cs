@@ -11,9 +11,10 @@ namespace SSISTeam9.Controllers
     public class RepresentativeController : Controller
     {
         // GET: Representative
-        public ActionResult ChangeRepresentative(string employee)
+        public ActionResult ChangeRepresentative(string employee,string sessionId)
         {
-            long deptId = 1;
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
+            long deptId = emp.DeptId;
             long currentRep = DepartmentService.GetCurrentRep(deptId);
             if (employee != null)
             {
@@ -23,6 +24,7 @@ namespace SSISTeam9.Controllers
             }
             List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(deptId);
             ViewData["employees"] = employees;
+            ViewData["sessionId"] = sessionId;
             return View();
         }
     }

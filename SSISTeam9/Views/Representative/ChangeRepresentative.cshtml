@@ -2,20 +2,22 @@
 @using SSISTeam9.Models
 @{
     var employees = (List<Employee>)ViewData["employees"];
-    var repEmp=new Employee();
+    var repEmp = new Employee();
+    var sessionId = (string)ViewData["sessionId"];
     foreach (var employee in employees)
     {
         if (employee.EmpRole.Equals("REPRESENTATIVE"))
         {
-             repEmp = employee;
+            repEmp = employee;
         }
     }
 }
 <h2>ChangeRepresentative</h2>
- 
+
 Current Representative : @repEmp.EmpName
 
-<form>
+<form action="~/Representative/ChangeRepresentative" method="post">
+    <input type="hidden" value="@sessionId" name="sessionId"/>
     <table>
         <tr>
             <td>
@@ -30,9 +32,10 @@ Current Representative : @repEmp.EmpName
                 </select>
             </td>
             <td>
-                <button type="submit" id="" formaction="/Representative/ChangeRepresentative?employee=">Change</button>
+                <button type="submit" id="">Change</button>
             </td>
         </tr>
     </table>
 </form>
 
+@*formaction="/Representative/ChangeRepresentative?sessionId=@sessionId"*@

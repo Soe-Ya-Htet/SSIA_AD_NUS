@@ -16,18 +16,20 @@ namespace SSISTeam9.Controllers
         {
             return View();
         }
-        public ActionResult ViewDelegate(Models.Delegate d)
+        public ActionResult ViewDelegate(Models.Delegate d,string sessionId)
         {
-            long deptId = 1;
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
+            long deptId = emp.DeptId;
             long headId = DepartmentService.GetCurrentHead(deptId);
             List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(deptId);
             ViewData["employees"] = employees;
+            ViewData["sessionId"] = sessionId;
             if (d.Employee != null)
             {
                 d.Department = new Department();
                 d.Department.DeptId = deptId;
                 DelegateService.AddNewDelegate(d,headId);
-                return RedirectToAction("ViewRemoveDelegate");
+                return RedirectToAction("ViewRemoveDelegate",new { sessionId=sessionId});
             }
             else
             {
@@ -36,12 +38,14 @@ namespace SSISTeam9.Controllers
             
         }
 
-        public ActionResult ViewRemoveDelegate(string headId)
+        public ActionResult ViewRemoveDelegate(string headId,string sessionId)
         {
-            long deptId = 1;
+            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
+            long deptId = emp.DeptId;
             long head = DepartmentService.GetCurrentHead(deptId);
             Employee e = EmployeeDAO.GetEmployeeById(head);
             ViewData["currentHead"] = e;
+            ViewData["sessionId"] = sessionId;
             if (headId == null)
             {
                 return View();
@@ -49,7 +53,7 @@ namespace SSISTeam9.Controllers
             else
             {
                 DelegateService.DelegateToPreviousHead(deptId);
-                return RedirectToAction("ViewDelegate");
+                return RedirectToAction("ViewDelegate",new { sessionId=sessionId});
             }
         }
     }

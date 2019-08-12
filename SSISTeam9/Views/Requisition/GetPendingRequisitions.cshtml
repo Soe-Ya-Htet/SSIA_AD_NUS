@@ -2,9 +2,14 @@
 @using SSISTeam9.Models
 @{
     var requisitions = (List<Requisition>)ViewData["requisitionsToProcess"];
-
+    var sessionId = (string)ViewData["sessionId"];
 }
-
+@Html.ActionLink("Pending Requisitiond", "GetPendingRequisitions", new { sessionId = sessionId })
+@Html.ActionLink("Past Requisitions", "ViewPastRequisitions", new { sessionId = sessionId })
+<a href="~/Representative/ChangeRepresentative?sessionId=@sessionId">Change Representative</a>
+<a href="~/Delegate/ViewDelegate?sessionId=@sessionId">Delegate</a>
+<a href="~/Delegate/ViewRemoveDelegate?sessionId=@sessionId">Remove Delegate</a>
+<a href="~/Home/Logout?sessionId=@sessionId">Logout</a>
 @{
     if (requisitions.Count == 0)
     {
@@ -22,7 +27,7 @@
             {
                 <tr>
 
-                    <td>@Html.ActionLink(@requisition.ReqId.ToString(), "GetRequisitionDetails", new { reqId=@requisition.ReqId})</td>
+                    <td>@Html.ActionLink(@requisition.ReqId.ToString(), "GetRequisitionDetails", new { reqId = @requisition.ReqId })</td>
                     <td>@requisition.Employee.EmpName</td>
                 </tr>
             }

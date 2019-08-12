@@ -2,7 +2,7 @@
 @using SSISTeam9.Models
 @{
     var requisitions = (List<Requisition>)ViewData["pastRequisitions"];
-
+    var sessionId = (string)ViewData["sessionId"];
 }
 
 @{
@@ -23,7 +23,7 @@
             {
         <tr>
 
-            <td>@Html.ActionLink(@requisition.ReqId.ToString(), "ViewPastRequisitionDetails", new { reqId = @requisition.ReqId })</td>
+            <td>@Html.ActionLink(@requisition.ReqId.ToString(), "ViewPastRequisitionDetails", new { reqId = @requisition.ReqId,sessionId=sessionId })</td>
             <td>@requisition.Employee.EmpName</td>
             <td>@requisition.Status</td>
         </tr>

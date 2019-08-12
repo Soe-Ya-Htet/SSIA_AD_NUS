@@ -16,6 +16,7 @@
             checkboxes[i].checked = source.checked;
         }
     }
+
 </script>
 
 
@@ -33,9 +34,11 @@ else
 {
     <h2>Completed Requisitions</h2>
 }
-<form action="/RetrievalForm/ViewRetrievalForm" method="get">
-    <input type="submit" value="View Retrieval Form" />
-</form>
+
+    <button type="submit" onclick="location.href='@Url.Action("ViewRetrievalForm", "RetrievalForm", new { sessionId = sessionId })'">View Retrieval Form</button>
+
+
+
 
 
 

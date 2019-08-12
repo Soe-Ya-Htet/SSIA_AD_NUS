@@ -1,6 +1,7 @@
 ﻿@using SSISTeam9.Models;
 @{
     List<Inventory> catalogues = (List<Inventory>)ViewData["catalogues"];
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2 style="text-align:center">Catalogues List</h2>
@@ -15,7 +16,7 @@ else
 {
     <table align="center">
         <tr>
-            <td><input type="button" value="Create New Catalogue" style="background-color:forestgreen; color:white" onclick="location.href='@Url.Action("Create","Catalogue")'"></td>
+            <td><input type="button" value="Create New Catalogue" style="background-color:forestgreen; color:white" onclick="location.href='@Url.Action("Create","Catalogue", routeValues: new { sessionid = sessionId })'"></td>
         </tr>
         <tr align="center">
             <th>Item Number</th>
@@ -26,7 +27,7 @@ else
         @foreach (var c in catalogues)
         {
             <tr align="center">
-                <td><a href="/Catalogue/Details?itemId=@c.ItemId">@c.ItemCode </a></td>
+                <td><a href="/Catalogue/Details?itemId=@c.ItemId&sessionId=@sessionId">@c.ItemCode </a></td>
                 <td>@c.Category</td>
                 <td>@c.Description</td>
                 <td>@c.UnitOfMeasure</td>

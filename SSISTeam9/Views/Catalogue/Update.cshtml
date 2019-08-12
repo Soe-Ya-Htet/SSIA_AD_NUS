@@ -5,12 +5,14 @@
     Inventory catalogue = (Inventory)ViewData["catalogue"];
     List<string> unitsOfMeasure = (List<string>)ViewData["unitsOfMeasure"];
     List<string> categories = (List<string>)ViewData["categories"];
+
+    string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2 style="text-align:center">Update Catalogue Details</h2>
 
 <div>
-    @using (Html.BeginForm("UpdateCatalogue", "Catalogue", FormMethod.Post))
+    @using (Html.BeginForm("UpdateCatalogue", "Catalogue", routeValues: new { sessionid = sessionId }, method: FormMethod.Post))
     {
         <table>
             <tr>

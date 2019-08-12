@@ -7,15 +7,7 @@
     var collectionPt = (string)ViewData["collectionPoint"];
     var sessionId = (string)ViewData["sessionId"];
 }
-<select onchange="location = this.options[this.selectedIndex].value;">
-    <option>Select</option>
-    <option value="/Disbursement/ViewAllDisbursements?collectionPt=1&sessionId=@sessionId">Stationary Store(Admin)</option>
-    <option value="/Disbursement/ViewAllDisbursements?collectionPt=2&sessionId=@sessionId">Management School</option>
-    <option value="/Disbursement/ViewAllDisbursements?collectionPt=3&sessionId=@sessionId">Medical School</option>
-    <option value="/Disbursement/ViewAllDisbursements?collectionPt=4&sessionId=@sessionId">Engineering School</option>
-    <option value="/Disbursement/ViewAllDisbursements?collectionPt=5&sessionId=@sessionId">Science School</option>
-    <option value="/Disbursement/ViewAllDisbursements?collectionPt=6&sessionId=@sessionId">University Hospital</option>
-</select>
+
 @switch (collectionPt)
 {
     case "1":
@@ -41,27 +33,37 @@
         break;
 
 }
+        <select onchange="location = this.options[this.selectedIndex].value;">
+            <option>Select</option>
+            <option value="/Disbursement/ViewAllDisbursements?collectionPt=1&sessionId=@sessionId">Stationary Store(Admin)</option>
+            <option value="/Disbursement/ViewAllDisbursements?collectionPt=2&sessionId=@sessionId">Management School</option>
+            <option value="/Disbursement/ViewAllDisbursements?collectionPt=3&sessionId=@sessionId">Medical School</option>
+            <option value="/Disbursement/ViewAllDisbursements?collectionPt=4&sessionId=@sessionId">Engineering School</option>
+            <option value="/Disbursement/ViewAllDisbursements?collectionPt=5&sessionId=@sessionId">Science School</option>
+            <option value="/Disbursement/ViewAllDisbursements?collectionPt=6&sessionId=@sessionId">University Hospital</option>
+        </select>
 
-@if (disbursementLists != null)
+@if (disbursementLists.Count != 0)
 {
-    <table>
-        <tr>
+    <div class="row justify-content-center">
+    <table class="table table-bordered col-3 align-self-center">
+        <tr class="text-center">
             <th>Dept Name</th>
         </tr>
         @foreach (var disbursement in disbursementLists)
         {
-            <tr>
+            <tr class="text-center">
 
                 <td><a href="/Disbursement/ViewDisbursementDetails?listId=@disbursement.ListId&collectionPt=@collectionPt&sessionId=@sessionId">@disbursement.Department.DeptName</a></td>
 
             </tr>
         }
     </table>
-
+    </div>
 }
 else
 {
-      <div>No Disbursement lists to display</div>
+      <div class="text-center">No Disbursement lists to display</div>
 }
 
 

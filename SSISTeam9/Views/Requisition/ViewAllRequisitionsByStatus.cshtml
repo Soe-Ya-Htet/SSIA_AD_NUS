@@ -27,7 +27,7 @@
 
     @if (status != "Completed")
     {
-        <h2>Outstanding Requisitions</h2>
+        <h2 class="row">Outstanding Requisitions</h2>
     }
     else
     {
@@ -52,11 +52,12 @@
             }
             <table class="table table-bordered">
                 <tr>
-                    <th>
+                    
                         @if (status != "Completed" && alrAssigned == "NO")
-                        {<input type="checkbox" onClick="toggle(this)" />
-                        }
-                    </th>
+                        {<th>
+                            <input type="checkbox" onClick="toggle(this)" />
+                        </th>
+                         }
                     <th>Requisition Id</th>
                     <th>Department</th>
                     <th>Date of Request</th>
@@ -64,13 +65,13 @@
                 @foreach (var req in requisitions)
                 {
                     <tr>
-
-                        <td>
                             @if (req.Status != "Completed" && alrAssigned == "NO")
                             {
+                                <td>
                                 <input type="checkbox" name="requisition" value="@req.ReqId">
+                                </td>
                             }
-                        </td>
+                      
                         <td><a href="/Requisition/GetRequisitionDetails?reqId=@req.ReqId">@req.ReqCode</a></td>
                         <td>@req.Employee.Department.DeptCode</td>
                         <td>@req.DateOfRequest</td>

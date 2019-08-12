@@ -17,7 +17,7 @@
 
 @if (selectedItems.Count == 0)
 {
-    <h2>Update Delivery Details</h2>
+    <h3>Update Delivery Details</h3>
     <div>
         @using (Html.BeginForm("UpdatePurchaseOrderDeliveryDetails", "PurchaseOrder", routeValues: new { sessionid = sessionId }
         , method: FormMethod.Post))
@@ -33,7 +33,7 @@
 }
 else
 {
-    <h2>Update Quantity and/or Select Alternative Supplier</h2>
+    <h3>Update Quantity and/or Select Alternative Supplier</h3>
     <div>
         @using (Html.BeginForm("ConfirmUpdate", "PurchaseOrder", routeValues: new { sessionid = sessionId }
         , method: FormMethod.Post))
@@ -98,7 +98,7 @@ else
                 }
                 <tr>
                     <td><input type="hidden" name="counter" value="@counter" /></td>
-                    <td colspan="6" align="right"><input class="rounded" type="submit" value="Confirm Changes"></td>
+                    <td colspan="5" align="right"><input class="rounded" type="submit" value="Confirm Changes"></td>
                 </tr>
 
             </table>

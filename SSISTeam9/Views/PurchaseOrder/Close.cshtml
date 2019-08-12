@@ -12,7 +12,7 @@
     string sessionId = (string)ViewData["sessionId"];
 }
 
-<h2>Purchase Order</h2>
+<h3>Purchase Order</h3>
 
 <div>
     @using (Html.BeginForm("ConfirmClose", "PurchaseOrder", routeValues: new { sessionid = sessionId }

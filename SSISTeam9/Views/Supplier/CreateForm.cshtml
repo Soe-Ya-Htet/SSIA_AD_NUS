@@ -5,7 +5,7 @@
 
     string sessionId = (string)ViewData["sessionId"];
 }
-<h2>Create New Supplier</h2>
+<h3>Create New Supplier</h3>
 
 <div>
     @using (Html.BeginForm("CreateNew", "Supplier", routeValues: new { sessionid = sessionId }, method: FormMethod.Post))

@@ -188,5 +188,104 @@ namespace SSISTeam9.DAO
             return disbursementList;
         }
 
+        public static void AcknowledgeDisbursement(long listId, long empId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"Update DisbursementList Set acknowledgedBy = @empId where listId = @listId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@empId", empId);
+                cmd.Parameters.AddWithValue("@listId", listId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static List<DisbursementList> GetAllPendingDisbursementList(long deptId)
+        {
+            List<DisbursementList> disbursements = new List<DisbursementList>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * FROM DisbursementList d, CollectionPoint cP, Department dept 
+                            WHERE d.collectionPointId= cP.placeId AND acknowledgedBy IS NULL AND d.deptId = dept.deptId
+                            AND d.deptId = @deptId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@deptId", deptId);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    DisbursementList disbursement = new DisbursementList
+                    {
+                        ListId = (long)reader["listId"],
+                        date = (DateTime)reader["date"]
+                    };
+
+                    disbursement.Department = new Department()
+                    {
+                        DeptId = (long)reader["deptId"],
+                        DeptName = (string)reader["deptName"]
+                    };
+                    disbursement.CollectionPoint = new CollectionPoint()
+                    {
+                        PlacedId = (long)reader["placeId"],
+                        Name = (string)reader["name"]
+                    };
+
+                    disbursements.Add(disbursement);
+                }
+            }
+            return disbursements;
+
+        }
+
+        public static List<DisbursementList> GetAllPastDisbursementList(long deptId, long empId)
+        {
+            List<DisbursementList> disbursements = new List<DisbursementList>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * FROM DisbursementList d, CollectionPoint cP, Department dept 
+                            WHERE d.collectionPointId= cP.placeId AND acknowledgedBy=@empId AND d.deptId = dept.deptId
+                            AND d.deptId = @deptId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@deptId", deptId);
+                cmd.Parameters.AddWithValue("@empId", empId);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    DisbursementList disbursement = new DisbursementList
+                    {
+                        ListId = (long)reader["listId"],
+                        date = (DateTime)reader["date"]
+                    };
+
+                    disbursement.Department = new Department()
+                    {
+                        DeptId = (long)reader["deptId"],
+                        DeptName = (string)reader["deptName"]
+                    };
+                    disbursement.CollectionPoint = new CollectionPoint()
+                    {
+                        PlacedId = (long)reader["placeId"],
+                        Name = (string)reader["name"]
+                    };
+
+                    disbursements.Add(disbursement);
+                }
+            }
+            return disbursements;
+
+        }
+
+
     }
 }

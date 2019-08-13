@@ -1,9 +1,11 @@
 ﻿@model List<SSISTeam9.Models.Inventory>
 
-
 @using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Stock Check";
     List<Inventory> inventories = (List<Inventory>)ViewData["inventories"];
+    var sessionId = (string)ViewData["sessionId"];
 }
 
 <h2 style="text-align:center">Stock Check</h2>
@@ -52,7 +54,7 @@ else
 
     using (Html.BeginForm("Index", "AdjVoucher", Model, FormMethod.Post))
     {
-        <table class="table">
+        <table class="table table-bordered">
             
             <thead>
             <tr align="center">
@@ -79,7 +81,7 @@ else
                         <td>@Html.DisplayFor(x => Model[i].UnitOfMeasure)</td>
                         <td>@Html.DisplayFor(x => Model[i].StockLevel)</td>
                         <td>@Html.TextBoxFor(x => Model[i].ActualStock, new {@Value = Model[i].StockLevel})</td>
-                        <td>
+                        <td style="display:none;">
                             @Html.HiddenFor(x => Model[i].ItemCode)
                             @Html.HiddenFor(x => Model[i].ItemId)
                             @Html.HiddenFor(x => Model[i].StockLevel)
@@ -96,7 +98,7 @@ else
 
 
         </table>
-        <input type="submit" value="Generate Adjustment Voucher" />
+        <input class="rounded" type="submit" value="Generate Adjustment Voucher" />
     }
 
 }

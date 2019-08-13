@@ -49,23 +49,11 @@ namespace SSISTeam9.Controllers
             string userName = emp.UserName;
             string empDisplayRole = emp.EmpDisplayRole;
 
-            if (empRole == "STORE_CLERK")
+            if (empRole == "STORE_CLERK" || empRole == "STORE_SUPERVISOR" || empRole == "STORE_MANAGER")
             {
                 ViewData["userName"] = userName;
                 ViewData["sessionId"] = sessionid;
-                return View("~/Views/StoreClerk/Home.cshtml");
-            }
-            else if (empRole == "STORE_SUPERVISOR")
-            {
-                ViewData["userName"] = userName;
-                ViewData["sessionId"] = sessionid;
-                return View("~/Views/StoreMS/Home.cshtml");
-            }
-            else if (empRole == "STORE_MANAGER")
-            {
-                ViewData["userName"] = userName;
-                ViewData["sessionId"] = sessionid;
-                return View("~/Views/StoreMS/Home.cshtml");
+                return View("~/Views/StoreLandingPage/Home.cshtml");
             }
             else if ((empRole == "EMPLOYEE" || empRole == "REPRESENTATIVE") && (empDisplayRole != "HEAD"))
             {

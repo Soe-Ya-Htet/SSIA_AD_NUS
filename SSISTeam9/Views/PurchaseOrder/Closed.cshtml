@@ -2,18 +2,19 @@
 
 @using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "Closed Purchase Order";
     PurchaseOrder order = (PurchaseOrder)ViewData["order"];
     double total = 0;
     long itemSupplierId = 0;
 }
 
-<h2>
+<h3>
     Purchase Order
     <a class="btn btn-light" href="javascript:window.print()">Print Purchase Order</a>
-</h2>
+</h3>
 <div>
-    <table>
+    <table class="table table-bordered">
         <tr>
             <td colspan="3" align="left">Supplier name: @order.Supplier.Name </td>
             <td colspan="2" align="right">PO Number: @order.OrderNumber</td>

@@ -3,6 +3,9 @@
 @using SSISTeam9.Models;
 
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Charge Back";
+
     List<ChargeBack> chargeBacks = (List<ChargeBack>)ViewData["chargeBacks"];
     List<string> months = (List<string>)ViewData["months"];
     List<int> years = (List<int>)ViewData["years"];
@@ -17,7 +20,7 @@
 <div>
     @using (Html.BeginForm("Generate", "ChargeBack", new { mode = 1, sessionId = sessionId }, FormMethod.Post))
     {
-        <table align="center">
+        <table class="table table-bordered" align="center">
             <tr align="center">
                 <td>By Month</td>
                 <td>
@@ -31,14 +34,14 @@
                     </div>
                 </td>
                 <td>
-                    <p align="left"><input type="submit" value="Generate"></p>
+                    <p align="left"><input class="rounded" type="submit" value="Generate"></p>
                 </td>
             </tr>
         </table>
     }
     @using (Html.BeginForm("Generate", "ChargeBack", new { mode = 2, sessionId = sessionId }, FormMethod.Post))
     {
-        <table align="center">
+        <table class="table table-bordered" align="center">
             <tr align="center">
                 <td>By Department</td>
                 <td>
@@ -62,7 +65,7 @@
                     </div>
                 </td>
                 <td>
-                    <p align="right"><input type="submit" value="Generate"></p>
+                    <p align="right"><input class="rounded" type="submit" value="Generate"></p>
                 </td>
 
         </table>

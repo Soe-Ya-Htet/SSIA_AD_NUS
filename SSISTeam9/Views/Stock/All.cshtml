@@ -1,14 +1,15 @@
 ﻿@model SSISTeam9.Models.Inventory
 
 @using SSISTeam9.Models;
-@{
+@{ 
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "View All Inventory Items";
     List<Inventory> items = (List<Inventory>)ViewData["items"];
     var counter = 0;
     string sessionId = (string)ViewData["sessionId"];
 }
 
-<h2>Stock</h2>
+<h3>Stock</h3>
 
 @if (items.Count == 0)
 {
@@ -20,7 +21,7 @@ else
     using (Html.BeginForm("EnterQuantities", "Stock", routeValues: new { sessionid = sessionId }
     , method: FormMethod.Post))
     {
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <th>Check Item to Order</th>
                 <th>Item Code</th>
@@ -60,7 +61,7 @@ else
                 counter = counter + 1;
             }
             <tr>
-                <td colspan="8" align="right"><input type="submit" value="Generate Purchase Orders"></td>
+                <td colspan="8" align="right"><input class="rounded" type="submit" value="Generate Purchase Orders"></td>
             </tr>
         </table>
     }

@@ -1,4 +1,5 @@
 ﻿@{
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "Orders By Supplier";
     int month = (int)ViewData["month"];
     int year = (int)ViewData["year"];
@@ -43,7 +44,7 @@
             </select>
             <input type="hidden" name="year" value='@year' />
             <input type="hidden" name="sessionId" value="@sessionId" />
-            <input type="submit" value="Generate" />
+            <input class="rounded" type="submit" value="Generate" />
         }
 
     </div>

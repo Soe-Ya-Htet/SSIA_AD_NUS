@@ -1,6 +1,8 @@
 ﻿@model SSISTeam9.Models.Department
 
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Create New Department";
     List<string> empNames = (List<string>)ViewData["empNames"];
     string sessionId = (string)ViewData["sessionId"];
 }
@@ -10,7 +12,7 @@
 <div>
     @using (Html.BeginForm("CreateNew", "Department", routeValues: new { sessionid = sessionId }, method: FormMethod.Post))
     {
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <td>@Html.LabelFor(x => x.DeptCode) </td>
                 <td>@Html.TextBoxFor(x => x.DeptCode, new { id = "deptCode" })</td>
@@ -59,7 +61,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td align="right"><input type="submit" value="Save Create" style="background-color:green;color:white;"></td>
+                <td align="right"><input class="rounded" type="submit" value="Save Create" style="background-color:green;color:white;"></td>
             </tr>
         </table>
 

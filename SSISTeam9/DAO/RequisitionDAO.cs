@@ -244,5 +244,55 @@ namespace SSISTeam9.DAO
 
             }
         }
+
+        public static List<Requisition> GetAllPastOrderReqs(int deptId)
+        {
+            string sql = @"SELECT r.*, e.empName FROM Requisition r, Employee e WHERE r.empId=e.empId AND e.deptId=@deptId AND r.status != @status";
+            return GetAllReqs(deptId, sql);
+        }
+
+        public static List<Requisition> GetAllPendingOrderReqs(int deptId)
+        {
+            string sql = @"SELECT r.*, e.empName FROM Requisition r, Employee e WHERE r.empId=e.empId AND e.deptId=@deptId AND r.status = @status";
+            return GetAllReqs(deptId, sql);
+
+        }
+
+        private static List<Requisition> GetAllReqs(int deptId, string sql)
+        {
+            List<Requisition> reqs = new List<Requisition>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@deptId", deptId);
+                cmd.Parameters.AddWithValue("@status", "Pending Approval");
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Employee e = new Employee()
+                    {
+                        EmpId = (long)reader["empId"],
+                        EmpName = (string)reader["empName"]
+                    };
+
+                    Requisition requisition = new Requisition()
+                    {
+                        ReqId = (long)reader["reqId"],
+                        ReqCode = (string)reader["reqCode"],
+                        DateOfRequest = (DateTime)reader["dateOfRequest"],
+                        Status = (string)reader["status"],
+                        //PickUpDate = (DateTime)reader["pickUpDate"],
+                        ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
+                        Employee = e
+                    };
+                    reqs.Add(requisition);
+                }
+            }
+
+            return reqs;
+        }
+
     }
 }

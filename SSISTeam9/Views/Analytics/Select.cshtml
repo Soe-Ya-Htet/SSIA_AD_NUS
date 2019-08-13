@@ -1,5 +1,6 @@
 ﻿@using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "Select Department";
     List<string> departments = (List<string>)ViewData["departments"];
     string month = (string)ViewData["month"];
@@ -24,7 +25,7 @@
         <input type="hidden" name="month" value='@month' />
         <input type="hidden" name="year" value='@year' />
         <input type="hidden" name="sessionId" value="@sessionId" />
-        <input type="submit" value="Generate" />
+        <input class="rounded" type="submit" value="Generate" />
     }
 
 </div>

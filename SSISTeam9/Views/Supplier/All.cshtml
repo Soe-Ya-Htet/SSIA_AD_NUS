@@ -1,12 +1,13 @@
 ﻿@using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "Supplier List";
     List<Supplier> suppliers = (List<Supplier>)ViewData["suppliers"];
-    
+
     string sessionId = (string)ViewData["sessionId"];
 }
 
-<h2>Suppliers</h2>
+<h3>Suppliers</h3>
 
 @if (suppliers.Count == 0){
     <br /><br />
@@ -14,7 +15,7 @@
 }
 else
 {
-    <table>
+    <table class="table table-bordered">
         <tr>
             <th>Supplier Code</th>
             <th>Supplier Name</th>
@@ -37,7 +38,7 @@ else
         </tr>
         }
         <tr>
-            <td colspan="7" align="right"><input type="button" value="Create New Supplier" onclick="location.href='@Url.Action("CreateForm","Supplier", routeValues: new { sessionid = sessionId })'"></td>
+            <td colspan="7" align="right"><input class="rounded" type="button" value="Create New Supplier" onclick="location.href='@Url.Action("CreateForm","Supplier", routeValues: new { sessionid = sessionId })'"></td>
         </tr>
     </table>
 }

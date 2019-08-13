@@ -646,10 +646,12 @@
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\IEmailService.cs" />
+    <Compile Include="Services\IRestService.cs" />
     <Compile Include="Services\PriceListService.cs" />
     <Compile Include="Services\PurchaseOrderService.cs" />
     <Compile Include="Services\RepresentativeService.cs" />
     <Compile Include="Services\RequisitionService.cs" />
+    <Compile Include="Services\RestService.cs" />
     <Compile Include="Services\RetrievalFormService.cs" />
     <Compile Include="Services\StockCardService.cs" />
     <Compile Include="Services\StockService.cs" />
@@ -665,7 +667,9 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\homeicon.png" />
     <Content Include="Content\sticky-footer-navbar.css" />
+    <Content Include="Content\storehome.jpeg" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -783,12 +787,11 @@
     <Content Include="Views\StockCard\StockCard.cshtml" />
     <Content Include="Views\AdjVoucher\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\StoreClerk\Home.cshtml" />
-    <Content Include="Views\StoreMS\Home.cshtml" />
+    <Content Include="Views\StoreLandingPage\Home.cshtml" />
     <Content Include="Views\Home\NotAuthorised.cshtml" />
     <Content Include="Views\Stock\Check.cshtml" />
     <Content Include="Views\Disbursement\RepDisbursementList.cshtml" />
-    <Content Include="Views\Catalogue\AllForViewOnly.cshtml" />
+    <Content Include="Views\Shared\_Store.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -835,9 +838,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>61152</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:61152/</IISUrl>
+          <IISUrl>http://localhost:57588/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

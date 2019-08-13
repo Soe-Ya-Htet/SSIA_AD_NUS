@@ -1,4 +1,5 @@
 ﻿@{
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "Home";
     List<string> analytics = (List<string>)ViewData["analytics"];
 
@@ -18,7 +19,7 @@
             }
         </select>
         <input type="hidden" name="sessionId" value="@sessionId" />
-        <input type="submit" value="Generate" />
+        <input class="rounded" type="submit" value="Generate" />
     }
 
 </div>

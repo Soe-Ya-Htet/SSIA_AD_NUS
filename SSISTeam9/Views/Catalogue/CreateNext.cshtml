@@ -10,7 +10,7 @@
 <div>
     @using (Html.BeginForm("CreatePriceList", "Catalogue", routeValues: new { ItemId = itemId, sessionid = sessionId }, method: FormMethod.Post))
     {
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <td>@Html.LabelFor(x => x.Supplier1Name): </td>
                 <td>
@@ -68,7 +68,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td align="right"><input type="submit" value="Save Create" style="background-color:green;color:white;"></td>
+                <td align="right"><input class="rounded" type="submit" value="Save Create" style="background-color:green;color:white;"></td>
             </tr>
         </table>
 

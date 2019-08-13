@@ -2,6 +2,7 @@
 
 @using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "Update Quantity and/or Select Alternative Supplier";
     List<Inventory> selectedItems = (List<Inventory>)ViewData["selectedItems"];
     PurchaseOrder selectedOrder = (PurchaseOrder)ViewData["order"];
@@ -10,13 +11,13 @@
     string deliverBy = (string)ViewData["deliverBy"];
 
     var counter = 0;
-    
+
     string sessionId = (string)ViewData["sessionId"];
 }
 
 @if (selectedItems.Count == 0)
 {
-    <h2>Update Delivery Details</h2>
+    <h3>Update Delivery Details</h3>
     <div>
         @using (Html.BeginForm("UpdatePurchaseOrderDeliveryDetails", "PurchaseOrder", routeValues: new { sessionid = sessionId }
         , method: FormMethod.Post))
@@ -32,12 +33,12 @@
 }
 else
 {
-    <h2>Update Quantity and/or Select Alternative Supplier</h2>
+    <h3>Update Quantity and/or Select Alternative Supplier</h3>
     <div>
         @using (Html.BeginForm("ConfirmUpdate", "PurchaseOrder", routeValues: new { sessionid = sessionId }
         , method: FormMethod.Post))
         {
-            <table>
+            <table class="table table-bordered">
                 <tr>
                     <th>Change Supplier To</th>
                     <th>Item Number</th>
@@ -89,7 +90,7 @@ else
                         }
                     </td>
                     <td><input style="text-align:center" type="number" name="quantity_@counter" id="quantity_@counter" value="0" min="0"></td>
-                    <td>
+                    <td style="display:none;">
                         <input type="hidden" name="selectedItem_@counter" value="@item.ItemId" />
                     </td>
                 </tr>
@@ -97,7 +98,7 @@ else
                 }
                 <tr>
                     <td><input type="hidden" name="counter" value="@counter" /></td>
-                    <td colspan="6" align="right"><input type="submit" value="Confirm Changes"></td>
+                    <td colspan="5" align="right"><input class="rounded" type="submit" value="Confirm Changes"></td>
                 </tr>
 
             </table>

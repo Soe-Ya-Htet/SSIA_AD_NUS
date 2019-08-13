@@ -814,6 +814,8 @@
     <Content Include="Views\AdjVoucher\PutReason.cshtml" />
     <Content Include="Views\Disbursement\ViewAllCompletedDisbursements.cshtml" />
     <Content Include="Views\AdjVoucher\PendingApprove.cshtml" />
+    <Content Include="Views\AdjVoucher\AllAprovedAdj.cshtml" />
+    <Content Include="Views\AdjVoucher\AdjDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

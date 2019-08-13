@@ -4,6 +4,8 @@
     var employees = (List<Employee>)ViewData["employees"];
     var repEmp = new Employee();
     var sessionId = (string)ViewData["sessionId"];
+    var showAll = (bool)ViewData["all"];
+    var permanentHead = (bool)ViewData["permanentHead"];
     foreach (var employee in employees)
     {
         if (employee.EmpRole.Equals("REPRESENTATIVE"))
@@ -12,6 +14,55 @@
         }
     }
 }
+<link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
+<header style="padding-bottom: 30px;">
+    <!-- Fixed navbar -->
+    <nav class="dptnavbar navbar navbar-expand-md navbar-dark fixed-top">
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                @if (showAll && permanentHead)
+                {
+                    <li class="nav-item active">
+                        @Html.ActionLink("Pending Requisitiond", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Change Representative", "ChangeRepresentative", "Representative", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Delegate", "ViewDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                }
+                else if (!showAll && permanentHead)
+                {
+                    <li class="nav-item active">
+                        @Html.ActionLink("Delegate", "ViewDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                }
+                else if (!showAll && !permanentHead)
+                {
+                    <li class="nav-item active">
+                        @Html.ActionLink("Pending Requisitiond", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Change Representative", "ChangeRepresentative", "Representative", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                }
+            </ul>
+            <ul class="navbar-nav mt-2 mt-md-0">
+                <li class="nav-item active">
+                    @Html.ActionLink("Logout", "Logout", "Home", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
 <h2>ChangeRepresentative</h2>
 
 Current Representative : @repEmp.EmpName

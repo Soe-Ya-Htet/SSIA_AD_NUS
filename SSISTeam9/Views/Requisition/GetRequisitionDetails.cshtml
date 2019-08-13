@@ -8,7 +8,37 @@
     string sessionId = (string)ViewData["sessionId"];
     bool isRep = (bool)ViewData["isRep"];
 }
+<link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
+<header style="padding-bottom: 30px;">
+    <!-- Fixed navbar -->
+    <nav class="dptnavbar navbar navbar-expand-md navbar-dark fixed-top">
 
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    @Html.ActionLink("Pending Requisitiond", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Change Representative", "ChangeRepresentative", "Representative", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Delegate", "ViewDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Remove Delegate", "ViewRemoveDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+            </ul>
+            <ul class="navbar-nav mt-2 mt-md-0">
+                <li class="nav-item active">
+                    @Html.ActionLink("Logout", "Logout", "Home", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
 Requisition ID : @reqId
 @{
     <form method="post">

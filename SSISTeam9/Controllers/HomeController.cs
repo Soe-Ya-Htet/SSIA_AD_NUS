@@ -69,7 +69,7 @@ namespace SSISTeam9.Controllers
                 bool after = DelegateService.AfterDate(emp.DeptId);
                 if (between && !after)
                 {
-                    return RedirectToAction("ViewRemoveDelegate", "Delegate", new { sessionId = sessionid });
+                    return RedirectToAction("ViewDelegate", "Delegate", new { sessionId = sessionid });
                 }
                 else if(!between && !after)
                 {

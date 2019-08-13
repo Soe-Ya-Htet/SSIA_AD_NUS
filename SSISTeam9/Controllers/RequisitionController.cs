@@ -114,6 +114,10 @@ namespace SSISTeam9.Controllers
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             long deptId = emp.DeptId;
             List<Requisition> requisitions = RequisitionService.DisplayPendingRequisitions(deptId);
+            bool all = DelegateService.CheckPreviousHeadForNav(deptId);
+            bool permanentHead =((emp.EmpRole=="HEAD" && emp.EmpDisplayRole=="HEAD") || (emp.EmpRole == "EMPLOYEE" && emp.EmpDisplayRole == "HEAD"));
+            ViewData["all"] = all;
+            ViewData["permanentHead"] = permanentHead;
             ViewData["requisitionsToProcess"] = requisitions;
             ViewData["sessionId"] = sessionId;
             return View();
@@ -128,6 +132,10 @@ namespace SSISTeam9.Controllers
             ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
             ViewData["requisitionDetails"] = requisitionDetails;
             ViewData["reqId"] = reqId;
+            bool all = DelegateService.CheckPreviousHeadForNav(emp.DeptId);
+            bool permanentHead = ((emp.EmpRole == "HEAD" && emp.EmpDisplayRole == "HEAD") || (emp.EmpRole == "EMPLOYEE" && emp.EmpDisplayRole == "HEAD"));
+            ViewData["all"] = all;
+            ViewData["permanentHead"] = permanentHead;
             return View();
         }
 
@@ -137,6 +145,10 @@ namespace SSISTeam9.Controllers
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             long deptId = emp.DeptId;
             List<Requisition> requisitions = RequisitionService.DisplayPastRequisitions(deptId);
+            bool all = DelegateService.CheckPreviousHeadForNav(deptId);
+            bool permanentHead = ((emp.EmpRole == "HEAD" && emp.EmpDisplayRole == "HEAD") || (emp.EmpRole == "EMPLOYEE" && emp.EmpDisplayRole == "HEAD"));
+            ViewData["all"] = all;
+            ViewData["permanentHead"] = permanentHead;
             ViewData["pastRequisitions"] = requisitions;
             ViewData["sessionId"] = sessionId;
             return View();
@@ -147,6 +159,10 @@ namespace SSISTeam9.Controllers
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             List<RequisitionDetails> requisitionDetails = RequisitionService.DisplayRequisitionDetailsByReqId(reqId);
+            bool all = DelegateService.CheckPreviousHeadForNav(emp.DeptId);
+            bool permanentHead = ((emp.EmpRole == "HEAD" && emp.EmpDisplayRole == "HEAD") || (emp.EmpRole == "EMPLOYEE" && emp.EmpDisplayRole == "HEAD"));
+            ViewData["all"] = all;
+            ViewData["permanentHead"] = permanentHead;
             ViewData["requisitionDetails"] = requisitionDetails;
             ViewData["sessionId"] = sessionId;
             ViewData["reqId"] = reqId;
@@ -159,8 +175,12 @@ namespace SSISTeam9.Controllers
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             long currentHead = emp.EmpId;
             RequisitionService.ProcessRequisition(reqId, status, currentHead);
+            bool all = DelegateService.CheckPreviousHeadForNav(emp.DeptId);
+            bool permanentHead = ((emp.EmpRole == "HEAD" && emp.EmpDisplayRole == "HEAD") || (emp.EmpRole == "EMPLOYEE" && emp.EmpDisplayRole == "HEAD"));
+            ViewData["all"] = all;
+            ViewData["permanentHead"] = permanentHead;
             ViewData["sessionId"] = sessionId;
-            return RedirectToAction("GetPendingRequisitions");
+            return RedirectToAction("GetPendingRequisitions",new { sessionId = sessionId });
         }
 
         [StoreAuthorisationFilter]

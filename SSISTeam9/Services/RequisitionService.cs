@@ -10,13 +10,33 @@ namespace SSISTeam9.Services
 {
     public class RequisitionService
     {
-        public static List<Inventory> GetAllInventory()
+        public static List<Inventory> ShowItems(string description, string category)
         {
             List<Inventory> itemList = new List<Inventory>();
-            itemList.Add(CatalogueDAO.GetCatalogueById(1));
-            itemList.Add(CatalogueDAO.GetCatalogueById(2));
-            return itemList;
-            //return CatalogueDAO.DisplayAllCatalogue();
+            if (category == "")
+            {
+                itemList = CatalogueDAO.GetAllCatalogue();
+            }
+            else
+            {
+                itemList = CatalogueDAO.GetCatalogueByCategory(category);
+            }
+            if(description == "")
+            {
+                return itemList;
+            }
+            else
+            {
+                List<Inventory> searchList = new List<Inventory>();
+                foreach (Inventory item in itemList)
+                {
+                    if(item.Description.ToUpper().Contains(description.ToUpper()))
+                    {
+                        searchList.Add(item);
+                    }
+                }
+                return searchList;
+            }
         }
 
         public static List<Cart> GetCartsByEmpId(long empId)
@@ -24,6 +44,11 @@ namespace SSISTeam9.Services
             List<Cart> carts = CartDAO.GetCartsByEmpId(empId);
             carts = GetCartsWithObjects(carts);
             return carts;
+        }
+
+        public static List<string> GetALLCategories()
+        {
+            return CatalogueDAO.GetAllCategories();
         }
 
         public static void SaveToCart(long itemId, long empId, int quantity)

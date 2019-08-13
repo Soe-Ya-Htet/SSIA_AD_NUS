@@ -39,6 +39,7 @@ namespace SSISTeam9.Controllers
             catch (SqlException)
             {
                 TempData["errorMsg"] = "<script>alert('Supplier code already exists! Please enter another one.');</script>";
+                ViewData["sessionId"] = sessionId;
                 return View("CreateForm");
             }
             
@@ -67,12 +68,21 @@ namespace SSISTeam9.Controllers
 
         public ActionResult Update(Supplier supplier, string sessionId)
         {
-            SupplierService.UpdateSupplierDetails(supplier);
+            try
+            {
+                SupplierService.UpdateSupplierDetails(supplier);
 
-            List<Supplier> suppliers = SupplierService.DisplayAllSuppliers();
-            ViewData["suppliers"] = suppliers;
-            return RedirectToAction("All", new { sessionid = sessionId });
+                List<Supplier> suppliers = SupplierService.DisplayAllSuppliers();
+                ViewData["suppliers"] = suppliers;
+                return RedirectToAction("All", new { sessionid = sessionId });
+            }
+            catch (SqlException)
+            {
+                TempData["errorMsg"] = "<script>alert('Supplier code already exists! Please enter another one.');</script>";
+                ViewData["supplier"] = supplier;
+                ViewData["sessionId"] = sessionId;
+                return View("DisplaySupplierDetails");
+            }
         }
-
     }
 }

@@ -67,5 +67,11 @@ namespace SSISTeam9.Services
         {
             DisbursementListDAO.UpdateCollectionPoint(disbursement);
         }
+
+        public static List<DisbursementList> ViewAllCompletedDisbursements()
+        {
+            List<DisbursementList> d = new List<DisbursementList>();
+            return DisbursementListDAO.ViewAllCompletedDisbursementList();
+        }
     }
 }

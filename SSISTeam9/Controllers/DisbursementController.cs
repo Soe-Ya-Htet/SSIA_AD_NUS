@@ -29,6 +29,13 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
+        public ActionResult ViewAllCompletedDisbursements(string sessionId)
+        {
+            ViewData["disbursements"] = DisbursementListService.ViewAllCompletedDisbursements();
+            ViewData["sessionId"] = sessionId;
+            return View();
+        }
+
         public ActionResult ViewDisbursementDetails(long listId, string collectionPt, string sessionId)
         {
             

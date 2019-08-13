@@ -13,6 +13,7 @@ namespace SSISTeam9
 
             // register all your components with the container here
             container.RegisterType<IEmailService, EmailService>();
+            container.RegisterType<IRestService, RestService>();
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }

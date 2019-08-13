@@ -48,5 +48,5 @@
 
 <form method="post" action="@Url.Action("ViewRemoveDelegate","Delegate",new { })">
     Current Delegate : @currentHead.EmpName
-    <button type="submit" formaction="/Delegate/ViewRemoveDelegate?headId=@currentHead.EmpId&sessionId=@sessionId">Remove</button>
+    <button class="rounded" type="submit" formaction="/Delegate/ViewRemoveDelegate?headId=@currentHead.EmpId&sessionId=@sessionId">Remove</button>
 </form>

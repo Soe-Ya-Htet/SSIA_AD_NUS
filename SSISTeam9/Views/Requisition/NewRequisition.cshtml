@@ -3,16 +3,17 @@
 
 @{
     ViewBag.Title = "NewRequisition";
-    Employee e = (Employee)ViewData["emp"];
+    List<String> category = (List<String>)ViewData["category"];
     string sessionId = (string)ViewData["sessionId"];
     bool isRep = (bool)ViewData["isRep"];
 
 }
 
 <link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
+<link href="~/Content/cart.css" rel="stylesheet">
 <header style="padding-bottom: 30px;">
     <!-- Fixed navbar -->
-    <nav class="dptnavbar navbar navbar-expand-md navbar-dark fixed-top" >
+    <nav class="dptnavbar navbar navbar-expand-md navbar-dark fixed-top">
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
@@ -45,53 +46,74 @@
 </header>
 
 <h2>New Requisition</h2>
-<hr/>
-<section class="products">
+<hr />
 
-    @foreach (var item in Model)
-    {
-        <div class="product-card">
-            <div class="product-info">
-                <center><img style="width: 150px; height:100px" src="" /></center>
-                <h5 style="text-align:center">@item.Description</h5>
-                <h6 style="text-align:center; width:200px">@item.UnitOfMeasure</h6>
-                <form style="text-align:center" method="post">
-                    <input type="submit" value="Add to Cart" formaction="/Requisition/AddtoCart?itemId=@item.ItemId&sessionId=@sessionId">
-                    <input type="submit" value="Remove from cart" formaction="/Gallery/RemovefromCart?productId=@item.ItemId">
-                    <input type="hidden" value="Empty cart" formaction="/Gallery/EmptyCart?productId=@item.ItemId">
-                </form>
+<form class="form-inline" method="post">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <text> Category</text>
+                    </div>
+                    <div class="col-sm">
+                        <select name="catSearch">
+                            <option value="">All</option>
+                            @foreach (string cat in category)
+                            {
+                                <option value="@cat">@cat</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <text> Description</text>
+                    </div>
+                    <div class="col-sm">
+                        <input name="desSearch" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <input class="rounded btn-width" type="submit" value="Search" formaction="/Requisition/NewRequisition?sessionId=@sessionId">
             </div>
         </div>
-    }
-</section>
+    </div>
+</form>
+
+@if (Model.ToArray().Length == 0)
+{
+    <h2>No Item Match!</h2>
+}
+else
+{
+    <section class="products">
+
+        @foreach (var item in Model)
+        {
+            <div class="product-card">
+                <div class="product-info">
+                    <center><img style="width: 200px; height:100px; margin-bottom:10px" src="~/Content/@(item.Category).jpg" /></center>
+                    <form style="text-align:center" method="post">
+                        <p class="text-center" style="width: 300px; height: 10px;"><small>Description : @item.Description</small></p>
+                        <p class="text-center" style="width: 300px; height: 10px;"><small>Measure : @item.UnitOfMeasure</small></p>
+                        <p class="text-center" style="width: 300px; height: 10px;">
+                            <small>Quantity : </small><input type="number" value="@this" min="0" step="1" name="itemQuantity" style="width: 100px; height: 20px;" />
+                        </p>
+                        <input class="rounded btn-width" type="submit" value="Add" formaction="/Requisition/AddtoCart?itemId=@item.ItemId&sessionId=@sessionId">
+                        <input class="rounded btn-width" type="submit" value="Remove" formaction="/Requisition/AddtoCart?itemId=@item.ItemId&sessionId=@sessionId">
+                    </form>
+                </div>
+            </div>
+        }
+    </section>
+}
+
 
 <style>
-    td, tr {
-        padding: 2px;
-    }
-
-    .button {
-        border: none;
-        padding: 10px 24px;
-        text-align: center;
-        display: inline-block;
-        width: 250px;
-    }
-
-    .products {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .product-card {
-        padding: 2%;
-        flex-grow: 1;
-        flex-basis: 27%;
-        display: flex;
-    }
-
-    .product-info {
-        margin-top: auto;
-    }
+    
 </style>
 

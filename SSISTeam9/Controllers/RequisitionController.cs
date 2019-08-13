@@ -16,16 +16,23 @@ namespace SSISTeam9.Controllers
         {
             return View();
         }
-        
+
         [DepartmentFilter]
         public ActionResult NewRequisition(string sessionId)
         {
+            string desc = "";
+            string cat = "";
+            desc = null == Request.Form["desSearch"]? "" : Request.Form["desSearch"];
+            cat = null == Request.Form["catSearch"] ? "" : Request.Form["catSearch"];
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
-            List<Inventory> itemList = RequisitionService.GetAllInventory();
+            List<Inventory> itemList = RequisitionService.ShowItems(desc, cat);
+            List<string> category = new List<string>();
+            category = RequisitionService.GetALLCategories();
             ViewData["emp"] = emp;
             ViewData["sessionId"] = sessionId;
             ViewData["itemList"] = itemList;
             ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
+            ViewData["category"] = category;
 
             return View(itemList);
         }
@@ -33,9 +40,9 @@ namespace SSISTeam9.Controllers
         [DepartmentFilter]
         public ActionResult AddtoCart(int itemId, string sessionId)
         {
+            string qty = Request.Form["itemQuantity"] == "" ? "1" : Request.Form["itemQuantity"];
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
-            int quantity = 1;
-            RequisitionService.SaveToCart(itemId, emp.EmpId, quantity);
+            RequisitionService.SaveToCart(itemId, emp.EmpId, Convert.ToInt32(qty));
             return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionId });
         }
 
@@ -75,7 +82,9 @@ namespace SSISTeam9.Controllers
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             ViewData["sessionId"] = sessionId;
             ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
-            return View(RequisitionService.GetRequisitionByEmpId(emp.EmpId));
+            List<Requisition> reqList = RequisitionService.GetRequisitionByEmpId(emp.EmpId);
+            reqList.Sort((x, y) => DateTime.Compare(x.DateOfRequest, y.DateOfRequest));
+            return View(reqList);
         }
 
         [DepartmentFilter]
@@ -84,7 +93,9 @@ namespace SSISTeam9.Controllers
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             ViewData["sessionId"] = sessionId;
             ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
-            return View(RequisitionService.GetRequisitionByDeptId(emp.DeptId));
+            List<Requisition> reqList = RequisitionService.GetRequisitionByEmpId(emp.EmpId);
+            reqList.Sort((x, y) => DateTime.Compare(x.DateOfRequest, y.DateOfRequest));
+            return View(reqList);
         }
 
         [DepartmentFilter]

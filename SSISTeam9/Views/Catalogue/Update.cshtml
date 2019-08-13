@@ -16,7 +16,7 @@
 <div>
     @using (Html.BeginForm("UpdateCatalogue", "Catalogue", routeValues: new { sessionid = sessionId }, method: FormMethod.Post))
     {
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <td>@Html.LabelFor(x => x.ItemCode): </td>
                 <td>@catalogue.ItemCode</td>
@@ -68,7 +68,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td align="right"><input type="submit" value="Save and Next" style="background-color:green;color:white;"></td>
+                <td align="right"><input class="rounded" type="submit" value="Save and Next" style="background-color:green;color:white;"></td>
                 @Html.Hidden("itemId", catalogue.ItemId)
             </tr>
         </table>

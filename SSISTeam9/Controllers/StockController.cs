@@ -68,12 +68,12 @@ namespace SSISTeam9.Controllers
 
 
         //The following code used for Stock taking in order to generate Adjustment Voucher
-        public ActionResult Check()
+        public ActionResult Check(string sessionId)
         {
             List<Inventory> inventories = CatalogueService.GetAllCatalogue();
 
             ViewData["inventories"] = inventories;
-
+            ViewData["sessionId"] = sessionId;
             return View(inventories);
         }
 

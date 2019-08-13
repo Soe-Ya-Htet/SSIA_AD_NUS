@@ -13,7 +13,7 @@
 <div>
     @using (Html.BeginForm("UpdatePriceList", "Catalogue", new { ItemId = itemId, sessionId = sessionId }, FormMethod.Post))
     {
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <td>@Html.LabelFor(x => x.Supplier1Name): </td>
                 <td>
@@ -92,7 +92,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td align="right"><input type="submit" value="Save Update" style="background-color:green;color:white;"></td>
+                <td align="right"><input class="rounded" type="submit" value="Save Update" style="background-color:green;color:white;"></td>
             </tr>
         </table>
 

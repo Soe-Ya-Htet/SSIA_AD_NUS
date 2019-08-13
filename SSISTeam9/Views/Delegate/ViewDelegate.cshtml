@@ -60,7 +60,7 @@
     {
         @Html.ValidationSummary(true)
         <input type="hidden" name="sessionId" value="@sessionId" />
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <td>@Html.LabelFor(x => x.FromDate) </td>
                 <td>@Html.TextBoxFor(x => x.FromDate, new { type = "date" })</td>
@@ -79,7 +79,7 @@
                     </div>
                 </td>
                 <td>
-                    <input type="submit" value="Delegate" />
+                    <input class="rounded" type="submit" value="Delegate" />
                 </td>
             </tr>
         </table>
@@ -89,7 +89,7 @@ else
 {
     <form method="post" action="@Url.Action("ViewDelegate","Delegate",new { })">
         Current Delegate : @currentHead.EmpName
-        <button type="submit" formaction="/Delegate/ViewDelegate?delegatedhead=@currentHead.EmpId&sessionId=@sessionId">Remove</button>
+        <button class="rounded" type="submit" formaction="/Delegate/ViewDelegate?delegatedhead=@currentHead.EmpId&sessionId=@sessionId">Remove</button>
     </form>
 }
 

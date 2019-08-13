@@ -5,12 +5,12 @@
 
     string sessionId = (string)ViewData["sessionId"];
 }
-<h2>Create New Supplier</h2>
+<h3>Create New Supplier</h3>
 
 <div>
     @using (Html.BeginForm("CreateNew", "Supplier", routeValues: new { sessionid = sessionId }, method: FormMethod.Post))
     {
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <td>@Html.LabelFor(m => m.SupplierCode) </td>
                 <td>@Html.TextBoxFor(m => m.SupplierCode, new { id = "supplierCode" })</td>
@@ -47,7 +47,7 @@
                 <td>@Html.ValidationMessageFor(m => m.FaxNumber, "", new { style = "color:red" })</td>
             </tr>
             <tr>
-                <td colspan="2" align="right"><input type="submit" value="Create"></td>
+                <td colspan="2" align="right"><input class="rounded" type="submit" value="Create"></td>
             </tr>
         </table>
     }

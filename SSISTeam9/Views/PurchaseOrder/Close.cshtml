@@ -12,13 +12,13 @@
     string sessionId = (string)ViewData["sessionId"];
 }
 
-<h2>Purchase Order</h2>
+<h3>Purchase Order</h3>
 
 <div>
     @using (Html.BeginForm("ConfirmClose", "PurchaseOrder", routeValues: new { sessionid = sessionId }
     , method: FormMethod.Post))
     {
-    <table>
+    <table class="table table-bordered">
         <tr>
             <td colspan="3" align="left">Supplier name: @order.Supplier.Name </td>
             <td colspan="2" align="right">PO Number: @order.OrderNumber</td>
@@ -78,7 +78,7 @@
                 <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
                 total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice);
             }
-            <td><input type="hidden" name="item_@counter" id="item_@counter" value="@order.ItemDetails[counter].ItemId"></td>
+            <td style="display:none;"><input type="hidden" name="item_@counter" id="item_@counter" value="@order.ItemDetails[counter].ItemId"></td>
         </tr>
             counter = counter + 1;
         }
@@ -98,7 +98,7 @@
         </tr>
         <tr>
             <td colspan="5" align="right">
-                <button>
+                <button class="rounded">
                     @Html.ActionLink("Delete PO", "Delete", "PurchaseOrder",
                     new { confirm = true, ordernumber = order.OrderNumber, sessionId = sessionId },
                     new { onclick = "return confirm('Do you really want to delete this purchase order?')" })

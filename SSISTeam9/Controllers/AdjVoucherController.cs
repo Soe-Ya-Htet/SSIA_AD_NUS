@@ -163,7 +163,7 @@ namespace SSISTeam9.Controllers
         }
 
 
-        public ActionResult AllAprovedAdj(string sessionId)
+        public ActionResult AllAdjVouchers(string sessionId)
         {
             long totalAdjNumber = (long)AdjVoucherService.GetLastId();
             List<string> dates = new List<string>();

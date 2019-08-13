@@ -28,22 +28,23 @@ namespace SSISTeam9.Controllers
             ViewData["sessionId"] = sessionId;
             return View();
         }
-
+        [StoreAuthorisationFilter]
         public ActionResult ViewAllCompletedDisbursements(string sessionId)
         {
             ViewData["disbursements"] = DisbursementListService.ViewAllCompletedDisbursements();
             ViewData["sessionId"] = sessionId;
             return View();
         }
-
+        [StoreAuthorisationFilter]
         public ActionResult ViewDisbursementDetails(long listId, string collectionPt, string sessionId)
         {
             
             ViewData["details"] = DisbursementListService.ViewDisbursementDetails(listId);
+            
             ViewData["listId"] = listId;
             ViewData["collectionPt"] = collectionPt;
             ViewData["sessionId"] = sessionId;
-            ViewData["empRole"] = EmployeeService.GetUserBySessionId(sessionId).EmpRole;
+            ViewData["status"] = (DisbursementListService.GetDisbursementListByListId(listId)).AcknowledgedBy;
             return View();
 
         }

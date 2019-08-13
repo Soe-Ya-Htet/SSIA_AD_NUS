@@ -19,7 +19,7 @@
     @foreach (var disbursement in disbursements)
     {
         <tr>
-            <td><a href="">@disbursement.ListId</a></td>
+            <td><a href="/Disbursement/ViewDisbursementDetails?listId=@disbursement.ListId&sessionId=@sessionId">@disbursement.ListId</a></td>
             <td>@disbursement.date</td>
             <td>@disbursement.Department.DeptName</td>
             <td>@disbursement.AcknowledgedBy</td>

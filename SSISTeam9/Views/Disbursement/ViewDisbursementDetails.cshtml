@@ -8,9 +8,9 @@
     var listId = (long)ViewData["listId"];
     var collectionPoint = (string)ViewData["collectionPt"];
     var sessionId = (string)ViewData["sessionId"];
-    var empRole = (string)ViewData["empRole"];
+    var status = (string)ViewData["status"];
 }
-
+<h2>List Id: @listId</h2>
 <table class="table table-bordered">
     <tr>
         <th>Item Description</th>
@@ -22,7 +22,7 @@
         <tr>
             <td>@detail.Item.Description</td>
             <td>@detail.Quantity</td>
-            @if (empRole == "STORE_CLERK" || empRole == "STORE_SUPERVISOR" || empRole == "STORE_MANAGER")
+            @if (status == "")
             {
                 <td><input type="number" class="input" name="@detail.Item.ItemId" value="@detail.Quantity" /></td>
             }
@@ -30,17 +30,17 @@
             {
                 <td>@detail.Quantity</td>
             }
+
+
+
         </tr>
     }
 </table>
-@if (empRole == "STORE_CLERK" || empRole == "STORE_SUPERVISOR" || empRole == "STORE_MANAGER")
+@if (status == "")
 {
     <input type="button" value="Disburse items" onclick="submitData()" />
 }
-else
-{
-    <input type="button" name="Acknowledge" value="Acknowledge" />
-}
+
 
 
 

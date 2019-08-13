@@ -177,7 +177,8 @@ namespace SSISTeam9.DAO
                 {
                     disbursementList = new DisbursementList()
                     {
-                        date = (DateTime)reader["date"]
+                        date = (DateTime)reader["date"],
+                        AcknowledgedBy = reader["acknowledgedBy"].ToString()
                     };
                     disbursementList.Department = new Department()
                     {

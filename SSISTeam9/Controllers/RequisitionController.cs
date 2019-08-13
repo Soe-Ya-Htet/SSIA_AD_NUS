@@ -123,15 +123,17 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        [DepartmentFilter]
         public ActionResult GetRequisitionDetails(long reqId,string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
+            Requisition req = RequisitionService.GetReqByReqId(reqId);
             List<RequisitionDetails> requisitionDetails = RequisitionService.DisplayRequisitionDetailsByReqId(reqId);
+            string roleForDetail = RequisitionService.FindRoleForDetail(emp);
+            ViewData["roleForDetail"] = roleForDetail;
             ViewData["sessionId"] = sessionId;
             ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
             ViewData["requisitionDetails"] = requisitionDetails;
-            ViewData["reqId"] = reqId;
+            ViewData["req"] = req;
             bool all = DelegateService.CheckPreviousHeadForNav(emp.DeptId);
             bool permanentHead = ((emp.EmpRole == "HEAD" && emp.EmpDisplayRole == "HEAD") || (emp.EmpRole == "EMPLOYEE" && emp.EmpDisplayRole == "HEAD"));
             ViewData["all"] = all;

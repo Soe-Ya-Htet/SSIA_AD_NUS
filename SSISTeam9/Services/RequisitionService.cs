@@ -173,6 +173,28 @@ namespace SSISTeam9.Services
             return filtered;
         }
 
+        public static Requisition GetReqByReqId(long reqId)
+        {
+            return RequisitionDAO.GetReqByReqId(reqId);
+        }
+
+        public static string FindRoleForDetail(Employee emp)
+        {
+            if (emp.EmpRole.Contains("STORE"))
+            {
+                return "store";
+            }
+            else if((emp.EmpRole == "EMPLOYEE" && emp.EmpDisplayRole == "EMPLOYEE") 
+                || (emp.EmpRole == "REPRESENTATIVE" && emp.EmpDisplayRole == "REPRESENTATIVE"))
+            {
+                return "dept";
+            }
+            else
+            {
+                return "head";
+            }
+        }
+
         public static List<Requisition> DisplayPastRequisitions(long deptId)
         {
             string[] status = { "Approved","Assigned to Collection","Partially Completed", "Partially Completed(assigned)","Completed" };

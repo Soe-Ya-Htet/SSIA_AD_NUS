@@ -34,3 +34,7 @@ code {
     margin: 0px 10px 0px 10px;
     font-size: 14px;
 }
+
+.nav-header {
+    padding-bottom: 30px;
+}

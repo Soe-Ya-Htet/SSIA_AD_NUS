@@ -81,6 +81,38 @@ namespace SSISTeam9.DAO
 
         }
 
+        public static Requisition GetReqByReqId(long reqId)
+        {
+            Requisition req = null;
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"SELECT * from Requisition WHERE reqId = @reqId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@reqId", reqId);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Employee e = new Employee()
+                    {
+                        EmpId = (long)reader["empId"]
+                    };
+
+                    req = new Requisition()
+                    {
+                        ReqId = (long)reader["reqId"],
+                        ReqCode = (String)reader["reqCode"],
+                        DateOfRequest = (DateTime)reader["dateOfRequest"],
+                        Status = (String)reader["status"],
+                        //PickUpDate = (DateTime)reader["pickUpDate"],
+                        ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
+                        Employee = e
+                    };
+                }
+            }
+            return req;
+        }
+
         public static List<Requisition> GetRequisitionByDeptId(long deptId)
         {
             List<Requisition> requisitions = new List<Requisition>();

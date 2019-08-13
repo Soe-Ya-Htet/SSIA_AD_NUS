@@ -2,44 +2,79 @@
 @using SSISTeam9.Models
 @{
     var requisitionDetails = (List<RequisitionDetails>)ViewData["requisitionDetails"];
-    var reqId = (long)ViewData["reqId"];
     var appStatus = "Approved";
     var rejStatus = "Rejected";
+    Requisition req = (Requisition)ViewData["req"];
     string sessionId = (string)ViewData["sessionId"];
     bool isRep = (bool)ViewData["isRep"];
+    string roleForDetail = (string)ViewData["roleForDetail"];
+    if (roleForDetail == "store")
+    {
+        Layout = "~/Views/Shared/_Store.cshtml";
+    }
 }
-<link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
-<header style="padding-bottom: 30px;">
-    <!-- Fixed navbar -->
-    <nav class="dptnavbar navbar navbar-expand-md navbar-dark fixed-top">
+@if (roleForDetail != "store")
+{
+    <link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
+    <header style="padding-bottom: 30px;">
+        <!-- Fixed navbar -->
+        <nav class="dptnavbar navbar navbar-expand-md navbar-dark fixed-top">
 
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    @Html.ActionLink("Pending Requisitions", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
-                </li>
-                <li class="nav-item active">
-                    @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
-                </li>
-                <li class="nav-item active">
-                    @Html.ActionLink("Change Representative", "ChangeRepresentative", "Representative", new { sessionId = sessionId }, new { @class = "nav-link" })
-                </li>
-                <li class="nav-item active">
-                    @Html.ActionLink("Delegate", "ViewDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
-                </li>
-                <li class="nav-item active">
-                    @Html.ActionLink("Remove Delegate", "ViewRemoveDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
-                </li>
-            </ul>
-            <ul class="navbar-nav mt-2 mt-md-0">
-                <li class="nav-item active">
-                    @Html.ActionLink("Logout", "Logout", "Home", new { sessionId = sessionId }, new { @class = "nav-link" })
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
-Requisition ID : @reqId
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    @if (roleForDetail == "dept")
+                    {
+                        <!-- dept nav -->
+                        <li class="nav-item active">
+                            @Html.ActionLink("New Requisition", "NewRequisition", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        </li>
+                        <li class="nav-item active">
+                            @Html.ActionLink("Requisition List", "RequisitionList", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        </li>
+                        <li class="nav-item active">
+                            @Html.ActionLink("My Requisition", "MyRequisition", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        </li>
+                        <li class="nav-item active">
+                            @Html.ActionLink("Department Requisition", "DeptRequisition", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        </li>
+                        if (isRep)
+                        {
+                            <li class="nav-item active">
+                                @Html.ActionLink("Disbursement List", "RepDisbursementList", "Disbursement", new { sessionId = sessionId }, new { @class = "nav-link" })
+                            </li>
+                        }
+                    }
+                    else if (roleForDetail == "head")
+                    {
+                        <!-- head nav -->
+                        <li class="nav-item active">
+                            @Html.ActionLink("Pending Requisitions", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        </li>
+                        <li class="nav-item active">
+                            @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        </li>
+                        <li class="nav-item active">
+                            @Html.ActionLink("Change Representative", "ChangeRepresentative", "Representative", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        </li>
+                        <li class="nav-item active">
+                            @Html.ActionLink("Delegate", "ViewDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        </li>
+                        <li class="nav-item active">
+                            @Html.ActionLink("Remove Delegate", "ViewRemoveDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        </li>
+                    }
+                </ul>
+                <ul class="navbar-nav mt-2 mt-md-0">
+                    <li class="nav-item active">
+                        @Html.ActionLink("Logout", "Logout", "Home", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+}
+
+Requisition Code : @req.ReqCode
 @{
     <form method="post">
         <table class="table table-bordered">
@@ -58,13 +93,34 @@ Requisition ID : @reqId
                     <td>@detail.Quantity</td>
                 </tr>
             }
-        <tr>
-            <td></td>
-            <td><button class="rounded" type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@rejStatus&sessionId=@sessionId"><span>Reject</span></button></td>
-            <td><button class="rounded" type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@reqId&status=@appStatus&sessionId=@sessionId"><span>Approve</span></button></td>
-            <td><button class="rounded" type="submit" id=reqId formaction="/Requisition/Reorder?reqId=@reqId&sessionId=@sessionId"><span>Reorder</span></button></td>
-        </tr>
         </table>
+        <div class="container">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col"></div>
+                <div class="col"></div>
+                <div class="col">
+                    <div class="row">
+                        @if (roleForDetail == "head" && req.Status == "Pending Approval")
+                        {
+                            <div class="col">
+                                <button class="rounded btn-width btn-danger" type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@req.ReqId&status=@rejStatus&sessionId=@sessionId"><span>Reject</span></button>
+                            </div>
+                            <div class="col">
+                                <button class="rounded btn-width btn-success" type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@req.ReqId&status=@appStatus&sessionId=@sessionId"><span>Approve</span></button>
+                            </div>
+                        }
+                        else if (roleForDetail == "dept")
+                        {
+                            <div class="col"></div>
+                            <div class="col">
+                                <button class="rounded btn-width btn-success" type="submit" id=reqId formaction="/Requisition/Reorder?reqId=@req.ReqId&sessionId=@sessionId"><span>Reorder</span></button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 
 }

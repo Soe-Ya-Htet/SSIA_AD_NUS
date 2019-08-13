@@ -73,7 +73,7 @@
             {
                 <tr>
 
-                    <td>@Html.ActionLink(@requisition.ReqId.ToString(), "ViewPastRequisitionDetails", new { reqId = @requisition.ReqId, sessionId = sessionId })</td>
+                    <td>@Html.ActionLink(@requisition.ReqId.ToString(), "GetRequisitionDetails", new { reqId = requisition.ReqId, sessionId = sessionId})</td>
                     <td>@requisition.Employee.EmpName</td>
                     <td>@requisition.Status</td>
                 </tr>

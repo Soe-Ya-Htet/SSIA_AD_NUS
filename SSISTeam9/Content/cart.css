@@ -31,3 +31,23 @@
 .btn-width {
     width: 100px;
 }
+
+.input-num {
+    width: 100px;
+    height: 20px;
+}
+
+.cart-data {
+    width: 300px;
+    height: 10px;
+}
+
+.cart-form {
+    text-align: center;
+}
+
+.cart-img {
+    width: 200px;
+    height: 100px;
+    margin-bottom: 10px
+}

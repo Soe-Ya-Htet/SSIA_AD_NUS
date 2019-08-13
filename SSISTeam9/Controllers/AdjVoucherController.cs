@@ -209,8 +209,25 @@ namespace SSISTeam9.Controllers
         }
 
 
-        public ActionResult AdjDetails()
+        public ActionResult AdjDetails(long adjId, string sessionId)
         {
+            List<AdjVoucher> adjVouchers = new List<AdjVoucher>();
+            adjVouchers = AdjVoucherService.GetAdjByAdjId(adjId);
+            foreach(AdjVoucher adj in adjVouchers)
+            {
+                adj.ItemCode = CatalogueService.GetCatalogueById(adj.ItemId).ItemCode;
+            }
+            string adjIdstring = adjId.ToString("000/000/00");
+            string authorisedBy = "Nil";
+            if (adjVouchers[0].AuthorisedBy != 0)
+            {
+                authorisedBy = EmployeeService.GetEmployeeById(adjVouchers[0].AuthorisedBy).EmpName;
+            }
+
+            ViewData["adjIdstring"] = adjIdstring;
+            ViewData["adjVouchers"] = adjVouchers;
+            ViewData["authorisedBy"] = authorisedBy;
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 

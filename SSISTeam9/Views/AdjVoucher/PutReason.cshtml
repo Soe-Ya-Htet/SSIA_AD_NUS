@@ -28,7 +28,7 @@ else
                 <tr align="center">
                     <td>@adjVouchers[i].ItemCode</td>
                     <td>@adjVouchers[i].AdjQty</td>
-                    <td>@Html.TextBoxFor(x => x[i].Reason, new { id = "reason", @Value = adjVouchers[i].Reason })</td>
+                    <td>@Html.TextBoxFor(x => x[i].Reason, new { id = "reason"})</td>
                     <td>@Html.ValidationMessageFor(x => x[i].Reason, "", new { style = "color:red" })</td>
                     <td style="display:none">
                         @Html.TextBoxFor(x => x[i].ItemId, new { id = "itemId", @Value = adjVouchers[i].ItemId })

@@ -4,44 +4,98 @@
     var employees = (List<Employee>)ViewData["employees"];
     var sessionId = (string)ViewData["sessionId"];
     var filtered = new List<Employee>();
-    foreach(var emp in employees)
+    var showAll = (bool)ViewData["all"];
+    var currentHead = (Employee)ViewData["currentHead"];
+    var delegated = (bool)ViewData["delegated"];
+    foreach (var emp in employees)
     {
-        if(emp.EmpRole!="REPRESENTATIVE")
+        if (emp.EmpRole != "REPRESENTATIVE")
         {
             filtered.Add(emp);
         }
     }
 }
+<link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
+<header style="padding-bottom: 30px;">
+    <!-- Fixed navbar -->
+    <nav class="dptnavbar navbar navbar-expand-md navbar-dark fixed-top">
 
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                @if (showAll)
+                {
+                    <li class="nav-item active">
+                        @Html.ActionLink("Pending Requisitiond", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Change Representative", "ChangeRepresentative", "Representative", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Delegate", "ViewDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    
+                }
+                @if (!showAll)
+                {
+                    <li class="nav-item active">
+                        @Html.ActionLink("Delegate", "ViewDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                }
+            </ul>
+            <ul class="navbar-nav mt-2 mt-md-0">
+                <li class="nav-item active">
+                    @Html.ActionLink("Logout", "Logout", "Home", new { sessionId = sessionId }, new { @class = "nav-link" })
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
 <h2>ViewDelegate</h2>
-@using (Html.BeginForm("ViewDelegate", "Delegate", FormMethod.Post,new { sessionId=sessionId}))
+@if (!delegated)
 {
-    @Html.ValidationSummary(true)
-    <input type="hidden" name="sessionId" value="@sessionId" />
-<table>
-    <tr>
-        <td>@Html.LabelFor(x => x.FromDate) </td>
-        <td>@Html.TextBoxFor(x => x.FromDate, new { type = "date" })</td>
-        <td>@Html.ValidationMessageFor(x=>x.FromDate)</td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(x => x.ToDate) </td>
-        <td>@Html.TextBoxFor(x => x.ToDate, new { type = "date"})</td>
-        <td>@Html.ValidationMessageFor(x=>x.ToDate)</td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(x => x.Employee) </td>
-        <td>
-            <div>
-                @Html.DropDownListFor(x => x.Employee.EmpId, filtered.Select(e => new SelectListItem { Text=e.EmpName, Value=e.EmpId.ToString()}))
-            </div>
-        </td>
-        <td>
-            <input type="submit" value="Delegate"/>
-        </td>
-    </tr>
-</table>
+    using (Html.BeginForm("ViewDelegate", "Delegate", FormMethod.Post, new { sessionId = sessionId }))
+    {
+        @Html.ValidationSummary(true)
+        <input type="hidden" name="sessionId" value="@sessionId" />
+        <table>
+            <tr>
+                <td>@Html.LabelFor(x => x.FromDate) </td>
+                <td>@Html.TextBoxFor(x => x.FromDate, new { type = "date" })</td>
+                <td>@Html.ValidationMessageFor(x => x.FromDate)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.ToDate) </td>
+                <td>@Html.TextBoxFor(x => x.ToDate, new { type = "date" })</td>
+                <td>@Html.ValidationMessageFor(x => x.ToDate)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.Employee) </td>
+                <td>
+                    <div>
+                        @Html.DropDownListFor(x => x.Employee.EmpId, filtered.Select(e => new SelectListItem { Text = e.EmpName, Value = e.EmpId.ToString() }))
+                    </div>
+                </td>
+                <td>
+                    <input type="submit" value="Delegate" />
+                </td>
+            </tr>
+        </table>
+    }
 }
+else
+{
+    <form method="post" action="@Url.Action("ViewDelegate","Delegate",new { })">
+        Current Delegate : @currentHead.EmpName
+        <button type="submit" formaction="/Delegate/ViewDelegate?delegatedhead=@currentHead.EmpId&sessionId=@sessionId">Remove</button>
+    </form>
+}
+
+
+
+
 <script>
     function checkDate() {
         var from = document.getElementById("FromDate").value;

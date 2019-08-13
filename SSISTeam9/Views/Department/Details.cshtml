@@ -25,13 +25,17 @@
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.DeptCode) </td>
-                <td>@Html.TextBoxFor(x => x.DeptCode, new { id = "deptCode", @Value = department.DeptCode })</td>
-                @Html.ValidationMessageFor(x => x.DeptCode, "", new { style = "color:red" })
+                <td>
+                    @Html.TextBoxFor(x => x.DeptCode, new { id = "deptCode", @Value = department.DeptCode })
+                    @Html.ValidationMessageFor(x => x.DeptCode, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.DeptName) </td>
-                <td>@Html.TextBoxFor(x => x.DeptName, new { id = "deptName", @Value = department.DeptName })</td>
-                @Html.ValidationMessageFor(x => x.DeptName, "", new { style = "color:red" })
+                <td>
+                    @Html.TextBoxFor(x => x.DeptName, new { id = "deptName", @Value = department.DeptName })
+                    @Html.ValidationMessageFor(x => x.DeptName, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Contact) </td>
@@ -55,13 +59,17 @@
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Telephone) </td>
-                <td>@Html.TextBoxFor(x => x.Telephone, new { id = "telephone", @Value = department.Telephone })</td>
-                @Html.ValidationMessageFor(x => x.Telephone, "", new { style = "color:red" })
+                <td>
+                    @Html.TextBoxFor(x => x.Telephone, new { id = "telephone", @Value = department.Telephone })
+                    @Html.ValidationMessageFor(x => x.Telephone, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Fax) </td>
-                <td>@Html.TextBoxFor(x => x.Fax, new { id = "fax", @Value = department.Fax })</td>
-                @Html.ValidationMessageFor(x => x.Fax, "", new { style = "color:red" })
+                <td>
+                    @Html.TextBoxFor(x => x.Fax, new { id = "fax", @Value = department.Fax })
+                    @Html.ValidationMessageFor(x => x.Fax, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Head) </td>
@@ -83,22 +91,15 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <button class="rounded" style="background-color:red;">
-                        @Html.ActionLink("Delete Department","Delete","Department",
-                        new { confirm = true, deptId = department.DeptId, sessionid = sessionId },
-                        new { Style = "color:White;", onclick = "return confirm('Do you really want to delete this department?')" })
-                    </button>
-                </td>
-                <td align="right"><input class="rounded" type="submit" value="Save Update" style="background-color:forestgreen; color:white"></td>
                 @Html.Hidden("deptId", department.DeptId)
-            </tr>
         </table>
-
-
+        <button class="btn btn-danger rounded" style="float:left">
+            @Html.ActionLink("Delete Department","Delete","Department",
+            new { confirm = true, deptId = department.DeptId, sessionid = sessionId },
+            new { Style = "color:White;", onclick = "return confirm('Do you really want to delete this department?')" })
+        </button>
+        <input class="btn btn-success rounded" type="submit" value="Save Update" style="float:right">
     }
-
 </div>
 
 @Html.Raw(TempData["errorMsg"])

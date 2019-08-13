@@ -15,13 +15,17 @@
         <table class="table table-bordered">
             <tr>
                 <td>@Html.LabelFor(x => x.DeptCode) </td>
-                <td>@Html.TextBoxFor(x => x.DeptCode, new { id = "deptCode" })</td>
-                <td>@Html.ValidationMessageFor(x => x.DeptCode, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(x => x.DeptCode, new { id = "deptCode" })
+                    @Html.ValidationMessageFor(x => x.DeptCode, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.DeptName) </td>
-                <td>@Html.TextBoxFor(x => x.DeptName, new { id = "deptName" })</td>
-                <td>@Html.ValidationMessageFor(x => x.DeptName, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(x => x.DeptName, new { id = "deptName" })
+                    @Html.ValidationMessageFor(x => x.DeptName, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Contact) </td>
@@ -38,13 +42,17 @@
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Telephone) </td>
-                <td>@Html.TextBoxFor(x => x.Telephone, new { id = "telephone" })</td>
-                <td>@Html.ValidationMessageFor(x => x.Telephone, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(x => x.Telephone, new { id = "telephone" })
+                    @Html.ValidationMessageFor(x => x.Telephone, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Fax) </td>
-                <td>@Html.TextBoxFor(x => x.Fax, new { id = "fax" })</td>
-                <td>@Html.ValidationMessageFor(x => x.Fax, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(x => x.Fax, new { id = "fax" })
+                    @Html.ValidationMessageFor(x => x.Fax, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Head) </td>
@@ -59,13 +67,8 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td></td>
-                <td align="right"><input class="rounded" type="submit" value="Save Create" style="background-color:green;color:white;"></td>
-            </tr>
         </table>
-
-
+        <input class="rounded" type="submit" value="Create" style="float:right">
     }
 
 </div>

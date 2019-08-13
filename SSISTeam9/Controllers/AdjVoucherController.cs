@@ -169,10 +169,13 @@ namespace SSISTeam9.Controllers
             List<string> dates = new List<string>();
             List<string> authorisedBys = new List<string>();
             List<string> statuses = new List<string>();
-            for(long i = 1; i <= totalAdjNumber; i++)
+            List<string> adjIds = new List<string>();
+            for (long i = 1; i <= totalAdjNumber; i++)
             {
+                string adjId = i.ToString("000/000/00");
+                adjIds.Add(adjId);
                 AdjVoucher adj = AdjVoucherService.GetAdjByAdjId(i)[0];
-                string date = adj.Date.Day + "/" + adj.Date.Month + "/" + adj.Date.Year;
+                string date = adj.Date.Day.ToString("00") + "/" + adj.Date.Month.ToString("00") + "/" + adj.Date.Year;
                 dates.Add(date);
                 string authorisedBy = "Nil";
                 if (adj.AuthorisedBy != 0)
@@ -199,6 +202,7 @@ namespace SSISTeam9.Controllers
             ViewData["dates"] = dates;
             ViewData["authorisedBys"] = authorisedBys;
             ViewData["statuses"] = statuses;
+            ViewData["adjIds"] = adjIds;
 
 
             return View();

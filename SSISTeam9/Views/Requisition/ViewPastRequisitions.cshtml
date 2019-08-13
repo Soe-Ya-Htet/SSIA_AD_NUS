@@ -16,7 +16,7 @@
                 @if (showAll && permanentHead)
                 {
                     <li class="nav-item active">
-                        @Html.ActionLink("Pending Requisitiond", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        @Html.ActionLink("Pending Requisitions", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
                     </li>
                     <li class="nav-item active">
                         @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
@@ -37,7 +37,7 @@
                 else if (!showAll && !permanentHead)
                 {
                     <li class="nav-item active">
-                        @Html.ActionLink("Pending Requisitiond", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        @Html.ActionLink("Pending Requisitions", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
                     </li>
                     <li class="nav-item active">
                         @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })

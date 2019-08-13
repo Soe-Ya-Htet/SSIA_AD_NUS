@@ -24,8 +24,15 @@ namespace SSISTeam9.Utility
             //var principal = Thread.CurrentPrincipal;
             //return ((UserPrincipal)principal).Emp;
 
-            UserPrincipal principal = (UserPrincipal) Thread.CurrentPrincipal;
-            return principal.Emp;
+            try
+            {
+                UserPrincipal principal = (UserPrincipal)Thread.CurrentPrincipal;
+                return principal.Emp;
+            }
+            catch
+            {
+                return null;
+            }
 
         }
 

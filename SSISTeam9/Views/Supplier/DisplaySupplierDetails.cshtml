@@ -64,19 +64,14 @@
                     @Html.ValidationMessageFor(m => m.FaxNumber, "", new { style = "color:red" })
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <button class="btn btn-danger">
-                        @Html.ActionLink("Delete Supplier","Delete","Supplier",
-                        new { confirm = true, supplierCode = supplier.SupplierCode, sessionid = sessionId },
-                        new { onclick = "return confirm('Do you really want to delete this supplier?')"})
-                    </button>
-                    <!-- <input type="button" value="Delete Supplier" onclick="location.href='/Supplier/Delete?supplierCode=@supplier.SupplierCode'">-->
-                </td>
-                <td align="right"><input type="submit" value="Save Update(s)" class="btn btn-success rounded"></td>
                 @Html.Hidden("supplierId", supplier.SupplierId)
-            </tr>
         </table>
+        <button class="btn btn-danger" style="float:left">
+            @Html.ActionLink("Delete Supplier","Delete","Supplier",
+            new { confirm = true, supplierCode = supplier.SupplierCode, sessionid = sessionId },
+            new { onclick = "return confirm('Do you really want to delete this supplier?')"})
+        </button>
+        <input type="submit" value="Save Update(s)" class="btn btn-success rounded" style="float:right">
     }
 </div>
 

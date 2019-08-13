@@ -46,9 +46,9 @@ namespace SSISTeam9.Services
                 return "Failed";
             }
 
-            long currentRep = DepartmentService.GetCurrentRep(user.EmpId);
+            long currentRep = DepartmentService.GetCurrentRep(user.DeptId);
             long newRep = repId;
-            RepresentativeService.UpdateEmployeeRole(newRep, currentRep, user.EmpId);
+            RepresentativeService.UpdateEmployeeRole(newRep, currentRep, user.DeptId);
 
             return "Success";
         }
@@ -63,10 +63,10 @@ namespace SSISTeam9.Services
 
             delegat.Department = new Department
             {
-                DeptId = user.EmpId
+                DeptId = user.DeptId
             };
 
-            long headId = DepartmentService.GetCurrentHead(user.EmpId);
+            long headId = DepartmentService.GetCurrentHead(user.DeptId);
 
             DelegateService.AddNewDelegate(delegat, headId);
 
@@ -149,7 +149,7 @@ namespace SSISTeam9.Services
             }
             else
             {
-                List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(user.EmpId);
+                List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(user.DeptId);
                 repDict.Add("repList", employees);
             }
 
@@ -185,7 +185,7 @@ namespace SSISTeam9.Services
             }
             else
             {
-                List<Requisition> reqs = RequisitionDAO.GetAllPastOrderReqs((int)user.EmpId);
+                List<Requisition> reqs = RequisitionDAO.GetAllPastOrderReqs((int)user.DeptId);
                 reqDict.Add("reqList", reqs);
             }
 
@@ -231,7 +231,7 @@ namespace SSISTeam9.Services
             }
             else
             {
-                List<Requisition> requisitions = RequisitionDAO.GetAllPendingOrderReqs((int)user.EmpId);
+                List<Requisition> requisitions = RequisitionDAO.GetAllPendingOrderReqs((int)user.DeptId);
 
                 reqOrderDict.Add("reqList", requisitions);
             }
@@ -251,8 +251,8 @@ namespace SSISTeam9.Services
             }
             else
             {
-                long currentRepId = DepartmentService.GetCurrentRep(user.EmpId);
-                List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(user.EmpId);
+                long currentRepId = DepartmentService.GetCurrentRep(user.DeptId);
+                List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(user.DeptId);
                 Employee emp = employees.Find(e => e.EmpId == currentRepId);
                 repDict.Add("repList", employees);
                 repDict.Add("curRep", emp);
@@ -282,7 +282,7 @@ namespace SSISTeam9.Services
                 return null;
             }
 
-            Models.Delegate del = DelegateDAO.GetDelegateInfoByDeptId((int)user.EmpId);
+            Models.Delegate del = DelegateDAO.GetDelegateInfoByDeptId((int)user.DeptId);
 
             return del;
         }
@@ -327,7 +327,7 @@ namespace SSISTeam9.Services
                 return "Failed";
             }
 
-            long headId = DepartmentService.GetCurrentHead(user.EmpId);
+            long headId = DepartmentService.GetCurrentHead(user.DeptId);
 
             RequisitionService.ProcessRequisition(reqId, "Rejected", headId);
             return "Success";

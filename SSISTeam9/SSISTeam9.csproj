@@ -813,6 +813,7 @@
     <Content Include="Views\Shared\_Store.cshtml" />
     <Content Include="Views\AdjVoucher\PutReason.cshtml" />
     <Content Include="Views\Disbursement\ViewAllCompletedDisbursements.cshtml" />
+    <Content Include="Views\AdjVoucher\PendingApprove.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

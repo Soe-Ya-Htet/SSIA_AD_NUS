@@ -1,0 +1,40 @@
+﻿@using SSISTeam9.Models;
+@{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Inventory Adjustment Voucher";
+    List<AdjVoucher> adjVouchers = (List<AdjVoucher>)ViewData["adjVouchers"];
+    string sessionId = (string)ViewData["sessionId"];
+}
+
+@if (adjVouchers.Count == 0)
+{
+    <br /><br />
+    <p style="font-size:14px">No adjustment voucher to display</p>
+}
+else
+{
+    <section>
+        <table align="center">
+            <tr align="center">
+                <th>Item Code</th>
+                <th>Quantity adjusted</th>
+                <th>Reason</th>
+            </tr>
+
+            @foreach (AdjVoucher adj in adjVouchers)
+            {
+
+                <tr>
+                    <td>@adj.ItemCode</td>
+                    <td>@adj.AdjQty</td>
+                    <td>@adj.Reason</td>
+                </tr>
+            }
+
+        </table>
+        <div class="button">
+            <input class="rounded" type="button" value="Authorise" style="margin-left:10px;" onclick="location.href='@Url.Action("AuthoriseByM","AdjVoucher", new { adjId = adjVouchers[1].AdjId, sessionid = sessionId})'">
+        </div>
+    </section>
+}
+        

@@ -125,14 +125,14 @@ namespace SSISTeam9.DAO
             }
         }
 
-        public static List<AdjVoucher> GetUnauthorisedAdj()
+        public static List<AdjVoucher> GetAdjByStatus(int status)
         {
             List<AdjVoucher> adjVouchers = new List<AdjVoucher>();
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
 
-                string q = @"SELECT * from AdjVoucher WHERE authorisedBy = '0'";
+                string q = @"SELECT * from AdjVoucher WHERE authorisedBy = '" + status + "'";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -152,6 +152,52 @@ namespace SSISTeam9.DAO
             }
 
             return adjVouchers;
+        }
+
+
+
+
+
+        public static void UpdateReason(AdjVoucher adjVoucher)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"UPDATE AdjVoucher SET reason = '" + adjVoucher.Reason +
+                             "' WHERE itemId = '" + adjVoucher.ItemId + "' AND adjId = '" + adjVoucher.AdjId + "'";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void UpdateStatus(long adjId, int status)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"UPDATE AdjVoucher SET status = '" + status +
+                             "' WHERE adjId = '" + adjId + "'";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void AuthoriseBy(long adjId, long empId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"UPDATE AdjVoucher SET authorisedBy = '" + empId +
+                             "' WHERE adjId = '" + adjId + "'";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
         }
 
     }

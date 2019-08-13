@@ -88,12 +88,88 @@ namespace SSISTeam9.Controllers
         public ActionResult PutReason(string sessionId)
         {
             List<AdjVoucher> adjVouchers = new List<AdjVoucher>();
-            adjVouchers = AdjVoucherService.GetUnauthorisedAdj();
+
+            //status = 0 means need to be submit for reason.
+            adjVouchers = AdjVoucherService.GetAdjByStatus(0);
             ViewData["adjVouchers"] = adjVouchers;
             ViewData["sessionId"] = sessionId;
             return View();
         }
 
+
+        public ActionResult AuthoriseByS(List<AdjVoucher> adjVouchers, string sessionId)
+        {
+            Employee user = EmployeeService.GetUserBySessionId(sessionId);
+            double totalAmount = 0;
+            foreach (AdjVoucher adj in adjVouchers)
+            {
+                PriceList priceList = PriceListService.GetPriceListByItemId(adj.ItemId);
+                double price = 0;
+                if (priceList != null)
+                {
+                    price = priceList.Supplier1UnitPrice;
+                }
+
+                double amount = price * adj.AdjQty;
+                totalAmount = totalAmount + amount;
+                AdjVoucherService.UpdateReason(adj);
+            }
+
+            if (totalAmount > -250)
+            {
+                //status = 1, auto approved by supervisor
+                AdjVoucherService.UpdateStatus(adjVouchers[1].AdjId, 1);
+                AdjVoucherService.AuthoriseBy(adjVouchers[1].AdjId, user.EmpId);
+                TempData["errorMsg"] = "<script>alert('Total discrepancy is less than $250, authorised already.');</script>";
+            }
+            else
+            {
+                //status = 2, pending approve for manager
+                AdjVoucherService.UpdateStatus(adjVouchers[1].AdjId, 2);
+                TempData["errorMsg"] = "<script>alert('Total discrepancy is more than $250, pending for Store Manager to authorise.');</script>";
+
+            }
+            ViewData["userName"] = user.EmpName;
+            ViewData["sessionId"] = sessionId;
+            return View("~/Views/StoreLandingPage/Home.cshtml");
+        }
+
+
+        public ActionResult PendingApprove(string sessionId)
+        {
+            List<AdjVoucher> adjVouchers = new List<AdjVoucher>();
+
+            //status = 2, pending approve for manager
+            adjVouchers = AdjVoucherService.GetAdjByStatus(2);
+            ViewData["adjVouchers"] = adjVouchers;
+            ViewData["sessionId"] = sessionId;
+            return View();
+        }
+
+
+        public ActionResult AuthoriseByM(long adjId, string sessionId)
+        {
+            Employee user = EmployeeService.GetUserBySessionId(sessionId);
+            AdjVoucherService.AuthoriseBy(adjId, user.EmpId);
+            TempData["errorMsg"] = "<script>alert('Adjustment voucher authorise successfully.');</script>";
+            ViewData["userName"] = user.EmpName;
+            ViewData["sessionId"] = sessionId;
+            return View("~/Views/StoreLandingPage/Home.cshtml");
+
+        }
+
+
+        public ActionResult AllAprovedAdj()
+        {
+
+            return View();
+        }
+
+
+        public ActionResult AdjDetails()
+        {
+            return View();
+        }
 
     }
 

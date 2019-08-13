@@ -20,9 +20,34 @@ namespace SSISTeam9.Services
             return AdjVoucherDAO.GetLastId();
         }
 
-        public static List<AdjVoucher> GetUnauthorisedAdj()
+        public static List<AdjVoucher> GetAdjByStatus(int status)
         {
-            return AdjVoucherDAO.GetUnauthorisedAdj();
+            List<AdjVoucher> adjVouchers = new List<AdjVoucher>();
+            adjVouchers = AdjVoucherDAO.GetAdjByStatus(status);
+            if(adjVouchers != null)
+            {
+                foreach(AdjVoucher adj in adjVouchers)
+                {
+                    adj.ItemCode = CatalogueService.GetCatalogueById(adj.ItemId).ItemCode;
+                }
+            }
+
+            return adjVouchers;
+        }
+
+        public static void UpdateReason(AdjVoucher adjVoucher)
+        {
+            AdjVoucherDAO.UpdateReason(adjVoucher);
+        }
+
+        public static void UpdateStatus(long adjId, int status)
+        {
+            AdjVoucherDAO.UpdateStatus(adjId, status);
+        }
+
+        public static void AuthoriseBy(long adjId, long empId)
+        {
+            AdjVoucherDAO.AuthoriseBy(adjId,empId);
         }
     }
 }

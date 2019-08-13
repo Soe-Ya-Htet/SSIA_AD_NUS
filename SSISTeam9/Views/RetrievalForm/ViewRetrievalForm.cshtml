@@ -53,7 +53,7 @@
         }
     </table>
     <div class="row justify-content-end">
-        <input type="date" name="date" id="collectionDate" required />
+        <input type="date" name="date" id="collectionDate" value="@DateTime.Now.AddDays(7).ToString("yyyy-MM-dd")" />
         <input class="btn-success rounded" type="button" value="Submit" onclick="submitData()" />
     </div>
     

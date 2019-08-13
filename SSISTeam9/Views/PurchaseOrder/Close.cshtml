@@ -93,19 +93,17 @@
         </tr>
         }
         <tr>
-            <td colspan="2" align="left">Ordered By: @order.Employee.EmpName</td>
-            <td colspan="3" align="right"><input type="submit" value="Close Order"></td>
-        </tr>
-        <tr>
-            <td colspan="5" align="right">
-                <button class="rounded">
-                    @Html.ActionLink("Delete PO", "Delete", "PurchaseOrder",
-                    new { confirm = true, ordernumber = order.OrderNumber, sessionId = sessionId },
-                    new { onclick = "return confirm('Do you really want to delete this purchase order?')" })
-                </button>
-            </td>
+            <td colspan="5" align="left">Ordered By: @order.Employee.EmpName</td>
         </tr>
     </table>
+
+    <input type="submit" value="Close Order" style="float:right">
+    <br/><br/>
+    <button class="rounded" style="float:right">
+        @Html.ActionLink("Delete PO", "Delete", "PurchaseOrder",
+        new { confirm = true, ordernumber = order.OrderNumber, sessionId = sessionId },
+        new { onclick = "return confirm('Do you really want to delete this purchase order?')" })
+    </button>  
     }
 </div>
 

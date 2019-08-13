@@ -1,7 +1,7 @@
 ﻿@model SSISTeam9.Models.Inventory
 
 @using SSISTeam9.Models;
-@{ 
+@{
     Layout = "~/Views/Shared/_Store.cshtml";
     ViewBag.Title = "View All Inventory Items";
     List<Inventory> items = (List<Inventory>)ViewData["items"];
@@ -34,36 +34,34 @@ else
             </tr>
             @foreach (var item in items)
             {
-            <tr>
-                @if (item.StockLevel < item.ReorderLevel)
-                {
-                    <td>@Html.CheckBoxFor(m => m.CheckedItems[counter], new { id = "selectedOrderItem" })</td>
-                    <td style="color:red"><a href="/StockCard/StockCard?itemId=@item.ItemId&sessionId=@sessionId">@item.ItemCode</a></td>
-                    <td style="color:red">@item.Category</td>
-                    <td style="color:red">@item.Description</td>
-                    <td style="color:red">@item.UnitOfMeasure</td>
-                    <td style="color:red">@item.StockLevel</td>
-                    <td style="color:red">@item.ReorderLevel</td>
-                    <td style="color:red">@item.PendingOrderQuantity</td>
-                }
-                else
-                {
-                    <td>@Html.CheckBoxFor(m => m.CheckedItems[counter], new { id = "selectedOrderItem" })</td>
-                    <td><a href="/StockCard/StockCard?itemId=@item.ItemId&sessionId=@sessionId">@item.ItemCode</a></td>
-                    <td>@item.Category</td>
-                    <td>@item.Description</td>
-                    <td>@item.UnitOfMeasure</td>
-                    <td>@item.StockLevel</td>
-                    <td>@item.ReorderLevel</td>
-                    <td>@item.PendingOrderQuantity</td>
-                }
-            </tr>
+                <tr>
+                    @if (item.StockLevel < item.ReorderLevel)
+                    {
+                        <td>@Html.CheckBoxFor(m => m.CheckedItems[counter], new { id = "selectedOrderItem" })</td>
+                        <td style="color:red"><a href="/StockCard/StockCard?itemId=@item.ItemId&sessionId=@sessionId">@item.ItemCode</a></td>
+                        <td style="color:red">@item.Category</td>
+                        <td style="color:red">@item.Description</td>
+                        <td style="color:red">@item.UnitOfMeasure</td>
+                        <td style="color:red">@item.StockLevel</td>
+                        <td style="color:red">@item.ReorderLevel</td>
+                        <td style="color:red">@item.PendingOrderQuantity</td>
+                    }
+                    else
+                    {
+                        <td>@Html.CheckBoxFor(m => m.CheckedItems[counter], new { id = "selectedOrderItem" })</td>
+                        <td><a href="/StockCard/StockCard?itemId=@item.ItemId&sessionId=@sessionId">@item.ItemCode</a></td>
+                        <td>@item.Category</td>
+                        <td>@item.Description</td>
+                        <td>@item.UnitOfMeasure</td>
+                        <td>@item.StockLevel</td>
+                        <td>@item.ReorderLevel</td>
+                        <td>@item.PendingOrderQuantity</td>
+                    }
+                </tr>
                 counter = counter + 1;
             }
-            <tr>
-                <td colspan="8" align="right"><input class="rounded" type="submit" value="Generate Purchase Orders"></td>
-            </tr>
         </table>
+        <input class="rounded" type="submit" value="Generate Purchase Orders" style="float:right">
     }
 }
 

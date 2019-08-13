@@ -1,0 +1,37 @@
+﻿@using SSISTeam9.Models;
+@{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Adjustment Voucher Lists";
+    List<string> dates = (List<string>)ViewData["dates"];
+    List<string> authorisedBys = (List<string>)ViewData["authorisedBys"];
+    List<string> statuses = (List<string>)ViewData["statuses"];
+    List<string> adjIds = (List<string>)ViewData["adjIds"];
+    string sessionId = (string)ViewData["sessionId"];
+}
+
+@if (dates.Count == 0)
+{
+    <br /><br />
+    <p style="font-size:14px">No adjustment voucher to display.</p>
+}
+else
+{
+    <table align="center" class="table table-bordered">
+        
+        <tr align="center">
+            <th>AdjVoucher Id</th>
+            <th>Authorised By</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        @for(int i = 0; i < adjIds.Count; i++)
+        {
+            <tr align="center">
+                <td><a href="/AdjVoucher/AdjDetails?adjId=@(i + 1)&sessionId=@sessionId">@adjIds[0] </a></td>
+                <td>@authorisedBys[0]</td>
+                <td>@dates[0]</td>
+                <td>@statuses[0]</td>
+            </tr>
+        }
+    </table>
+}

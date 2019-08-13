@@ -8,9 +8,11 @@
     Login Page
 </title>
 
+<h2 style="font-family:Arial, Helvetica, sans-serif;font-size:40px;text-align:center">Logic University</h2>
+<br/>
 @using (Html.BeginForm("Login", "Home", FormMethod.Post))
 {
-    <table style="margin-left: auto;margin-right: auto;margin-top:10px">
+    <table style="margin-left: auto;margin-right: auto;margin-top:10px;font-family:Arial, Helvetica, sans-serif">
         <tr>
             <td>@Html.LabelFor(x => x.UserName)&nbsp;</td>
             <td>@Html.TextBoxFor(x => x.UserName)</td>

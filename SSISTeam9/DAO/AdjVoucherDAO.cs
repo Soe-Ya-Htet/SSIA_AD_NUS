@@ -132,7 +132,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from AdjVoucher WHERE authorisedBy = '" + status + "'";
+                string q = @"SELECT * from AdjVoucher WHERE status = '" + status + "'";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -145,9 +145,10 @@ namespace SSISTeam9.DAO
                         Date = (DateTime)reader["date"],
                         AuthorisedBy = (long)reader["authorisedBy"],
                         AdjQty = (int)reader["adjQty"],
-                        Reason = (string)reader["reason"],
+                        Reason = (reader["reason"] == DBNull.Value) ? " " : (string)reader["reason"],
                         status = (int)reader["status"]
                     };
+                    adjVouchers.Add(adjVoucher);
                 }
             }
 
@@ -155,7 +156,35 @@ namespace SSISTeam9.DAO
         }
 
 
+        public static List<AdjVoucher> GetAdjByAdjId(long adjId)
+        {
+            List<AdjVoucher> adjVouchers = new List<AdjVoucher>();
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
 
+                string q = @"SELECT * from AdjVoucher WHERE adjId = '" + adjId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    AdjVoucher adjVoucher = new AdjVoucher()
+                    {
+                        AdjId = (long)reader["adjId"],
+                        ItemId = (long)reader["itemId"],
+                        Date = (DateTime)reader["date"],
+                        AuthorisedBy = (long)reader["authorisedBy"],
+                        AdjQty = (int)reader["adjQty"],
+                        Reason = (reader["reason"] == DBNull.Value) ? " " : (string)reader["reason"],
+                        status = (int)reader["status"]
+                    };
+                    adjVouchers.Add(adjVoucher);
+                }
+            }
+
+            return adjVouchers;
+        }
 
 
         public static void UpdateReason(AdjVoucher adjVoucher)

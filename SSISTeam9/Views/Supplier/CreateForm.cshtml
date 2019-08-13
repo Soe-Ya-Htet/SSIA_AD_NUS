@@ -13,43 +13,55 @@
         <table class="table table-bordered">
             <tr>
                 <td>@Html.LabelFor(m => m.SupplierCode) </td>
-                <td>@Html.TextBoxFor(m => m.SupplierCode, new { id = "supplierCode" })</td>
-                <td>@Html.ValidationMessageFor(m => m.SupplierCode, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(m => m.SupplierCode, new { id = "supplierCode" })
+                    @Html.ValidationMessageFor(m => m.SupplierCode, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(m => m.Name) </td>
-                <td>@Html.TextBoxFor(m => m.Name, new { id = "supplierName" })</td>
-                <td>@Html.ValidationMessageFor(m => m.Name, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Name, new { id = "supplierName" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(m => m.GstNumber) </td>
-                <td>@Html.TextBoxFor(m => m.GstNumber, new { id = "gstNumber" })</td>
-                <td>@Html.ValidationMessageFor(m => m.GstNumber, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(m => m.GstNumber, new { id = "gstNumber" })
+                    @Html.ValidationMessageFor(m => m.GstNumber, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(m => m.Address) </td>
-                <td>@Html.TextBoxFor(m => m.Address, new { id = "address" })</td>
-                <td>@Html.ValidationMessageFor(m => m.Address, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Address, new { id = "address" })
+                    @Html.ValidationMessageFor(m => m.Address, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(m => m.ContactName) </td>
-                <td>@Html.TextBoxFor(m => m.ContactName, new { id = "contactName" })</td>
-                <td>@Html.ValidationMessageFor(m => m.ContactName, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(m => m.ContactName, new { id = "contactName" })
+                    @Html.ValidationMessageFor(m => m.ContactName, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(m => m.PhoneNumber) </td>
-                <td>@Html.TextBoxFor(m => m.PhoneNumber, new { id = "phoneNumber" })</td>
-                <td>@Html.ValidationMessageFor(m => m.PhoneNumber, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { id = "phoneNumber" })
+                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(m => m.FaxNumber) </td>
-                <td>@Html.TextBoxFor(m => m.FaxNumber, new { id = "faxNumber" })</td>
-                <td>@Html.ValidationMessageFor(m => m.FaxNumber, "", new { style = "color:red" })</td>
-            </tr>
-            <tr>
-                <td colspan="2" align="right"><input class="rounded" type="submit" value="Create"></td>
+                <td>
+                    @Html.TextBoxFor(m => m.FaxNumber, new { id = "faxNumber" })
+                    @Html.ValidationMessageFor(m => m.FaxNumber, "", new { style = "color:red" })
+                </td>
             </tr>
         </table>
+        <input class="rounded" type="submit" value="Create" style="float:right">
     }
 
 </div>

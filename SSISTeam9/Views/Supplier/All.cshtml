@@ -9,7 +9,8 @@
 
 <h3>Suppliers</h3>
 
-@if (suppliers.Count == 0){
+@if (suppliers.Count == 0)
+{
     <br /><br />
     <p style="font-size:14px">No suppliers to display</p>
 }
@@ -27,19 +28,17 @@ else
         </tr>
         @foreach (var supplier in suppliers)
         {
-        <tr>
-            <td><a href ="/Supplier/DisplaySupplierDetails?supplierCode=@supplier.SupplierCode&sessionId=@sessionId">@supplier.SupplierCode</a></td>
-            <td>@supplier.Name</td>
-            <td>@supplier.GstNumber</td>
-            <td>@supplier.Address</td>
-            <td>@supplier.ContactName</td>
-            <td>@supplier.PhoneNumber</td>
-            <td>@supplier.FaxNumber</td>
-        </tr>
+            <tr>
+                <td><a href="/Supplier/DisplaySupplierDetails?supplierCode=@supplier.SupplierCode&sessionId=@sessionId">@supplier.SupplierCode</a></td>
+                <td>@supplier.Name</td>
+                <td>@supplier.GstNumber</td>
+                <td>@supplier.Address</td>
+                <td>@supplier.ContactName</td>
+                <td>@supplier.PhoneNumber</td>
+                <td>@supplier.FaxNumber</td>
+            </tr>
         }
-        <tr>
-            <td colspan="7" align="right"><input class="rounded" type="button" value="Create New Supplier" onclick="location.href='@Url.Action("CreateForm","Supplier", routeValues: new { sessionid = sessionId })'"></td>
-        </tr>
     </table>
+    <input class="rounded" type="button" value="Create New Supplier" style="float:right" onclick="location.href='@Url.Action("CreateForm","Supplier", routeValues: new { sessionid = sessionId })'">
 }
 

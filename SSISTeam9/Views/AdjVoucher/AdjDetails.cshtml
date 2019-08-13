@@ -4,6 +4,8 @@
     ViewBag.Title = "Inventory Adjustment Voucher";
     List<AdjVoucher> adjVouchers = (List<AdjVoucher>)ViewData["adjVouchers"];
     string sessionId = (string)ViewData["sessionId"];
+    string adjIdstring = (string)ViewData["adjIdstring"];
+    string authorisedBy = (string)ViewData["authorisedBy"];
 }
 
 @if (adjVouchers.Count == 0)
@@ -13,6 +15,7 @@
 }
 else
 {
+    <h2 style="text-align:center">Voucher#: @adjIdstring</h2>
     <section>
         <table align="center">
             <tr align="center">
@@ -30,11 +33,9 @@ else
                     <td>@adj.Reason</td>
                 </tr>
             }
-
+            <tr>
+                <td>Authorised by: @authorisedBy</td>
+            </tr>
         </table>
-        <div class="button">
-            <input class="rounded" type="button" value="Authorise" style="margin-left:10px;" onclick="location.href='@Url.Action("AuthoriseByM","AdjVoucher", new { adjId = adjVouchers[0].AdjId, sessionid = sessionId})'">
-        </div>
     </section>
 }
-        

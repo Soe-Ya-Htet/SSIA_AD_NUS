@@ -33,24 +33,22 @@ else
             </tr>
             @foreach (var item in selectedItems)
             {
-                <tr>
-                    <td>@item.ItemCode</td>
-                    <td>@item.Category</td>
-                    <td>@item.Description</td>
-                    <td>@item.UnitOfMeasure</td>
-                    <td>@item.ReorderQty</td>
-                    <td><input style="text-align:center" type="number" name="quantity_@counter" id="quantity_@counter" value="@item.ReorderQty" min="1"></td>
-                    <td><input type="hidden" name="item_@counter" value="@item.ItemCode" /></td>
-                </tr>
+            <tr>
+                <td>@item.ItemCode</td>
+                <td>@item.Category</td>
+                <td>@item.Description</td>
+                <td>@item.UnitOfMeasure</td>
+                <td>@item.ReorderQty</td>
+                <td>
+                    <input style="text-align:center" type="number" name="quantity_@counter" id="quantity_@counter" value="@item.ReorderQty" min="1">
+                    <input type="hidden" name="item_@counter" value="@item.ItemCode" />
+                </td>
+            </tr>
                 counter = counter + 1;
             }
-            <tr>
-                <td><input type="hidden" name="counter" value="@counter" /></td>
-                <td colspan="5" align="right"><input class="rounded" type="submit" value="Generate Purchase Orders"></td>
-            </tr>
-
         </table>
-
+        <input type="hidden" name="counter" value="@counter" />
+        <input class="rounded" type="submit" value="Generate Purchase Orders" style="float:right">
         }
     </div>
 }

@@ -108,11 +108,11 @@ namespace SSISTeam9.Controllers
             for (var i = 0; i < adjVouchers.Count; i++)
             {
                 int id = (adjVouchers[i].TotalPrice < 250.0) ? supervisorId : managerId;
-                adjVouchers[i].AuthorisedBy = id.ToString();
+                adjVouchers[i].AuthorisedBy = id;
             }
 
             AdjVoucherDAO.GenerateDisbursement(adjVouchers);
-            AdjVoucherDAO.UpdateStock(adjVouchers);
+            //AdjVoucherDAO.UpdateStock(adjVouchers);
 
             return Json("Success", JsonRequestBehavior.AllowGet);
         }

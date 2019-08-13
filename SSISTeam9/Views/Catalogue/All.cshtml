@@ -4,10 +4,47 @@
     ViewBag.Title = "Catalogue List";
     List<Inventory> catalogues = (List<Inventory>)ViewData["catalogues"];
     string sessionId = (string)ViewData["sessionId"];
+    List<String> category = (List<String>)ViewData["category"];
 }
 
 <h2 style="text-align:center">Catalogues List</h2>
-<a class="btn btn-light"  href="javascript:window.print()">Print Catalogues</a>
+<a class="btn btn-light" href="javascript:window.print()">Print Catalogues</a>
+
+<form class="form-inline" method="post">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <text> Category</text>
+                    </div>
+                    <div class="col-sm">
+                        <select name="catSearch">
+                            <option value="">All</option>
+                            @foreach (string cat in category)
+                            {
+                                <option value="@cat">@cat</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <text> Description</text>
+                    </div>
+                    <div class="col-sm">
+                        <input name="desSearch" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <input class="rounded btn-width" type="submit" value="Search" formaction="/Catalogue/All?sessionId=@sessionId">
+            </div>
+        </div>
+    </div>
+</form>
 
 @if (catalogues.Count == 0)
 {

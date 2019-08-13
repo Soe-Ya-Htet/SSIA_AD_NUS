@@ -8,4 +8,6 @@
 
 <p style="text-align:right">Logged in as: @userName</p>
 
-<img src="~/Content/storehome.jpeg" style="text-align:center"/>
+<img src="~/Content/storehome.jpeg" style="text-align:center" />
+
+@Html.Raw(TempData["errorMsg"])

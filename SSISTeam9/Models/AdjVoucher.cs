@@ -9,14 +9,14 @@ namespace SSISTeam9.Models
     {
         public long AdjId { get; set; }
         public DateTime Date { get; set; }
-        public string AuthorisedBy { get; set; }
+        public long AuthorisedBy { get; set; }
         public int AdjQty { get; set; }
         public string Reason { get; set; }
-        public Inventory Item { get; set; }
+        public long ItemId { get; set; }
 
         public double TotalPrice { get; set; }
 
-        //0-pending 1-approved 2-rejected
+        //0-pending 1-pending approve 2-approved
         public int status { get; set; }
     }
 }

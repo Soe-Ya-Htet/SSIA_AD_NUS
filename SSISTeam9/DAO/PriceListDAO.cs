@@ -91,6 +91,51 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static List<PriceList> GetPriceListsByItemIds(List<long> itemIds)
+        {
+
+            List<PriceList> pricelists = new List<PriceList>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from PriceList WHERE itemId IN ({0})";
+
+                var parms = itemIds.Select((s, i) => "@id" + i.ToString()).ToArray();
+                var inclause = string.Join(",", parms);
+
+                string sql = string.Format(q, inclause);
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                for (var i = 0; i < parms.Length; i++)
+                {
+                    cmd.Parameters.AddWithValue(parms[i], itemIds[i]);
+                }
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    PriceList pricelist = new PriceList()
+                    {
+                        Item = new Inventory
+                        {
+                            ItemId = (long)reader["itemId"]
+                        },
+                        Supplier1Id = (long)reader["supplier1Id"],
+                        Supplier2Id = (long)reader["supplier2Id"],
+                        Supplier3Id = (long)reader["supplier3Id"],
+                        Supplier1UnitPrice = (double)reader["supplier1UnitPrice"],
+                        Supplier2UnitPrice = (double)reader["supplier2UnitPrice"],
+                        Supplier3UnitPrice = (double)reader["supplier3UnitPrice"]
+                    };
+
+                    pricelists.Add(pricelist);
+                }
+            }
+            return pricelists;
+
+        }
 
     }
 }

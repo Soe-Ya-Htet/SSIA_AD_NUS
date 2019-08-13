@@ -78,7 +78,7 @@
                 <td>@(item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice))</td>
                 total = total + item.Quantity * Convert.ToDouble(item.Item.ItemSuppliersDetails.Supplier3UnitPrice);
             }
-            <td><input type="hidden" name="item_@counter" id="item_@counter" value="@order.ItemDetails[counter].ItemId"></td>
+            <td style="display:none;"><input type="hidden" name="item_@counter" id="item_@counter" value="@order.ItemDetails[counter].ItemId"></td>
         </tr>
             counter = counter + 1;
         }

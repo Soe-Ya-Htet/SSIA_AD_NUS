@@ -26,12 +26,12 @@
             <tr>
                 <td>@Html.LabelFor(x => x.DeptCode) </td>
                 <td>@Html.TextBoxFor(x => x.DeptCode, new { id = "deptCode", @Value = department.DeptCode })</td>
-                <td>@Html.ValidationMessageFor(x => x.DeptCode, "", new { style = "color:red" })</td>
+                @Html.ValidationMessageFor(x => x.DeptCode, "", new { style = "color:red" })
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.DeptName) </td>
                 <td>@Html.TextBoxFor(x => x.DeptName, new { id = "deptName", @Value = department.DeptName })</td>
-                <td>@Html.ValidationMessageFor(x => x.DeptName, "", new { style = "color:red" })</td>
+                @Html.ValidationMessageFor(x => x.DeptName, "", new { style = "color:red" })
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Contact) </td>
@@ -56,12 +56,12 @@
             <tr>
                 <td>@Html.LabelFor(x => x.Telephone) </td>
                 <td>@Html.TextBoxFor(x => x.Telephone, new { id = "telephone", @Value = department.Telephone })</td>
-                <td>@Html.ValidationMessageFor(x => x.Telephone, "", new { style = "color:red" })</td>
+                @Html.ValidationMessageFor(x => x.Telephone, "", new { style = "color:red" })
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Fax) </td>
                 <td>@Html.TextBoxFor(x => x.Fax, new { id = "fax", @Value = department.Fax })</td>
-                <td>@Html.ValidationMessageFor(x => x.Fax, "", new { style = "color:red" })</td>
+                @Html.ValidationMessageFor(x => x.Fax, "", new { style = "color:red" })
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Head) </td>

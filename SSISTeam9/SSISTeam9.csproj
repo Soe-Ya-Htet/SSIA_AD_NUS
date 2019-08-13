@@ -688,7 +688,6 @@
     <Content Include="Content\Images\Tparency.jpg" />
     <Content Include="Content\Images\Tray.jpg" />
     <Content Include="Content\sticky-footer-navbar.css" />
-    <Content Include="Content\storehome.jpeg" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />

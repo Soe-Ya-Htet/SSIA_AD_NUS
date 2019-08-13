@@ -91,6 +91,10 @@ namespace SSISTeam9.Controllers
 
             //status = 0 means need to be submit for reason.
             adjVouchers = AdjVoucherService.GetAdjByStatus(0);
+            foreach(AdjVoucher adj in adjVouchers)
+            {
+                adj.Reason = null;
+            }
             ViewData["adjVouchers"] = adjVouchers;
             ViewData["sessionId"] = sessionId;
             return View();
@@ -118,14 +122,14 @@ namespace SSISTeam9.Controllers
             if (totalAmount > -250)
             {
                 //status = 1, auto approved by supervisor
-                AdjVoucherService.UpdateStatus(adjVouchers[1].AdjId, 1);
-                AdjVoucherService.AuthoriseBy(adjVouchers[1].AdjId, user.EmpId);
+                AdjVoucherService.UpdateStatus(adjVouchers[0].AdjId, 1);
+                AdjVoucherService.AuthoriseBy(adjVouchers[0].AdjId, user.EmpId);
                 TempData["errorMsg"] = "<script>alert('Total discrepancy is less than $250, authorised already.');</script>";
             }
             else
             {
                 //status = 2, pending approve for manager
-                AdjVoucherService.UpdateStatus(adjVouchers[1].AdjId, 2);
+                AdjVoucherService.UpdateStatus(adjVouchers[0].AdjId, 2);
                 TempData["errorMsg"] = "<script>alert('Total discrepancy is more than $250, pending for Store Manager to authorise.');</script>";
 
             }
@@ -159,8 +163,43 @@ namespace SSISTeam9.Controllers
         }
 
 
-        public ActionResult AllAprovedAdj()
+        public ActionResult AllAdjVouchers(string sessionId)
         {
+            long totalAdjNumber = (long)AdjVoucherService.GetLastId();
+            List<string> dates = new List<string>();
+            List<string> authorisedBys = new List<string>();
+            List<string> statuses = new List<string>();
+            for(long i = 1; i <= totalAdjNumber; i++)
+            {
+                AdjVoucher adj = AdjVoucherService.GetAdjByAdjId(i)[0];
+                string date = adj.Date.Day + "/" + adj.Date.Month + "/" + adj.Date.Year;
+                dates.Add(date);
+                string authorisedBy = "Nil";
+                if (adj.AuthorisedBy != 0)
+                {
+                    authorisedBy = EmployeeService.GetEmployeeById(adj.AuthorisedBy).EmpName;
+                }
+                authorisedBys.Add(authorisedBy);
+                string status = null;
+                switch (adj.status)
+                {                   
+                    case 0:
+                        status = "Pending submit reason";
+                        break;
+                    case 1:
+                        status = "Approved";
+                        break;
+                    case 2:
+                        status = "Pending approval";
+                        break;
+                }
+                statuses.Add(status);                                      
+            }
+            ViewData["sessionId"] = sessionId;
+            ViewData["dates"] = dates;
+            ViewData["authorisedBys"] = authorisedBys;
+            ViewData["statuses"] = statuses;
+
 
             return View();
         }

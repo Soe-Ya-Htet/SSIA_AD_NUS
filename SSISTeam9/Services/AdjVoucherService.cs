@@ -49,5 +49,10 @@ namespace SSISTeam9.Services
         {
             AdjVoucherDAO.AuthoriseBy(adjId,empId);
         }
+
+        public static List<AdjVoucher> GetAdjByAdjId(long adjId)
+        {
+            return AdjVoucherDAO.GetAdjByAdjId(adjId);
+        }
     }
 }

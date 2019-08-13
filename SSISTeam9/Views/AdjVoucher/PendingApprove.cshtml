@@ -33,7 +33,7 @@ else
 
         </table>
         <div class="button">
-            <input class="rounded" type="button" value="Authorise" style="margin-left:10px;" onclick="location.href='@Url.Action("AuthoriseByM","AdjVoucher", new { adjId = adjVouchers[1].AdjId, sessionid = sessionId})'">
+            <input class="rounded" type="button" value="Authorise" style="margin-left:10px;" onclick="location.href='@Url.Action("AuthoriseByM","AdjVoucher", new { adjId = adjVouchers[0].AdjId, sessionid = sessionId})'">
         </div>
     </section>
 }

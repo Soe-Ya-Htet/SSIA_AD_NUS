@@ -50,5 +50,46 @@ namespace SSISTeam9.Services
                 return false;
             }
         }
+
+        public static bool CheckPreviousHeadForNav(long deptId)
+        {
+            bool between = DelegateService.CheckDate(deptId);
+            bool after = DelegateService.AfterDate(deptId);
+            bool all;
+            if (between && !after)
+            {
+                all = false;
+                //return RedirectToAction("ViewRemoveDelegate", "Delegate", new { sessionId = sessionid });
+            }
+            else if (!between && !after)
+            {
+                all = true;
+                //return RedirectToAction("GetPendingRequisitions", "Requisition", new { sessionId = sessionid });
+            }
+            else if (!between && after)
+            {
+                all = true;
+                //DelegateService.DelegateToPreviousHead(emp.DeptId);
+                //return RedirectToAction("GetPendingRequisitions", "Requisition", new { sessionId = sessionid });
+            }
+            else
+            {
+                all = false;
+            }
+            return all;
+        }
+
+        public static bool CheckDelegatedByDept(long deptId)
+        {
+            int count = DelegateDAO.CountDelegate(deptId);
+            if (count == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

@@ -1,0 +1,53 @@
+﻿td, tr {
+    padding: 2px;
+}
+
+.button {
+    border: none;
+    padding: 10px 24px;
+    text-align: center;
+    display: inline-block;
+    width: 250px;
+}
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product-card {
+    padding: 2%;
+    flex-grow: 1;
+    flex-basis: 27%;
+    display: flex;
+}
+
+.product-info {
+    align-content: center;
+    margin-top: auto;
+    padding: 10px;
+}
+
+.btn-width {
+    width: 100px;
+}
+
+.input-num {
+    width: 100px;
+    height: 20px;
+}
+
+.cart-data {
+    width: 300px;
+    height: 10px;
+}
+
+.cart-form {
+    text-align: center;
+}
+
+.cart-img {
+    width: 200px;
+    height: 100px;
+    margin-bottom: 10px
+}

@@ -23,7 +23,10 @@ namespace SSISTeam9.Controllers
             Employee user = EmployeeService.GetUserPassword(userName);
 
             if (user.Password != password)
+            {
+                TempData["errorMsg"] = "<script>alert('Invalid credentials! Please verify.');</script>";
                 return View();
+            }
 
             string sessionId = EmployeeService.CreateSession(userName);
 
@@ -69,7 +72,7 @@ namespace SSISTeam9.Controllers
                 bool after = DelegateService.AfterDate(emp.DeptId);
                 if (between && !after)
                 {
-                    return RedirectToAction("ViewRemoveDelegate", "Delegate", new { sessionId = sessionid });
+                    return RedirectToAction("ViewDelegate", "Delegate", new { sessionId = sessionid });
                 }
                 else if(!between && !after)
                 {

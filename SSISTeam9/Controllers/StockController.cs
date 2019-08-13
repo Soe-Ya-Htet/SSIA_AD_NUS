@@ -10,7 +10,7 @@ using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
-    [StoreAuthorisationFilter]
+    //[StoreAuthorisationFilter]
     public class StockController : Controller
     {
         public async Task<ActionResult> All(string sessionId)
@@ -73,22 +73,9 @@ namespace SSISTeam9.Controllers
 
             ViewData["inventories"] = inventories;
             ViewData["sessionId"] = sessionId;
-            return View(inventories);
+            return View();
         }
 
-        public ActionResult Generate(List<Inventory> inventories)
-        {
-            foreach(Inventory inventory in inventories)
-            {
-                int qty = inventory.ActualStock - inventory.StockLevel;
-                if(qty != 0)
-                {
-                    StockService.CreateAdjVoucher(inventory.ItemId, qty);
-                }
-            }
-
-            return RedirectToAction("Check");
-        }
 
     }
 }

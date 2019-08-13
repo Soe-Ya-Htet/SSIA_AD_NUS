@@ -16,6 +16,10 @@ namespace SSISTeam9.Controllers
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             long deptId = emp.DeptId;
             long currentRep = DepartmentService.GetCurrentRep(deptId);
+            bool all = DelegateService.CheckPreviousHeadForNav(deptId);
+            bool permanentHead = ((emp.EmpRole == "HEAD" && emp.EmpDisplayRole == "HEAD") || (emp.EmpRole == "EMPLOYEE" && emp.EmpDisplayRole == "HEAD"));
+            ViewData["all"] = all;
+            ViewData["permanentHead"] = permanentHead;
             if (employee != null)
             {
                 long newRep = long.Parse(employee);

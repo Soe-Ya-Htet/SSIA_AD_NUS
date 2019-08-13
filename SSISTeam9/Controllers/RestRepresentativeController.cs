@@ -29,6 +29,37 @@ namespace SSISTeam9.Controllers
         [Route("disbursement/acknowledge/{id:long}")]
         public ActionResult Acknowledge(long id)
         {
+            /* id = listId; The following method is for update ChargeBack and StockCard*/
+
+            DisbursementList disbursementList = DisbursementListService.GetDisbursementListByListId(id);
+            List<DisbursementListDetails> disbursementDetails = DisbursementListService.ViewDisbursementDetails(id);
+
+            
+            foreach(DisbursementListDetails d in disbursementDetails)
+            {
+                /*The following code is for ChargeBack table*/
+                //By the time disburse item, calculate the amount of this list, update ChargeBack table
+                PriceList priceList = PriceListService.GetPriceListByItemId(id);
+                double price = 0;
+                if (priceList != null)
+                {
+                    price = priceList.Supplier1UnitPrice;
+                }
+
+                double amount = price * d.Quantity;
+
+                ChargeBackService.UpdateChargeBackData(amount, disbursementList);
+
+                /*The following code is for StockCard table*/
+                //By the time disburse item, update StockCard table with itemId, deptId and date, souceType = 2
+
+                int balance = CatalogueService.GetCatalogueById(d.Item.ItemId).StockLevel - d.Quantity;
+                StockCardService.CreateStockCardFromDisburse(d, disbursementList, balance);
+            }
+            
+
+            
+
             return Json(restService.AcknowledgementOfRepresentative(id), JsonRequestBehavior.AllowGet);
         }
 

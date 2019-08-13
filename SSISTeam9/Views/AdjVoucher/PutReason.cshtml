@@ -1,0 +1,47 @@
+﻿@model List<SSISTeam9.Models.AdjVoucher>
+
+@using SSISTeam9.Models;
+@{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Inventory Adjustment Voucher";
+    List<AdjVoucher> adjVouchers = (List<AdjVoucher>)ViewData["adjVouchers"];
+    string sessionId = (string)ViewData["sessionId"];
+}
+
+@if (adjVouchers.Count == 0)
+{
+    <br /><br />
+    <p style="font-size:14px">No adjustment voucher to display</p>
+}
+else
+{
+    <table align="center">
+        <tr align="center">
+            <th>Item Code</th>
+            <th>Quantity adjusted</th>
+            <th>Reason</th>
+        </tr>
+        @using (Html.BeginForm("AuthoriseByS", "AdjVoucher", new { sessionId = sessionId }, FormMethod.Post))
+        {
+            for (int i = 0; i < adjVouchers.Count; i++)
+            {
+                <tr align="center">
+                    <td>@adjVouchers[i].ItemCode</td>
+                    <td>@adjVouchers[i].AdjQty</td>
+                    <td>@Html.TextBoxFor(x => x[i].Reason, new { id = "reason"})</td>
+                    <td>@Html.ValidationMessageFor(x => x[i].Reason, "", new { style = "color:red" })</td>
+                    <td style="display:none">
+                        @Html.TextBoxFor(x => x[i].ItemId, new { id = "itemId", @Value = adjVouchers[i].ItemId })
+                        @Html.TextBoxFor(x => x[i].AdjId, new { id = "adjId", @Value = adjVouchers[i].AdjId })
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <td align="right"><input class="rounded" type="submit" value="Generate Adjustment Voucher"></td>
+            </tr>
+        }
+
+    </table>
+}

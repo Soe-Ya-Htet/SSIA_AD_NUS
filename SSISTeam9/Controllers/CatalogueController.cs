@@ -18,10 +18,17 @@ namespace SSISTeam9.Controllers
         //For store employee to view and add catalogue
         public ActionResult All(string sessionId)
         {
-            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
+            string desc = "";
+            string cat = "";
+            desc = null == Request.Form["desSearch"] ? "" : Request.Form["desSearch"];
+            cat = null == Request.Form["catSearch"] ? "" : Request.Form["catSearch"];
+            List<Inventory> catalogues = RequisitionService.ShowItems(desc, cat);
+            List<string> category = new List<string>();
+            category = RequisitionService.GetALLCategories();
 
             ViewData["catalogues"] = catalogues;
             ViewData["sessionId"] = sessionId;
+            ViewData["category"] = category;
             return View();
         }
 
@@ -78,7 +85,7 @@ namespace SSISTeam9.Controllers
             }
             catch (SqlException)
             {
-                TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please Verify.');</script>";
+                TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please verify.');</script>";
                 return RedirectToAction("Create", new { sessionid = sessionId });
             }
             return RedirectToAction("CreateNext", new { itemId = ItemId, sessionid = sessionId });

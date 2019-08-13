@@ -26,7 +26,7 @@ namespace SSISTeam9.Filters
                     }
                 );
             }
-            else if (userRole == "STORE_CLERK" || userRole == "STORE_SUPERVISOR" || userRole == "STORE_MANAGER" || userRole == "HEAD")
+            else if (userRole == "STORE_CLERK" || userRole == "STORE_SUPERVISOR" || userRole == "STORE_MANAGER")
             {
                 context.Result = new RedirectToRouteResult(
                        new RouteValueDictionary

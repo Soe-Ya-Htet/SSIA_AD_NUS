@@ -47,7 +47,6 @@ namespace SSISTeam9.Controllers
 
         public ActionResult CreateNew(Department department, string sessionId)
         {
-
             try
             {
                 DepartmentService.CreateDepartment(department);
@@ -57,8 +56,10 @@ namespace SSISTeam9.Controllers
             }
             catch (SqlException)
             {
-                TempData["errorMsg"] = "<script>alert('Department code already exists! Please Verify.');</script>";
-                return RedirectToAction("Create");
+                TempData["errorMsg"] = "<script>alert('Department code already exists! Please verify.');</script>";
+                ViewData["sessionId"] = sessionId;
+                ViewData["empNames"] = EmployeeDAO.GetAllEmployeeNames();
+                return View("Create");
             }
             return RedirectToAction("All", new { sessionid = sessionId });
         }
@@ -73,7 +74,6 @@ namespace SSISTeam9.Controllers
 
         public ActionResult Update(Department department, string sessionId)
         {
-            
             try
             {
                 DepartmentService.UpdateDepartment(department);
@@ -84,8 +84,11 @@ namespace SSISTeam9.Controllers
             }
             catch (SqlException)
             {
-                TempData["errorMsg"] = "<script>alert('Department code already exists! Please Verify.');</script>";
-                return RedirectToAction("Details", new { deptId = department.DeptId, sessionid = sessionId });
+                TempData["errorMsg"] = "<script>alert('Department code already exists! Please verify.');</script>";
+                ViewData["sessionId"] = sessionId;
+                ViewData["department"] = department;
+                ViewData["empNames"] = EmployeeDAO.GetAllEmployeeNames();
+                return View("Details");
             }
         }
     }

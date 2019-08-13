@@ -16,16 +16,23 @@ namespace SSISTeam9.Controllers
         {
             return View();
         }
-        
+
         [DepartmentFilter]
         public ActionResult NewRequisition(string sessionId)
         {
+            string desc = "";
+            string cat = "";
+            desc = null == Request.Form["desSearch"]? "" : Request.Form["desSearch"];
+            cat = null == Request.Form["catSearch"] ? "" : Request.Form["catSearch"];
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
-            List<Inventory> itemList = RequisitionService.GetAllInventory();
+            List<Inventory> itemList = RequisitionService.ShowItems(desc, cat);
+            List<string> category = new List<string>();
+            category = RequisitionService.GetALLCategories();
             ViewData["emp"] = emp;
             ViewData["sessionId"] = sessionId;
             ViewData["itemList"] = itemList;
             ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
+            ViewData["category"] = category;
 
             return View(itemList);
         }
@@ -33,9 +40,9 @@ namespace SSISTeam9.Controllers
         [DepartmentFilter]
         public ActionResult AddtoCart(int itemId, string sessionId)
         {
+            string qty = Request.Form["itemQuantity"] == "" ? "1" : Request.Form["itemQuantity"];
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
-            int quantity = 1;
-            RequisitionService.SaveToCart(itemId, emp.EmpId, quantity);
+            RequisitionService.SaveToCart(itemId, emp.EmpId, Convert.ToInt32(qty));
             return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionId });
         }
 
@@ -75,7 +82,9 @@ namespace SSISTeam9.Controllers
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             ViewData["sessionId"] = sessionId;
             ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
-            return View(RequisitionService.GetRequisitionByEmpId(emp.EmpId));
+            List<Requisition> reqList = RequisitionService.GetRequisitionByEmpId(emp.EmpId);
+            reqList.Sort((x, y) => DateTime.Compare(x.DateOfRequest, y.DateOfRequest));
+            return View(reqList);
         }
 
         [DepartmentFilter]
@@ -84,7 +93,9 @@ namespace SSISTeam9.Controllers
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             ViewData["sessionId"] = sessionId;
             ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
-            return View(RequisitionService.GetRequisitionByDeptId(emp.DeptId));
+            List<Requisition> reqList = RequisitionService.GetRequisitionByEmpId(emp.EmpId);
+            reqList.Sort((x, y) => DateTime.Compare(x.DateOfRequest, y.DateOfRequest));
+            return View(reqList);
         }
 
         [DepartmentFilter]
@@ -103,20 +114,30 @@ namespace SSISTeam9.Controllers
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             long deptId = emp.DeptId;
             List<Requisition> requisitions = RequisitionService.DisplayPendingRequisitions(deptId);
+            bool all = DelegateService.CheckPreviousHeadForNav(deptId);
+            bool permanentHead =((emp.EmpRole=="HEAD" && emp.EmpDisplayRole=="HEAD") || (emp.EmpRole == "EMPLOYEE" && emp.EmpDisplayRole == "HEAD"));
+            ViewData["all"] = all;
+            ViewData["permanentHead"] = permanentHead;
             ViewData["requisitionsToProcess"] = requisitions;
             ViewData["sessionId"] = sessionId;
             return View();
         }
 
-        [DepartmentFilter]
         public ActionResult GetRequisitionDetails(long reqId,string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
+            Requisition req = RequisitionService.GetReqByReqId(reqId);
             List<RequisitionDetails> requisitionDetails = RequisitionService.DisplayRequisitionDetailsByReqId(reqId);
+            string roleForDetail = RequisitionService.FindRoleForDetail(emp);
+            ViewData["roleForDetail"] = roleForDetail;
             ViewData["sessionId"] = sessionId;
             ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
             ViewData["requisitionDetails"] = requisitionDetails;
-            ViewData["reqId"] = reqId;
+            ViewData["req"] = req;
+            bool all = DelegateService.CheckPreviousHeadForNav(emp.DeptId);
+            bool permanentHead = ((emp.EmpRole == "HEAD" && emp.EmpDisplayRole == "HEAD") || (emp.EmpRole == "EMPLOYEE" && emp.EmpDisplayRole == "HEAD"));
+            ViewData["all"] = all;
+            ViewData["permanentHead"] = permanentHead;
             return View();
         }
 
@@ -126,19 +147,12 @@ namespace SSISTeam9.Controllers
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             long deptId = emp.DeptId;
             List<Requisition> requisitions = RequisitionService.DisplayPastRequisitions(deptId);
+            bool all = DelegateService.CheckPreviousHeadForNav(deptId);
+            bool permanentHead = ((emp.EmpRole == "HEAD" && emp.EmpDisplayRole == "HEAD") || (emp.EmpRole == "EMPLOYEE" && emp.EmpDisplayRole == "HEAD"));
+            ViewData["all"] = all;
+            ViewData["permanentHead"] = permanentHead;
             ViewData["pastRequisitions"] = requisitions;
             ViewData["sessionId"] = sessionId;
-            return View();
-        }
-
-        [DepartmentFilter]
-        public ActionResult ViewPastRequisitionDetails(long reqId, string sessionId)
-        {
-            Employee emp = EmployeeService.GetUserBySessionId(sessionId);
-            List<RequisitionDetails> requisitionDetails = RequisitionService.DisplayRequisitionDetailsByReqId(reqId);
-            ViewData["requisitionDetails"] = requisitionDetails;
-            ViewData["sessionId"] = sessionId;
-            ViewData["reqId"] = reqId;
             return View();
         }
 
@@ -148,8 +162,12 @@ namespace SSISTeam9.Controllers
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             long currentHead = emp.EmpId;
             RequisitionService.ProcessRequisition(reqId, status, currentHead);
+            bool all = DelegateService.CheckPreviousHeadForNav(emp.DeptId);
+            bool permanentHead = ((emp.EmpRole == "HEAD" && emp.EmpDisplayRole == "HEAD") || (emp.EmpRole == "EMPLOYEE" && emp.EmpDisplayRole == "HEAD"));
+            ViewData["all"] = all;
+            ViewData["permanentHead"] = permanentHead;
             ViewData["sessionId"] = sessionId;
-            return RedirectToAction("GetPendingRequisitions");
+            return RedirectToAction("GetPendingRequisitions",new { sessionId = sessionId });
         }
 
         [StoreAuthorisationFilter]

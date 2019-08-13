@@ -1,0 +1,41 @@
+﻿@using SSISTeam9.Models;
+@{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Inventory Adjustment Voucher";
+    List<AdjVoucher> adjVouchers = (List<AdjVoucher>)ViewData["adjVouchers"];
+    string sessionId = (string)ViewData["sessionId"];
+    string adjIdstring = (string)ViewData["adjIdstring"];
+    string authorisedBy = (string)ViewData["authorisedBy"];
+}
+
+@if (adjVouchers.Count == 0)
+{
+    <br /><br />
+    <p style="font-size:14px">No adjustment voucher to display</p>
+}
+else
+{
+    <h2 style="text-align:center">Voucher#: @adjIdstring</h2>
+    <section>
+        <table align="center">
+            <tr align="center">
+                <th>Item Code</th>
+                <th>Quantity adjusted</th>
+                <th>Reason</th>
+            </tr>
+
+            @foreach (AdjVoucher adj in adjVouchers)
+            {
+
+                <tr>
+                    <td>@adj.ItemCode</td>
+                    <td>@adj.AdjQty</td>
+                    <td>@adj.Reason</td>
+                </tr>
+            }
+            <tr>
+                <td>Authorised by: @authorisedBy</td>
+            </tr>
+        </table>
+    </section>
+}

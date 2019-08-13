@@ -177,7 +177,8 @@ namespace SSISTeam9.DAO
                 {
                     disbursementList = new DisbursementList()
                     {
-                        date = (DateTime)reader["date"]
+                        date = (DateTime)reader["date"],
+                        AcknowledgedBy = reader["acknowledgedBy"].ToString()
                     };
                     disbursementList.Department = new Department()
                     {
@@ -286,6 +287,48 @@ namespace SSISTeam9.DAO
 
         }
 
+        public static List<DisbursementList> ViewAllCompletedDisbursementList()
+        {
+            List<DisbursementList> disbursements = new List<DisbursementList>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * FROM DisbursementList d, CollectionPoint cP, Department dept 
+                            WHERE d.collectionPointId= cP.placeId AND acknowledgedBy IS NOT NULL AND d.deptId = dept.deptId
+                            ORDER BY date";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    DisbursementList disbursement = new DisbursementList
+                    {
+                        ListId = (long)reader["listId"],
+                        date = (DateTime)reader["date"],
+                        AcknowledgedBy = (string)reader["acknowledgedBy"]
+                    };
+
+                    disbursement.Department = new Department()
+                    {
+                        DeptId = (long)reader["deptId"],
+                        DeptName = (string)reader["deptName"]
+                    };
+                    disbursement.CollectionPoint = new CollectionPoint()
+                    {
+                        PlacedId = (long)reader["placeId"],
+                        Name = (string)reader["name"]
+                    };
+
+                    disbursements.Add(disbursement);
+                }
+            }
+            return disbursements;
+
+        }
 
     }
 }

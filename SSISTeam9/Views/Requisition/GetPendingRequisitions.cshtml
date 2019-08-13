@@ -3,6 +3,8 @@
 @{
     var requisitions = (List<Requisition>)ViewData["requisitionsToProcess"];
     var sessionId = (string)ViewData["sessionId"];
+    var showAll = (bool)ViewData["all"];
+    var permanentHead = (bool)ViewData["permanentHead"];
 }
 
 <link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
@@ -12,21 +14,39 @@
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    @Html.ActionLink("Pending Requisitiond", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
-                </li>
-                <li class="nav-item active">
-                    @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
-                </li>
-                <li class="nav-item active">
-                    @Html.ActionLink("Change Representative", "ChangeRepresentative", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
-                </li>
-                <li class="nav-item active">
-                    @Html.ActionLink("Delegate", "ViewDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
-                </li>
-                <li class="nav-item active">
-                    @Html.ActionLink("Remove Delegate", "ViewRemoveDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
-                </li>
+                @if (showAll && permanentHead)
+                {
+                    <li class="nav-item active">
+                        @Html.ActionLink("Pending Requisitions", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Change Representative", "ChangeRepresentative", "Representative", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Delegate", "ViewDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                }
+                else if (!showAll && permanentHead)
+                {
+                    <li class="nav-item active">
+                        @Html.ActionLink("Delegate", "ViewDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                }
+                else if (!showAll && !permanentHead)
+                {
+                    <li class="nav-item active">
+                        @Html.ActionLink("Pending Requisitions", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Change Representative", "ChangeRepresentative", "Representative", new { sessionId = sessionId }, new { @class = "nav-link" })
+                    </li>
+                }
             </ul>
             <ul class="navbar-nav mt-2 mt-md-0">
                 <li class="nav-item active">
@@ -37,12 +57,6 @@
     </nav>
 </header>
 
-@Html.ActionLink("Pending Requisitiond", "GetPendingRequisitions", new { sessionId = sessionId })
-@Html.ActionLink("Past Requisitions", "ViewPastRequisitions", new { sessionId = sessionId })
-<a href="~/Representative/ChangeRepresentative?sessionId=@sessionId">Change Representative</a>
-<a href="~/Delegate/ViewDelegate?sessionId=@sessionId">Delegate</a>
-<a href="~/Delegate/ViewRemoveDelegate?sessionId=@sessionId">Remove Delegate</a>
-<a href="~/Home/Logout?sessionId=@sessionId">Logout</a>
 @{
     if (requisitions.Count == 0)
     {
@@ -60,7 +74,7 @@
             {
                 <tr>
 
-                    <td>@Html.ActionLink(@requisition.ReqId.ToString(), "GetRequisitionDetails", new { reqId = @requisition.ReqId })</td>
+                    <td>@Html.ActionLink(@requisition.ReqId.ToString(), "GetRequisitionDetails", new { reqId = @requisition.ReqId,sessionId=sessionId })</td>
                     <td>@requisition.Employee.EmpName</td>
                 </tr>
             }

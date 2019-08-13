@@ -98,5 +98,19 @@ namespace SSISTeam9.DAO
 
         }
 
+
+        public static int CountDelegate(long deptId)
+        {
+            int count = 0;
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"SELECT COUNT(*) from Delegate where deptId =@depId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@depId", deptId);
+                count = (int)cmd.ExecuteScalar();
+            }
+            return count;
+        }
     }
 }

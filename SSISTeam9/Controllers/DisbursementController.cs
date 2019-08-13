@@ -28,15 +28,23 @@ namespace SSISTeam9.Controllers
             ViewData["sessionId"] = sessionId;
             return View();
         }
-
+        [StoreAuthorisationFilter]
+        public ActionResult ViewAllCompletedDisbursements(string sessionId)
+        {
+            ViewData["disbursements"] = DisbursementListService.ViewAllCompletedDisbursements();
+            ViewData["sessionId"] = sessionId;
+            return View();
+        }
+        [StoreAuthorisationFilter]
         public ActionResult ViewDisbursementDetails(long listId, string collectionPt, string sessionId)
         {
             
             ViewData["details"] = DisbursementListService.ViewDisbursementDetails(listId);
+            
             ViewData["listId"] = listId;
             ViewData["collectionPt"] = collectionPt;
             ViewData["sessionId"] = sessionId;
-            ViewData["empRole"] = EmployeeService.GetUserBySessionId(sessionId).EmpRole;
+            ViewData["status"] = (DisbursementListService.GetDisbursementListByListId(listId)).AcknowledgedBy;
             return View();
 
         }
@@ -118,26 +126,27 @@ namespace SSISTeam9.Controllers
                 };
                 DisbursementListService.UpdateDisbursementListDetails(listId, disbursementDetails);
 
-                //Attention: DisbursementList can only disburse once, date for that list is not null
+                /* Move the following code to RestRepresentativeController*/
+                ////Attention: DisbursementList can only disburse once, date for that list is not null
 
-                /*The following code is for ChargeBack table*/
-                //By the time disburse item, calculate the amount of this list, update ChargeBack table               
-                PriceList priceList = PriceListService.GetPriceListByItemId(i.ItemId);
-                double price = 0;
-                if (priceList != null)
-                {
-                    price = priceList.Supplier1UnitPrice;
-                }
+                ///*The following code is for ChargeBack table*/
+                ////By the time disburse item, calculate the amount of this list, update ChargeBack table               
+                //PriceList priceList = PriceListService.GetPriceListByItemId(i.ItemId);
+                //double price = 0;
+                //if (priceList != null)
+                //{
+                //    price = priceList.Supplier1UnitPrice;
+                //}
 
-                double amount = price * disbursementDetails.Quantity;
-                DisbursementList disbursementList = DisbursementListService.GetDisbursementListByListId(listId);
-                ChargeBackService.UpdateChargeBackData(amount, disbursementList);
+                //double amount = price * disbursementDetails.Quantity;
+                //DisbursementList disbursementList = DisbursementListService.GetDisbursementListByListId(listId);
+                //ChargeBackService.UpdateChargeBackData(amount, disbursementList);
 
-                /*The following code is for StockCard table*/
-                //By the time disburse item, update StockCard table with itemId, deptId and date, souceType = 2
+                ///*The following code is for StockCard table*/
+                ////By the time disburse item, update StockCard table with itemId, deptId and date, souceType = 2
 
-                int balance = CatalogueService.GetCatalogueById(disbursementDetails.Item.ItemId).StockLevel - disbursementDetails.Quantity;
-                StockCardService.CreateStockCardFromDisburse(disbursementDetails, disbursementList, balance);
+                //int balance = CatalogueService.GetCatalogueById(disbursementDetails.Item.ItemId).StockLevel - disbursementDetails.Quantity;
+                //StockCardService.CreateStockCardFromDisburse(disbursementDetails, disbursementList, balance);
                               
             }
 

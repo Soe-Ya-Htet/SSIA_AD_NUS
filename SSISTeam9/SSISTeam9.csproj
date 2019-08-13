@@ -793,6 +793,7 @@
     <Content Include="Views\Stock\Check.cshtml" />
     <Content Include="Views\Disbursement\RepDisbursementList.cshtml" />
     <Content Include="Views\Shared\_Store.cshtml" />
+    <Content Include="Views\AdjVoucher\PutReason.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

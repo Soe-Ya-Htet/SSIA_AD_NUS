@@ -89,8 +89,8 @@ namespace SSISTeam9.Controllers
         {
             List<AdjVoucher> adjVouchers = new List<AdjVoucher>();
             adjVouchers = AdjVoucherService.GetUnauthorisedAdj();
-
-
+            ViewData["adjVouchers"] = adjVouchers;
+            ViewData["sessionId"] = sessionId;
             return View();
         }
 

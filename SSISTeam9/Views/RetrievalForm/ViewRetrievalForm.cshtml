@@ -8,50 +8,78 @@
     var retForms = (List<RetrievalForm>)ViewData["retrievalForms"];
     var alrAssigned = (string)ViewData["alreadyAssigned"];
     var sessionId = (string)ViewData["sessionId"];
+    var stockLevel = (List<int>)ViewData["stockLevel"];
 
 }
 
 <h2>Retrieval Form</h2>
 @if (retForms.Count != 0 && alrAssigned == "NO")
 {
-    <table class="table table-bordered">
-        <tr>
-            <th rowspan="2">Bin #</th>
-            <th rowspan="2">Stationary Description</th>
-            <th colspan="2">Total Quantity</th>
-            <th colspan="3">BreakDown By Department</th>
+<table class="table table-bordered">
+    <tr>
+        <th rowspan="2">Bin #</th>
+        <th rowspan="2">Stationary Description</th>
+        <th colspan="2">Total Quantity</th>
+        <th colspan="3">BreakDown By Department</th>
 
 
-        </tr>
+    </tr>
+    <tr>
+        <th>Needed</th>
+        <th>Retrieved</th>
+        <th>Dept Name</th>
+        <th>Needed</th>
+        <th>Actual</th>
+    </tr>
+    @for (int i = 0; i < retForms.Count; i++)
+    {
         <tr>
-            <th>Needed</th>
-            <th>Retrieved</th>
-            <th>Dept Name</th>
-            <th>Needed</th>
-            <th>Actual</th>
+            <td rowspan="@retForms[i].deptNeeds.Count">@retForms[i].binNo</td>
+            <td rowspan="@retForms[i].deptNeeds.Count">@retForms[i].description</td>
+            <td rowspan="@retForms[i].deptNeeds.Count">@retForms[i].totalNeeded</td>
+            <td rowspan="@retForms[i].deptNeeds.Count" id="/@retForms[i].itemId">@retForms[i].itemId</td>
+            <td>@retForms[i].deptNeeds[0].deptCode</td>
+            <td>@retForms[i].deptNeeds[0].deptNeeded</td>
+            
+            @if (stockLevel[i] >= retForms[i].deptNeeds[0].deptNeeded)
+            {
+                <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[0].deptId" value="@retForms[i].deptNeeds[0].deptNeeded" onchange="findTotal(@retForms[i].itemId)" min="0" /></td>
+                stockLevel[i] -= retForms[i].deptNeeds[0].deptNeeded;
+            }
+            else
+            {
+                <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[0].deptId" value="@stockLevel[i]" onchange="findTotal(@retForms[i].itemId)" min="0" /></td>
+                stockLevel[i] = 0;
+            }
+
         </tr>
-        @foreach (var retForm in retForms)
+        if (retForms[i].deptNeeds.Count > 1)
         {
-            <tr>
-                <td rowspan="@retForm.deptNeeds.Count">@retForm.binNo</td>
-                <td rowspan="@retForm.deptNeeds.Count">@retForm.description</td>
-                <td rowspan="@retForm.deptNeeds.Count">@retForm.totalNeeded</td>
-                <td rowspan="@retForm.deptNeeds.Count" id="/@retForm.itemId">@retForm.itemId</td>
-                <td>@retForm.deptNeeds[0].deptCode</td>
-                <td>@retForm.deptNeeds[0].deptNeeded</td>
-                <td><input type="number" class="@retForm.itemId" name="@retForm.deptNeeds[0].deptId" value="@retForm.deptNeeds[0].deptNeeded" onchange="findTotal(@retForm.itemId)" min="0" /></td>
-            </tr>
-            for (int i = 1; i < retForm.deptNeeds.Count; i++)
+            for (int x = 1; x < retForms[i].deptNeeds.Count; x++)
             {
                 <tr>
-                    <td>@retForm.deptNeeds[i].deptCode</td>
-                    <td>@retForm.deptNeeds[i].deptNeeded</td>
-                    <td><input type="number" class="@retForm.itemId" name="@retForm.deptNeeds[i].deptId" value="@retForm.deptNeeds[i].deptNeeded" onchange="findTotal(@retForm.itemId)" min="0" /></td>
+                    <td>@retForms[i].deptNeeds[x].deptCode</td>
+                    <td>@retForms[i].deptNeeds[x].deptNeeded</td>
+
+                    @if (stockLevel[i] >= retForms[i].deptNeeds[x].deptNeeded)
+                    {
+                        <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[x].deptId" value="@retForms[i].deptNeeds[x].deptNeeded" onchange="findTotal(@retForms[i].itemId)" min="0" /></td>
+                        stockLevel[i] -= retForms[i].deptNeeds[x].deptNeeded;
+                    }
+                    else
+                    {
+                        <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[x].deptId" value="@stockLevel[i]" onchange="findTotal(@retForms[i].itemId)" min="0" /></td>
+                        stockLevel[i] = 0;
+                    }
+
+                    
                 </tr>
             }
 
         }
-    </table>
+    }
+
+</table>
     <div class="row justify-content-end">
         <input type="date" name="date" id="collectionDate" value="@DateTime.Now.AddDays(7).ToString("yyyy-MM-dd")" />
         <input class="btn-success rounded" type="button" value="Submit" onclick="submitData()" />

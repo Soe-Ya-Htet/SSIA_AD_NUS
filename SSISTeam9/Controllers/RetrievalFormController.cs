@@ -16,8 +16,8 @@ namespace SSISTeam9.Controllers
         // GET: RetrievalForm
         public ActionResult ViewRetrievalForm(string sessionId)
         {
-            
-            ViewData["retrievalForms"] = RetrievalFormService.ViewRetrievalForm();
+            List<RetrievalForm> retrievalForms = RetrievalFormService.ViewRetrievalForm();
+            ViewData["retrievalForms"] = retrievalForms;
             if (DisbursementListService.CheckForPendingDisbursements().Count != 0)
             {
                 ViewData["alreadyAssigned"] = "YES";
@@ -26,6 +26,13 @@ namespace SSISTeam9.Controllers
             {
                 ViewData["alreadyAssigned"] = "NO";
             }
+            List<int> stockLevel = new List<int>();
+            foreach (var item in retrievalForms)
+            {
+                Inventory i= CatalogueService.GetCatalogueById(item.itemId);
+                stockLevel.Add(i.StockLevel);
+            }
+            ViewData["stockLevel"] = stockLevel;
             ViewData["sessionId"] = sessionId;
             
             return View();

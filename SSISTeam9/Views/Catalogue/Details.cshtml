@@ -20,35 +20,36 @@
             Description: @catalogue.Description<br />
             Unit Of Measure: @catalogue.UnitOfMeasure<br />
         </p>
-        
+
+        <table class="table table-bordered" style="text-align:center">
+            <tr>
+                <th>Supplier's Name</th>
+                <th>Price</th>
+            </tr>
             @if (pricelist != null)
-            {   
-                <table class="table table-bordered">
-                    <tr>
-                        <td>First Supplier's Name: @pricelist.Supplier1Name</td>
-                        <td>Price: $@pricelist.Supplier1UnitPrice</td>
-                    </tr>
-                    <tr>
-                        <td>Second Supplier's Name: @pricelist.Supplier2Name</td>
-                        <td>Price: $@pricelist.Supplier2UnitPrice</td>
-                    </tr>
-                    <tr>
-                        <td>Thrid Supplier's Name: @pricelist.Supplier3Name</td>
-                        <td>Price: $@pricelist.Supplier3UnitPrice</td>
-                    </tr>
-                </table>
+            {
+                <tr>
+                    <td>First Supplier: @pricelist.Supplier1Name</td>
+                    <td>$@pricelist.Supplier1UnitPrice</td>
+                </tr>
+                <tr>
+                    <td>Second Supplier: @pricelist.Supplier2Name</td>
+                    <td>$@pricelist.Supplier2UnitPrice</td>
+                </tr>
+                <tr>
+                    <td>Thrid Supplier: @pricelist.Supplier3Name</td>
+                    <td>$@pricelist.Supplier3UnitPrice</td>
+                </tr>
+
             }
-
-
-        <div class="button">
-            <input class="rounded" type="button" value="Update" style="margin-left:10px; background-color:darkorange; color:white" onclick="location.href='@Url.Action("Update","Catalogue", new { itemId = catalogue.ItemId, sessionid = sessionId})'">
-            <button class="rounded"  style="background-color:red;">
+        </table>
+            <input class="btn btn-success rounded" type="button" value="Update" style="float:right" onclick="location.href='@Url.Action("Update","Catalogue", new { itemId = catalogue.ItemId, sessionid = sessionId})'">
+            <button class=" btn btn-danger rounded" style="float:right;margin-right:10px">
                 @Html.ActionLink("Delete","Delete","Catalogue",
                 new { confirm = true, itemId = catalogue.ItemId, sessionid = sessionId },
                 new { Style = "color:White;", onclick = "return confirm('Do you really want to delete this Catalogue?')" })
             </button>
         </div>
-    </div>
 </section>
 
 <style>

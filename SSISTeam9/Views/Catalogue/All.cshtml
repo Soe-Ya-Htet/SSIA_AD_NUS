@@ -1,24 +1,24 @@
 ﻿@using SSISTeam9.Models;
 @{
     Layout = "~/Views/Shared/_Store.cshtml";
-    ViewBag.Title = "Catalogue List";
+    ViewBag.Title = "Catalogue";
     List<Inventory> catalogues = (List<Inventory>)ViewData["catalogues"];
     string sessionId = (string)ViewData["sessionId"];
     List<String> category = (List<String>)ViewData["category"];
 }
 
-<h2 style="text-align:center">Catalogues List</h2>
-<a class="btn btn-light" href="javascript:window.print()">Print Catalogues</a>
+<h2 style="text-align:center">Catalogue</h2>
+<a class="btn btn-light" href="javascript:window.print()" style="float:right">Print Catalogue</a>
 
 <form class="form-inline" method="post">
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
                 <div class="row">
-                    <div class="col-sm-4">
-                        <text> Category</text>
+                    <div style="margin-right:25px">
+                        <text>By Category: </text>
                     </div>
-                    <div class="col-sm">
+                    <div>
                         <select name="catSearch">
                             <option value="">All</option>
                             @foreach (string cat in category)
@@ -29,34 +29,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <text> Description</text>
-                    </div>
-                    <div class="col-sm">
-                        <input name="desSearch" type="text">
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm">
-                <input class="rounded btn-width" type="submit" value="Search" formaction="/Catalogue/All?sessionId=@sessionId">
-            </div>
         </div>
     </div>
+    <label for="desSearch" style="text-align:center;margin-top:10px">By Description: </label>
+    <input id="desSearch" name="desSearch" type="text" style="margin-left:10px;margin-top:10px;text-align:center">
+    <input class="rounded btn-width" style="margin-left:10px;margin-top:10px;text-align:center" type="submit" value="Search" formaction="/Catalogue/All?sessionId=@sessionId">
 </form>
 
 @if (catalogues.Count == 0)
 {
     <br /><br />
-    <p style="font-size:14px">No catalogues to display</p>
+    <p style="font-size:14px">No items to display</p>
 }
 else
 {
+    <input type="button" value="Create New Catalogue" class="rounded" style="float:right;margin-bottom:10px" onclick="location.href='@Url.Action("Create","Catalogue", routeValues: new { sessionid = sessionId })'">
     <table align="center" class="table table-bordered">
-        <tr>
-            <td><input type="button" value="Create New Catalogue" style="background-color:forestgreen; color:white" onclick="location.href='@Url.Action("Create","Catalogue", routeValues: new { sessionid = sessionId })'"></td>
-        </tr>
         <tr align="center">
             <th>Item Number</th>
             <th>Category</th>

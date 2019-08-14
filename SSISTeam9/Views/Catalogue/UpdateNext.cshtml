@@ -36,8 +36,10 @@
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Supplier1UnitPrice): </td>
-                <td>@Html.TextBoxFor(x => x.Supplier1UnitPrice, new { id = "supplier1UnitPrice", @Value = pricelist.Supplier1UnitPrice, @class = "TextBox" })</td>
-                <td>@Html.ValidationMessageFor(x => x.Supplier1UnitPrice, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(x => x.Supplier1UnitPrice, new { id = "supplier1UnitPrice", @Value = pricelist.Supplier1UnitPrice, @class = "TextBox" })
+                    @Html.ValidationMessageFor(x => x.Supplier1UnitPrice, "", new { style = "color:red" })
+                </td>
             </tr>
 
             <tr>
@@ -51,10 +53,10 @@
                             }
                             @foreach (string supplierName in supplierNames)
                             {
-                            if (supplierName != pricelist.Supplier2Name)
-                            {
-                            <option>@supplierName</option>
-                            }
+                                if (supplierName != pricelist.Supplier2Name)
+                                {
+                                    <option>@supplierName</option>
+                                }
                             }
                         </select>
                     </div>
@@ -62,8 +64,10 @@
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Supplier2UnitPrice): </td>
-                <td>@Html.TextBoxFor(x => x.Supplier2UnitPrice, new { id = "supplier2UnitPrice", @Value = pricelist.Supplier2UnitPrice, @class = "TextBox" })</td>
-                <td>@Html.ValidationMessageFor(x => x.Supplier2UnitPrice, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(x => x.Supplier2UnitPrice, new { id = "supplier2UnitPrice", @Value = pricelist.Supplier2UnitPrice, @class = "TextBox" })
+                    @Html.ValidationMessageFor(x => x.Supplier2UnitPrice, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Supplier3Name): </td>
@@ -76,10 +80,10 @@
                             }
                             @foreach (string supplierName in supplierNames)
                             {
-                            if (supplierName != pricelist.Supplier3Name)
-                            {
-                            <option>@supplierName</option>
-                            }
+                                if (supplierName != pricelist.Supplier3Name)
+                                {
+                                    <option>@supplierName</option>
+                                }
                             }
                         </select>
                     </div>
@@ -87,15 +91,13 @@
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Supplier3UnitPrice): </td>
-                <td>@Html.TextBoxFor(x => x.Supplier3UnitPrice, new { id = "supplier3UnitPrice", @Value = pricelist.Supplier3UnitPrice, @class = "TextBox" })</td>
-                <td>@Html.ValidationMessageFor(x => x.Supplier3UnitPrice, "", new { style = "color:red" })</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td align="right"><input class="rounded" type="submit" value="Save Update" style="background-color:green;color:white;"></td>
+                <td>
+                    @Html.TextBoxFor(x => x.Supplier3UnitPrice, new { id = "supplier3UnitPrice", @Value = pricelist.Supplier3UnitPrice, @class = "TextBox" })
+                    @Html.ValidationMessageFor(x => x.Supplier3UnitPrice, "", new { style = "color:red" })
+                </td>
             </tr>
         </table>
-
+        <input class="btn btn-success rounded" type="submit" value="Save Update" style="float:right">
 
     }
 

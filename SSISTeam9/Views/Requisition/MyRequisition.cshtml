@@ -49,59 +49,52 @@
     else
     {
         <h2>My Requisition</h2>
-        <hr />
+        <br />
         <table class="table table-bordered">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.ReqId)
+                    Requisition Code
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ReqCode)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateOfRequest)
+                    Date Of Request
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Status)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PickUpDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ApprovedBy)
-                </th>
-                <th></th>
             </tr>
 
             @foreach (var req in Model)
             {
-                <tr>
-                    <td>
-                        @Html.ActionLink(req.ReqId.ToString(), "GetRequisitionDetails", new { reqId = req.ReqId, sessionId = sessionId })
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelreq => req.ReqCode)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelreq => req.DateOfRequest)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelreq => req.Status)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelreq => req.PickUpDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelreq => req.ApprovedBy)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=req.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=req.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=req.PrimaryKey */ })
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.ActionLink(req.ReqCode.ToString(), "GetRequisitionDetails", new { reqId = req.ReqId, sessionId = sessionId })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelreq => req.DateOfRequest)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelreq => req.Status)
+                </td>
+            </tr>
             }
 
         </table>
     }
 }
+
+        <style>
+            td {
+                padding: 2px;
+                width: 200px;
+            }
+
+            tr {
+                height: 40px;
+                padding: 2px;
+                text-align: center;
+            }
+
+            th {
+                text-align: center;
+            }
+        </style>

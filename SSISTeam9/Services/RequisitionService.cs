@@ -75,6 +75,11 @@ namespace SSISTeam9.Services
             }
         }
 
+        public static void RemoveFromCart(long itemId, long empId)
+        {
+            CartDAO.RemoveFromCart(itemId, empId);
+        }
+
         private static List<Cart> GetCartsWithObjects(List<Cart> carts)
         {
             if (carts.Count == 0) return new List<Cart>();
@@ -118,12 +123,14 @@ namespace SSISTeam9.Services
 
         public static List<Requisition> GetRequisitionByEmpId(long empId)
         {
-            return RequisitionDAO.GetRequisitionByEmpId(empId);
+            List<Requisition> reqs = RequisitionDAO.GetRequisitionByEmpId(empId);
+            return GetRequisitionsWithObjects(reqs);
         }
 
         public static List<Requisition> GetRequisitionByDeptId(long deptId)
         {
-            return RequisitionDAO.GetRequisitionByDeptId(deptId);
+            List<Requisition> reqs = RequisitionDAO.GetRequisitionByDeptId(deptId);
+            return GetRequisitionsWithObjects(reqs);
         }
 
         public static void CreateRequisition(List<Cart> carts, long empId)
@@ -133,7 +140,7 @@ namespace SSISTeam9.Services
             emp.EmpId = empId;
             Requisition req = new Requisition();
             req.ReqCode = string.Format(String.Format("#R{0:0000000000}", reqs.Max()+1));
-            req.DateOfRequest = DateTime.Now.Date;
+            req.DateOfRequest = DateTime.Now;
             req.Status = "Pending Approval";
             req.Employee = emp;
             long reqId = RequisitionDAO.SaveRequisition(req);
@@ -171,6 +178,11 @@ namespace SSISTeam9.Services
                 }
             }
             return filtered;
+        }
+
+        public static bool HavingRequisition(long empId)
+        {
+            return RequisitionDAO.HavingRequisition(empId);
         }
 
         public static Requisition GetReqByReqId(long reqId)

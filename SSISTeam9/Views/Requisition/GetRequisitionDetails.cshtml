@@ -7,6 +7,7 @@
     Requisition req = (Requisition)ViewData["req"];
     string sessionId = (string)ViewData["sessionId"];
     bool isRep = (bool)ViewData["isRep"];
+    bool havingRequisition = (bool)ViewData["havReq"];
     string roleForDetail = (string)ViewData["roleForDetail"];
     if (roleForDetail == "store")
     {
@@ -110,7 +111,7 @@ Requisition Code : @req.ReqCode
                                 <button class="rounded btn-width btn-success" type="submit" id=reqId formaction="/Requisition/ProcessRequisition?reqId=@req.ReqId&status=@appStatus&sessionId=@sessionId"><span>Approve</span></button>
                             </div>
                         }
-                        else if (roleForDetail == "dept")
+                        else if (roleForDetail == "dept" && !havingRequisition)
                         {
                             <div class="col"></div>
                             <div class="col">

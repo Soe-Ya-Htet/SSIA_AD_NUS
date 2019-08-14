@@ -6,7 +6,8 @@
     List<String> category = (List<String>)ViewData["category"];
     string sessionId = (string)ViewData["sessionId"];
     bool isRep = (bool)ViewData["isRep"];
-
+    string desc = (string)ViewData["desc"];
+    string cate = (string)ViewData["cat"];
 }
 
 <link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
@@ -46,8 +47,7 @@
 </header>
 
 <h2>New Requisition</h2>
-<hr />
-
+<br />
 <form class="form-inline" method="post">
     <div class="container">
         <div class="row">
@@ -58,11 +58,30 @@
                     </div>
                     <div class="col-sm">
                         <select name="catSearch">
-                            <option value="">All</option>
-                            @foreach (string cat in category)
+                            @if (cate == "")
                             {
-                                <option value="@cat">@cat</option>
+                                <option value="" selected="selected">All</option>
+                                foreach (string cat in category)
+                                {
+                                    <option value="@cat">@cat</option>
+                                }
                             }
+                            else
+                            {
+                                <option value="">All</option>
+                                foreach (string cat in category)
+                                {
+                                    if (cat == cate)
+                                    {
+                                        <option value="@cat" selected="selected">@cat</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@cat">@cat</option>
+                                    }
+                                }
+                            }
+
                         </select>
                     </div>
                 </div>
@@ -73,42 +92,58 @@
                         <text> Description</text>
                     </div>
                     <div class="col-sm">
-                        <input name="desSearch" type="text">
+                        <input name="desSearch" type="text" value="@desc">
                     </div>
                 </div>
             </div>
             <div class="col-sm">
-                <input class="rounded btn-width" type="submit" value="Search" formaction="/Requisition/NewRequisition?sessionId=@sessionId">
+                <input class="rounded btn-width btn-success" type="submit" value="Search" formaction="/Requisition/NewRequisition?sessionId=@sessionId">
             </div>
         </div>
     </div>
 </form>
 
-@if (Model.ToArray().Length == 0)
-{
-    <h2>No Item Match!</h2>
-}
-else
-{
-    <section class="products">
+    @if (Model.ToArray().Length == 0)
+    {
+        <h2>No Item Match!</h2>
+    }
+    else
+    {
+        <section class="products">
 
-        @foreach (var item in Model)
-        {
-            <div class="product-card">
-                <div class="product-info">
-                    <center><img class="cart-img" src="~/Content/Images/@(item.Category).jpg" /></center>
-                    <form class="cart-form" method="post">
-                        <p class="text-center cart-data"><small>Description : @item.Description</small></p>
-                        <p class="text-center cart-data"><small>Measure : @item.UnitOfMeasure</small></p>
-                        <p class="text-center cart-data"><small>Quantity : </small>
-                            <input class="input-num" type="number" value="@this" min="0" step="1" name="itemQuantity" />
-                        </p>
-                        <input class="rounded btn-width" type="submit" value="Add" formaction="/Requisition/AddtoCart?itemId=@item.ItemId&sessionId=@sessionId">
-                        <input class="rounded btn-width" type="submit" value="Remove" formaction="/Requisition/AddtoCart?itemId=@item.ItemId&sessionId=@sessionId">
-                    </form>
+            @foreach (var item in Model)
+            {
+                <div class="product-card">
+                    <div class="product-info">
+                        <center><img class="cart-img" src="~/Content/Images/@(item.Category).jpg" /></center>
+                        <form class="cart-form" method="post">
+                            <p class="text-center cart-data"><small>Description : @item.Description</small></p>
+                            <p class="text-center cart-data"><small>Measure : @item.UnitOfMeasure</small></p>
+                            <p class="text-center cart-data">
+                                <small>Quantity : </small>
+                                <input class="input-num" type="number" value="1" min="1" step="1" name="itemQuantity" />
+                            </p>
+                            <input class="rounded cart-btn btn-success" type="submit" value="Add to List" formaction="/Requisition/AddtoCart?itemId=@item.ItemId&sessionId=@sessionId">
+                        </form>
+                    </div>
                 </div>
-            </div>
-        }
-    </section>
-}
+            }
+        </section>
+    }
 
+        <style>
+            td {
+                padding: 2px;
+                width: 200px;
+            }
+
+            tr {
+                height: 40px;
+                padding: 2px;
+                text-align: center;
+            }
+
+            th {
+                text-align: center;
+            }
+        </style>

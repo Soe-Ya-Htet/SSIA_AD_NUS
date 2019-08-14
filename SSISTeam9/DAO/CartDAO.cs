@@ -71,8 +71,22 @@ namespace SSISTeam9.DAO
                 string q = @"Update Cart set quantity=@quantity Where empId=@empId And itemId=@itemId";
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.Parameters.AddWithValue("@quantity", cart.Quantity);
-                cmd.Parameters.AddWithValue("@empId", cart.Quantity);
-                cmd.Parameters.AddWithValue("@itemId", cart.Quantity);
+                cmd.Parameters.AddWithValue("@empId", cart.Employee.EmpId);
+                cmd.Parameters.AddWithValue("@itemId", cart.Item.ItemId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void RemoveFromCart(long itemId, long empId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"Delete from Cart Where empId=@empId And itemId=@itemId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@empId", empId);
+                cmd.Parameters.AddWithValue("@itemId", itemId);
                 cmd.ExecuteNonQuery();
             }
         }

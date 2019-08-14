@@ -50,47 +50,65 @@
     else
     {
         <h2>Requisition List</h2>
-        <hr />
         <form method="post">
-            <p>
-                <button class="btnlink" type="submit" formaction="/Requisition/CreateRequisition?sessionId=@sessionId">Create Requisition</button>
-            </p>
-
+            <input class="btn-success rounded" style="float: right; margin-bottom: 10px;" type="submit" value="Create Requisition" formaction="/Requisition/CreateRequisition?sessionId=@sessionId">
             <table class="table table-bordered">
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Employee.EmpId)
+                        Item
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Item.ItemId)
+                        @Html.DisplayNameFor(model => model.Item.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Item.UnitOfMeasure)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Quantity)
                     </th>
-                    <th></th>
+                    <th>
+                        Remove
+                    </th>
                 </tr>
 
                 @foreach (var cart in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => cart.Employee.EmpId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => cart.Item.ItemId)
-                        </td>
-                        <td>
-                            <input type="number" id="@cart.Item.ItemId" min="0" step="1" value="@cart.Quantity" name="@cart.Item.ItemId" />
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        <img class="list-img" src="~/Content/Images/@(cart.Item.Category).jpg" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => cart.Item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => cart.Item.UnitOfMeasure)
+                    </td>
+                    <td>
+                        <input class="input-num" type="number" id="@cart.Item.ItemId" min="1" step="1" value="@cart.Quantity" name="@cart.Item.ItemId" />
+                    </td>
+                    <td>
+                        @Html.ActionLink("Remove From List", "RemoveFromCart", new { empId = cart.Employee.EmpId, itemId = cart.Item.ItemId, sessionId = sessionId })
+                    </td>
+                </tr>
                 }
 
             </table>
         </form>
     }
 }
+        <style>
+            td {
+                padding: 2px;
+                width: 200px;
+            }
+
+            tr {
+                height: 40px;
+                padding: 2px;
+                text-align: center;
+            }
+
+            th {
+                text-align: center;
+            }
+        </style>

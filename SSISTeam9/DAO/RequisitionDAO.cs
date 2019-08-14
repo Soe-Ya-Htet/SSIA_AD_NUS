@@ -165,6 +165,20 @@ namespace SSISTeam9.DAO
             return reqIds;
         }
 
+        public static bool HavingRequisition(long empId)
+        {
+            int count = 0;
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"select count(empId) from Cart where empId = @empId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@empId", empId);
+                count = (int)cmd.ExecuteScalar();
+            }
+            return count != 0 ? true : false;
+        }
+
         public static List<Requisition> GetRequisitionByEmpId(long empId)
         {
             List<Requisition> requisitions = new List<Requisition>();

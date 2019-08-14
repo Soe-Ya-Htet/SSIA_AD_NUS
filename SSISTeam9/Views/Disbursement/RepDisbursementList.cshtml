@@ -81,7 +81,7 @@
             </div>
         </div>
         <br />
-        <table class="table">
+        <table class="table table-bordered">
             <tr>
                 <th>
                     Item Description
@@ -135,9 +135,12 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Change" class="rounded" />
-                        @Html.Hidden("listId", disbursementList.ListId)
+                    <div class="row">
+                        <div class="col">
+                            <input type="submit" value="Change" class="rounded btn-width btn-success float-right" />
+                            @Html.Hidden("listId", disbursementList.ListId)
+                        </div>
+                        <div class="col"></div>
                     </div>
                 </div>
             </div>
@@ -145,3 +148,20 @@
 
     }
 }
+
+            <style>
+                td {
+                    padding: 2px;
+                    width: 200px;
+                }
+
+                tr {
+                    height: 40px;
+                    padding: 2px;
+                    text-align: center;
+                }
+
+                th {
+                    text-align: center;
+                }
+            </style>

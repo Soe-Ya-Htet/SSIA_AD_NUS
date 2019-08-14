@@ -3,13 +3,13 @@
 @using SSISTeam9.Models;
 @{
     Layout = "~/Views/Shared/_Store.cshtml";
-    ViewBag.Title = "View All Inventory Items";
+    ViewBag.Title = "Order Stock";
     List<Inventory> items = (List<Inventory>)ViewData["items"];
     var counter = 0;
     string sessionId = (string)ViewData["sessionId"];
 }
 
-<h3>Stock</h3>
+<h3>Order Stock</h3>
 
 @if (items.Count == 0)
 {
@@ -61,7 +61,7 @@ else
                 counter = counter + 1;
             }
         </table>
-        <input class="rounded" type="submit" value="Generate Purchase Orders" style="float:right">
+        <input class="rounded" type="submit" value="Generate Purchase Orders" style="float:right;margin-bottom:30px">
     }
 }
 

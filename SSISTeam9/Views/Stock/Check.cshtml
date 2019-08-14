@@ -3,12 +3,12 @@
 @using SSISTeam9.Models;
 @{
     Layout = "~/Views/Shared/_Store.cshtml";
-    ViewBag.Title = "Stock Check";
+    ViewBag.Title = "Check Stock";
     List<Inventory> inventories = (List<Inventory>)ViewData["inventories"];
     var sessionId = (string)ViewData["sessionId"];
 }
 
-<h2 style="text-align:center">Stock Check</h2>
+<h3>Check Stock</h3>
 
 @if (inventories.Count == 0)
 {
@@ -17,41 +17,37 @@
 }
 else
 {
-    <table align="center">
-        <tr align="center">
-            <th>Item Number</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>Unit Of Measure</th>
-            <th>Last Stock</th>
-            <th>Actual Stock</th>
-        </tr>
-        @using (Html.BeginForm("Generate", "AdjVoucher", new { sessionId = sessionId }, FormMethod.Post))
+    using (Html.BeginForm("Generate", "AdjVoucher", new { sessionId = sessionId }, FormMethod.Post))
+    {
+        <table class="table table-bordered" align="center">
+            <tr align="center">
+                <th>Item Number</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Unit Of Measure</th>
+                <th>Last Stock</th>
+                <th>Actual Stock</th>
+            </tr>
+        @for (int i = 0; i < inventories.Count; i++)
         {
-            for (int i = 0; i < inventories.Count; i++)
-            {
-                <tr align="center">
-                    <td>@inventories[i].ItemCode</td>
-                    <td>@inventories[i].Category</td>
-                    <td>@inventories[i].Description</td>
-                    <td>@inventories[i].UnitOfMeasure</td>
-                    <td>@inventories[i].StockLevel</td>
-                    <td>@Html.TextBoxFor(x => x[i].ActualStock, new { id = "actualStock", @Value = inventories[i].StockLevel })</td>
-                    <td style="display:none">
-                        @Html.TextBoxFor(x => x[i].ItemId, new { id = "itemId", @Value = inventories[i].ItemId })
-                        @Html.TextBoxFor(x => x[i].StockLevel, new { id = "stockLevel", @Value = inventories[i].StockLevel })
-                    </td>
-                </tr>
-            }
-            <tr>
-                <td></td>
-                <td></td>
-                <td align="right"><input class="rounded" type="submit" value="Generate Adjustment Voucher"></td>
+            <tr align="center">
+                <td>@inventories[i].ItemCode</td>
+                <td>@inventories[i].Category</td>
+                <td>@inventories[i].Description</td>
+                <td>@inventories[i].UnitOfMeasure</td>
+                <td>@inventories[i].StockLevel</td>
+                <td>@Html.TextBoxFor(x => x[i].ActualStock, new { id = "actualStock", @Value = inventories[i].StockLevel })</td>
+                <td style="display:none">
+                    @Html.TextBoxFor(x => x[i].ItemId, new { id = "itemId", @Value = inventories[i].ItemId })
+                    @Html.TextBoxFor(x => x[i].StockLevel, new { id = "stockLevel", @Value = inventories[i].StockLevel })
+                </td>
             </tr>
         }
-
     </table>
+    <input class="rounded" type="submit" style="float:right;margin-bottom:30px" value="Generate Adjustment Voucher">
 }
+
+    }
     @*using (Html.BeginForm("Index", "AdjVoucher", Model, FormMethod.Post))
         {
             <table class="table table-bordered">
@@ -102,4 +98,4 @@ else
 
 
 
-@Html.Raw(TempData["errorMsg"])
+    @Html.Raw(TempData["errorMsg"])

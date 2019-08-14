@@ -182,6 +182,12 @@ namespace SSISTeam9.Controllers
             return RedirectToAction("RepDisbursementList",new { sessionId = sessionId});
         }
 
+        public ActionResult Acknowledge(string sessionId)
+        {
+
+            return RedirectToAction("Home", "Employee");
+        }
+
     public class PerItem
         {
             public long itemId { get; set; }

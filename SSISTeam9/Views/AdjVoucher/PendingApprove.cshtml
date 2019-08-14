@@ -4,6 +4,7 @@
     ViewBag.Title = "Inventory Adjustment Voucher";
     List<AdjVoucher> adjVouchers = (List<AdjVoucher>)ViewData["adjVouchers"];
     string sessionId = (string)ViewData["sessionId"];
+    string authoriseBy = (string)ViewData["authoriseBy"];
 }
 
 @if (adjVouchers.Count == 0)
@@ -14,6 +15,7 @@
 else
 {
     <section>
+        <p>Pending authorisation by @authoriseBy</p>
         <table align="center">
             <tr align="center">
                 <th>Item Code</th>
@@ -33,7 +35,7 @@ else
 
         </table>
         <div class="button">
-            <input class="rounded" type="button" value="Authorise" style="margin-left:10px;" onclick="location.href='@Url.Action("AuthoriseByM","AdjVoucher", new { adjId = adjVouchers[0].AdjId, sessionid = sessionId})'">
+            <input class="rounded" type="button" value="Authorise" style="margin-left:10px;" onclick="location.href='@Url.Action("Authorise","AdjVoucher", new {sessionid = sessionId})'">
         </div>
     </section>
 }

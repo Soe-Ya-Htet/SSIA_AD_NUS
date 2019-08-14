@@ -21,7 +21,7 @@ else
             <th>Quantity adjusted</th>
             <th>Reason</th>
         </tr>
-        @using (Html.BeginForm("AuthoriseByS", "AdjVoucher", new { sessionId = sessionId }, FormMethod.Post))
+        @using (Html.BeginForm("UpdateReason", "AdjVoucher", new { sessionId = sessionId }, FormMethod.Post))
         {
             for (int i = 0; i < adjVouchers.Count; i++)
             {
@@ -33,6 +33,7 @@ else
                     <td style="display:none">
                         @Html.TextBoxFor(x => x[i].ItemId, new { id = "itemId", @Value = adjVouchers[i].ItemId })
                         @Html.TextBoxFor(x => x[i].AdjId, new { id = "adjId", @Value = adjVouchers[i].AdjId })
+                        @Html.TextBoxFor(x => x[i].AdjQty, new { id = "adjQty", @Value = adjVouchers[i].AdjQty })
                     </td>
                 </tr>
             }

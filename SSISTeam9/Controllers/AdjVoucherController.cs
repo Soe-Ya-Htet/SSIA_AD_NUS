@@ -10,6 +10,7 @@ using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
+    [StoreAuthorisationFilter]
     public class AdjVoucherController : Controller
     {
         //[HttpPost]
@@ -60,6 +61,20 @@ namespace SSISTeam9.Controllers
         //    return View(new List<AdjVoucher>());
         //}
 
+        public ActionResult Index(string sessionId)
+        {
+            Employee user = EmployeeService.GetUserBySessionId(sessionId);
+            if (user.EmpRole == "STORE_SUPERVISOR" || user.EmpRole == "STORE_MANAGER")
+            {
+                return RedirectToAction("PendingApprove", new { sessionId});
+            }
+            else
+            {
+                return RedirectToAction("PutReason", new { sessionId });
+            }
+
+        }
+
         public ActionResult Generate(List<Inventory> inventories, string sessionId)
         {
             long adjId = (long)AdjVoucherService.GetLastId() + 1;
@@ -71,6 +86,7 @@ namespace SSISTeam9.Controllers
                 {
                     flag = 1;
                     AdjVoucherService.CreateAdjVoucher(adjId, inventory.ItemId, qty);
+                    StockService.UpdateInventoryStockById(inventory.ItemId, inventory.ActualStock);
                 }
             }
             if(flag == 0)
@@ -91,17 +107,24 @@ namespace SSISTeam9.Controllers
 
             //status = 0 means need to be submit for reason.
             adjVouchers = AdjVoucherService.GetAdjByStatus(0);
-            foreach(AdjVoucher adj in adjVouchers)
+            if(adjVouchers.Count == 0)
             {
-                adj.Reason = null;
+                return RedirectToAction("AllAdjVouchers", new { sessionId });
             }
-            ViewData["adjVouchers"] = adjVouchers;
-            ViewData["sessionId"] = sessionId;
-            return View();
+            else
+            {
+                foreach (AdjVoucher adj in adjVouchers)
+                {
+                    adj.Reason = null;
+                }
+                ViewData["adjVouchers"] = adjVouchers;
+                ViewData["sessionId"] = sessionId;
+                return View();
+            }
+            
         }
 
-
-        public ActionResult AuthoriseByS(List<AdjVoucher> adjVouchers, string sessionId)
+        public ActionResult UpdateReason(List<AdjVoucher> adjVouchers, string sessionId)
         {
             Employee user = EmployeeService.GetUserBySessionId(sessionId);
             double totalAmount = 0;
@@ -121,15 +144,30 @@ namespace SSISTeam9.Controllers
 
             if (totalAmount > -250)
             {
-                //status = 1, auto approved by supervisor
-                AdjVoucherService.UpdateStatus(adjVouchers[0].AdjId, 1);
-                AdjVoucherService.AuthoriseBy(adjVouchers[0].AdjId, user.EmpId);
-                TempData["errorMsg"] = "<script>alert('Total discrepancy is less than $250, authorised already.');</script>";
+                //status = 2, Pending authorisation by Supervisor
+                long adjId = 0;
+                foreach (AdjVoucher adj in adjVouchers)
+                {
+                    if (adj.AdjId != adjId)
+                    {
+                        adjId = adj.AdjId;
+                        AdjVoucherService.UpdateStatus(adjId, 2);
+                    }
+                }                
+                TempData["errorMsg"] = "<script>alert('Total discrepancy is less than $250, pending for Store Supervisor to authorise.');</script>";
             }
             else
             {
-                //status = 2, pending approve for manager
-                AdjVoucherService.UpdateStatus(adjVouchers[0].AdjId, 2);
+                //status = 3, Pending authorisation by Manager
+                long adjId = 0;
+                foreach (AdjVoucher adj in adjVouchers)
+                {
+                    if (adj.AdjId != adjId)
+                    {
+                        adjId = adj.AdjId;
+                        AdjVoucherService.UpdateStatus(adjId, 3);
+                    }
+                }
                 TempData["errorMsg"] = "<script>alert('Total discrepancy is more than $250, pending for Store Manager to authorise.');</script>";
 
             }
@@ -139,22 +177,97 @@ namespace SSISTeam9.Controllers
         }
 
 
+        //public ActionResult AuthoriseByS(List<AdjVoucher> adjVouchers, string sessionId)
+        //{
+        //    Employee user = EmployeeService.GetUserBySessionId(sessionId);
+        //    double totalAmount = 0;
+        //    foreach (AdjVoucher adj in adjVouchers)
+        //    {
+        //        PriceList priceList = PriceListService.GetPriceListByItemId(adj.ItemId);
+        //        double price = 0;
+        //        if (priceList != null)
+        //        {
+        //            price = priceList.Supplier1UnitPrice;
+        //        }
+
+        //        double amount = price * adj.AdjQty;
+        //        totalAmount = totalAmount + amount;
+        //        AdjVoucherService.UpdateReason(adj);
+        //    }
+
+        //    if (totalAmount > -250)
+        //    {
+        //        //status = 1, auto approved by supervisor
+        //        AdjVoucherService.UpdateStatus(adjVouchers[0].AdjId, 1);
+        //        AdjVoucherService.AuthoriseBy(adjVouchers[0].AdjId, user.EmpId);
+        //        TempData["errorMsg"] = "<script>alert('Total discrepancy is less than $250, authorised already.');</script>";
+        //    }
+        //    else
+        //    {
+        //        //status = 2, pending approve for manager
+        //        AdjVoucherService.UpdateStatus(adjVouchers[0].AdjId, 2);
+        //        TempData["errorMsg"] = "<script>alert('Total discrepancy is more than $250, pending for Store Manager to authorise.');</script>";
+
+        //    }
+        //    ViewData["userName"] = user.EmpName;
+        //    ViewData["sessionId"] = sessionId;
+        //    return View("~/Views/StoreLandingPage/Home.cshtml");
+        //}
+
+
         public ActionResult PendingApprove(string sessionId)
         {
+            Employee user = EmployeeService.GetUserBySessionId(sessionId);
             List<AdjVoucher> adjVouchers = new List<AdjVoucher>();
-
-            //status = 2, pending approve for manager
-            adjVouchers = AdjVoucherService.GetAdjByStatus(2);
+            string authoriseBy = null;
+            if (user.EmpRole == "STORE_SUPERVISOR")
+            {
+                adjVouchers = AdjVoucherService.GetAdjByStatus(2);
+                if (adjVouchers.Count == 0)
+                {
+                    return RedirectToAction("AllAdjVouchers", new { sessionId });
+                }
+                authoriseBy = "Supervisor";
+            }
+            else if(user.EmpRole == "STORE_MANAGER")
+            {
+                adjVouchers = AdjVoucherService.GetAdjByStatus(3);
+                if (adjVouchers.Count == 0)
+                {
+                    return RedirectToAction("AllAdjVouchers", new { sessionId });
+                }
+                authoriseBy = "Manager";
+            }
+            ViewData["authoriseBy"] = authoriseBy;
             ViewData["adjVouchers"] = adjVouchers;
             ViewData["sessionId"] = sessionId;
             return View();
         }
 
 
-        public ActionResult AuthoriseByM(long adjId, string sessionId)
+        public ActionResult Authorise( string sessionId)
         {
             Employee user = EmployeeService.GetUserBySessionId(sessionId);
-            AdjVoucherService.AuthoriseBy(adjId, user.EmpId);
+            List<AdjVoucher> adjVouchers = new List<AdjVoucher>();
+            if (user.EmpRole == "STORE_SUPERVISOR")
+            {
+                adjVouchers = AdjVoucherService.GetAdjByStatus(2);
+            }
+            else if (user.EmpRole == "STORE_MANAGER")
+            {
+                adjVouchers = AdjVoucherService.GetAdjByStatus(3);
+            }
+            
+            long adjId = 0;
+            foreach(AdjVoucher adj in adjVouchers)
+            {
+                if(adj.AdjId != adjId)
+                {
+                    adjId = adj.AdjId;
+                    AdjVoucherService.AuthoriseBy(adjId, user.EmpId);
+                }
+            }
+            
             TempData["errorMsg"] = "<script>alert('Adjustment voucher authorise successfully.');</script>";
             ViewData["userName"] = user.EmpName;
             ViewData["sessionId"] = sessionId;
@@ -187,13 +300,16 @@ namespace SSISTeam9.Controllers
                 switch (adj.status)
                 {                   
                     case 0:
-                        status = "Pending submit reason";
+                        status = "Pending submit reason by Clerk";
                         break;
                     case 1:
-                        status = "Approved";
+                        status = "Authorised";
                         break;
                     case 2:
-                        status = "Pending approval";
+                        status = "Pending authorisation by Supervisor";
+                        break;
+                    case 3:
+                        status = "Pending authorisation by Manager";
                         break;
                 }
                 statuses.Add(status);                                      

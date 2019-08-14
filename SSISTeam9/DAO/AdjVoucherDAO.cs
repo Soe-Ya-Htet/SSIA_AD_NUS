@@ -193,7 +193,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"UPDATE AdjVoucher SET reason = '" + adjVoucher.Reason +
+                string q = @"UPDATE AdjVoucher SET reason = '" + adjVoucher.Reason + 
                              "' WHERE itemId = '" + adjVoucher.ItemId + "' AND adjId = '" + adjVoucher.AdjId + "'";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
@@ -221,8 +221,8 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"UPDATE AdjVoucher SET authorisedBy = '" + empId +
-                             "' WHERE adjId = '" + adjId + "'";
+                string q = @"UPDATE AdjVoucher SET authorisedBy = '" + empId + "', status = '1'" +
+                             " WHERE adjId = '" + adjId + "'";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();

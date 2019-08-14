@@ -4,6 +4,7 @@
     ViewBag.Title = "Inventory Adjustment Voucher";
     List<AdjVoucher> adjVouchers = (List<AdjVoucher>)ViewData["adjVouchers"];
     string sessionId = (string)ViewData["sessionId"];
+    string authoriseBy = (string)ViewData["authoriseBy"];
 }
 
 @if (adjVouchers.Count == 0)
@@ -13,7 +14,19 @@
 }
 else
 {
+    <p>Possible Causes:</p>
+    <p style="padding-left:3em">1. items broken or expired</p>
+    <p style="padding-left:3em">2. adhoc (i.e. detected when trying to issue the item(s))</p>
+    <p style="padding-left:3em">3. when issue/receipt of item is not recorded (i.e. oversight)</p>
+
+    <h3>Authorising Adjustments:</h3>
+    <p>Minor: - anything under $250 per item adjustment can be authorised by Supervisor</p>
+    <p style="padding-left:3em">- a copy of adjustment amounts is put on an adjustment voucher and is signed by the supervisor.</p><br />
+    <p>Major: - by Manager</p>
+    <p style="padding-left:3em">- use adjustment voucher</p>
+    <p style="padding-left:3em">- a copy of adjustment amounts is put on an adjustment voucher and is signed by the supervisor.</p>
     <section>
+        <p>Pending authorisation by @authoriseBy</p>
         <table align="center">
             <tr align="center">
                 <th>Item Code</th>
@@ -33,8 +46,7 @@ else
 
         </table>
         <div class="button">
-            <input class="rounded" type="button" value="Authorise" style="margin-left:10px;" onclick="location.href='@Url.Action("AuthoriseByM","AdjVoucher", new { adjId = adjVouchers[0].AdjId, sessionid = sessionId})'">
+            <input class="rounded" type="button" value="Authorise" style="margin-left:10px;" onclick="location.href='@Url.Action("Authorise","AdjVoucher", new {sessionid = sessionId})'">
         </div>
     </section>
 }
-        

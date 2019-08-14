@@ -1,8 +1,10 @@
-﻿using SSISTeam9.Filters;
+﻿using SSISTeam9.DAO;
+using SSISTeam9.Filters;
 using SSISTeam9.Models;
 using SSISTeam9.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -31,6 +33,24 @@ namespace SSISTeam9.Controllers
         public ActionResult GenerateDisbursement(List<Entry> entries)
         {
             return Json(restService.GenerateDisbursementOfStockClerk(entries), JsonRequestBehavior.AllowGet);
+        }
+
+        [Route("inventory/all")]
+        public ActionResult GetAllInventories()
+        {
+            return Json(restService.GetAllInventories(), JsonRequestBehavior.AllowGet);
+        }
+
+        [Route("inventory/price_list")]
+        public ActionResult GetInventoryPriceList(List<long> itemIds)
+        {
+            return Json(restService.GetAllInventoryPriceListByIds(itemIds), JsonRequestBehavior.AllowGet);
+        }
+
+        [Route("inventory/adjustment")]
+        public ActionResult Generate(List<AdjVoucher> adjVouchers)
+        {
+            return Json(restService.SubmitStockAdjustment(adjVouchers), JsonRequestBehavior.AllowGet);
         }
 
     }

@@ -688,7 +688,6 @@
     <Content Include="Content\Images\Tparency.jpg" />
     <Content Include="Content\Images\Tray.jpg" />
     <Content Include="Content\sticky-footer-navbar.css" />
-    <Content Include="Content\storehome.jpeg" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -801,7 +800,6 @@
     <Content Include="Views\Analytics\ByStationeryCategoryOrdered.cshtml" />
     <Content Include="Views\Catalogue\UpdateNext.cshtml" />
     <Content Include="Views\Requisition\ViewPastRequisitions.cshtml" />
-    <Content Include="Views\Requisition\ViewPastRequisitionDetails.cshtml" />
     <Content Include="Views\ChargeBack\Select.cshtml" />
     <Content Include="Views\StockCard\StockCard.cshtml" />
     <Content Include="Views\AdjVoucher\Index.cshtml" />
@@ -862,9 +860,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>61152</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57588/</IISUrl>
+          <IISUrl>http://localhost:61152/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

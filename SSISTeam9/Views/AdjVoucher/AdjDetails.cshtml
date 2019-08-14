@@ -1,7 +1,52 @@
-﻿
+﻿@using SSISTeam9.Models;
 @{
-    ViewBag.Title = "AdjDetails";
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Inventory Adjustment Voucher";
+    List<AdjVoucher> adjVouchers = (List<AdjVoucher>)ViewData["adjVouchers"];
+    string sessionId = (string)ViewData["sessionId"];
+    string adjIdstring = (string)ViewData["adjIdstring"];
+    string authorisedBy = (string)ViewData["authorisedBy"];
 }
 
-<h2>AdjDetails</h2>
+@if (adjVouchers.Count == 0)
+{
+    <br /><br />
+    <p style="font-size:14px">No adjustment voucher to display</p>
+}
+else
+{
+    <p>Possible Causes:</p>
+    <p style="padding-left:3em">1. items broken or expired</p>
+    <p style="padding-left:3em">2. adhoc (i.e. detected when trying to issue the item(s))</p>
+    <p style="padding-left:3em">3. when issue/receipt of item is not recorded (i.e. oversight)</p>
 
+    <h3>Authorising Adjustments:</h3>
+    <p>Minor: - anything under $250 per item adjustment can be authorised by Supervisor</p>
+    <p style="padding-left:3em">- a copy of adjustment amounts is put on an adjustment voucher and is signed by the supervisor.</p><br />
+    <p>Major: - by Manager</p>
+    <p style="padding-left:3em">- use adjustment voucher</p>
+    <p style="padding-left:3em">- a copy of adjustment amounts is put on an adjustment voucher and is signed by the supervisor.</p>
+    <h2 style="text-align:center">Voucher#: @adjIdstring</h2>
+    <section>
+        <table align="center">
+            <tr align="center">
+                <th>Item Code</th>
+                <th>Quantity adjusted</th>
+                <th>Reason</th>
+            </tr>
+
+            @foreach (AdjVoucher adj in adjVouchers)
+            {
+
+                <tr>
+                    <td>@adj.ItemCode</td>
+                    <td>@adj.AdjQty</td>
+                    <td>@adj.Reason</td>
+                </tr>
+            }
+            <tr>
+                <td>Authorised by: @authorisedBy</td>
+            </tr>
+        </table>
+    </section>
+}

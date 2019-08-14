@@ -56,7 +56,7 @@ namespace SSISTeam9.Controllers
             }
             catch (SqlException)
             {
-                TempData["errorMsg"] = "<script>alert('Department code already exists! Please Verify.');</script>";
+                TempData["errorMsg"] = "<script>alert('Department code already exists! Please verify.');</script>";
                 ViewData["sessionId"] = sessionId;
                 ViewData["empNames"] = EmployeeDAO.GetAllEmployeeNames();
                 return View("Create");
@@ -84,7 +84,7 @@ namespace SSISTeam9.Controllers
             }
             catch (SqlException)
             {
-                TempData["errorMsg"] = "<script>alert('Department code already exists! Please Verify.');</script>";
+                TempData["errorMsg"] = "<script>alert('Department code already exists! Please verify.');</script>";
                 ViewData["sessionId"] = sessionId;
                 ViewData["department"] = department;
                 ViewData["empNames"] = EmployeeDAO.GetAllEmployeeNames();

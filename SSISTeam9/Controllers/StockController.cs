@@ -10,7 +10,7 @@ using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
-    //[StoreAuthorisationFilter]
+    [StoreAuthorisationFilter]
     public class StockController : Controller
     {
         public async Task<ActionResult> All(string sessionId)
@@ -65,7 +65,6 @@ namespace SSISTeam9.Controllers
 
             return RedirectToAction("All", new {sessionid = sessionId});
         }
-
 
         //The following code used for Stock taking in order to generate Adjustment Voucher
         public ActionResult Check(string sessionId)

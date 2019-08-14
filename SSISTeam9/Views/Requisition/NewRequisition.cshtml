@@ -11,7 +11,7 @@
 
 <link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
 <link href="~/Content/cart.css" rel="stylesheet">
-<header style="padding-bottom: 30px;">
+<header class="nav-header">
     <!-- Fixed navbar -->
     <nav class="dptnavbar navbar navbar-expand-md navbar-dark fixed-top">
 
@@ -96,12 +96,12 @@ else
         {
             <div class="product-card">
                 <div class="product-info">
-                    <center><img style="width: 200px; height:100px; margin-bottom:10px" src="~/Content/Images/@(item.Category).jpg" /></center>
-                    <form style="text-align:center" method="post">
-                        <p class="text-center" style="width: 300px; height: 10px;"><small>Description : @item.Description</small></p>
-                        <p class="text-center" style="width: 300px; height: 10px;"><small>Measure : @item.UnitOfMeasure</small></p>
-                        <p class="text-center" style="width: 300px; height: 10px;">
-                            <small>Quantity : </small><input type="number" value="@this" min="0" step="1" name="itemQuantity" style="width: 100px; height: 20px;" />
+                    <center><img class="cart-img" src="~/Content/Images/@(item.Category).jpg" /></center>
+                    <form class="cart-form" method="post">
+                        <p class="text-center cart-data"><small>Description : @item.Description</small></p>
+                        <p class="text-center cart-data"><small>Measure : @item.UnitOfMeasure</small></p>
+                        <p class="text-center cart-data"><small>Quantity : </small>
+                            <input class="input-num" type="number" value="@this" min="0" step="1" name="itemQuantity" />
                         </p>
                         <input class="rounded btn-width" type="submit" value="Add" formaction="/Requisition/AddtoCart?itemId=@item.ItemId&sessionId=@sessionId">
                         <input class="rounded btn-width" type="submit" value="Remove" formaction="/Requisition/AddtoCart?itemId=@item.ItemId&sessionId=@sessionId">
@@ -111,9 +111,4 @@ else
         }
     </section>
 }
-
-
-<style>
-    
-</style>
 

@@ -85,7 +85,7 @@ namespace SSISTeam9.Controllers
             }
             catch (SqlException)
             {
-                TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please Verify.');</script>";
+                TempData["errorMsg"] = "<script>alert('Catalogue code already exists! Please verify.');</script>";
                 return RedirectToAction("Create", new { sessionid = sessionId });
             }
             return RedirectToAction("CreateNext", new { itemId = ItemId, sessionid = sessionId });

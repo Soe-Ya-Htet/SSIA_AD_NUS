@@ -25,6 +25,21 @@ namespace SSISTeam9.DAO
             }
         }
 
+
+        public static void UpdateInventoryStockById(long itemId, int stock)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                    string q = @"UPDATE Inventory SET stockLevel = '" + stock + "' WHERE itemId = '" + itemId+ "'";
+
+                    SqlCommand cmd = new SqlCommand(q, conn);
+                    cmd.ExecuteNonQuery();
+                
+            }
+        }
+
         public static List<Inventory> GetAllItemsOrdered()
         {
             List<Inventory> items = new List<Inventory>();

@@ -156,6 +156,71 @@ namespace SSISTeam9.Services
             return repDict;
         }
 
+        public Dictionary<string, List<Inventory>> GetAllInventories()
+        {
+            Dictionary<string, List<Inventory>> invDict = new Dictionary<string, List<Inventory>>
+            {
+                {"inventories", CatalogueService.GetAllCatalogue() }
+            };
+            return invDict;
+        }
+
+        public Dictionary<string, List<PriceList>> GetAllInventoryPriceListByIds(List<long> itemIds)
+        {
+            List<PriceList> priceLists = PriceListDAO.GetPriceListsByItemIds(itemIds);
+            if (priceLists.Count != itemIds.Count)
+            {
+                if (priceLists.Count == 0)
+                {
+                    foreach (long itemId in itemIds)
+                    {
+                        PriceList priceList = new PriceList
+                        {
+                            Item = new Inventory
+                            {
+                                ItemId = itemId
+                            },
+                        };
+                        priceLists.Add(priceList);
+                    }
+                }
+                else
+                {
+                    foreach (long itemId in itemIds)
+                    {
+                        bool found = false;
+                        foreach (PriceList priceList in priceLists)
+                        {
+                            if (itemId == priceList.Item.ItemId)
+                            {
+                                priceLists.Add(priceList);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                        {
+                            PriceList priceList = new PriceList
+                            {
+                                Item = new Inventory
+                                {
+                                    ItemId = itemId
+                                },
+                            };
+                            priceLists.Add(priceList);
+                        }
+                    }
+                }
+            }
+            Dictionary<string, List<PriceList>> priceDict = new Dictionary<string, List<PriceList>>
+            {
+                {"priceLists",  priceLists}
+            };
+
+            return priceDict;
+
+        }
+
         public Dictionary<string, List<DisbursementList>> GetAllPastDisbursementsOfRep()
         {
             Dictionary<string, List<DisbursementList>> disDict = new Dictionary<string, List<DisbursementList>>();
@@ -263,7 +328,20 @@ namespace SSISTeam9.Services
 
         public Dictionary<string, List<RetrievalForm>> GetAllRetrievalFormsOfStockClerk()
         {
-            List<RetrievalForm> retrievalForms = RetrievalFormService.ViewRetrievalForm();
+            List<RetrievalForm> retrievalForms = null;
+            if (DisbursementListService.CheckForPendingDisbursements().Count != 0)
+            {
+                retrievalForms = new List<RetrievalForm>();
+            }
+            else
+            {
+                retrievalForms = RetrievalFormService.ViewRetrievalForm();
+                for (int i = 0; i < retrievalForms.Count; i++)
+                {
+                    Inventory inv = CatalogueService.GetCatalogueById(retrievalForms[i].itemId);
+                    retrievalForms[i].totalRetrieved = inv.StockLevel;
+                }
+            }
 
             Dictionary<string, List<RetrievalForm>> retrievalDict = new Dictionary<string, List<RetrievalForm>>
             {
@@ -330,6 +408,21 @@ namespace SSISTeam9.Services
             long headId = DepartmentService.GetCurrentHead(user.DeptId);
 
             RequisitionService.ProcessRequisition(reqId, "Rejected", headId);
+            return "Success";
+        }
+
+        public string SubmitStockAdjustment(List<AdjVoucher> adjVouchers)
+        {
+            int managerId = 14;
+            int supervisorId = 12;
+            for (var i = 0; i < adjVouchers.Count; i++)
+            {
+                int id = (adjVouchers[i].TotalPrice < 250.0) ? supervisorId : managerId;
+                adjVouchers[i].AuthorisedBy = id;
+            }
+
+            AdjVoucherDAO.GenerateDisbursement(adjVouchers);
+            //AdjVoucherDAO.UpdateStock(adjVouchers);
             return "Success";
         }
     }

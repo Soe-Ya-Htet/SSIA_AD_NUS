@@ -42,35 +42,35 @@ namespace SSISTeam9.DAO
 
         //}
 
-        //public static void GenerateDisbursement(List<AdjVoucher> adjVouchers)
-        //{
-        //    long adjId = GetLastId() ?? 1;
+        public static void GenerateDisbursement(List<AdjVoucher> adjVouchers)
+        {
+            long adjId = GetLastId() ?? 1;
 
-        //    using (SqlConnection conn = new SqlConnection(Data.db_cfg))
-        //    {
-        //        conn.Open();
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
 
-        //        adjId += 1;
+                adjId += 1;
 
-        //        string q = @"INSERT INTO AdjVoucher (adjId,itemId,date,authorisedBy,adjQty,reason,status) " +
-        //                   "VALUES (@adjId,@itemId,@date,@authorisedBy,@adjQty,@reason,@status)";
+                string q = @"INSERT INTO AdjVoucher (adjId,itemId,date,authorisedBy,adjQty,reason,status) " +
+                           "VALUES (@adjId,@itemId,@date,@authorisedBy,@adjQty,@reason,@status)";
 
-        //        foreach (var adjVoucher in adjVouchers)
-        //        {
-        //            SqlCommand cmd = new SqlCommand(q, conn);
-        //            cmd.Parameters.AddWithValue("@adjId", adjId);
-        //            cmd.Parameters.AddWithValue("@itemId", adjVoucher.Item.ItemId);
-        //            cmd.Parameters.AddWithValue("@date", DateTime.Now);
-        //            cmd.Parameters.AddWithValue("@authorisedBy", adjVoucher.AuthorisedBy);
-        //            cmd.Parameters.AddWithValue("@adjQty", adjVoucher.AdjQty);
-        //            cmd.Parameters.AddWithValue("@reason", adjVoucher.Reason);
-        //            cmd.Parameters.AddWithValue("@status", 0);
-        //            cmd.ExecuteNonQuery();
-        //        }
+                foreach (var adjVoucher in adjVouchers)
+                {
+                    SqlCommand cmd = new SqlCommand(q, conn);
+                    cmd.Parameters.AddWithValue("@adjId", adjId);
+                    cmd.Parameters.AddWithValue("@itemId", adjVoucher.ItemId);
+                    cmd.Parameters.AddWithValue("@date", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@authorisedBy", adjVoucher.AuthorisedBy);
+                    cmd.Parameters.AddWithValue("@adjQty", adjVoucher.AdjQty);
+                    cmd.Parameters.AddWithValue("@reason", adjVoucher.Reason);
+                    cmd.Parameters.AddWithValue("@status", 0);
+                    cmd.ExecuteNonQuery();
+                }
 
-        //    }
+            }
 
-        //}
+        }
 
         public static long? GetLastId()
         {
@@ -193,7 +193,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"UPDATE AdjVoucher SET reason = '" + adjVoucher.Reason +
+                string q = @"UPDATE AdjVoucher SET reason = '" + adjVoucher.Reason + 
                              "' WHERE itemId = '" + adjVoucher.ItemId + "' AND adjId = '" + adjVoucher.AdjId + "'";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
@@ -221,8 +221,8 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"UPDATE AdjVoucher SET authorisedBy = '" + empId +
-                             "' WHERE adjId = '" + adjId + "'";
+                string q = @"UPDATE AdjVoucher SET authorisedBy = '" + empId + "', status = '1'" +
+                             " WHERE adjId = '" + adjId + "'";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.ExecuteNonQuery();

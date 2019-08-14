@@ -25,9 +25,13 @@
                 </li>
                 <li class="nav-item active">
                     @Html.ActionLink("Inventory", "Check", "Stock", new { sessionId = sessionId }, new { @class = "nav-link" })
-                </li>
-                <li class="nav-item active">
-                    @Html.ActionLink("Stock", "All", "Stock", new { sessionId = sessionId }, new { @class = "nav-link" })
+                <li class="dropdown" style="margin-top:8px">
+                    <a class="dropdown-toggle" data-toggle="dropdown" style="color:white"> 
+                        Stock<span class="caret"></span></a>
+                   <ul class="dropdown-menu" style="background-color:#1e1f1e">
+                       <li style="background-color:#1e1f1e">@Html.ActionLink("Check Stock", "Check", "Stock", new { sessionId = sessionId }, new { @class = "nav-link" })</li>
+                       <li style="background-color:#1e1f1e">@Html.ActionLink("Order Stock", "All", "Stock", new { sessionId = sessionId }, new { @class = "nav-link" })</li>
+                    </ul>
                 </li>
                 <li class="nav-item active">
                     @Html.ActionLink("Purchase Orders", "All", "PurchaseOrder", new { sessionId = sessionId }, new { @class = "nav-link" })
@@ -87,4 +91,11 @@
     body {
         font-family: 'Muli', sans-serif;
     }
+
+    .dropdown {
+    color: #000;
+    margin: 0px 10px 0px 10px;
+    font-size: 14px;
+    }
+
 </style>

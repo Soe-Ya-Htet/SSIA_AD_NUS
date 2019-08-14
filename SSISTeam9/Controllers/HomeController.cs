@@ -23,7 +23,10 @@ namespace SSISTeam9.Controllers
             Employee user = EmployeeService.GetUserPassword(userName);
 
             if (user.Password != password)
+            {
+                TempData["errorMsg"] = "<script>alert('Invalid credentials! Please verify.');</script>";
                 return View();
+            }
 
             string sessionId = EmployeeService.CreateSession(userName);
 

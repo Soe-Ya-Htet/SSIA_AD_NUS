@@ -68,6 +68,7 @@
             <tr>
                 <th>Requisition Code</th>
                 <th>Employee Name</th>
+                <th>Date of Request</th>
                 <th>Requisition Status</th>
             </tr>
 
@@ -77,6 +78,7 @@
 
                     <td>@Html.ActionLink(@requisition.ReqCode.ToString(), "GetRequisitionDetails", new { reqId = requisition.ReqId, sessionId = sessionId })</td>
                     <td>@requisition.Employee.EmpName</td>
+                    <td>@requisition.DateOfRequest</td>
                     <td>@requisition.Status</td>
                 </tr>
             }

@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "RepDisbursementList";
-    DisbursementList disbursementList = (DisbursementList)ViewData["disbursement"];
+    DisbursementList disb = (DisbursementList)ViewData["disbursement"];
     List<DisbursementListDetails> disDetailList = (List<DisbursementListDetails>)ViewData["disDetailList"];
     List<CollectionPoint> collectionPoints = (List<CollectionPoint>)ViewData["collectionPoints"];
     string sessionId = (string)ViewData["sessionId"];
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="col">
-                        @disbursementList.date
+                        @disb.date.Day &#47 @disb.date.Month &#47 @disb.date.Year &nbsp; @DateTime.Today.Add(disb.CollectionPoint.Time).ToString("hh:mm tt")
                     </div>
                 </div>
                 <div class="row">
@@ -75,7 +75,7 @@
                         </div>
                     </div>
                     <div class="col">
-                        @disbursementList.CollectionPoint.Name
+                        @disb.CollectionPoint.Name
                     </div>
                 </div>
             </div>
@@ -121,7 +121,7 @@
                     <div class="col-md-10">
                         @foreach (var point in collectionPoints)
                         {
-                            if (point.PlacedId == disbursementList.CollectionPoint.PlacedId)
+                            if (point.PlacedId == disb.CollectionPoint.PlacedId)
                             {
                                 <input type="radio" name="collect" value="@point.PlacedId" checked /> @point.Name
                             }
@@ -138,7 +138,7 @@
                     <div class="row">
                         <div class="col">
                             <input type="submit" value="Change" class="rounded btn-width btn-success float-right" />
-                            @Html.Hidden("listId", disbursementList.ListId)
+                            @Html.Hidden("listId", disb.ListId)
                         </div>
                         <div class="col"></div>
                     </div>

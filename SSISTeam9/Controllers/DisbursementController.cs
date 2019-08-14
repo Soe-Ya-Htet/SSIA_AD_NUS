@@ -160,6 +160,7 @@ namespace SSISTeam9.Controllers
             DisbursementList disbursementList = new DisbursementList();
             List<DisbursementListDetails> disDetailList = new List<DisbursementListDetails>();
             disbursementList = DisbursementListService.GetDisbursementListByDeptId(emp.DeptId);
+            disbursementList.date = disbursementList.date.Date;
             if (disbursementList.ListId != 0)
             {
                 disDetailList = DisbursementListService.ViewDisbursementDetails(disbursementList.ListId);

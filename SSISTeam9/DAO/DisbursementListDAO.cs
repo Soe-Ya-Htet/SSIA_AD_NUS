@@ -91,7 +91,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT d.*,c.name,c.placeId from DisbursementList d,CollectionPoint c WHERE "+
+                string q = @"SELECT d.*,c.name,c.placeId,c.time from DisbursementList d,CollectionPoint c WHERE "+
                             "d.deptId = @deptId and d.acknowledgedBy IS NULL and d.collectionPointId = c.placeId";
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.Parameters.AddWithValue("@deptId", deptId);
@@ -111,7 +111,8 @@ namespace SSISTeam9.DAO
                     disbursementList.CollectionPoint = new CollectionPoint()
                     {
                         PlacedId = (long)reader["placeId"],
-                        Name = (string)reader["name"]
+                        Name = (string)reader["name"],
+                        Time = (TimeSpan)reader["time"]
                     };
                 }
             }

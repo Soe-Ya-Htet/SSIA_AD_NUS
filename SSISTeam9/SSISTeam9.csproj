@@ -687,6 +687,7 @@
     <Content Include="Content\Images\Tape.jpg" />
     <Content Include="Content\Images\Tparency.jpg" />
     <Content Include="Content\Images\Tray.jpg" />
+    <Content Include="Content\signin.css" />
     <Content Include="Content\sticky-footer-navbar.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

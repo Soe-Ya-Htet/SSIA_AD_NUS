@@ -23,7 +23,7 @@
 </head>
 <body>
     <div>
-        <p>Default shows total orders from each supplier for current month (base).</p>
+        <p>Default shows total amount ordered from each supplier for current month (base).</p>
         <p>Change base month using dropdown below.</p>
         @using (Html.BeginForm("DisplayChartBySupplierForSelectedMonth", "Analytics", new { sessionid = sessionId }, method: FormMethod.Post))
         {

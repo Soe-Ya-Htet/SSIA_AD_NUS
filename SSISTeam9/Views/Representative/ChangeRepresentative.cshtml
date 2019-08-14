@@ -24,7 +24,7 @@
                 @if (showAll && permanentHead)
                 {
                     <li class="nav-item active">
-                        @Html.ActionLink("Pending Requisitiond", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        @Html.ActionLink("Pending Requisitions", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
                     </li>
                     <li class="nav-item active">
                         @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
@@ -45,7 +45,7 @@
                 else if (!showAll && !permanentHead)
                 {
                     <li class="nav-item active">
-                        @Html.ActionLink("Pending Requisitiond", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        @Html.ActionLink("Pending Requisitions", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
                     </li>
                     <li class="nav-item active">
                         @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
@@ -63,30 +63,59 @@
         </div>
     </nav>
 </header>
-<h2>ChangeRepresentative</h2>
-
-Current Representative : @repEmp.EmpName
+<h2>Change Representative</h2>
 
 <form action="~/Representative/ChangeRepresentative" method="post">
-    <input type="hidden" value="@sessionId" name="sessionId"/>
-    <table class="table table-bordered">
-        <tr>
-            <td>
-                <select name="employee" id="empList">
-                    @foreach (var employee in employees)
-                    {
-                        if (repEmp != employee)
-                        {
-                            <option value="@employee.EmpId">@employee.EmpName</option>
-                        }
-                    }
-                </select>
-            </td>
-            <td>
-                <button class="rounded" type="submit" id="">Change</button>
-            </td>
-        </tr>
-    </table>
+    <input type="hidden" value="@sessionId" name="sessionId" />
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div class="row mt-3">
+                    <div class="col-sm">
+                        <span>Current Representative</span>
+                    </div>
+                    <div class="col-sm">
+                        <span>@repEmp.EmpName</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="row mt-3">
+                    <div class="col-sm">
+                        <p>Employee Name</p>
+                    </div>
+                    <div class="col-sm">
+                        <select name="employee" id="empList">
+                            @foreach (var employee in employees)
+                            {
+                                if (repEmp != employee)
+                                {
+                                    <option value="@employee.EmpId">@employee.EmpName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="row mt-1">
+                    <div class="col-sm">
+                    </div>
+                    <div class="col-sm">
+                        <button onclick="alert('Change Representative Success!')" class="rounded btn-width btn-success" type="submit" id="">Change</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+            </div>
+        </div>
+    </div>
 </form>
-
-@*formaction="/Representative/ChangeRepresentative?sessionId=@sessionId"*@

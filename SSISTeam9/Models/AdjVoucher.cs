@@ -21,7 +21,7 @@ namespace SSISTeam9.Models
 
         public double TotalPrice { get; set; }
 
-        //0-pending 1-approved 2-pending approve
+        //0-pending 1-authorised 2-pending authorisation by Supervisor 3-pending authorisation by Manager
         public int status { get; set; }
     }
 }

@@ -27,10 +27,10 @@ else
         @for(int i = 0; i < adjIds.Count; i++)
         {
             <tr align="center">
-                <td><a href="/AdjVoucher/AdjDetails?adjId=@(i + 1)&sessionId=@sessionId">@adjIds[0] </a></td>
-                <td>@authorisedBys[0]</td>
-                <td>@dates[0]</td>
-                <td>@statuses[0]</td>
+                <td><a href="/AdjVoucher/AdjDetails?adjId=@(i + 1)&sessionId=@sessionId">@adjIds[i] </a></td>
+                <td>@authorisedBys[i]</td>
+                <td>@dates[i]</td>
+                <td>@statuses[i]</td>
             </tr>
         }
     </table>

@@ -285,7 +285,7 @@ namespace SSISTeam9.Controllers
             ViewData["year"] = currentYear;
             ViewData["monthsInInt"] = monthsInInt;
             ViewData["monthsToDisplay"] = monthsToDisplay;
-            ViewData["chartTitle"] = "Total Amount Purchased By Supplier For " + months[currentMonth] + " " + currentYear;
+            ViewData["chartTitle"] = "Total Amount Purchased From Each Supplier For " + months[currentMonth] + " " + currentYear;
             ViewData["sessionId"] = sessionId;
 
             return View("DisplayChartBySupplier");

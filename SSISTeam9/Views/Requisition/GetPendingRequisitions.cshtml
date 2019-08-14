@@ -56,7 +56,6 @@
         </div>
     </nav>
 </header>
-
 @{
     if (requisitions.Count == 0)
     {
@@ -64,9 +63,11 @@
     }
     else
     {
+        <h2>Pending Requisitions To Approve</h2>
+        <br />
         <table class="table table-bordered">
             <tr>
-                <th>RequisitionID</th>
+                <th>Requisition Code</th>
                 <th>Employee Name</th>
             </tr>
 
@@ -74,7 +75,7 @@
             {
                 <tr>
 
-                    <td>@Html.ActionLink(@requisition.ReqId.ToString(), "GetRequisitionDetails", new { reqId = @requisition.ReqId,sessionId=sessionId })</td>
+                    <td>@Html.ActionLink(@requisition.ReqCode.ToString(), "GetRequisitionDetails", new { reqId = @requisition.ReqId, sessionId = sessionId })</td>
                     <td>@requisition.Employee.EmpName</td>
                 </tr>
             }
@@ -82,3 +83,19 @@
     }
 
 }
+<style>
+    td {
+        padding: 2px;
+        width: 200px;
+    }
+
+    tr {
+        height: 40px;
+        padding: 2px;
+        text-align: center;
+    }
+
+    th {
+        text-align: center;
+    }
+</style>

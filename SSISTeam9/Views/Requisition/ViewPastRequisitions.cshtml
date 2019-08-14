@@ -55,6 +55,8 @@
         </div>
     </nav>
 </header>
+<h2>Past Requisitions</h2>
+<br />
 @{
     if (requisitions.Count == 0)
     {
@@ -64,7 +66,7 @@
     {
         <table class="table table-bordered">
             <tr>
-                <th>RequisitionID</th>
+                <th>Requisition Code</th>
                 <th>Employee Name</th>
                 <th>Requisition Status</th>
             </tr>
@@ -73,7 +75,7 @@
             {
                 <tr>
 
-                    <td>@Html.ActionLink(@requisition.ReqId.ToString(), "GetRequisitionDetails", new { reqId = requisition.ReqId, sessionId = sessionId})</td>
+                    <td>@Html.ActionLink(@requisition.ReqCode.ToString(), "GetRequisitionDetails", new { reqId = requisition.ReqId, sessionId = sessionId })</td>
                     <td>@requisition.Employee.EmpName</td>
                     <td>@requisition.Status</td>
                 </tr>
@@ -82,3 +84,19 @@
     }
 
 }
+<style>
+    td {
+        padding: 2px;
+        width: 200px;
+    }
+
+    tr {
+        height: 40px;
+        padding: 2px;
+        text-align: center;
+    }
+
+    th {
+        text-align: center;
+    }
+</style>

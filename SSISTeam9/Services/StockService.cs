@@ -84,6 +84,11 @@ namespace SSISTeam9.Services
         }
 
 
+        public static void UpdateInventoryStockById(long itemId, int stock)
+        {
+            StockDAO.UpdateInventoryStockById(itemId, stock);
+        }
+
 
     }
 }

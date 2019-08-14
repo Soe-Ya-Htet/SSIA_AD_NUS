@@ -9,6 +9,8 @@
     bool isRep = (bool)ViewData["isRep"];
     bool havingRequisition = (bool)ViewData["havReq"];
     string roleForDetail = (string)ViewData["roleForDetail"];
+    var showAll = (bool)ViewData["all"];
+    var permanentHead = (bool)ViewData["permanentHead"];
     if (roleForDetail == "store")
     {
         Layout = "~/Views/Shared/_Store.cshtml";
@@ -48,21 +50,39 @@
                     else if (roleForDetail == "head")
                     {
                         <!-- head nav -->
-                        <li class="nav-item active">
-                            @Html.ActionLink("Pending Requisitions", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
-                        </li>
-                        <li class="nav-item active">
-                            @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
-                        </li>
-                        <li class="nav-item active">
-                            @Html.ActionLink("Change Representative", "ChangeRepresentative", "Representative", new { sessionId = sessionId }, new { @class = "nav-link" })
-                        </li>
-                        <li class="nav-item active">
-                            @Html.ActionLink("Delegate", "ViewDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
-                        </li>
-                        <li class="nav-item active">
-                            @Html.ActionLink("Remove Delegate", "ViewRemoveDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
-                        </li>
+                        if (showAll && permanentHead)
+                        {
+                            <li class="nav-item active">
+                                @Html.ActionLink("Pending Requisitions", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                            </li>
+                            <li class="nav-item active">
+                                @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                            </li>
+                            <li class="nav-item active">
+                                @Html.ActionLink("Change Representative", "ChangeRepresentative", "Representative", new { sessionId = sessionId }, new { @class = "nav-link" })
+                            </li>
+                            <li class="nav-item active">
+                                @Html.ActionLink("Delegate", "ViewDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
+                            </li>
+                        }
+                        else if (!showAll && permanentHead)
+                        {
+                            <li class="nav-item active">
+                                @Html.ActionLink("Delegate", "ViewDelegate", "Delegate", new { sessionId = sessionId }, new { @class = "nav-link" })
+                            </li>
+                        }
+                        else if (!showAll && !permanentHead)
+                        {
+                            <li class="nav-item active">
+                                @Html.ActionLink("Pending Requisitions", "GetPendingRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                            </li>
+                            <li class="nav-item active">
+                                @Html.ActionLink("Past Requisitions", "ViewPastRequisitions", "Requisition", new { sessionId = sessionId }, new { @class = "nav-link" })
+                            </li>
+                            <li class="nav-item active">
+                                @Html.ActionLink("Change Representative", "ChangeRepresentative", "Representative", new { sessionId = sessionId }, new { @class = "nav-link" })
+                            </li>
+                        }
                     }
                 </ul>
                 <ul class="navbar-nav mt-2 mt-md-0">
@@ -74,8 +94,9 @@
         </nav>
     </header>
 }
-
-Requisition Code : @req.ReqCode
+<h2>Requisition Details</h2>
+<br />
+<b><p>Requisition Code : @req.ReqCode</p></b>
 @{
     <form method="post">
         <table class="table table-bordered">
@@ -125,3 +146,19 @@ Requisition Code : @req.ReqCode
     </form>
 
 }
+<style>
+    td {
+        padding: 2px;
+        width: 200px;
+    }
+
+    tr {
+        height: 40px;
+        padding: 2px;
+        text-align: center;
+    }
+
+    th {
+        text-align: center;
+    }
+</style>

@@ -90,22 +90,22 @@ namespace SSISTeam9.DAO
             return null;
         }
 
-        //public static void UpdateStock(List<AdjVoucher> adjVouchers)
-        //{
-        //    using (SqlConnection conn = new SqlConnection(Data.db_cfg))
-        //    {
-        //        conn.Open();
+        public static void UpdateStock(List<AdjVoucher> adjVouchers)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
 
-        //        string q = @"UPDATE Inventory SET stockLevel = stockLevel + @actual WHERE itemId = @itemId";
-        //        foreach (var adjVoucher in adjVouchers)
-        //        {
-        //            SqlCommand cmd = new SqlCommand(q, conn);
-        //            cmd.Parameters.AddWithValue("@itemId", adjVoucher.Item.ItemId);
-        //            cmd.Parameters.AddWithValue("@actual", adjVoucher.AdjQty);
-        //            cmd.ExecuteNonQuery();
-        //        }
-        //    }
-        //}
+                string q = @"UPDATE Inventory SET stockLevel = stockLevel + @actual WHERE itemId = @itemId";
+                foreach (var adjVoucher in adjVouchers)
+                {
+                    SqlCommand cmd = new SqlCommand(q, conn);
+                    cmd.Parameters.AddWithValue("@itemId", adjVoucher.ItemId);
+                    cmd.Parameters.AddWithValue("@actual", adjVoucher.AdjQty);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
         //The following method is used to create AdjVoucher after stock taking
         public static void CreateAdjVoucher(long adjId, long itemId, int qty)

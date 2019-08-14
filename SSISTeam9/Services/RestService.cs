@@ -413,16 +413,24 @@ namespace SSISTeam9.Services
 
         public string SubmitStockAdjustment(List<AdjVoucher> adjVouchers)
         {
-            int managerId = 14;
-            int supervisorId = 12;
+            int managerId = 3;
+            int supervisorId = 2;
+            double totalPrice = 0;
+            foreach(AdjVoucher voucher in adjVouchers)
+            {
+                totalPrice += voucher.TotalPrice;
+            }
+
+            int id = (totalPrice > -250) ? supervisorId : managerId;
+
             for (var i = 0; i < adjVouchers.Count; i++)
             {
-                int id = (adjVouchers[i].TotalPrice < 250.0) ? supervisorId : managerId;
+                //int id = (adjVouchers[i].TotalPrice < 250.0) ? supervisorId : managerId;
                 adjVouchers[i].AuthorisedBy = id;
             }
 
             AdjVoucherDAO.GenerateDisbursement(adjVouchers);
-            //AdjVoucherDAO.UpdateStock(adjVouchers);
+            AdjVoucherDAO.UpdateStock(adjVouchers);
             return "Success";
         }
     }

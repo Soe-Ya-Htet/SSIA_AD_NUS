@@ -326,26 +326,21 @@ namespace SSISTeam9.Services
             return repDict;
         }
 
-        public Dictionary<string, List<RetrievalForm>> GetAllRetrievalFormsOfStockClerk()
+        public Dictionary<string, object> GetAllRetrievalFormsOfStockClerk()
         {
-            List<RetrievalForm> retrievalForms = null;
-            if (DisbursementListService.CheckForPendingDisbursements().Count != 0)
+            List<RetrievalForm> retrievalForms = retrievalForms = RetrievalFormService.ViewRetrievalForm();
+            bool isPending = (DisbursementListService.CheckForPendingDisbursements().Count != 0);
+            for (int i = 0; i < retrievalForms.Count; i++)
             {
-                retrievalForms = new List<RetrievalForm>();
-            }
-            else
-            {
-                retrievalForms = RetrievalFormService.ViewRetrievalForm();
-                for (int i = 0; i < retrievalForms.Count; i++)
-                {
-                    Inventory inv = CatalogueService.GetCatalogueById(retrievalForms[i].itemId);
-                    retrievalForms[i].totalRetrieved = inv.StockLevel;
-                }
+                Inventory inv = CatalogueService.GetCatalogueById(retrievalForms[i].itemId);
+                retrievalForms[i].totalRetrieved = inv.StockLevel;
             }
 
-            Dictionary<string, List<RetrievalForm>> retrievalDict = new Dictionary<string, List<RetrievalForm>>
+            Dictionary<string, object> retrievalDict = new Dictionary<string, object>
             {
-                { "retrievalForms", retrievalForms }
+                { "retrievalForms", retrievalForms },
+                { "pending", isPending }
+
             };
 
             return retrievalDict;

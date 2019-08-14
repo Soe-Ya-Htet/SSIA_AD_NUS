@@ -27,7 +27,7 @@ namespace SSISTeam9.Services
         Dictionary<string, List<DisbursementList>> GetAllPendingDisbursementsOfRep();
         Dictionary<string, List<DisbursementList>> GetAllPastDisbursementsOfRep();
         Dictionary<string, List<DisbursementListDetails>> GetAllDisbursementDetailsByIdOfRep(long listId);
-        Dictionary<string, List<RetrievalForm>> GetAllRetrievalFormsOfStockClerk();
+        Dictionary<string, object> GetAllRetrievalFormsOfStockClerk();
         string GenerateDisbursementOfStockClerk(List<Entry> entries);
 
         Dictionary<string, List<Inventory>> GetAllInventories();

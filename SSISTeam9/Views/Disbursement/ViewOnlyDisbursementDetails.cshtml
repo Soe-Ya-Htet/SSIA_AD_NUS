@@ -1,0 +1,36 @@
+﻿@using SSISTeam9.Models
+@{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "ViewDisbursementDetails";
+}
+
+@{
+    var details = (List<DisbursementListDetails>)ViewData["details"];
+    var listId = (long)ViewData["listId"];
+    var collectionPoint = (string)ViewData["collectionPt"];
+    var sessionId = (string)ViewData["sessionId"];
+    var status = (string)ViewData["status"];
+}
+<h2>List Id: @listId</h2>
+<table class="table table-bordered">
+    <tr>
+        <th>Item Description</th>
+        <th>Quantity</th>
+        <th>Disbursed Quantity</th>
+    </tr>
+    @foreach (var detail in details)
+    {
+        <tr>
+            <td>@detail.Item.Description</td>
+            <td>@detail.Quantity</td>
+            <td>@detail.Quantity</td>
+
+
+
+
+        </tr>
+    }
+</table>
+
+
+

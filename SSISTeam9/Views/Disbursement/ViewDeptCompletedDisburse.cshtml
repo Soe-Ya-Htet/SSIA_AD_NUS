@@ -1,0 +1,26 @@
+﻿@using SSISTeam9.Models
+@{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "ViewAllCompletedDisbursements";
+}
+@{
+    var sessionId = (string)ViewData["sessionId"];
+    var disbursements = (List<DisbursementList>)ViewData["disbursements"];
+    Department dept = (Department)ViewData["dept"];
+}
+
+<h2>@dept.DeptName Completed Disbursements</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>List Id</th>
+        <th>Date</th>
+    </tr>
+    @foreach (var disbursement in disbursements)
+    {
+        <tr>
+            <td><a href="/Disbursement/ViewOnlyDisbursementDetails?listId=@disbursement.ListId&sessionId=@sessionId">@disbursement.ListId</a></td>
+            <td>@disbursement.date</td>
+        </tr>
+    }
+</table>

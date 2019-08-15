@@ -36,6 +36,16 @@ namespace SSISTeam9.Controllers
             return View();
         }
         [StoreAuthorisationFilter]
+        public ActionResult ViewDeptCompletedDisburse(long deptId, string sessionId)
+        {
+            ViewData["disbursements"] = DisbursementListService.ViewCompletedDisbursByDept(deptId);
+            ViewData["dept"] = DepartmentService.GetDepartmentById(deptId);
+            ViewData["sessionId"] = sessionId;
+            return View();
+        }
+
+
+        [StoreAuthorisationFilter]
         public ActionResult ViewDisbursementDetails(long listId, string collectionPt, string sessionId)
         {
             
@@ -48,6 +58,22 @@ namespace SSISTeam9.Controllers
             return View();
 
         }
+
+
+        [StoreAuthorisationFilter]
+        public ActionResult ViewOnlyDisbursementDetails(long listId, string collectionPt, string sessionId)
+        {
+
+            ViewData["details"] = DisbursementListService.ViewDisbursementDetails(listId);
+
+            ViewData["listId"] = listId;
+            ViewData["collectionPt"] = collectionPt;
+            ViewData["sessionId"] = sessionId;
+            ViewData["status"] = (DisbursementListService.GetDisbursementListByListId(listId)).AcknowledgedBy;
+            return View();
+
+        }
+
         [StoreAuthorisationFilter]
         public ActionResult CreateDisbursementLists(List<Entry> entries, string sessionId)
         {

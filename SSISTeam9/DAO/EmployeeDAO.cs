@@ -285,6 +285,18 @@ namespace SSISTeam9.DAO
             return employeeNames;
         }
 
-    
+        public static string GetUserEmail (long empId)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT email from Employee where empId = '" + empId + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                string email = (string)cmd.ExecuteScalar();
+                
+                return email;
+            }
+        }
     }
 }

@@ -38,7 +38,8 @@ namespace SSISTeam9.Controllers
         [Route("disbursement/outstanding")]
         public ActionResult GenerateDisbursement(string collectionPoint)
         {
-            return Json(restService.GenerateDisbursementOfStockClerk(entries), JsonRequestBehavior.AllowGet);
+            return null;
+            //return Json(restService.GenerateDisbursementOfStockClerk(entries), JsonRequestBehavior.AllowGet);
         }
 
         [Route("inventory/all")]

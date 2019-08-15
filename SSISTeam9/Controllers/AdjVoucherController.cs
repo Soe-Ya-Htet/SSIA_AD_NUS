@@ -128,6 +128,18 @@ namespace SSISTeam9.Controllers
         {
             Employee user = EmployeeService.GetUserBySessionId(sessionId);
             double totalAmount = 0;
+
+            //To check if user entered reason and if not, to return back to form to show validation message
+            foreach (AdjVoucher adj in adjVouchers)
+            {
+                if (string.IsNullOrWhiteSpace(adj.Reason))
+                {
+                    ViewData["adjVouchers"] = adjVouchers;
+                    ViewData["sessionId"] = sessionId;
+                    return View("PutReason");
+                }
+            }
+
             foreach (AdjVoucher adj in adjVouchers)
             {
                 PriceList priceList = PriceListService.GetPriceListByItemId(adj.ItemId);

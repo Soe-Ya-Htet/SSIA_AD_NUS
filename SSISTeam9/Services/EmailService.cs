@@ -95,7 +95,7 @@ namespace SSISTeam9.Services
         {
             notice.Subject = "Requisition Email";
             StringBuilder builder = new StringBuilder("Dear Sir / Mdm,");
-            builder.Append("<br/><br/> You have a new requisition order.");
+            builder.Append("<br/><br/> You have a new requisition order waiting for approval.");
             notice.Body = builder.ToString();
         }
 

@@ -108,6 +108,29 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static Employee GetDeptHeadByDeptId(long deptId)
+        {
+            Employee employee = new Employee();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from Employee where empRole = 'HEAD' and deptId = @deptId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@deptId", deptId);
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    employee = new Employee()
+                    {
+                        Email = (reader["email"] == DBNull.Value) ? null : (string)reader["email"],
+                    };
+                }
+                return employee;
+            }
+        }
+
         public static Employee GetEmployeeById(long empId)
         {
             Employee employee = new Employee();

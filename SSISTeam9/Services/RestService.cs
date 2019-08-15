@@ -221,6 +221,16 @@ namespace SSISTeam9.Services
 
         }
 
+        public Dictionary<string, List<DisbursementList>> GetAllOutstandingDisbursementsOfClerk(string collectionPoint)
+        {
+            List<DisbursementList> disbursementLists = DisbursementListDAO.ViewDisbursements(collectionPoint);
+            Dictionary<string, List<DisbursementList>> disDict = new Dictionary<string, List<DisbursementList>>
+            {
+                {"disbursements",  disbursementLists}
+            };
+            return disDict;
+        }
+
         public Dictionary<string, List<DisbursementList>> GetAllPastDisbursementsOfRep()
         {
             Dictionary<string, List<DisbursementList>> disDict = new Dictionary<string, List<DisbursementList>>();
@@ -427,6 +437,11 @@ namespace SSISTeam9.Services
             AdjVoucherDAO.GenerateDisbursement(adjVouchers);
             AdjVoucherDAO.UpdateStock(adjVouchers);
             return "Success";
+        }
+
+        public string UpdateDisbursementsOfClerk(DisburmentDTO dto)
+        {
+            throw new NotImplementedException();
         }
     }
 }

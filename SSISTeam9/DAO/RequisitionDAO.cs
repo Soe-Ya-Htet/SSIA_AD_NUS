@@ -293,7 +293,7 @@ namespace SSISTeam9.DAO
 
         public static List<Requisition> GetAllPastOrderReqs(int deptId)
         {
-            string sql = @"SELECT r.*, e.empName FROM Requisition r, Employee e WHERE r.empId=e.empId AND e.deptId=@deptId AND r.status != @status";
+            string sql = @"SELECT r.*, e.empName FROM Requisition r, Employee e WHERE r.empId=e.empId AND e.deptId=@deptId AND r.status != @status ORDER BY r.reqId DESC";
             return GetAllReqs(deptId, sql);
         }
 

@@ -43,12 +43,12 @@
             
             @if (stockLevel[i] >= retForms[i].deptNeeds[0].deptNeeded)
             {
-                <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[0].deptId" value="@retForms[i].deptNeeds[0].deptNeeded" onchange="findTotal(@retForms[i].itemId)" min="0" /></td>
+                <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[0].deptId" value="@retForms[i].deptNeeds[0].deptNeeded" onchange="findTotal(@retForms[i].itemId)" min=0 /></td>
                 stockLevel[i] -= retForms[i].deptNeeds[0].deptNeeded;
             }
             else
             {
-                <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[0].deptId" value="@stockLevel[i]" onchange="findTotal(@retForms[i].itemId)" min="0" /></td>
+                <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[0].deptId" value="@stockLevel[i]" onchange="findTotal(@retForms[i].itemId)" min=0 /></td>
                 stockLevel[i] = 0;
             }
 
@@ -99,6 +99,7 @@ else
 
 <script type="text/javascript">
     var jsRetForms = @Html.Raw(Json.Encode(ViewData["retrievalForms"]));
+    var stockLevel = @Html.Raw(Json.Encode(ViewData["stockLevel"]));
 
     function findAllTotal() {
         for (var retForm of jsRetForms) {
@@ -115,13 +116,24 @@ else
                 tot += parseInt(arr[i].value);
         }
         document.getElementById("/" + id).innerHTML = tot;
+
     }
 
     window.onload = findAllTotal();
 
     function submitData() {
+        var inputs = document.getElementsByTagName("input");
+        for (var input of inputs) {
+            if (input.value == "" || input.value < 0) {
+                alert("Quantity cannot be empty or less than 0");
+                return false;
+            } 
+        }
+        
         var deptCodes = new Array();
         for (var retForm of jsRetForms) {
+            findTotal(retForm["itemId"]);
+
             for (retF of retForm["deptNeeds"]) {
                 if (deptCodes.includes(retF["deptId"])) {
 

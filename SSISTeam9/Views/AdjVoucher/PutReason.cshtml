@@ -40,14 +40,14 @@ else
                     @Html.ValidationMessageFor(x => x[i].Reason, "", new { style = "color:red" })
                 </td>
                 <td>@(adjVouchers[i].Item.ItemSuppliersDetails.Supplier1UnitPrice.ToString("C2") + "/" + adjVouchers[i].Item.UnitOfMeasure)</td>
-                <td>@(Math.Abs(adjVouchers[i].Item.ItemSuppliersDetails.Supplier1UnitPrice * adjVouchers[i].AdjQty).ToString("C2"))</td>
+                <td>@((adjVouchers[i].Item.ItemSuppliersDetails.Supplier1UnitPrice * adjVouchers[i].AdjQty).ToString("C2"))</td>
                 <td style="display:none">
                     @Html.TextBoxFor(x => x[i].ItemId, new { id = "itemId", @Value = adjVouchers[i].ItemId })
                     @Html.TextBoxFor(x => x[i].AdjId, new { id = "adjId", @Value = adjVouchers[i].AdjId })
                     @Html.TextBoxFor(x => x[i].AdjQty, new { id = "adjQty", @Value = adjVouchers[i].AdjQty })
                 </td>
             </tr>
-                total = total + Math.Abs(adjVouchers[i].Item.ItemSuppliersDetails.Supplier1UnitPrice * adjVouchers[i].AdjQty);
+                total = total + adjVouchers[i].Item.ItemSuppliersDetails.Supplier1UnitPrice * adjVouchers[i].AdjQty;
             }
             <tr>
                 <td colspan="5" style="text-align:right;font-weight:bold">Total:</td>

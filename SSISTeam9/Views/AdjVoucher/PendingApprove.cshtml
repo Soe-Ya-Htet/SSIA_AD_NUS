@@ -38,9 +38,9 @@ else
                     <td>@adj.Value[i].AdjQty</td>
                     <td>@adj.Value[i].Reason</td>
                     <td>@(adj.Value[i].Item.ItemSuppliersDetails.Supplier1UnitPrice.ToString("C2") + "/" + adj.Value[i].Item.UnitOfMeasure)</td>
-                    <td>@(Math.Abs(adj.Value[i].Item.ItemSuppliersDetails.Supplier1UnitPrice * adj.Value[i].AdjQty).ToString("C2"))</td>
+                    <td>@((adj.Value[i].Item.ItemSuppliersDetails.Supplier1UnitPrice * adj.Value[i].AdjQty).ToString("C2"))</td>
                 </tr>
-                total = total + Math.Abs(adj.Value[i].Item.ItemSuppliersDetails.Supplier1UnitPrice * adj.Value[i].AdjQty);
+                total = total + adj.Value[i].Item.ItemSuppliersDetails.Supplier1UnitPrice * adj.Value[i].AdjQty;
             }
             <tr>
                 <td colspan="5" style="text-align:right;font-weight:bold">Total:</td>

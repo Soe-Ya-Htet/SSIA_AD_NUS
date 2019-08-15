@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using SSISTeam9.Services;
 using SSISTeam9.Models;
 using SSISTeam9.Filters;
+using System.Threading.Tasks;
 
 namespace SSISTeam9.Controllers
 {
@@ -186,7 +187,7 @@ namespace SSISTeam9.Controllers
 
                 notice.Order = PurchaseOrderService.GetOrderDetails(order.OrderNumber); ;
                 EmailService emailService = new EmailService();
-                emailService.SendMail(notice, EmailTrigger.ON_ALTERNATIVE_SUPPLIER);
+                Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_ALTERNATIVE_SUPPLIER));
             }
 
             return RedirectToAction("All", new { sessionid = sessionId });

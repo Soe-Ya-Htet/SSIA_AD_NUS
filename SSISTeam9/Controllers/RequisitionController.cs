@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SSISTeam9.Filters;
+using System.Threading.Tasks;
 
 namespace SSISTeam9.Controllers
 {
@@ -92,7 +93,7 @@ namespace SSISTeam9.Controllers
             string headMail = RequisitionService.GetDeptHead(emp.DeptId);
             EmailNotification notice = new EmailNotification();
             notice.ReceiverMailAddress = headMail;
-            emailService.SendMail(notice, EmailTrigger.ON_REQUISITION_MAIL);
+            Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_REQUISITION_MAIL));
             return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionId });
         }
 

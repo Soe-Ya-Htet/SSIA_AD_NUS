@@ -13,6 +13,9 @@ namespace SSISTeam9.Models
         [Display(Name = "Item Code")]
         [Required]
         public string ItemCode { get; set; }
+
+        [Display(Name = "Bin No.")]
+        [Required]
         public string BinNo { get; set; }
         public int StockLevel { get; set; }
         public int ReorderLevel { get; set; }

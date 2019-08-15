@@ -12,9 +12,8 @@ namespace SSISTeam9.Models
         public DateTime Date { get; set; }
         public long AuthorisedBy { get; set; }
         public int AdjQty { get; set; }
-
+        
         [Required(AllowEmptyStrings = false)]
-        [RegularExpression(@".\S+.", ErrorMessage = "No white space allowed")]
         public string Reason { get; set; }
         public long ItemId { get; set; }
         public string ItemCode { get; set; }

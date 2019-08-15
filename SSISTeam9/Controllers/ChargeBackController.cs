@@ -65,7 +65,15 @@ namespace SSISTeam9.Controllers
         }
 
 
-       
+        public ActionResult DeptPastRequisition(long deptId, string sessionId)
+        {
+
+            ViewData["sessionId"] = sessionId;
+            ViewData["deptName"] = DepartmentService.GetDepartmentById(deptId).DeptName;
+            List<Requisition> reqList = RequisitionService.GetPastRequisitionByDeptId(deptId);
+            reqList.Sort((x, y) => DateTime.Compare(y.DateOfRequest, x.DateOfRequest));
+            return View(reqList);
+        }
 
     }
 }

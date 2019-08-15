@@ -147,6 +147,41 @@ namespace SSISTeam9.DAO
             return requisitions;
         }
 
+        //For store side to view past requisition by dept, for chargeback function
+        public static List<Requisition> GetPastRequisitionByDeptId(long deptId)
+        {
+            List<Requisition> requisitions = new List<Requisition>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"SELECT * from Requisition WHERE empId in (SELECT empId from Employee WHERE deptId = '" + deptId + "') AND status = 'Completed'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Employee e = new Employee()
+                    {
+                        EmpId = (long)reader["empId"]
+                    };
+
+                    Requisition requisition = new Requisition()
+                    {
+                        ReqId = (long)reader["reqId"],
+                        ReqCode = (String)reader["reqCode"],
+                        DateOfRequest = (DateTime)reader["dateOfRequest"],
+                        Status = (String)reader["status"],
+                        //PickUpDate = (DateTime)reader["pickUpDate"],
+                        ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
+                        Employee = e
+                    };
+                    requisitions.Add(requisition);
+                }
+            }
+            return requisitions;
+        }
+
+
         public static List<long> GetAllRequisitions()
         {
             List<long> reqIds = new List<long>();

@@ -81,6 +81,10 @@ namespace SSISTeam9.Controllers
             int flag = 0;
             foreach (Inventory inventory in inventories)
             {
+                if(inventory.ActualStock < 0)
+                {
+                    inventory.ActualStock = 0;
+                }
                 int qty = inventory.ActualStock - inventory.StockLevel;
                 if (qty != 0)
                 {
@@ -379,7 +383,20 @@ namespace SSISTeam9.Controllers
             adjVouchers = AdjVoucherService.GetAdjByAdjId(adjId);
             foreach(AdjVoucher adj in adjVouchers)
             {
-                adj.ItemCode = CatalogueService.GetCatalogueById(adj.ItemId).ItemCode;
+                Inventory c = CatalogueService.GetCatalogueById(adj.ItemId);
+                adj.ItemCode = c.ItemCode;
+                adj.Description = c.Description;
+                PriceList p = PriceListService.GetPriceListByItemId(adj.ItemId);
+                if(p != null)
+                {
+                    adj.UnitPrice = p.Supplier1UnitPrice;
+                }
+                else
+                {
+                    adj.UnitPrice = 1;
+                }
+                double total = adj.AdjQty * adj.UnitPrice;
+                adj.TotalPrice = Math.Abs(total);
             }
             string adjIdstring = adjId.ToString("000/000/00");
             string authorisedBy = "Nil";

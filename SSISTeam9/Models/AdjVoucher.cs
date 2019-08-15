@@ -17,6 +17,9 @@ namespace SSISTeam9.Models
         public string Reason { get; set; }
         public long ItemId { get; set; }
         public string ItemCode { get; set; }
+        public string Description { get; set; }
+
+        public double UnitPrice { get; set; }
 
         public double TotalPrice { get; set; }
 

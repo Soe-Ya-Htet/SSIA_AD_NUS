@@ -91,7 +91,7 @@ namespace SSISTeam9.Controllers
             }
             if(flag == 0)
             {
-                TempData["errorMsg"] = "<script>alert('There is no any discrepancy.');</script>";
+                TempData["errorMsg"] = "<script>alert('There are no discrepancies in stock.');</script>";
                 ViewData["userName"] = EmployeeService.GetUserBySessionId(sessionId).EmpName;
                 ViewData["sessionId"] = sessionId;
                 return View("~/Views/StoreLandingPage/Home.cshtml");
@@ -168,7 +168,7 @@ namespace SSISTeam9.Controllers
                         AdjVoucherService.UpdateStatus(adjId, 2);
                     }
                 }                
-                TempData["errorMsg"] = "<script>alert('Total discrepancy is less than $250, pending for Store Supervisor to authorise.');</script>";
+                TempData["errorMsg"] = "<script>alert('Total discrepancy amount is less than $250, pending for Store Supervisor to authorise.');</script>";
             }
             else
             {
@@ -182,7 +182,7 @@ namespace SSISTeam9.Controllers
                         AdjVoucherService.UpdateStatus(adjId, 3);
                     }
                 }
-                TempData["errorMsg"] = "<script>alert('Total discrepancy is more than $250, pending for Store Manager to authorise.');</script>";
+                TempData["errorMsg"] = "<script>alert('Total discrepancy amount is more than $250, pending for Store Manager to authorise.');</script>";
 
             }
             ViewData["userName"] = user.EmpName;
@@ -267,8 +267,27 @@ namespace SSISTeam9.Controllers
                 }
                 authoriseBy = "Manager";
             }
+
+            //To group by vouchers
+            Dictionary<long, List<AdjVoucher>> byVouchers = new Dictionary<long, List<AdjVoucher>>();
+
+            foreach (var adj in adjVouchers)
+            {
+                if (byVouchers.ContainsKey(adj.AdjId))
+                {
+                    byVouchers[adj.AdjId].Add(adj);
+                }
+                else
+                {
+                    List <AdjVoucher> adjs = new List<AdjVoucher>();
+                    adjs.Add(adj);
+                    byVouchers[adj.AdjId] = adjs;
+                }
+            }
+
             ViewData["authoriseBy"] = authoriseBy;
             ViewData["adjVouchers"] = adjVouchers;
+            ViewData["byVouchers"] = byVouchers;
             ViewData["sessionId"] = sessionId;
             return View();
         }
@@ -297,7 +316,7 @@ namespace SSISTeam9.Controllers
                 }
             }
             
-            TempData["errorMsg"] = "<script>alert('Adjustment voucher authorise successfully.');</script>";
+            TempData["errorMsg"] = "<script>alert('Adjustment vouchers have been authorised successfully.');</script>";
             ViewData["userName"] = user.EmpName;
             ViewData["sessionId"] = sessionId;
             return View("~/Views/StoreLandingPage/Home.cshtml");

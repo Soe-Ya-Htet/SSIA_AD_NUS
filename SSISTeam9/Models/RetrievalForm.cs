@@ -9,6 +9,7 @@ namespace SSISTeam9.Models
     {
         public string binNo { get; set; }
         public long itemId { get; set; }
+        public int stockLevel { get; set; }
 
         public string description { get; set; }
         public int totalNeeded { get; set; }

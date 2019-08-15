@@ -126,6 +126,17 @@ namespace SSISTeam9.Services
             return "Success";
         }
 
+        public Dictionary<string, List<CollectionPoint>> GetAllCollectionPoints()
+        {
+            List<CollectionPoint> collectionPoints = CollectionPointDAO.GetAllCollectionPoints();
+            Dictionary<string, List<CollectionPoint>> cpDict = new Dictionary<string, List<CollectionPoint>>
+            {
+                { "collectionPoints", collectionPoints}
+            };
+
+            return cpDict;
+        }
+
         public Dictionary<string, List<DisbursementListDetails>> GetAllDisbursementDetailsByIdOfRep(long listId)
         {
             List<DisbursementListDetails> disbursementDetails = DisbursementListDetailsDAO.ViewDetails(listId);
@@ -221,12 +232,12 @@ namespace SSISTeam9.Services
 
         }
 
-        public Dictionary<string, List<DisbursementList>> GetAllOutstandingDisbursementsOfClerk(string collectionPoint)
+        public Dictionary<string, List<DisbursementList>> GetAllOutstandingDisbursementsOfClerk(long collectionPoint)
         {
-            List<DisbursementList> disbursementLists = DisbursementListDAO.ViewDisbursements(collectionPoint);
+            List<DisbursementList> disbursementLists = DisbursementListDAO.FindAllDisbursements(collectionPoint);
             Dictionary<string, List<DisbursementList>> disDict = new Dictionary<string, List<DisbursementList>>
             {
-                {"disbursements",  disbursementLists}
+                {"disbursementList",  disbursementLists}
             };
             return disDict;
         }
@@ -441,7 +452,45 @@ namespace SSISTeam9.Services
 
         public string UpdateDisbursementsOfClerk(DisburmentDTO dto)
         {
-            throw new NotImplementedException();
+            foreach (var item in dto.Items)
+            {
+                Inventory i = new Inventory()
+                {
+                    ItemId = item.itemId
+                };
+
+                DisbursementListDetails disbursementDetails = new DisbursementListDetails()
+                {
+                    Quantity = item.quantity,
+                    Item = i
+                };
+
+                DisbursementListService.UpdateDisbursementListDetails(dto.ListId, disbursementDetails);
+
+                /* Move the following code to RestRepresentativeController*/
+                ////Attention: DisbursementList can only disburse once, date for that list is not null
+
+                ///*The following code is for ChargeBack table*/
+                ////By the time disburse item, calculate the amount of this list, update ChargeBack table               
+                //PriceList priceList = PriceListService.GetPriceListByItemId(i.ItemId);
+                //double price = 0;
+                //if (priceList != null)
+                //{
+                //    price = priceList.Supplier1UnitPrice;
+                //}
+
+                //double amount = price * disbursementDetails.Quantity;
+                //DisbursementList disbursementList = DisbursementListService.GetDisbursementListByListId(listId);
+                //ChargeBackService.UpdateChargeBackData(amount, disbursementList);
+
+                ///*The following code is for StockCard table*/
+                ////By the time disburse item, update StockCard table with itemId, deptId and date, souceType = 2
+
+                //int balance = CatalogueService.GetCatalogueById(disbursementDetails.Item.ItemId).StockLevel - disbursementDetails.Quantity;
+                //StockCardService.CreateStockCardFromDisburse(disbursementDetails, disbursementList, balance);
+
+            }
+            return "Success";
         }
     }
 }

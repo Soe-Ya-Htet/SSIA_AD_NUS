@@ -83,6 +83,51 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static List<DisbursementList> FindAllDisbursements(long collectionPt)
+        {
+            List<DisbursementList> disbursementLists = new List<DisbursementList>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"SELECT * FROM DisbursementList d, CollectionPoint cP, Department dept 
+                            WHERE d.collectionPointId=cP.placeId AND acknowledgedBy IS NULL AND d.deptId = dept.deptId";
+
+                if(collectionPt > 0)
+                {
+                    q += " AND cP.placeId=@cpid";
+                }
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                if (collectionPt > 0)
+                {
+                    cmd.Parameters.AddWithValue("@cpid", collectionPt);
+                }
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Department d = new Department()
+                    {
+                        DeptName = (string)reader["deptName"]
+                    };
+                    CollectionPoint cP = new CollectionPoint()
+                    {
+                        Name = (string)reader["name"]
+                    };
+                    DisbursementList disbursementList = new DisbursementList()
+                    {
+                        ListId = (long)reader["listId"],
+                        date = (DateTime) reader["date"],
+                        Department = d,
+                        CollectionPoint = cP
+                    };
+                    disbursementLists.Add(disbursementList);
+                }
+
+                return disbursementLists;
+            }
+        }
         public static DisbursementList GetGeneratedDisbursementListByDeptId(long deptId)
         {
             DisbursementList disbursementList = new DisbursementList();

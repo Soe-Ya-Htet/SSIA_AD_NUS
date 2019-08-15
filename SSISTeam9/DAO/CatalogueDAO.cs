@@ -17,7 +17,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from Inventory WHERE flag != 1";
+                string q = @"SELECT * from Inventory WHERE flag != 1 ORDER BY itemCode";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();

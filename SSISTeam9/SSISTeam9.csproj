@@ -816,6 +816,7 @@
     <Content Include="Views\AdjVoucher\PendingApprove.cshtml" />
     <Content Include="Views\AdjVoucher\AllAdjVouchers.cshtml" />
     <Content Include="Views\AdjVoucher\AdjDetails.cshtml" />
+    <Content Include="Views\ChargeBack\DeptPastRequisition.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

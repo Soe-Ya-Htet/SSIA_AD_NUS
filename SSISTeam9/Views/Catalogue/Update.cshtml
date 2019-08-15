@@ -34,7 +34,7 @@
                             {
                                 if (category != catalogue.Category)
                                 {
-                                <option>@category</option>
+                                    <option>@category</option>
                                 }
                             }
                         </select>
@@ -43,8 +43,10 @@
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Description): </td>
-                <td>@Html.TextBoxFor(x => x.Description, new { id = "description", @Value = catalogue.Description, @class = "TextBox" })</td>
-                <td>@Html.ValidationMessageFor(x => x.Description, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(x => x.Description, new { id = "description", @Value = catalogue.Description, @class = "TextBox" })
+                    @Html.ValidationMessageFor(x => x.Description, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.UnitOfMeasure): </td>
@@ -67,13 +69,16 @@
                 </td>
             </tr>
             <tr>
-                <td></td>
-                <td align="right"><input class="rounded" type="submit" value="Save and Next" style="background-color:green;color:white;"></td>
-                @Html.Hidden("itemId", catalogue.ItemId)
+                <td>@Html.LabelFor(x => x.BinNo): </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BinNo, new { id = "binNo", @Value = catalogue.BinNo, @class = "TextBox" })
+                    @Html.ValidationMessageFor(x => x.BinNo, "", new { style = "color:red" })
+                </td>
             </tr>
+            @Html.Hidden("itemId", catalogue.ItemId)
         </table>
-
-
+    
+        <input class="btn btn-success rounded" type="submit" value="Save and Next" style="float:right">
     }
 
 </div>

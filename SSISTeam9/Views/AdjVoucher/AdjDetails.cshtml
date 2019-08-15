@@ -15,24 +15,29 @@
 }
 else
 {
+    <h2 style="text-align:center">Adjustment Voucher</h2>
     <p>Possible Causes:</p>
     <p style="padding-left:3em">1. items broken or expired</p>
     <p style="padding-left:3em">2. adhoc (i.e. detected when trying to issue the item(s))</p>
     <p style="padding-left:3em">3. when issue/receipt of item is not recorded (i.e. oversight)</p>
 
-    <h3>Authorising Adjustments:</h3>
+    <h5>Authorising Adjustments:</h5>
     <p>Minor: - anything under $250 per item adjustment can be authorised by Supervisor</p>
     <p style="padding-left:3em">- a copy of adjustment amounts is put on an adjustment voucher and is signed by the supervisor.</p><br />
     <p>Major: - by Manager</p>
     <p style="padding-left:3em">- use adjustment voucher</p>
     <p style="padding-left:3em">- a copy of adjustment amounts is put on an adjustment voucher and is signed by the supervisor.</p>
-    <h2 style="text-align:center">Voucher#: @adjIdstring</h2>
+    <h4 style="text-align:center">Voucher#: @adjIdstring</h4>
+    <p>Date: @adjVouchers[0].Date.ToShortDateString()</p>
     <section>
-        <table align="center">
+        <table class="table table-bordered" style="text-align:center" align="center">
             <tr align="center">
                 <th>Item Code</th>
+                <th>Description</th>
                 <th>Quantity adjusted</th>
                 <th>Reason</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
             </tr>
 
             @foreach (AdjVoucher adj in adjVouchers)
@@ -40,13 +45,14 @@ else
 
                 <tr>
                     <td>@adj.ItemCode</td>
+                    <td>@adj.Description</td>
                     <td>@adj.AdjQty</td>
                     <td>@adj.Reason</td>
+                    <td>$@adj.UnitPrice</td>
+                    <td>$@adj.TotalPrice</td>
                 </tr>
             }
-            <tr>
-                <td>Authorised by: @authorisedBy</td>
-            </tr>
         </table>
+        <p style="float:inherit;text-align :right">Authorised by: @authorisedBy</p>
     </section>
 }

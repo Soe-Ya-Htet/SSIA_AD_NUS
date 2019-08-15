@@ -16,8 +16,10 @@
         <table class="table table-bordered">
             <tr>
                 <td>@Html.LabelFor(x => x.ItemCode): </td>
-                <td>@Html.TextBoxFor(x => x.ItemCode, new { id = "itemCode", @class = "TextBox"  })</td>
-                <td>@Html.ValidationMessageFor(x => x.ItemCode, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(x => x.ItemCode, new { id = "itemCode", @class = "TextBox" })
+                    @Html.ValidationMessageFor(x => x.ItemCode, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Category): </td>
@@ -34,8 +36,10 @@
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.Description): </td>
-                <td>@Html.TextBoxFor(x => x.Description, new { id = "description", @class = "TextBox" })</td>
-                <td>@Html.ValidationMessageFor(x => x.Description, "", new { style = "color:red" })</td>
+                <td>
+                    @Html.TextBoxFor(x => x.Description, new { id = "description", @class = "TextBox" })
+                    @Html.ValidationMessageFor(x => x.Description, "", new { style = "color:red" })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => x.UnitOfMeasure): </td>
@@ -49,14 +53,17 @@
                         </select>
                     </div>
                 </td>
-            </tr>           
+            </tr>
             <tr>
-                <td></td>
-                <td align="right"><input class="rounded" type="submit" value="Save and Next" style="background-color:green;color:white;"></td>
+                <td>@Html.LabelFor(x => x.BinNo): </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BinNo, new { id = "binNo", @class = "TextBox" })
+                    @Html.ValidationMessageFor(x => x.BinNo, "", new { style = "color:red" })
+                </td>
             </tr>
         </table>
-
-
+        
+        <input class="btn btn-success rounded" type="submit" value="Create and Next" style="float:right">
     }
 
 </div>

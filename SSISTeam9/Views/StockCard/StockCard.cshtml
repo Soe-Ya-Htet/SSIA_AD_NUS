@@ -3,40 +3,32 @@
 @using SSISTeam9.Models;
 
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Stock Card";
     Inventory catalogue = (Inventory)ViewData["catalogue"];
-    PriceList priceList = (PriceList)ViewData["priceList"];
+    PriceList pricelist = (PriceList)ViewData["priceList"];
     List<StockCard> stockCards = (List<StockCard>)ViewData["stockCards"];
     string sessionId = (string)ViewData["sessionId"];
 }
 
 <h2 style="text-align:center">Stock Card</h2>
 
-<table class="table table-bordered">
-    <tr>
-        <td>Item Code: @catalogue.ItemCode</td>
-    </tr>
-    <tr>
-        <td>Item Description: @catalogue.Description</td>
-    </tr>
-    <tr>
-        <td>Bin#: @catalogue.BinNo</td>
-    </tr>
-    <tr>
-        <td>Unit Of Measure: @catalogue.UnitOfMeasure</td>
-    </tr>
-    @if (priceList != null)
+    <p>
+        Item Code: @catalogue.ItemCode<br />
+        Category: @catalogue.Category<br />
+        Description: @catalogue.Description<br />
+        Unit Of Measure: @catalogue.UnitOfMeasure<br />
+        Bin No.: @catalogue.BinNo<br />
+    </p>
+    @if(pricelist != null)
     {
-    <tr>
-        <td>First Supplier: <b>@priceList.Supplier1Code</b></td>
-    </tr>
-    <tr>
-        <td>Second Supplier: <b>@priceList.Supplier2Code</b></td>
-    </tr>
-    <tr>
-        <td>Third Supplier: <b>@priceList.Supplier3Code</b></td>
-    </tr>
+        <p>
+        First Supplier: <b>@pricelist.Supplier1Name</b><br />
+        Second Supplier: <b>@pricelist.Supplier2Name</b><br />
+        Thrid Supplier: <b>@pricelist.Supplier3Name</b><br />
+    </p>
     }
-</table>
+    
 
 <table class="table table-bordered" align="center">
     <tr align="center">

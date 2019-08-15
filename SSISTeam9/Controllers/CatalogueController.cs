@@ -32,15 +32,6 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        //For normal employee to view catalogue
-        public ActionResult AllForViewOnly(string sessionId)
-        {
-            List<Inventory> catalogues = CatalogueService.GetAllCatalogue();
-
-            ViewData["catalogues"] = catalogues;
-            ViewData["sessionId"] = sessionId;
-            return View();
-        }
 
 
         public ActionResult Delete(bool confirm, long itemId, string sessionId)

@@ -133,6 +133,13 @@ namespace SSISTeam9.Services
             return GetRequisitionsWithObjects(reqs);
         }
 
+
+        public static List<Requisition> GetPastRequisitionByDeptId(long deptId)
+        {
+            List<Requisition> reqs = RequisitionDAO.GetPastRequisitionByDeptId(deptId);
+            return reqs;
+        }
+
         public static void CreateRequisition(List<Cart> carts, long empId)
         {
             List<long> reqs = RequisitionDAO.GetAllRequisitions();

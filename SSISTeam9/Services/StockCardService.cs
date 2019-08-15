@@ -37,9 +37,8 @@ namespace SSISTeam9.Services
                     case 3:
                         stockCard.PurchaseOrder = new PurchaseOrder()
                         {
-                            OrderId = stockCard.SourceId                          
+                            SupplierId = stockCard.SourceId                          
                         };
-                        stockCard.PurchaseOrder.SupplierId = PurchaseOrderService.GetOrderById(stockCard.PurchaseOrder.OrderId).SupplierId;
                         Supplier supplier = SupplierService.GetSupplierById(stockCard.PurchaseOrder.SupplierId);
                         if(supplier.SupplierCode == null)
                         {

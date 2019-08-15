@@ -81,6 +81,10 @@ namespace SSISTeam9.Controllers
             int flag = 0;
             foreach (Inventory inventory in inventories)
             {
+                if(inventory.ActualStock < 0)
+                {
+                    inventory.ActualStock = 0;
+                }
                 int qty = inventory.ActualStock - inventory.StockLevel;
                 if (qty != 0)
                 {
@@ -91,7 +95,7 @@ namespace SSISTeam9.Controllers
             }
             if(flag == 0)
             {
-                TempData["errorMsg"] = "<script>alert('There is no any discrepancy.');</script>";
+                TempData["errorMsg"] = "<script>alert('There are no discrepancies in stock.');</script>";
                 ViewData["userName"] = EmployeeService.GetUserBySessionId(sessionId).EmpName;
                 ViewData["sessionId"] = sessionId;
                 return View("~/Views/StoreLandingPage/Home.cshtml");
@@ -116,6 +120,8 @@ namespace SSISTeam9.Controllers
                 foreach (AdjVoucher adj in adjVouchers)
                 {
                     adj.Reason = null;
+                    adj.Item = CatalogueService.GetCatalogueById(adj.ItemId);
+                    adj.Item.ItemSuppliersDetails = PurchaseOrderService.GetItemSuppliersDetails(adj.ItemId);
                 }
                 ViewData["adjVouchers"] = adjVouchers;
                 ViewData["sessionId"] = sessionId;
@@ -128,6 +134,18 @@ namespace SSISTeam9.Controllers
         {
             Employee user = EmployeeService.GetUserBySessionId(sessionId);
             double totalAmount = 0;
+
+            //To check if user entered reason and if not, to return back to form to show validation message
+            foreach (AdjVoucher adj in adjVouchers)
+            {
+                if (string.IsNullOrWhiteSpace(adj.Reason))
+                {
+                    ViewData["adjVouchers"] = adjVouchers;
+                    ViewData["sessionId"] = sessionId;
+                    return View("PutReason");
+                }
+            }
+
             foreach (AdjVoucher adj in adjVouchers)
             {
                 PriceList priceList = PriceListService.GetPriceListByItemId(adj.ItemId);
@@ -154,7 +172,7 @@ namespace SSISTeam9.Controllers
                         AdjVoucherService.UpdateStatus(adjId, 2);
                     }
                 }                
-                TempData["errorMsg"] = "<script>alert('Total discrepancy is less than $250, pending for Store Supervisor to authorise.');</script>";
+                TempData["errorMsg"] = "<script>alert('Total discrepancy amount is less than $250, pending for Store Supervisor to authorise.');</script>";
             }
             else
             {
@@ -168,7 +186,7 @@ namespace SSISTeam9.Controllers
                         AdjVoucherService.UpdateStatus(adjId, 3);
                     }
                 }
-                TempData["errorMsg"] = "<script>alert('Total discrepancy is more than $250, pending for Store Manager to authorise.');</script>";
+                TempData["errorMsg"] = "<script>alert('Total discrepancy amount is more than $250, pending for Store Manager to authorise.');</script>";
 
             }
             ViewData["userName"] = user.EmpName;
@@ -223,6 +241,13 @@ namespace SSISTeam9.Controllers
             if (user.EmpRole == "STORE_SUPERVISOR")
             {
                 adjVouchers = AdjVoucherService.GetAdjByStatus(2);
+
+                foreach(var adj in adjVouchers)
+                {
+                    //to get item details for view
+                    adj.Item = CatalogueService.GetCatalogueById(adj.ItemId);
+                    adj.Item.ItemSuppliersDetails = PurchaseOrderService.GetItemSuppliersDetails(adj.ItemId);
+                }
                 if (adjVouchers.Count == 0)
                 {
                     return RedirectToAction("AllAdjVouchers", new { sessionId });
@@ -232,14 +257,41 @@ namespace SSISTeam9.Controllers
             else if(user.EmpRole == "STORE_MANAGER")
             {
                 adjVouchers = AdjVoucherService.GetAdjByStatus(3);
+
+                foreach (var adj in adjVouchers)
+                {
+                    //to get item details for view
+                    adj.Item = CatalogueService.GetCatalogueById(adj.ItemId);
+                    adj.Item.ItemSuppliersDetails = PurchaseOrderService.GetItemSuppliersDetails(adj.ItemId);
+                }
+
                 if (adjVouchers.Count == 0)
                 {
                     return RedirectToAction("AllAdjVouchers", new { sessionId });
                 }
                 authoriseBy = "Manager";
             }
+
+            //To group by vouchers
+            Dictionary<long, List<AdjVoucher>> byVouchers = new Dictionary<long, List<AdjVoucher>>();
+
+            foreach (var adj in adjVouchers)
+            {
+                if (byVouchers.ContainsKey(adj.AdjId))
+                {
+                    byVouchers[adj.AdjId].Add(adj);
+                }
+                else
+                {
+                    List <AdjVoucher> adjs = new List<AdjVoucher>();
+                    adjs.Add(adj);
+                    byVouchers[adj.AdjId] = adjs;
+                }
+            }
+
             ViewData["authoriseBy"] = authoriseBy;
             ViewData["adjVouchers"] = adjVouchers;
+            ViewData["byVouchers"] = byVouchers;
             ViewData["sessionId"] = sessionId;
             return View();
         }
@@ -268,7 +320,7 @@ namespace SSISTeam9.Controllers
                 }
             }
             
-            TempData["errorMsg"] = "<script>alert('Adjustment voucher authorise successfully.');</script>";
+            TempData["errorMsg"] = "<script>alert('Adjustment vouchers have been authorised successfully.');</script>";
             ViewData["userName"] = user.EmpName;
             ViewData["sessionId"] = sessionId;
             return View("~/Views/StoreLandingPage/Home.cshtml");
@@ -331,7 +383,20 @@ namespace SSISTeam9.Controllers
             adjVouchers = AdjVoucherService.GetAdjByAdjId(adjId);
             foreach(AdjVoucher adj in adjVouchers)
             {
-                adj.ItemCode = CatalogueService.GetCatalogueById(adj.ItemId).ItemCode;
+                Inventory c = CatalogueService.GetCatalogueById(adj.ItemId);
+                adj.ItemCode = c.ItemCode;
+                adj.Description = c.Description;
+                PriceList p = PriceListService.GetPriceListByItemId(adj.ItemId);
+                if(p != null)
+                {
+                    adj.UnitPrice = p.Supplier1UnitPrice;
+                }
+                else
+                {
+                    adj.UnitPrice = 1;
+                }
+                double total = adj.AdjQty * adj.UnitPrice;
+                adj.TotalPrice = Math.Abs(total);
             }
             string adjIdstring = adjId.ToString("000/000/00");
             string authorisedBy = "Nil";

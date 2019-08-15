@@ -267,8 +267,27 @@ namespace SSISTeam9.Controllers
                 }
                 authoriseBy = "Manager";
             }
+
+            //To group by vouchers
+            Dictionary<long, List<AdjVoucher>> byVouchers = new Dictionary<long, List<AdjVoucher>>();
+
+            foreach (var adj in adjVouchers)
+            {
+                if (byVouchers.ContainsKey(adj.AdjId))
+                {
+                    byVouchers[adj.AdjId].Add(adj);
+                }
+                else
+                {
+                    List <AdjVoucher> adjs = new List<AdjVoucher>();
+                    adjs.Add(adj);
+                    byVouchers[adj.AdjId] = adjs;
+                }
+            }
+
             ViewData["authoriseBy"] = authoriseBy;
             ViewData["adjVouchers"] = adjVouchers;
+            ViewData["byVouchers"] = byVouchers;
             ViewData["sessionId"] = sessionId;
             return View();
         }

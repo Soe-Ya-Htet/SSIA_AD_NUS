@@ -27,7 +27,7 @@ else
     <p style="padding-left:3em">- a copy of adjustment amounts is put on an adjustment voucher and is signed by the supervisor.</p>
     <section>
         <p>Pending authorisation by @authoriseBy</p>
-        <table align="center">
+        <table class="table table-bordered" style="text-align:center" align="center">
             <tr align="center">
                 <th>Item Code</th>
                 <th>Quantity adjusted</th>
@@ -46,7 +46,7 @@ else
 
         </table>
         <div class="button">
-            <input class="rounded" type="button" value="Authorise" style="margin-left:10px;" onclick="location.href='@Url.Action("Authorise","AdjVoucher", new {sessionid = sessionId})'">
+            <input class="rounded" type="button" value="Authorise" style="float:right; margin-left:10px;" onclick="location.href='@Url.Action("Authorise","AdjVoucher", new {sessionid = sessionId})'">
         </div>
     </section>
 }

@@ -376,5 +376,38 @@ namespace SSISTeam9.DAO
 
         }
 
+
+        public static List<DisbursementList> ViewCompletedDisbursByDept(long deptId)
+        {
+            List<DisbursementList> disbursements = new List<DisbursementList>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * FROM DisbursementList
+                            WHERE deptId ='" + deptId +
+                            "' ORDER BY date";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    DisbursementList disbursement = new DisbursementList
+                    {
+                        ListId = (long)reader["listId"],
+                        date = (DateTime)reader["date"],
+                    };
+
+                    disbursements.Add(disbursement);
+                }
+            }
+            return disbursements;
+
+        }
+
+
     }
 }

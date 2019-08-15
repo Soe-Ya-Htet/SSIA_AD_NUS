@@ -11,7 +11,8 @@ namespace SSISTeam9.Services
         ON_REQUISITION_MAIL,
         ON_COLLECTION_POINT_CHANGE,
         ON_LOW_STOCK,
-        ON_ASSIGNED_AS_DEPT_REP
+        ON_ASSIGNED_AS_DEPT_REP,
+        ON_ALTERNATIVE_SUPPLIER
     }
     public class EmailService : IEmailService
     {
@@ -72,6 +73,10 @@ namespace SSISTeam9.Services
                 case EmailTrigger.ON_REQUISITION_MAIL:
                     PrepareRequisitionMailContent(notice);
                     break;
+
+                case EmailTrigger.ON_ALTERNATIVE_SUPPLIER:
+                    PrepareNotificationEmailToPurchasingDepartment(notice);
+                    break;
             }
         }
 
@@ -90,7 +95,7 @@ namespace SSISTeam9.Services
         {
             notice.Subject = "Requisition Email";
             StringBuilder builder = new StringBuilder("Dear Sir / Mdm,");
-            builder.Append("<br/><br/> You have a new requisition order.");
+            builder.Append("<br/><br/> You have a new requisition order waiting for approval.");
             notice.Body = builder.ToString();
         }
 
@@ -114,6 +119,22 @@ namespace SSISTeam9.Services
                 .Append("</strong> Department to Venue : <strong>")
                 .Append(notice.Dept.CollectionPoint.Name)
                 .Append("</strong>.");
+            notice.Body = builder.ToString();
+        }
+
+        private void PrepareNotificationEmailToPurchasingDepartment(EmailNotification notice)
+        {
+            notice.Subject = "Purchase from Alternative Supplier";
+            StringBuilder builder = new StringBuilder("Dear Sir / Mdm,");
+            builder.Append("<br/><br/> Please be informed that we have ordered from an alternative supplier as the main supplier could not fulfill required order. <br/>")
+               .Append($"Order Number : {notice.Order.OrderNumber}<br/>")
+               .Append($"Order Date : {notice.Order.OrderDate.ToString("dd MMM yyyy")}<br/>")
+               .Append($"Alternative Supplier Name : {notice.Order.Supplier.Name}<br/>");
+
+            foreach (var item in notice.Order.ItemDetails)
+            {
+                builder.Append($"Item Code: {item.Item.ItemCode}, Description: {item.Item.Description}, Quantity: {item.Quantity} <br/>");
+            }
             notice.Body = builder.ToString();
         }
     }

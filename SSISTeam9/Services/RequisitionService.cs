@@ -121,6 +121,12 @@ namespace SSISTeam9.Services
             }
         }
 
+        public static string GetDeptHead(long deptId)
+        {
+            Employee deptHead = EmployeeDAO.GetDeptHeadByDeptId(deptId);
+            return deptHead.Email;
+        }
+
         public static List<Requisition> GetRequisitionByEmpId(long empId)
         {
             List<Requisition> reqs = RequisitionDAO.GetRequisitionByEmpId(empId);

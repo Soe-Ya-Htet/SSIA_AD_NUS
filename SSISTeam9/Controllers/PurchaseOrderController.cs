@@ -183,6 +183,7 @@ namespace SSISTeam9.Controllers
             PurchaseOrder order = PurchaseOrderService.GetOrderDetails(orderNumber);
 
             ViewData["order"] = order;
+            ViewData["sessionId"] = sessionId;
             return View("Closed");
         }
 

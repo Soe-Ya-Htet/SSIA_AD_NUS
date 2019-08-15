@@ -16,9 +16,9 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT i.binNo, i.description, r.itemId, SUM(quantity) as needed from RequisitionDetails r, Inventory i, Requisition req 
+                string q = @"SELECT i.binNo, i.description, r.itemId, i.stockLevel, SUM(quantity) as needed from RequisitionDetails r, Inventory i, Requisition req 
                             where req.status IN ('Assigned','Partially Completed(Assigned)') AND  r.itemId=i.itemId AND r.reqId=req.reqid 
-                            GROUP BY r.itemId, binNo, description 
+                            GROUP BY r.itemId, binNo, description, i.stockLevel 
                             ORDER BY binNo";
 
 
@@ -36,6 +36,7 @@ namespace SSISTeam9.DAO
                     retrievalForm = new RetrievalForm()
                     {
                         itemId = (long)reader["itemId"],
+                        stockLevel = (int)reader["stockLevel"],
                         binNo = (string)reader["binNo"],
                         description = (string)reader["description"],
                         totalNeeded = (int)reader["needed"] 

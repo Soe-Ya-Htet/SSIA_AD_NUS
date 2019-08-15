@@ -116,6 +116,8 @@ namespace SSISTeam9.Controllers
                 foreach (AdjVoucher adj in adjVouchers)
                 {
                     adj.Reason = null;
+                    adj.Item = CatalogueService.GetCatalogueById(adj.ItemId);
+                    adj.Item.ItemSuppliersDetails = PurchaseOrderService.GetItemSuppliersDetails(adj.ItemId);
                 }
                 ViewData["adjVouchers"] = adjVouchers;
                 ViewData["sessionId"] = sessionId;

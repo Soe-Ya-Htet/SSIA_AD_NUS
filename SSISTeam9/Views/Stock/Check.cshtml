@@ -8,7 +8,7 @@
     var sessionId = (string)ViewData["sessionId"];
 }
 
-<h3>Check Stock</h3>
+<h2 style="text-align:center">Check Stock</h2>
 
 @if (inventories.Count == 0)
 {
@@ -45,57 +45,9 @@ else
         }
     </table>
     <input class="rounded" type="submit" style="float:right;margin-bottom:30px" value="Generate Adjustment Voucher">
-}
-
     }
-    @*using (Html.BeginForm("Index", "AdjVoucher", Model, FormMethod.Post))
-        {
-            <table class="table table-bordered">
 
-                <thead>
-                <tr align="center">
-                    <th>Item Number</th>
-                    <th>Category</th>
-                    <th>Description</th>
-                    <th>Unit Of Measure</th>
-                    <th>Last Stock</th>
-                    <th>Actual Stock</th>
-                </tr>
-
-                </thead>
-
-                <tbody>
-
-                @if (Model != null)
-                {
-                    for (var i = 0; i < Model.Count; i++)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(x => Model[i].ItemCode)</td>
-                            <td>@Html.DisplayFor(x => Model[i].Category)</td>
-                            <td>@Html.DisplayFor(x => Model[i].Description)</td>
-                            <td>@Html.DisplayFor(x => Model[i].UnitOfMeasure)</td>
-                            <td>@Html.DisplayFor(x => Model[i].StockLevel)</td>
-                            <td>@Html.TextBoxFor(x => Model[i].ActualStock, new {@Value = Model[i].StockLevel})</td>
-                            <td style="display:none;">
-                                @Html.HiddenFor(x => Model[i].ItemCode)
-                                @Html.HiddenFor(x => Model[i].ItemId)
-                                @Html.HiddenFor(x => Model[i].StockLevel)
-                                @Html.HiddenFor(x => Model[i].Description)
-                                @Html.HiddenFor(x => Model[i].UnitOfMeasure)
-                                @Html.HiddenFor(x => Model[i].Category)
-                            </td>
-                        </tr>
-                    }
-                }
-
-
-                </tbody>*@
-
-
-    @*<input class="rounded" type="submit" value="Generate Adjustment Voucher" />
-        }*@
-
+}
 
 
     @Html.Raw(TempData["errorMsg"])

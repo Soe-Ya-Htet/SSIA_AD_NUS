@@ -16,14 +16,6 @@
     {
         <table class="table table-bordered">
             <tr>
-                <td>
-                    <p align="left"><input type="button" value="Reset" onclick="location.href='@Url.Action("Details","Department", new {deptId = department.DeptId})'"></p>
-                </td>
-                <td>
-                    <p align="right"><input type="button" value="Back" onclick="location.href='@Url.Action("All","Department")'"></p>
-                </td>
-            </tr>
-            <tr>
                 <td>@Html.LabelFor(x => x.DeptCode) </td>
                 <td>
                     @Html.TextBoxFor(x => x.DeptCode, new { id = "deptCode", @Value = department.DeptCode })

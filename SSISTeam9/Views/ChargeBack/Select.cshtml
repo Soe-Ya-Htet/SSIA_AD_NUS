@@ -20,55 +20,40 @@
 <div>
     @using (Html.BeginForm("Generate", "ChargeBack", new { mode = 1, sessionId = sessionId }, FormMethod.Post))
     {
-        <table class="table table-bordered" align="center">
-            <tr align="center">
-                <td>By Month</td>
-                <td>
-                    <div>
-                        <select name="monthOfOrder" id="monthOfOrder" style="width: 180px">
-                            @for (int i = 0; i < 12; i++)
-                            {
-                                <option value="@(i+1)">@months[i]</option>
-                            }
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <p align="left"><input class="rounded" type="submit" value="Generate"></p>
-                </td>
-            </tr>
-        </table>
+        <div style="text-align:center">
+            <label style="text-align:center;margin-top:10px;padding-right:8em">By Month: </label>
+            <select name="monthOfOrder" id="monthOfOrder" style="width: 180px">
+                @for (int i = 0; i < 12; i++)
+                {
+                    <option value="@(i+1)">@months[i]</option>
+                }
+            </select>
+            <label style="padding-right:15.8em"></label>
+            <input style="margin-left:10px;margin-top:10px;text-align:center" class="rounded" type="submit" value="Generate">
+        </div>
+
     }
     @using (Html.BeginForm("Generate", "ChargeBack", new { mode = 2, sessionId = sessionId }, FormMethod.Post))
     {
-        <table class="table table-bordered" align="center">
-            <tr align="center">
-                <td>By Department</td>
-                <td>
-                    <div>
-                        <select name="yearOfOrder" id="yearOfOrder" style="width: 180px">
-                            @foreach (int year in years)
-                            {
-                                <option>@year</option>
-                            }
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <select name="deptName" id="deptName" style="width: 180px">
-                            @foreach (string dept in depts)
-                            {
-                                <option>@dept</option>
-                            }
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <p align="right"><input class="rounded" type="submit" value="Generate"></p>
-                </td>
+        <div style="text-align:center">
+            <label style="text-align:center;margin-top:10px;padding-right:5.7em">By Departmen: </label>
+            <select name="yearOfOrder" id="yearOfOrder" style="width: 180px">
+                @foreach (int year in years)
+                {
+                    <option>@year</option>
+                }
+            </select>
+            <label style="padding-right:2em"></label>
+            <select name="deptName" id="deptName" style="width: 180px">
+                @foreach (string dept in depts)
+                {
+                    <option>@dept</option>
+                }
+            </select>
+            <label style="padding-right:2em"></label>
+            <input style="margin-left:10px;margin-top:10px;text-align:center" class="rounded" type="submit" value="Generate">
+        </div>
 
-        </table>
     }
 
 </div>
@@ -91,7 +76,7 @@ else
             @foreach (var c in chargeBacks)
             {
                 <tr align="center">
-                    <td><a href="/Requisition/DeptRequisition?deptId=@c.DeptId">@c.DeptName </a></td>
+                    <td><a href="/ChargeBack/DeptPastRequisition?deptId=@c.DeptId&sessionid=@sessionId">@c.DeptName </a></td>
                     <td>$@c.Amount</td>
                     <td></td>
                 </tr>
@@ -101,7 +86,7 @@ else
     }
     else
     {
-        <p style="text-align:center">Charge Back Details for <a href="/Requisition/DeptRequisition?deptId=@chargeback.DeptId">@chargeback.DeptName </a>in @chargeback.YearOfOrder</p>
+        <p style="text-align:center">Charge Back Details for <a href="/ChargeBack/DeptPastRequisition?deptId=@chargeback.DeptId&sessionid=@sessionId">@chargeback.DeptName </a>in @chargeback.YearOfOrder</p>
         <table align="center">
             <tr align="center">
                 <th>Month</th>
@@ -118,14 +103,3 @@ else
         </table>
     }
 }
-
-<style>
-    td {
-        padding: 2px;
-    }
-
-    tr {
-        height: 40px;
-        padding: 2px;
-    }
-</style>

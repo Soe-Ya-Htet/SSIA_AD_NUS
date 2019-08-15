@@ -24,7 +24,7 @@ else
             <tr style="text-align:center">
                 <th>Item Code</th>
                 <th>Description</th>
-                <th>Quantity adjusted</th>
+                <th>Quantity Adjusted</th>
                 <th>Reason</th>
                 <th>Unit Price</th>
                 <th>Total Price</th>
@@ -51,9 +51,26 @@ else
             }
             <tr>
                 <td colspan="5" style="text-align:right;font-weight:bold">Total:</td>
-                <td>@total.ToString("C2")</td>
+                <td style="text-align:center">@total.ToString("C2")</td>
             </tr>
         </table>
         <input class="rounded" style="float:right;margin-bottom:30px" type="submit" value="Generate Adjustment Voucher">
     }
 }
+
+<footer>
+    <div id="notes" style="margin-top:200px;font-size:12px">
+        <p><u>Notes</u></p>
+        <p>1. Inventory Adjustments. Possible Causes: </p>
+        <ul>
+            <li>items broken or expired</li>
+            <li>adhoc i.e. detected when trying to issue the item(s)</li>
+            <li>when issue/receipt of item is not recorded i.e. oversight</li>
+        </ul>
+        <p>2. Authorising Adjustments: </p>
+        <ul>
+            <li>Minor: anything under $250 per adjustment can be authorised by Supervisor</li>
+            <li>Major: anything above $250 per adjustment has to be authorised by Manager</li>
+        </ul>
+    </div>
+</footer>

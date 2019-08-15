@@ -237,6 +237,13 @@ namespace SSISTeam9.Controllers
             if (user.EmpRole == "STORE_SUPERVISOR")
             {
                 adjVouchers = AdjVoucherService.GetAdjByStatus(2);
+
+                foreach(var adj in adjVouchers)
+                {
+                    //to get item details for view
+                    adj.Item = CatalogueService.GetCatalogueById(adj.ItemId);
+                    adj.Item.ItemSuppliersDetails = PurchaseOrderService.GetItemSuppliersDetails(adj.ItemId);
+                }
                 if (adjVouchers.Count == 0)
                 {
                     return RedirectToAction("AllAdjVouchers", new { sessionId });
@@ -246,6 +253,14 @@ namespace SSISTeam9.Controllers
             else if(user.EmpRole == "STORE_MANAGER")
             {
                 adjVouchers = AdjVoucherService.GetAdjByStatus(3);
+
+                foreach (var adj in adjVouchers)
+                {
+                    //to get item details for view
+                    adj.Item = CatalogueService.GetCatalogueById(adj.ItemId);
+                    adj.Item.ItemSuppliersDetails = PurchaseOrderService.GetItemSuppliersDetails(adj.ItemId);
+                }
+
                 if (adjVouchers.Count == 0)
                 {
                     return RedirectToAction("AllAdjVouchers", new { sessionId });

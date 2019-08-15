@@ -1,0 +1,61 @@
+﻿@model IEnumerable<SSISTeam9.Models.Requisition>
+
+@{
+    ViewBag.Title = "DeptRequisition";
+    string sessionId = (string)ViewData["sessionId"];
+    string deptName = (string)ViewData["deptName"];
+
+}
+
+<link href="~/Content/sticky-footer-navbar.css" rel="stylesheet">
+@{
+    if (Model.ToArray().Length == 0)
+    {
+        <h2>@deptName doesn't have any requisition yet!</h2>
+    }
+    else
+    {
+        <h2>@deptName Completed Requisitions</h2>
+        <br />
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    Requisition Code
+                </th>
+                <th>
+                    Date Of Request
+                </th>
+            </tr>
+
+            @foreach (var req in Model)
+            {
+            <tr>
+                <td>
+                    @Html.ActionLink(req.ReqCode.ToString(), "GetRequisitionDetails", "Requisition", new { reqId = req.ReqId, sessionId = sessionId },null)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelreq => req.DateOfRequest)
+                </td>
+            </tr>
+            }
+
+        </table>
+    }
+}
+
+<style>
+    td {
+        padding: 2px;
+        width: 200px;
+    }
+
+    tr {
+        height: 40px;
+        padding: 2px;
+        text-align: center;
+    }
+
+    th {
+        text-align: center;
+    }
+</style>

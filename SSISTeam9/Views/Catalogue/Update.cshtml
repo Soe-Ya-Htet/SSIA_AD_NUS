@@ -68,6 +68,13 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.BinNo): </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BinNo, new { id = "binNo", @Value = catalogue.BinNo, @class = "TextBox" })
+                    @Html.ValidationMessageFor(x => x.BinNo, "", new { style = "color:red" })
+                </td>
+            </tr>
             @Html.Hidden("itemId", catalogue.ItemId)
         </table>
     

@@ -37,18 +37,18 @@
             <td rowspan="@retForms[i].deptNeeds.Count">@retForms[i].binNo</td>
             <td rowspan="@retForms[i].deptNeeds.Count">@retForms[i].description</td>
             <td rowspan="@retForms[i].deptNeeds.Count">@retForms[i].totalNeeded</td>
-            <td rowspan="@retForms[i].deptNeeds.Count" id="/@retForms[i].itemId">@retForms[i].itemId</td>
+            <td rowspan="@retForms[i].deptNeeds.Count" id="/@retForms[i].itemId"></td>
             <td>@retForms[i].deptNeeds[0].deptCode</td>
             <td>@retForms[i].deptNeeds[0].deptNeeded</td>
             
             @if (stockLevel[i] >= retForms[i].deptNeeds[0].deptNeeded)
             {
-                <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[0].deptId" value="@retForms[i].deptNeeds[0].deptNeeded" onchange="findTotal(@retForms[i].itemId)" min=0 /></td>
+                <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[0].deptId" value="@retForms[i].deptNeeds[0].deptNeeded" onchange="findTotal(@retForms[i].itemId, @i)" min=0 /></td>
                 stockLevel[i] -= retForms[i].deptNeeds[0].deptNeeded;
             }
             else
             {
-                <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[0].deptId" value="@stockLevel[i]" onchange="findTotal(@retForms[i].itemId)" min=0 /></td>
+                <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[0].deptId" value="@stockLevel[i]" onchange="findTotal(@retForms[i].itemId, @i)" min=0 /></td>
                 stockLevel[i] = 0;
             }
 
@@ -63,12 +63,12 @@
 
                     @if (stockLevel[i] >= retForms[i].deptNeeds[x].deptNeeded)
                     {
-                        <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[x].deptId" value="@retForms[i].deptNeeds[x].deptNeeded" onchange="findTotal(@retForms[i].itemId)" min="0" /></td>
+                        <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[x].deptId" value="@retForms[i].deptNeeds[x].deptNeeded" onchange="findTotal(@retForms[i].itemId, @i)" min="0" /></td>
                         stockLevel[i] -= retForms[i].deptNeeds[x].deptNeeded;
                     }
                     else
                     {
-                        <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[x].deptId" value="@stockLevel[i]" onchange="findTotal(@retForms[i].itemId)" min="0" /></td>
+                        <td><input type="number" class="@retForms[i].itemId" name="@retForms[i].deptNeeds[x].deptId" value="@stockLevel[i]" onchange="findTotal(@retForms[i].itemId ,@i)" min="0" /></td>
                         stockLevel[i] = 0;
                     }
 
@@ -102,20 +102,35 @@ else
     var stockLevel = @Html.Raw(Json.Encode(ViewData["stockLevel"]));
 
     function findAllTotal() {
-        for (var retForm of jsRetForms) {
+        for (var i = 0; i < jsRetForms.length; i++) {
 
-            findTotal(retForm["itemId"]);
+            findTotal(jsRetForms[i]["itemId"], i);
         }
     }
 
-    function findTotal(id) {
+    function findTotal(id, x) {
         var arr = document.getElementsByClassName(id);
         var tot = 0;
         for (var i = 0; i < arr.length; i++) {
+            if (parseInt(arr[i].value) > jsRetForms[x]["deptNeeds"][i]["deptNeeded"]) {
+                alert(jsRetForms[x]["deptNeeds"][i]["deptCode"] + " quantity cannot be more than dept needed");
+                return false;
+            }
             if (parseInt(arr[i].value))
                 tot += parseInt(arr[i].value);
         }
-        document.getElementById("/" + id).innerHTML = tot;
+        if (tot > jsRetForms[x]["stockLevel"]) {
+            alert(jsRetForms[x]["description"] + " quantity cannot be more than stock level");
+            return false;
+        }
+        else if (tot > jsRetForms[x]["totalNeeded"]) {
+            alert(jsRetForms[x]["description"] + " quantity cannot be more than total needed");
+            return false;   
+        }
+        else {
+            document.getElementById("/" + id).innerHTML = tot;
+        }
+        
 
     }
 
@@ -125,14 +140,19 @@ else
         var inputs = document.getElementsByTagName("input");
         for (var input of inputs) {
             if (input.value == "" || input.value < 0) {
-                alert("Quantity cannot be empty or less than 0");
+                alert("Quantities cannot be empty or less than 0");
                 return false;
             } 
+           
         }
         
         var deptCodes = new Array();
-        for (var retForm of jsRetForms) {
-            findTotal(retForm["itemId"]);
+        for (var i = 0; i < jsRetForms.length; i++) {
+            var retForm = jsRetForms[i];
+            if (findTotal(retForm["itemId"], i) == false) {
+                return false;
+            }
+            
 
             for (retF of retForm["deptNeeds"]) {
                 if (deptCodes.includes(retF["deptId"])) {

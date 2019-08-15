@@ -120,7 +120,7 @@ else
                 tot += parseInt(arr[i].value);
         }
         if (tot > jsRetForms[x]["stockLevel"]) {
-            alert(jsRetForms[x]["description"] + " quantity cannot be more than stock level");
+            alert(jsRetForms[x]["description"] + " quantity cannot be more than stock level, stock level: " + jsRetForms[x]["stockLevel"]);
             return false;
         }
         else if (tot > jsRetForms[x]["totalNeeded"]) {

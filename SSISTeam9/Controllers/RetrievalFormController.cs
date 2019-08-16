@@ -29,8 +29,7 @@ namespace SSISTeam9.Controllers
             List<int> stockLevel = new List<int>();
             foreach (var item in retrievalForms)
             {
-                Inventory i= CatalogueService.GetCatalogueById(item.itemId);
-                stockLevel.Add(i.StockLevel);
+                stockLevel.Add(item.stockLevel);
             }
             ViewData["stockLevel"] = stockLevel;
             ViewData["sessionId"] = sessionId;

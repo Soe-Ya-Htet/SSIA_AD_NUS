@@ -17,7 +17,8 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * FROM StockCard​ WHERE itemId = '" + ItemId + "'  ORDER BY date";
+                //display 50 rows of record
+                string q = @"SELECT TOP 50 * FROM StockCard​ WHERE itemId = '" + ItemId + "'  ORDER BY date";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();

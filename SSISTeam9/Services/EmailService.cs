@@ -13,9 +13,8 @@ namespace SSISTeam9.Services
         ON_LOW_STOCK,
         ON_ASSIGNED_AS_DEPT_REP,
         ON_ALTERNATIVE_SUPPLIER,
-        ON_PENDING_ADJVOUCHER
-        ON_DELEGATED_AS_DEPT_HEAD,
-        ON_ALTERNATIVE_SUPPLIER
+        ON_PENDING_ADJVOUCHER,
+        ON_DELEGATED_AS_DEPT_HEAD
     }
     public class EmailService : IEmailService
     {

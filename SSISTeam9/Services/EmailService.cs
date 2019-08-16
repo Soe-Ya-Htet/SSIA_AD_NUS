@@ -49,9 +49,16 @@ namespace SSISTeam9.Services
 
         public void SendMail(EmailNotification notice, EmailTrigger trigger)
         {
-            PrepareSubjectAndBody(notice, trigger);
-            if(!string.IsNullOrEmpty(notice.ReceiverMailAddress) && !string.IsNullOrEmpty(notice.Subject) && !string.IsNullOrEmpty(notice.Body))
-                SendEmail(notice.ReceiverMailAddress, notice.Subject, notice.Body);
+            try
+            {
+                PrepareSubjectAndBody(notice, trigger);
+                if (!string.IsNullOrEmpty(notice.ReceiverMailAddress) && !string.IsNullOrEmpty(notice.Subject) && !string.IsNullOrEmpty(notice.Body))
+                    SendEmail(notice.ReceiverMailAddress, notice.Subject, notice.Body);
+            }
+            catch(Exception e)
+            {
+                Console.Write(e.Message);
+            }
         }
 
         private void PrepareSubjectAndBody(EmailNotification notice, EmailTrigger trigger)

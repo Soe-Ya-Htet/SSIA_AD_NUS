@@ -14,6 +14,8 @@ namespace SSISTeam9.Services
         ON_ASSIGNED_AS_DEPT_REP,
         ON_ALTERNATIVE_SUPPLIER,
         ON_PENDING_ADJVOUCHER
+        ON_DELEGATED_AS_DEPT_HEAD,
+        ON_ALTERNATIVE_SUPPLIER
     }
     public class EmailService : IEmailService
     {
@@ -70,6 +72,10 @@ namespace SSISTeam9.Services
                     PrepareAssignedAsDeptRepMailContent(notice);
                     break;
 
+                case EmailTrigger.ON_DELEGATED_AS_DEPT_HEAD:
+                    PrepareAssignedAsDeptHeadMailContent(notice);
+                    break;
+
                 case EmailTrigger.ON_COLLECTION_POINT_CHANGE:
                     PrepareCollectionPointChangeMailContent(notice);
                     break;
@@ -95,10 +101,16 @@ namespace SSISTeam9.Services
         {
             notice.Subject = "Email on being assigned as a department representative";
             StringBuilder builder = new StringBuilder("Dear Sir / Mdm,");
-            builder.Append("<br/><br/> This is email is to confirm the assignment of <strong>")
-                .Append(notice.Dept.Representative.EmpName)
-                .Append(" as the ").Append(notice.Dept.DeptName).Append(" Representative for the time period from ")
-                .Append(notice.From.ToString("dd/MM/yyyy")).Append(" to ").Append(notice.To.ToString("dd/MM/yyyy")).Append(".");
+            builder.Append("<br/><br/> This email is to notify that you are being assigned as Representative of your department.");
+            notice.Body = builder.ToString();
+        }
+
+        private void PrepareAssignedAsDeptHeadMailContent(EmailNotification notice)
+        {
+            notice.Subject = "Email on being assigned as a department head";
+            StringBuilder builder = new StringBuilder("Dear Sir / Mdm,");
+            builder.Append("<br/><br/> This is email is to notify that you are assigned as Head for your department")
+                .Append(" from ").Append(notice.From.ToString("dd/MM/yyyy")).Append(" to ").Append(notice.To.ToString("dd/MM/yyyy")).Append(".");
             notice.Body = builder.ToString();
         }
 
@@ -157,6 +169,5 @@ namespace SSISTeam9.Services
             builder.Append("<br/><br/> You have a new adjustment voucher pending for authorisation.");
             notice.Body = builder.ToString();
         }
-
     }
 }

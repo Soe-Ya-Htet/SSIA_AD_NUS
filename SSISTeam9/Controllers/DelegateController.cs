@@ -6,60 +6,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Threading.Tasks;
 
 namespace SSISTeam9.Controllers
 {
     public class DelegateController : Controller
     {
+        private readonly IEmailService emailService;
+
+        public DelegateController()
+        {
+            emailService = new EmailService();
+        }
         // GET: Delegate
         public ActionResult Index()
         {
             return View();
         }
-        //public ActionResult ViewDelegate(Models.Delegate d, string sessionId)
-        //{
-        //    Employee emp = EmployeeService.GetUserBySessionId(sessionId);
-        //    long deptId = emp.DeptId;
-        //    long headId = DepartmentService.GetCurrentHead(deptId);
-        //    List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(deptId);
-        //    ViewData["employees"] = employees;
-        //    ViewData["sessionId"] = sessionId;
-        //    bool all = DelegateService.CheckPreviousHeadForNav(deptId);
-        //    ViewData["all"] = all;
-        //    if (d.Employee != null)
-        //    {
-        //        d.Department = new Department();
-        //        d.Department.DeptId = deptId;
-        //        DelegateService.AddNewDelegate(d, headId);
-        //        return RedirectToAction("ViewRemoveDelegate", new { sessionId = sessionId });
-        //    }
-        //    else
-        //    {
-        //        return View();
-        //    }
-
-        //}
-
-        //public ActionResult ViewRemoveDelegate(string headId, string sessionId)
-        //{
-        //    Employee emp = EmployeeService.GetUserBySessionId(sessionId);
-        //    long deptId = emp.DeptId;
-        //    long head = DepartmentService.GetCurrentHead(deptId);
-        //    Employee e = EmployeeDAO.GetEmployeeById(head);
-        //    ViewData["currentHead"] = e;
-        //    ViewData["sessionId"] = sessionId;
-        //    bool all = DelegateService.CheckPreviousHeadForNav(deptId);
-        //    ViewData["all"] = all;
-        //    if (headId == null)
-        //    {
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        DelegateService.DelegateToPreviousHead(deptId);
-        //        return RedirectToAction("ViewDelegate", new { sessionId = sessionId });
-        //    }
-        //}
+        
         public ActionResult ViewDelegate(Models.Delegate d, string delegatedhead, string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -87,6 +51,12 @@ namespace SSISTeam9.Controllers
                 d.Department = new Department();
                 d.Department.DeptId = deptId;
                 DelegateService.AddNewDelegate(d, headId);
+                EmailNotification notice = new EmailNotification();
+                Employee MailReceiver = EmployeeService.GetEmployeeById(d.Employee.EmpId);
+                notice.ReceiverMailAddress = MailReceiver.Email;
+                notice.From = d.FromDate;
+                notice.To = d.ToDate;
+                Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_DELEGATED_AS_DEPT_HEAD));
                 long head = DepartmentService.GetCurrentHead(deptId);
                 Employee h = EmployeeDAO.GetEmployeeById(head);
                 ViewData["currentHead"] = h;

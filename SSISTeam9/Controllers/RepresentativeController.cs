@@ -5,11 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Threading.Tasks;
 
 namespace SSISTeam9.Controllers
 {
     public class RepresentativeController : Controller
     {
+        private readonly IEmailService emailService;
+
+        public RepresentativeController()
+        {
+            emailService = new EmailService();
+        }
+
         // GET: Representative
         public ActionResult ChangeRepresentative(string employee,string sessionId)
         {
@@ -23,8 +31,12 @@ namespace SSISTeam9.Controllers
             if (employee != null)
             {
                 long newRep = long.Parse(employee);
+                EmailNotification notice = new EmailNotification();
                 RepresentativeService.UpdateEmployeeRole(newRep, currentRep, deptId);
-               
+                Employee newRepMailReceiver = EmployeeService.GetEmployeeById(newRep);
+                notice.ReceiverMailAddress = newRepMailReceiver.Email;
+                Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_ASSIGNED_AS_DEPT_REP));
+
             }
             List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(deptId);
             ViewData["employees"] = employees;

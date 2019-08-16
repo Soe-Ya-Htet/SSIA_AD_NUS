@@ -8,7 +8,7 @@
     var disbursements = (List<DisbursementList>)ViewData["disbursements"];
 }
 
-<h2>ViewAllCompletedDisbursements</h2>
+<h2>Completed Disbursements</h2>
 
 <table class="table table-bordered">
     <tr>
@@ -21,7 +21,7 @@
     {
         <tr>
             <td><a href="/Disbursement/ViewDisbursementDetails?listId=@disbursement.ListId&sessionId=@sessionId">@disbursement.ListId</a></td>
-            <td>@disbursement.date</td>
+            <td>@disbursement.date.ToString("dd. MM. yyyy")</td>
             <td>@disbursement.Department.DeptName</td>
             <td>@disbursement.AcknowledgedBy</td>
         </tr>

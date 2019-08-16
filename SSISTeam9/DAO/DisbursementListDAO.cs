@@ -73,7 +73,9 @@ namespace SSISTeam9.DAO
                     {
                         ListId = (long)reader["listId"],
                         Department = d,
+                        date = (DateTime)reader["date"],
                         CollectionPoint = cP
+                        
                     };
                     disbursementLists.Add(disbursementList);
                 }

@@ -18,18 +18,18 @@
         <th>Quantity</th>
         <th>Disbursed Quantity</th>
     </tr>
-    @foreach (var detail in details)
+    @for (var i = 0; i < details.Count; i++)
     {
         <tr>
-            <td>@detail.Item.Description</td>
-            <td>@detail.Quantity</td>
+            <td>@details[i].Item.Description</td>
+            <td>@details[i].Quantity</td>
             @if (status == "")
             {
-                <td><input type="number" class="input" name="@detail.Item.ItemId" value="@detail.Quantity" /></td>
+                <td><input type="number" class="input" id="@i" name="@details[i].Item.ItemId" value="@details[i].Quantity" onchange="checkAmount(@i)"/></td>
             }
             else
             {
-                <td>@detail.Quantity</td>
+                <td>@details[i].Quantity</td>
             }
 
 
@@ -46,10 +46,29 @@
 
 
 <script type="text/javascript">
-
+    var details = @Html.Raw(Json.Encode(ViewData["details"]));
+    function checkAmount(i) {
+        if (details[i]["Quantity"] < (document.getElementById(i).value)) {
+            alert(details[i]["Item"]["Description"] + " quantity cannot be more than disbursement amount: " + details[i]["Quantity"]);
+            return false;
+        }
+    }
 
     function submitData()
     {
+        var inputs = document.getElementsByTagName("input");
+        for (var input of inputs) {
+            var i = 0;
+            if (input.value == "" || input.value < 0) {
+                alert("Quantities cannot be empty or less than 0");
+                return false;
+            }
+            if (checkAmount(i) == false) {
+                return false;
+            }
+            i++;
+
+        }
         var items = document.getElementsByClassName("input")
         var listOfLists = new Array();
         for (item of items)

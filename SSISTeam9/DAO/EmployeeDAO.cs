@@ -163,6 +163,40 @@ namespace SSISTeam9.DAO
             }
         }
 
+
+        public static List<Employee> GetEmployeeByRole(string role)
+        {
+            List<Employee> employees = new List<Employee>();
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from Employee where empRole = '" + role + "'";
+                SqlCommand cmd = new SqlCommand(q, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Employee employee = new Employee()
+                    {
+                        EmpId = (long)reader["empId"],
+                        DeptId = (long)reader["deptId"],
+                        EmpName = (string)reader["empName"],
+                        EmpRole = (string)reader["empRole"],
+                        EmpDisplayRole = (string)reader["empDisplayRole"],
+                        UserName = (string)reader["userName"],
+                        Password = (string)reader["password"],
+                        Email = (reader["email"] == DBNull.Value) ? null : (string)reader["email"],
+                        SessionId = (reader["email"] == DBNull.Value) ? null : (string)reader["sessionId"]
+
+                    };
+                    employees.Add(employee);
+                }
+                return employees;
+            }
+        }
+
         public static void UpdateEmployeeRoleById(long newRep,long currentRep)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))

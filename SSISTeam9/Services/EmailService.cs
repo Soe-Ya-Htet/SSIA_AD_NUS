@@ -12,7 +12,8 @@ namespace SSISTeam9.Services
         ON_COLLECTION_POINT_CHANGE,
         ON_LOW_STOCK,
         ON_ASSIGNED_AS_DEPT_REP,
-        ON_ALTERNATIVE_SUPPLIER
+        ON_ALTERNATIVE_SUPPLIER,
+        ON_PENDING_ADJVOUCHER
     }
     public class EmailService : IEmailService
     {
@@ -84,6 +85,9 @@ namespace SSISTeam9.Services
                 case EmailTrigger.ON_ALTERNATIVE_SUPPLIER:
                     PrepareNotificationEmailToPurchasingDepartment(notice);
                     break;
+                case EmailTrigger.ON_PENDING_ADJVOUCHER:
+                    PrepareNotificationEmailToPurchasingDepartment(notice);
+                    break;
             }
         }
 
@@ -144,5 +148,15 @@ namespace SSISTeam9.Services
             }
             notice.Body = builder.ToString();
         }
+
+
+        private void PrepareNotificationEmailToStoreAuthorise(EmailNotification notice)
+        {
+            notice.Subject = "Pending Authorisation for Adjustment Voucher";
+            StringBuilder builder = new StringBuilder("Dear Sir / Mdm,");
+            builder.Append("<br/><br/> You have a new adjustment voucher pending for authorisation.");
+            notice.Body = builder.ToString();
+        }
+
     }
 }

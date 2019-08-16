@@ -171,7 +171,17 @@ namespace SSISTeam9.Controllers
                         adjId = adj.AdjId;
                         AdjVoucherService.UpdateStatus(adjId, 2);
                     }
-                }                
+                }
+                //Inform Store supervisor
+                List<Employee> supervisors = new List<Employee>();
+                EmailNotification notice = new EmailNotification();
+                supervisors = EmployeeService.GetEmployeeByRole("STORE_SUPERVISOR");
+                foreach(Employee s in supervisors)
+                {                    
+                    notice.ReceiverMailAddress = EmployeeService.GetUserEmail(s.EmpId);
+                    EmailService emailService = new EmailService();
+                    Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_PENDING_ADJVOUCHER));
+                }
                 TempData["errorMsg"] = "<script>alert('Total discrepancy amount is less than $250, pending for Store Supervisor to authorise.');</script>";
             }
             else
@@ -185,6 +195,15 @@ namespace SSISTeam9.Controllers
                         adjId = adj.AdjId;
                         AdjVoucherService.UpdateStatus(adjId, 3);
                     }
+                }
+                List<Employee> managers = new List<Employee>();
+                EmailNotification notice = new EmailNotification();
+                managers = EmployeeService.GetEmployeeByRole("STORE_MANAGER");
+                foreach (Employee m in managers)
+                {
+                    notice.ReceiverMailAddress = EmployeeService.GetUserEmail(m.EmpId);
+                    EmailService emailService = new EmailService();
+                    Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_PENDING_ADJVOUCHER));
                 }
                 TempData["errorMsg"] = "<script>alert('Total discrepancy amount is more than $250, pending for Store Manager to authorise.');</script>";
 

@@ -43,5 +43,10 @@ namespace SSISTeam9.Services
         {
             return EmployeeDAO.GetUserEmail(empId);
         }
+
+        public static List<Employee> GetEmployeeByRole(string role)
+        {
+            return EmployeeDAO.GetEmployeeByRole(role);
+        }
     }
 }

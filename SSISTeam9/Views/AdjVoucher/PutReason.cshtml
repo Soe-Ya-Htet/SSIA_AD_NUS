@@ -6,7 +6,10 @@
     ViewBag.Title = "Inventory Adjustment Voucher";
     List<AdjVoucher> adjVouchers = (List<AdjVoucher>)ViewData["adjVouchers"];
     string sessionId = (string)ViewData["sessionId"];
+    double total = 0;
 }
+
+<h3>Generate Adjustment Voucher</h3>
 
 @if (adjVouchers.Count == 0)
 {
@@ -15,34 +18,59 @@
 }
 else
 {
-    <table align="center">
-        <tr align="center">
-            <th>Item Code</th>
-            <th>Quantity adjusted</th>
-            <th>Reason</th>
-        </tr>
-        @using (Html.BeginForm("UpdateReason", "AdjVoucher", new { sessionId = sessionId }, FormMethod.Post))
-        {
-            for (int i = 0; i < adjVouchers.Count; i++)
+    using (Html.BeginForm("UpdateReason", "AdjVoucher", new { sessionId = sessionId }, FormMethod.Post))
+    {
+        <table class="table table-bordered" align="center">
+            <tr style="text-align:center">
+                <th>Item Code</th>
+                <th>Description</th>
+                <th>Quantity Adjusted</th>
+                <th>Reason</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
+            </tr>
+            @for (int i = 0; i < adjVouchers.Count; i++)
             {
-                <tr align="center">
-                    <td>@adjVouchers[i].ItemCode</td>
-                    <td>@adjVouchers[i].AdjQty</td>
-                    <td>@Html.TextBoxFor(x => x[i].Reason, new { id = "reason"})</td>
-                    <td>@Html.ValidationMessageFor(x => x[i].Reason, "", new { style = "color:red" })</td>
-                    <td style="display:none">
-                        @Html.TextBoxFor(x => x[i].ItemId, new { id = "itemId", @Value = adjVouchers[i].ItemId })
-                        @Html.TextBoxFor(x => x[i].AdjId, new { id = "adjId", @Value = adjVouchers[i].AdjId })
-                        @Html.TextBoxFor(x => x[i].AdjQty, new { id = "adjQty", @Value = adjVouchers[i].AdjQty })
-                    </td>
-                </tr>
+            <tr style="text-align:center">
+                <td>@adjVouchers[i].ItemCode</td>
+                <td>@adjVouchers[i].Item.Description</td>
+                <td>@adjVouchers[i].AdjQty</td>
+                <td>
+                    @Html.TextBoxFor(x => x[i].Reason, new { id = "reason" })
+                    @Html.ValidationMessageFor(x => x[i].Reason, "", new { style = "color:red" })
+                </td>
+                <td>@(adjVouchers[i].Item.ItemSuppliersDetails.Supplier1UnitPrice.ToString("C2") + "/" + adjVouchers[i].Item.UnitOfMeasure)</td>
+                <td>@((adjVouchers[i].Item.ItemSuppliersDetails.Supplier1UnitPrice * adjVouchers[i].AdjQty).ToString("C2"))</td>
+                <td style="display:none">
+                    @Html.TextBoxFor(x => x[i].ItemId, new { id = "itemId", @Value = adjVouchers[i].ItemId })
+                    @Html.TextBoxFor(x => x[i].AdjId, new { id = "adjId", @Value = adjVouchers[i].AdjId })
+                    @Html.TextBoxFor(x => x[i].AdjQty, new { id = "adjQty", @Value = adjVouchers[i].AdjQty })
+                </td>
+            </tr>
+                total = total + adjVouchers[i].Item.ItemSuppliersDetails.Supplier1UnitPrice * adjVouchers[i].AdjQty;
             }
             <tr>
-                <td></td>
-                <td></td>
-                <td align="right"><input class="rounded" type="submit" value="Generate Adjustment Voucher"></td>
+                <td colspan="5" style="text-align:right;font-weight:bold">Total:</td>
+                <td style="text-align:center">@total.ToString("C2")</td>
             </tr>
-        }
-
-    </table>
+        </table>
+        <input class="rounded" style="float:right;margin-bottom:30px" type="submit" value="Generate Adjustment Voucher">
+    }
 }
+
+<footer>
+    <div id="notes" style="margin-top:200px;font-size:12px">
+        <p><u>Notes</u></p>
+        <p>1. Inventory Adjustments. Possible Causes: </p>
+        <ul>
+            <li>items broken or expired</li>
+            <li>adhoc i.e. detected when trying to issue the item(s)</li>
+            <li>when issue/receipt of item is not recorded i.e. oversight</li>
+        </ul>
+        <p>2. Authorising Adjustments: </p>
+        <ul>
+            <li>Minor: anything under $250 per adjustment can be authorised by Supervisor</li>
+            <li>Major: anything above $250 per adjustment has to be authorised by Manager</li>
+        </ul>
+    </div>
+</footer>

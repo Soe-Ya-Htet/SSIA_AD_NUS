@@ -33,5 +33,8 @@ namespace SSISTeam9.Services
         Dictionary<string, List<Inventory>> GetAllInventories();
         Dictionary<string, List<PriceList>> GetAllInventoryPriceListByIds(List<long> itemIds);
         string SubmitStockAdjustment(List<AdjVoucher> adjVouchers);
+        Dictionary<string, List<DisbursementList>> GetAllOutstandingDisbursementsOfClerk(long collectionPoint);
+        string UpdateDisbursementsOfClerk(DisburmentDTO dto);
+        Dictionary<string, List<CollectionPoint>> GetAllCollectionPoints();
     }
 }

@@ -13,14 +13,19 @@ namespace SSISTeam9.Models
         public long AuthorisedBy { get; set; }
         public int AdjQty { get; set; }
         
-        [Required(AllowEmptyStrings = false)]
+        [Required(AllowEmptyStrings = false, ErrorMessage ="Required")]
         public string Reason { get; set; }
         public long ItemId { get; set; }
         public string ItemCode { get; set; }
+        public string Description { get; set; }
+
+        public double UnitPrice { get; set; }
 
         public double TotalPrice { get; set; }
 
         //0-pending 1-authorised 2-pending authorisation by Supervisor 3-pending authorisation by Manager
         public int status { get; set; }
+
+        public Inventory Item { get; set; }
     }
 }

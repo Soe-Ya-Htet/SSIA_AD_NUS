@@ -38,5 +38,10 @@ namespace SSISTeam9.Services
         {
             EmployeeDAO.RemoveSession(sessionId);
         }
+
+        public static string GetUserEmail(long empId)
+        {
+            return EmployeeDAO.GetUserEmail(empId);
+        }
     }
 }

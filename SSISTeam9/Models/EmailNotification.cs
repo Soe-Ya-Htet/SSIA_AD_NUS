@@ -21,5 +21,7 @@ namespace SSISTeam9.Models
 
         public string Body { get; set; }
 
+        public PurchaseOrder Order { get; set; }
+
     }
 }

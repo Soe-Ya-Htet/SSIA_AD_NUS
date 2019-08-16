@@ -54,9 +54,16 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.BinNo): </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BinNo, new { id = "binNo", @class = "TextBox" })
+                    @Html.ValidationMessageFor(x => x.BinNo, "", new { style = "color:red" })
+                </td>
+            </tr>
         </table>
         
-        <input class="btn btn-success rounded" type="submit" value="Create" style="float:right">
+        <input class="btn btn-success rounded" type="submit" value="Create and Next" style="float:right">
     }
 
 </div>

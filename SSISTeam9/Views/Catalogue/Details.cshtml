@@ -19,6 +19,7 @@
             Category: @catalogue.Category<br />
             Description: @catalogue.Description<br />
             Unit Of Measure: @catalogue.UnitOfMeasure<br />
+            Bin No.: @catalogue.BinNo<br />
         </p>
 
         <table class="table table-bordered" style="text-align:center">
@@ -44,7 +45,7 @@
             }
         </table>
             <input class="btn btn-success rounded" type="button" value="Update" style="float:right" onclick="location.href='@Url.Action("Update","Catalogue", new { itemId = catalogue.ItemId, sessionid = sessionId})'">
-            <button class=" btn btn-danger rounded" style="float:right;margin-right:10px">
+            <button class=" btn btn-danger rounded" style="float:left;margin-right:10px">
                 @Html.ActionLink("Delete","Delete","Catalogue",
                 new { confirm = true, itemId = catalogue.ItemId, sessionid = sessionId },
                 new { Style = "color:White;", onclick = "return confirm('Do you really want to delete this Catalogue?')" })

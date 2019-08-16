@@ -6,11 +6,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SSISTeam9.Filters;
+using System.Threading.Tasks;
 
 namespace SSISTeam9.Controllers
 {
     public class RequisitionController : Controller
     {
+        private readonly IEmailService emailService;
+
+        public RequisitionController()
+        {
+            emailService = new EmailService();
+        }
+
         // GET: Requisition
         public ActionResult Index()
         {
@@ -82,6 +90,10 @@ namespace SSISTeam9.Controllers
             }
 
             RequisitionService.CreateRequisition(cartsToRequest, emp.EmpId);
+            string headMail = RequisitionService.GetDeptHead(emp.DeptId);
+            EmailNotification notice = new EmailNotification();
+            notice.ReceiverMailAddress = headMail;
+            Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_REQUISITION_MAIL));
             return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionId });
         }
 

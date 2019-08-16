@@ -2,6 +2,8 @@
 
 @using SSISTeam9.Models;
 @{
+    Layout = "~/Views/Shared/_Store.cshtml";
+    ViewBag.Title = "Update New Price List";
     PriceList pricelist = (PriceList)ViewData["pricelist"];
     List<string> supplierNames = (List<string>)ViewData["supplierNames"];
     long itemId = (long)ViewData["itemId"];

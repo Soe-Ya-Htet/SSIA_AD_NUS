@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using SSISTeam9.Services;
 using SSISTeam9.Models;
 using SSISTeam9.Filters;
+using System.Threading.Tasks;
 
 namespace SSISTeam9.Controllers
 {
@@ -175,6 +174,22 @@ namespace SSISTeam9.Controllers
             //Stock level is also updated accordingly
             PurchaseOrderService.ClosePurchaseOrder(order, itemIds, itemsQuantities);
             
+            //Inform Purchasing Dept
+            if (order.SupplierId != long.Parse(formCollection["itemSupplierId"]))
+            {
+                EmailNotification notice = new EmailNotification();
+                long purchasingDeptId = DepartmentService.GetDeptIdByName("Purchasing Department");
+                Department dept = DepartmentService.GetDepartmentById(purchasingDeptId);
+                notice.Dept = dept;
+
+                long repId = DepartmentService.GetCurrentRep(purchasingDeptId);
+                notice.ReceiverMailAddress = EmployeeService.GetUserEmail(repId);
+
+                notice.Order = PurchaseOrderService.GetOrderDetails(order.OrderNumber); ;
+                EmailService emailService = new EmailService();
+                Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_ALTERNATIVE_SUPPLIER));
+            }
+
             return RedirectToAction("All", new { sessionid = sessionId });
         }
 

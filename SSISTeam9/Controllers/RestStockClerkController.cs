@@ -35,6 +35,30 @@ namespace SSISTeam9.Controllers
             return Json(restService.GenerateDisbursementOfStockClerk(entries), JsonRequestBehavior.AllowGet);
         }
 
+        [Route("disbursements/pending")]
+        public ActionResult GenerateDisbursement(long collectionPoint)
+        {
+            return Json(restService.GetAllOutstandingDisbursementsOfClerk(collectionPoint), JsonRequestBehavior.AllowGet);
+        }
+
+        [Route("disbursement/{listId:long}")]
+        public ActionResult GetAllPendingDisbursementDetailsList(long listId)
+        {
+            return Json(restService.GetAllDisbursementDetailsByIdOfRep(listId), JsonRequestBehavior.AllowGet);
+        }
+
+        [Route("disbursement/update")]
+        public ActionResult UpdateDisbursement(DisburmentDTO disDto)
+        {
+            return Json(restService.UpdateDisbursementsOfClerk(disDto), JsonRequestBehavior.AllowGet);
+        }
+
+        [Route("collection_points")]
+        public ActionResult GetAllCollectionPoints()
+        {
+            return Json(restService.GetAllCollectionPoints(), JsonRequestBehavior.AllowGet);
+        }
+
         [Route("inventory/all")]
         public ActionResult GetAllInventories()
         {

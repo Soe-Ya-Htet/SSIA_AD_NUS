@@ -17,7 +17,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from Inventory WHERE flag != 1";
+                string q = @"SELECT * from Inventory WHERE flag != 1 ORDER BY itemCode";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -275,6 +275,7 @@ namespace SSISTeam9.DAO
                 string q = @"UPDATE Inventory SET category = '" + Catalogue.Category +
                     "', description = '" + Catalogue.Description +
                     "', unitOfMeasure = '" + Catalogue.UnitOfMeasure +
+                    "', binNo = '" + Catalogue.BinNo +
                     "' WHERE itemId = '" + Catalogue.ItemId + "'";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
@@ -289,12 +290,13 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"INSERT INTO Inventory (itemCode,category,description,unitOfMeasure,stockLevel,reorderLevel,reorderQty,flag)" +
+                string q = @"INSERT INTO Inventory (itemCode,category,description,unitOfMeasure,binNo,stockLevel,reorderLevel,reorderQty,flag)" +
                             "VALUES ('" + Catalogue.ItemCode +
                             "','" + Catalogue.Category +
                             "','" + Catalogue.Description +
-                            "','" + Catalogue.UnitOfMeasure+ "','0','0','0','0')" +
-                            "SELECT CAST(scope_identity() AS int)";
+                            "','" + Catalogue.UnitOfMeasure+ 
+                            "','" + Catalogue.BinNo + 
+                            "'0','0','0','0') SELECT CAST(scope_identity() AS int)";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 itemId = (int)cmd.ExecuteScalar();

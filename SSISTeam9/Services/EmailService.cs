@@ -12,10 +12,12 @@ namespace SSISTeam9.Services
         ON_COLLECTION_POINT_CHANGE,
         ON_LOW_STOCK,
         ON_ASSIGNED_AS_DEPT_REP,
+        ON_REMOVED_DEPT_REP,
         ON_ALTERNATIVE_SUPPLIER,
         ON_PENDING_ADJVOUCHER,
         ON_DELEGATED_AS_DEPT_HEAD,
-        ON_DISBURSEMENT_CREATION
+        ON_DISBURSEMENT_CREATION,
+        ON_REMOVED_DEPT_HEAD
     }
     public class EmailService : IEmailService
     {
@@ -72,8 +74,16 @@ namespace SSISTeam9.Services
                     PrepareAssignedAsDeptRepMailContent(notice);
                     break;
 
+                case EmailTrigger.ON_REMOVED_DEPT_REP:
+                    PrepareRemovedDeptRepMailContent(notice);
+                    break;
+
                 case EmailTrigger.ON_DELEGATED_AS_DEPT_HEAD:
                     PrepareAssignedAsDeptHeadMailContent(notice);
+                    break;
+
+                case EmailTrigger.ON_REMOVED_DEPT_HEAD:
+                    PrepareRemovedDeptHeadMailContent(notice);
                     break;
 
                 case EmailTrigger.ON_COLLECTION_POINT_CHANGE:
@@ -108,12 +118,28 @@ namespace SSISTeam9.Services
             notice.Body = builder.ToString();
         }
 
+        private void PrepareRemovedDeptRepMailContent(EmailNotification notice)
+        {
+            notice.Subject = "Email on being removed from a department representative";
+            StringBuilder builder = new StringBuilder("Dear Sir / Mdm,");
+            builder.Append("<br/><br/> This email is to notify that you are no longer Representative of your department.");
+            notice.Body = builder.ToString();
+        }
+
         private void PrepareAssignedAsDeptHeadMailContent(EmailNotification notice)
         {
             notice.Subject = "Email on being assigned as a department head";
             StringBuilder builder = new StringBuilder("Dear Sir / Mdm,");
             builder.Append("<br/><br/> This is email is to notify that you are assigned as Head for your department")
                 .Append(" from ").Append(notice.From.ToString("dd/MM/yyyy")).Append(" to ").Append(notice.To.ToString("dd/MM/yyyy")).Append(".");
+            notice.Body = builder.ToString();
+        }
+
+        private void PrepareRemovedDeptHeadMailContent(EmailNotification notice)
+        {
+            notice.Subject = "Email on being removed from a department head";
+            StringBuilder builder = new StringBuilder("Dear Sir / Mdm,");
+            builder.Append("<br/><br/> This email is to notify that you are no longer delegated Head of your department.");
             notice.Body = builder.ToString();
         }
 

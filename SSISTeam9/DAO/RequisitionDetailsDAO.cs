@@ -16,7 +16,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"INSERT INTO RequisitionDetails (reqId,itemId,quantity)" +
+                string q = @"INSERT INTO RequisitionDetails (reqId,itemId,quantity,balance)" +
                             "VALUES (@reqId, @itemId, @quantity, @balance)";
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.Parameters.AddWithValue("@reqId", DbType.Int64);

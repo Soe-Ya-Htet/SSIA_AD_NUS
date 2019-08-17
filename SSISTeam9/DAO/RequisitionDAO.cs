@@ -146,7 +146,7 @@ namespace SSISTeam9.DAO
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
-                string q = @"SELECT * from Requisition r, RequisitionDetails d WHERE r.reqId = @reqId and r.reqId=d.reqId";
+                string q = @"SELECT * from Requisition WHERE reqId = @reqId";
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.Parameters.AddWithValue("@reqId", reqId);
                 SqlDataReader reader = cmd.ExecuteReader();

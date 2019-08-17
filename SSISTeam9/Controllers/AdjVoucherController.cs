@@ -76,7 +76,12 @@ namespace SSISTeam9.Controllers
                     flag = 1;
                     long itemId = long.Parse(formCollection["itemId_" + i]);
                     AdjVoucherService.CreateAdjVoucher(adjId, itemId, qty);
+
+                    //Update Inventory with new stock level
                     StockService.UpdateInventoryStockById(itemId, actualStock);
+                    //The function below is for update stock card
+                    //By the time authorise adjustment voucher, update StockCard table with itemId and date, souceType = 1
+                    StockCardService.CreateStockCardFromAdj(itemId, qty);
                 }
             }
             if (flag == 0)
@@ -327,10 +332,6 @@ namespace SSISTeam9.Controllers
                     adjId = adj.AdjId;
                     AdjVoucherService.AuthoriseBy(adjId, user.EmpId);
                 }
-
-                //The function below is for update stock card
-                //By the time authorise adjustment voucher, update StockCard table with itemId and date, souceType = 1
-                StockCardService.CreateStockCardFromAdj(adj);
             }
 
             TempData["errorMsg"] = "<script>alert('Adjustment vouchers have been authorised successfully.');</script>";

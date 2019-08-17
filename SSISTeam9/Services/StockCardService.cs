@@ -21,8 +21,9 @@ namespace SSISTeam9.Services
                         {
                             AdjId = stockCard.SourceId
                         };
-                        string adjId = stockCard.AdjVoucher.AdjId.ToString("000/000/0000");
-                        stockCard.Display = "Stock Adjustment " + adjId;
+                        string adjId = stockCard.AdjVoucher.AdjId.ToString("000/000");
+                        string year = stockCard.Date.Year.ToString("0000");
+                        stockCard.Display = "Stock Adjustment " + adjId + "/" + year;
                         break;
                     case 2:
                         stockCard.DisbursementList = new DisbursementList()

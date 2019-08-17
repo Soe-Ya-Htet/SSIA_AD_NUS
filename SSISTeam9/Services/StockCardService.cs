@@ -79,5 +79,29 @@ namespace SSISTeam9.Services
 
         }
 
+
+        public static void CreateStockCardFromAdj(AdjVoucher adj)
+        {
+            
+            StockCard stockCard = new StockCard();
+            stockCard.Date = DateTime.Now;
+            stockCard.ItemId = adj.ItemId;
+            stockCard.SourceId = adj.AdjId;
+            if (adj.AdjQty < 0)
+            {
+                stockCard.Qty = "- " + Math.Abs(adj.AdjQty);
+            }
+            else
+            {
+                stockCard.Qty = "+ " + Math.Abs(adj.AdjQty);
+            }
+
+
+            stockCard.Balance = CatalogueService.GetCatalogueById(adj.ItemId).StockLevel + adj.AdjQty;
+            StockCardDAO.CreateStockCardFromOrder(stockCard);
+              
+
+        }
+
     }
 }

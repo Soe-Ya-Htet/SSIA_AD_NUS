@@ -316,7 +316,7 @@ namespace SSISTeam9.Controllers
         }
 
 
-        public ActionResult Authorise( string sessionId)
+        public ActionResult Authorise(string sessionId)
         {
             Employee user = EmployeeService.GetUserBySessionId(sessionId);
             List<AdjVoucher> adjVouchers = new List<AdjVoucher>();
@@ -337,8 +337,12 @@ namespace SSISTeam9.Controllers
                     adjId = adj.AdjId;
                     AdjVoucherService.AuthoriseBy(adjId, user.EmpId);
                 }
+
+                //The function below is for update stock card
+                //By the time authorise adjustment voucher, update StockCard table with itemId and date, souceType = 1
+                StockCardService.CreateStockCardFromAdj(adj);
             }
-            
+
             TempData["errorMsg"] = "<script>alert('Adjustment vouchers have been authorised successfully.');</script>";
             ViewData["userName"] = user.EmpName;
             ViewData["sessionId"] = sessionId;

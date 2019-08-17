@@ -113,7 +113,11 @@ namespace SSISTeam9.DAO
                         Status = (String)reader["status"],
                         //PickUpDate = (DateTime)reader["pickUpDate"],
                         ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
-                        Employee = e
+                        Employee = e,
+                        RequisitionDetail = new RequisitionDetails
+                        {
+                            Quantity = (int)reader["quantity"]
+                        }
                     };
 
 
@@ -161,11 +165,7 @@ namespace SSISTeam9.DAO
                         Status = (String)reader["status"],
                         //PickUpDate = (DateTime)reader["pickUpDate"],
                         ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
-                        Employee = e,
-                        RequisitionDetail = new RequisitionDetails
-                        {
-                            Quantity = (int)reader["quantity"]
-                        }
+                        Employee = e
                     };
                 }
             }

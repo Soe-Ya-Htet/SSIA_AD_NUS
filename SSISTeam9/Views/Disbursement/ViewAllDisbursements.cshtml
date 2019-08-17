@@ -12,25 +12,65 @@
 @switch (collectionPt)
 {
     case "1":
-        <h2>Stationary Store - Administration Building @disbursementLists[0].date.ToString("dd. MM. yyyy")</h2>
+        <h2>Stationary Store - Administration Building @if (disbursementLists.Count != 0)
+        {
+            @disbursementLists[0].date.ToString("dd. MM. yyyy")
+
+    } </h2>
         break;
     case "2":
-        <h2>Management School</h2>
+        <h2>
+            Management School @if (disbursementLists.Count != 0)
+            {
+                @disbursementLists[0].date.ToString("dd. MM. yyyy")
+
+            }
+        </h2>
         break;
     case "3":
-        <h2>Medical School</h2>
+        <h2>
+            Medical School @if (disbursementLists.Count != 0)
+            {
+                @disbursementLists[0].date.ToString("dd. MM. yyyy")
+
+            }
+        </h2>
         break;
     case "4":
-        <h2>Engineering School</h2>
+        <h2>
+            Engineering School @if (disbursementLists.Count != 0)
+            {
+                @disbursementLists[0].date.ToString("dd. MM. yyyy")
+
+            }
+        </h2>
         break;
     case "5":
-        <h2>Science School</h2>
+        <h2>
+            Science School @if (disbursementLists.Count != 0)
+            {
+                @disbursementLists[0].date.ToString("dd. MM. yyyy")
+
+            }
+        </h2>
         break;
     case "6":
-        <h2>University Hospital</h2>
+        <h2>
+            University Hospital @if (disbursementLists.Count != 0)
+            {
+                @disbursementLists[0].date.ToString("dd. MM. yyyy")
+
+            }
+        </h2>
         break;
     default:
-        <h2>Stationary Store - Administration Building</h2>
+        <h2>
+            Stationary Store - Administration Building @if (disbursementLists.Count != 0)
+            {
+                @disbursementLists[0].date.ToString("dd. MM. yyyy")
+
+            }
+        </h2>
         break;
 
 }

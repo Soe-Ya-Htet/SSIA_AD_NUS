@@ -63,12 +63,12 @@ namespace SSISTeam9.Services
                 foreach (var requisition in requisitions)
                 {
 
-                    if (requisition.RequisitionDetail.Quantity <= disbursedAmount)// if the balance is less than what was disbursed
+                    if (requisition.RequisitionDetail.Balance <= disbursedAmount)// if the balance is less than what was disbursed
                     {
 
                         RequisitionDetailsDAO.UpdateBalanceAmount(requisition.ReqId, details.Item.ItemId, 0);//change balance to 0
 
-                        if (RequisitionDetailsDAO.GetRequisitionDetailsByReqId(requisition.ReqId).Count > 0) //will get those the remaining amounts !=0 if 
+                        if (RequisitionDetailsDAO.GetRemainingRequisitionDetailsByReqId(requisition.ReqId).Count > 0) //will get those the remaining amounts !=0 if 
                         {
                             RequisitionDAO.UpdateStatus(requisition.ReqId, "Partially Completed");
                         }
@@ -76,7 +76,7 @@ namespace SSISTeam9.Services
                         {
                             RequisitionDAO.UpdateStatus(requisition.ReqId, "Completed");
                         }
-                        disbursedAmount -= requisition.RequisitionDetail.Quantity; // minusing the balance from what was disbursed
+                        disbursedAmount -= requisition.RequisitionDetail.Balance; // minusing the balance from what was disbursed
                     }
                     else// when the balance amount is more than the remainder of the disbursed amount
                     {

@@ -13,53 +13,7 @@ namespace SSISTeam9.Controllers
     [StoreAuthorisationFilter]
     public class AdjVoucherController : Controller
     {
-        //[HttpPost]
-        //public ActionResult Index(List<Inventory> inventories)
-        //{
-        //    if (inventories == null)
-        //    {
-        //        return RedirectToRoute(new {controller = "Stock", action = "Check"});
-        //    }
-        //    List<AdjVoucher> adjVouchers = new List<AdjVoucher>();
-
-        //    foreach (Inventory inventory in inventories)
-        //    {
-        //        int qty = inventory.ActualStock - inventory.StockLevel;
-        //        if (qty != 0)
-        //        {
-        //            PriceList list = PriceListDAO.GetPriceListById(inventory.ItemId) ?? new PriceList();
-        //            inventory.ItemSuppliersDetails = list;
-        //            AdjVoucher adjVoucher = new AdjVoucher
-        //            {
-        //                AdjQty = qty,
-        //                Item = inventory,
-        //                TotalPrice = inventory.ItemSuppliersDetails.Supplier1UnitPrice * qty
-        //            };
-        //            adjVouchers.Add(adjVoucher);
-        //        }
-        //    }
-
-        //    return View(adjVouchers);
-        //}
-
-        //public ActionResult Generate(List<AdjVoucher> adjVouchers)
-        //{
-        //    int managerId = 14;
-        //    int supervisorId = 12;
-        //    if (adjVouchers != null && adjVouchers.Count > 0)
-        //    {
-        //        for (var i = 0; i < adjVouchers.Count; i++)
-        //        {
-        //            int id = (adjVouchers[i].TotalPrice < 250.0) ? supervisorId : managerId;
-        //            adjVouchers[i].AuthorisedBy = id.ToString();
-        //        }
-        //        AdjVoucherDAO.GenerateDisbursement(adjVouchers);
-        //        AdjVoucherDAO.UpdateStock(adjVouchers);
-        //    }
-
-        //    ViewBag.Msg = "Success";
-        //    return View(new List<AdjVoucher>());
-        //}
+        
 
         public ActionResult Index(string sessionId)
         {
@@ -122,7 +76,12 @@ namespace SSISTeam9.Controllers
                     flag = 1;
                     long itemId = long.Parse(formCollection["itemId_" + i]);
                     AdjVoucherService.CreateAdjVoucher(adjId, itemId, qty);
+
+                    //Update Inventory with new stock level
                     StockService.UpdateInventoryStockById(itemId, actualStock);
+                    //The function below is for update stock card
+                    //By the time authorise adjustment voucher, update StockCard table with itemId and date, souceType = 1
+                    StockCardService.CreateStockCardFromAdj(adjId, itemId, qty);
                 }
             }
             if (flag == 0)
@@ -364,6 +323,10 @@ namespace SSISTeam9.Controllers
             {
                 adjVouchers = AdjVoucherService.GetAdjByStatus(3);
             }
+            else
+            {
+                return View("NotAuthorised", "Home");
+            }
             
             long adjId = 0;
             foreach(AdjVoucher adj in adjVouchers)
@@ -373,10 +336,6 @@ namespace SSISTeam9.Controllers
                     adjId = adj.AdjId;
                     AdjVoucherService.AuthoriseBy(adjId, user.EmpId);
                 }
-
-                //The function below is for update stock card
-                //By the time authorise adjustment voucher, update StockCard table with itemId and date, souceType = 1
-                StockCardService.CreateStockCardFromAdj(adj);
             }
 
             TempData["errorMsg"] = "<script>alert('Adjustment vouchers have been authorised successfully.');</script>";

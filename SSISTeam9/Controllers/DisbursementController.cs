@@ -87,19 +87,27 @@ namespace SSISTeam9.Controllers
             List<long> deptIds = new List<long>();
             
             List<DisbursementList> disbursementLists = new List<DisbursementList>();
-
-            foreach (var entry in entries)
+            if (entries != null)
             {
-                if (deptIds.Contains(entry.deptId))
+                foreach (var entry in entries)
                 {
+                    if (deptIds.Contains(entry.deptId))
+                    {
 
-                }
-                else
-                {
-                    deptIds.Add(entry.deptId);
-                    
+                    }
+                    else
+                    {
+                        deptIds.Add(entry.deptId);
+
+                    }
                 }
             }
+            
+
+            List<EmailNotification> notices = new List<EmailNotification>();
+
+
+            
 
             foreach (var deptId in deptIds)
             {
@@ -120,8 +128,7 @@ namespace SSISTeam9.Controllers
                 EmailNotification notice = new EmailNotification();
                 notice.ReceiverMailAddress = repMail;
                 notice.CollectionDate = d.date.ToString("dd/MM/yyyy");
-                Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_DISBURSEMENT_CREATION)); //need to send to multiple reps
-
+                notices.Add(notice);
 
                 foreach (var entry in entries)
                 {
@@ -146,8 +153,14 @@ namespace SSISTeam9.Controllers
                 disbursementLists.Add(d);
             }
             DisbursementListService.CreateDisbursementLists(disbursementLists);
+            Task.Run(() => {
+                foreach (var notice in notices)
+                {
+                    emailService.SendMail(notice, EmailTrigger.ON_DISBURSEMENT_CREATION); //need to send to multiple reps
 
-            
+                }
+            });
+
 
             return Json(Url.Action("ViewAllDisbursements","Disbursement", new { sessionId = sessionId }));
         }

@@ -158,7 +158,8 @@ namespace SSISTeam9.Services
             Employee emp = new Employee();
             emp.EmpId = empId;
             Requisition req = new Requisition();
-            req.ReqCode = string.Format(String.Format("#R{0:0000000000}", reqs.Max()+1));
+            long arg = reqs.Count == 0 ? 0 : reqs.Max();
+            req.ReqCode = string.Format(String.Format("#R{0:0000000000}", arg+1));
             req.DateOfRequest = DateTime.Now;
             req.Status = "Pending Approval";
             req.Employee = emp;

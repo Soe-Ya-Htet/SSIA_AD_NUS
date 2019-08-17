@@ -48,7 +48,7 @@ namespace SSISTeam9.Controllers
         }
         
         [DepartmentFilter]
-        public ActionResult AddtoCart(long itemId, string sessionId)
+        public ActionResult AddtoList(long itemId, string sessionId)
         {
             string qty = Request.Form["itemQuantity"] == "" ? "1" : Request.Form["itemQuantity"];
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);

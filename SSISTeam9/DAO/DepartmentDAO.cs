@@ -338,6 +338,10 @@ namespace SSISTeam9.DAO
 
         public static List<Department> GetDepartmentsByIdList(List<long> deptIds)
         {
+            if(null == deptIds || deptIds.Count == 0)
+            {
+                return new List<Department>();
+            }
 
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {

@@ -291,6 +291,11 @@ namespace SSISTeam9.Services
 
         private static List<Requisition> GetRequisitionsWithObjects(List<Requisition> list)
         {
+            if (null == list || list.Count == 0)
+            {
+                return list;
+            }
+
             List<Requisition> requisitions = new List<Requisition>();
             List<long> empIds = new List<long>();
             foreach (Requisition req in list)

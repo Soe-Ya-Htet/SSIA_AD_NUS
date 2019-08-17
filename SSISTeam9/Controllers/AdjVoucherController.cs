@@ -323,6 +323,10 @@ namespace SSISTeam9.Controllers
             {
                 adjVouchers = AdjVoucherService.GetAdjByStatus(3);
             }
+            else
+            {
+                return View("NotAuthorised", "Home");
+            }
             
             long adjId = 0;
             foreach(AdjVoucher adj in adjVouchers)

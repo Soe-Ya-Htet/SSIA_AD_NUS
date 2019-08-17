@@ -31,66 +31,66 @@ namespace SSISTeam9.Controllers
         {
             /* id = listId; The following method is for update ChargeBack and StockCard*/
 
-            DisbursementList disbursementList = DisbursementListService.GetDisbursementListByListId(id);
-            List<DisbursementListDetails> disbursementDetails = DisbursementListService.ViewDisbursementDetails(id);
+            //DisbursementList disbursementList = DisbursementListService.GetDisbursementListByListId(id);
+            //List<DisbursementListDetails> disbursementDetails = DisbursementListService.ViewDisbursementDetails(id);
 
             
-            foreach(DisbursementListDetails d in disbursementDetails)
-            {
-                /*The following code is for ChargeBack table*/
-                //By the time disburse item, calculate the amount of this list, update ChargeBack table
-                PriceList priceList = PriceListService.GetPriceListByItemId(d.Item.ItemId);
-                double price = 0;
-                if (priceList != null)
-                {
-                    price = priceList.Supplier1UnitPrice;
-                }
+            //foreach(DisbursementListDetails d in disbursementDetails)
+            //{
+            //    /*The following code is for ChargeBack table*/
+            //    //By the time disburse item, calculate the amount of this list, update ChargeBack table
+            //    PriceList priceList = PriceListService.GetPriceListByItemId(d.Item.ItemId);
+            //    double price = 0;
+            //    if (priceList != null)
+            //    {
+            //        price = priceList.Supplier1UnitPrice;
+            //    }
 
-                double amount = price * d.Quantity;
+            //    double amount = price * d.Quantity;
 
-                ChargeBackService.UpdateChargeBackData(amount, disbursementList);
+            //    ChargeBackService.UpdateChargeBackData(amount, disbursementList);
 
-                /*The following code is for StockCard table*/
-                //By the time disburse item, update StockCard table with itemId, deptId and date, souceType = 2
+            //    /*The following code is for StockCard table*/
+            //    //By the time disburse item, update StockCard table with itemId, deptId and date, souceType = 2
 
-                int balance = CatalogueService.GetCatalogueById(d.Item.ItemId).StockLevel - d.Quantity;
-                StockCardService.CreateStockCardFromDisburse(d, disbursementList, balance);
+            //    int balance = CatalogueService.GetCatalogueById(d.Item.ItemId).StockLevel - d.Quantity;
+            //    StockCardService.CreateStockCardFromDisburse(d, disbursementList, balance);
 
-                ////following code will update and close requisitions
-                //int disbursedAmount = d.Quantity;
-                //List<Requisition> requisitions = RequisitionService.GetOutstandingRequisitionsAndDetailsByDeptIdAndItemId(disbursementList.Department.DeptId, d.Item.ItemId); //will get those status assigned/partially completed(assigned)
+            //    ////following code will update and close requisitions
+            //    //int disbursedAmount = d.Quantity;
+            //    //List<Requisition> requisitions = RequisitionService.GetOutstandingRequisitionsAndDetailsByDeptIdAndItemId(disbursementList.Department.DeptId, d.Item.ItemId); //will get those status assigned/partially completed(assigned)
 
-                //    foreach (var requisition in requisitions)
-                //    {
+            //    //    foreach (var requisition in requisitions)
+            //    //    {
                         
-                //        if (requisition.Requisition.disbursedAmount <= disbursedAmount)// if the balance is less than what was disbursed
-                //        {
+            //    //        if (requisition.Requisition.disbursedAmount <= disbursedAmount)// if the balance is less than what was disbursed
+            //    //        {
                              
-                //            RequisitionService.UpdateBalanceAmount(requisition.ReqId, d.Item.ItemId, 0);//change balance to 0
+            //    //            RequisitionService.UpdateBalanceAmount(requisition.ReqId, d.Item.ItemId, 0);//change balance to 0
 
-                //            if(RequisitionService.GetRequisitionDetailsByReqId(requisition.ReqId) != null) //will get those the remaining amounts !=0 if 
-                //            {
-                //                RequisitionService.UpdateStatus(requisition.ReqId, "Partially Completed");
-                //            }
-                //            else
-                //            {
-                //                RequisitionService.UpdateStatus(requisition.ReqId, "Completed");
-                //            }
-                //            disbursedAmount -= requisition.Requisition.disbursedAmount; // minusing the balance from what was disbursed
-                //        }
-                //        else// when the balance amount is more than the remainder of the disbursed amount
-                //        {
-                //            RequisitionService.UpdateBalanceAmount(requisition.ReqId, d.Item.ItemId, disbursedAmount);// change balance to remainder of disbursed amount
+            //    //            if(RequisitionService.GetRequisitionDetailsByReqId(requisition.ReqId) != null) //will get those the remaining amounts !=0 if 
+            //    //            {
+            //    //                RequisitionService.UpdateStatus(requisition.ReqId, "Partially Completed");
+            //    //            }
+            //    //            else
+            //    //            {
+            //    //                RequisitionService.UpdateStatus(requisition.ReqId, "Completed");
+            //    //            }
+            //    //            disbursedAmount -= requisition.Requisition.disbursedAmount; // minusing the balance from what was disbursed
+            //    //        }
+            //    //        else// when the balance amount is more than the remainder of the disbursed amount
+            //    //        {
+            //    //            RequisitionService.UpdateBalanceAmount(requisition.ReqId, d.Item.ItemId, disbursedAmount);// change balance to remainder of disbursed amount
                            
-                //            RequisitionService.UpdateStatus(requisition.ReqId, "Partially Completed");
+            //    //            RequisitionService.UpdateStatus(requisition.ReqId, "Partially Completed");
                             
-                //            break;//break out of for loop when disbursed amount become 0
-                //        }
-                //    }
+            //    //            break;//break out of for loop when disbursed amount become 0
+            //    //        }
+            //    //    }
                 
                 
                
-            }
+            //}
             
 
             

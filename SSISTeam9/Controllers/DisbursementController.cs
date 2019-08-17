@@ -101,6 +101,11 @@ namespace SSISTeam9.Controllers
                 }
             }
 
+            List<EmailNotification> notices = new List<EmailNotification>();
+
+
+            
+
             foreach (var deptId in deptIds)
             {
                 List<DisbursementListDetails> disbursementListDetails = new List<DisbursementListDetails>();
@@ -120,8 +125,7 @@ namespace SSISTeam9.Controllers
                 EmailNotification notice = new EmailNotification();
                 notice.ReceiverMailAddress = repMail;
                 notice.CollectionDate = d.date.ToString("dd/MM/yyyy");
-                Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_DISBURSEMENT_CREATION)); //need to send to multiple reps
-
+                notices.Add(notice);
 
                 foreach (var entry in entries)
                 {
@@ -146,8 +150,14 @@ namespace SSISTeam9.Controllers
                 disbursementLists.Add(d);
             }
             DisbursementListService.CreateDisbursementLists(disbursementLists);
+            Task.Run(() => {
+                foreach (var notice in notices)
+                {
+                    emailService.SendMail(notice, EmailTrigger.ON_DISBURSEMENT_CREATION); //need to send to multiple reps
 
-            
+                }
+            });
+
 
             return Json(Url.Action("ViewAllDisbursements","Disbursement", new { sessionId = sessionId }));
         }

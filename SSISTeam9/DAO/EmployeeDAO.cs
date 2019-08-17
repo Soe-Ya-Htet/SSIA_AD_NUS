@@ -33,7 +33,7 @@ namespace SSISTeam9.DAO
                         UserName = (string)reader["userName"],
                         Password = (string)reader["password"],
                         Email = (reader["email"] == DBNull.Value) ? null : (string)reader["email"],
-                        SessionId = (reader["email"] == DBNull.Value) ? null : (string)reader["sessionId"]
+                        SessionId = (reader["sessionId"] == DBNull.Value) ? null : (string)reader["sessionId"]
                     };
                 }
                 return employee;

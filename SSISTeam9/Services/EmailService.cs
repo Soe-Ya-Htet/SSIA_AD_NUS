@@ -91,7 +91,7 @@ namespace SSISTeam9.Services
                     PrepareNotificationEmailToPurchasingDepartment(notice);
                     break;
                 case EmailTrigger.ON_PENDING_ADJVOUCHER:
-                    PrepareNotificationEmailToPurchasingDepartment(notice);
+                    PrepareNotificationEmailToStoreAuthorise(notice);
                     break;
             }
         }

@@ -14,6 +14,9 @@ namespace SSISTeam9.Models
         public DateTime PickUpDate { get; set; }
         public string ApprovedBy { get; set; }
         public Employee Employee { get; set; }
+        public RequisitionDetails RequisitionDetail { get; set; }
+
+        public List<RequisitionDetails> RequisitionDetails { get; set; }
 
     }
 }

@@ -89,11 +89,11 @@ namespace SSISTeam9.Services
             stockCard.SourceId = adj.AdjId;
             if (adj.AdjQty < 0)
             {
-                stockCard.Qty = "- " + Math.Abs(adj.AdjQty);
+                stockCard.Qty = "ADJ - " + Math.Abs(adj.AdjQty);
             }
             else
             {
-                stockCard.Qty = "+ " + Math.Abs(adj.AdjQty);
+                stockCard.Qty = "ADJ + " + Math.Abs(adj.AdjQty);
             }
 
 

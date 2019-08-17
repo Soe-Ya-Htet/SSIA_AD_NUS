@@ -65,5 +65,22 @@ namespace SSISTeam9.DAO
             return reqDetails;
 
         }
+
+        internal static void UpdateBalanceAmount(long reqId, object itemId, int qty)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"UPDATE RequisitionDetails SET quanity=@qty where itemId=@itemId AND reqId=@reqId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@qty", qty);
+                cmd.Parameters.AddWithValue("@itemId", itemId);
+                cmd.Parameters.AddWithValue("@reqId", reqId);
+
+                cmd.ExecuteNonQuery();
+
+            }
+        }
     }
 }

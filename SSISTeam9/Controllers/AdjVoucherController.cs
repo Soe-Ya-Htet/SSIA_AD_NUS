@@ -75,16 +75,13 @@ namespace SSISTeam9.Controllers
 
         }
 
+        /*
         public ActionResult Generate(List<Inventory> inventories, string sessionId)
         {
             long adjId = (long)AdjVoucherService.GetLastId() + 1;
             int flag = 0;
             foreach (Inventory inventory in inventories)
             {
-                if(inventory.ActualStock < 0)
-                {
-                    inventory.ActualStock = 0;
-                }
                 int qty = inventory.ActualStock - inventory.StockLevel;
                 if (qty != 0)
                 {
@@ -103,7 +100,44 @@ namespace SSISTeam9.Controllers
 
 
             return RedirectToAction("PutReason", new { sessionId});
+        }*/
+
+
+        public ActionResult Generate(Inventory item, FormCollection formCollection, string sessionId)
+        {
+            List<int> itemsQuantities = new List<int>();
+            List<long> itemIds = new List<long>();
+            long adjId = (long)AdjVoucherService.GetLastId() + 1;
+            int flag = 0;
+
+            string counter = formCollection["counter"];
+
+            for (int i = 0; i < int.Parse(counter); i++)
+            {
+                int actualStock = int.Parse(formCollection["actualStock_" + i]);
+                int lastStock = int.Parse(formCollection["lastStock_" + i]);
+                int qty = actualStock - lastStock;
+                if (qty != 0)
+                {
+                    flag = 1;
+                    long itemId = long.Parse(formCollection["itemId_" + i]);
+                    AdjVoucherService.CreateAdjVoucher(adjId, itemId, qty);
+                    StockService.UpdateInventoryStockById(itemId, actualStock);
+                }
+            }
+            if (flag == 0)
+            {
+                TempData["errorMsg"] = "<script>alert('There are no discrepancies in stock.');</script>";
+                ViewData["userName"] = EmployeeService.GetUserBySessionId(sessionId).EmpName;
+                ViewData["sessionId"] = sessionId;
+                return View("~/Views/StoreLandingPage/Home.cshtml");
+            }
+            return RedirectToAction("PutReason", new { sessionId });
         }
+
+
+
+
 
         public ActionResult PutReason(string sessionId)
         {
@@ -196,6 +230,8 @@ namespace SSISTeam9.Controllers
                         AdjVoucherService.UpdateStatus(adjId, 3);
                     }
                 }
+
+                //Inform manager
                 List<Employee> managers = new List<Employee>();
                 EmailNotification notice = new EmailNotification();
                 managers = EmployeeService.GetEmployeeByRole("STORE_MANAGER");

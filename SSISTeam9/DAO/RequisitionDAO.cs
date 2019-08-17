@@ -81,6 +81,61 @@ namespace SSISTeam9.DAO
 
         }
 
+        internal static List<Requisition> GetOutstandingRequisitionsAndDetailsByDeptIdAndItemId(long deptId, object itemId, long listId)
+        {
+            List<Requisition> requisitions = new List<Requisition>();
+
+
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * FROM Requisition r, RequisitionDetails rd, Employee e, DisbursementListDetails dld WHERE dld.listId=@listId AND dld.itemId=@itemId AND e.deptId=@deptId AND rd.itemId=dld.itemId AND rd.reqId=r.reqId AND r.status IN ('Assigned','Partially Completed(assigned)') AND r.empId = e.empId";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@listId", listId);
+                cmd.Parameters.AddWithValue("@itemId", itemId);
+                cmd.Parameters.AddWithValue("@deptId", deptId);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Employee e = new Employee()
+                    {
+                        EmpId = (long)reader["empId"]
+                    };
+
+                    Requisition requisition = new Requisition()
+                    {
+                        ReqId = (long)reader["reqId"],
+                        ReqCode = (String)reader["reqCode"],
+                        DateOfRequest = (DateTime)reader["dateOfRequest"],
+                        Status = (String)reader["status"],
+                        //PickUpDate = (DateTime)reader["pickUpDate"],
+                        ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
+                        Employee = e
+                    };
+
+
+                    requisitions.Add(requisition);
+                }
+            }
+            return requisitions;
+        }
+
+        internal static void UpdateStatus(long reqId, string status)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"UPDATE Requisition SET status=@status WHERE reqId=@reqId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@reqId", reqId);
+                cmd.Parameters.AddWithValue("@status", status);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public static Requisition GetReqByReqId(long reqId)
         {
             Requisition req = null;
@@ -106,7 +161,11 @@ namespace SSISTeam9.DAO
                         Status = (String)reader["status"],
                         //PickUpDate = (DateTime)reader["pickUpDate"],
                         ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
-                        Employee = e
+                        Employee = e,
+                        RequisitionDetail = new RequisitionDetails
+                        {
+                            Quantity = (int)reader["quantity"]
+                        }
                     };
                 }
             }

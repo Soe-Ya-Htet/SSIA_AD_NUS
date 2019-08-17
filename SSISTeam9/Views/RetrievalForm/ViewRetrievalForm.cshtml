@@ -181,8 +181,11 @@ else
         for (var i = 0; i < deptCodes.length; i++) {
             var listPerDeptCode = document.getElementsByName(deptCodes[i])
             for (var item of listPerDeptCode) {
-                var list = { deptId: deptCodes[i], itemId: item.className, quantity: item.value, collectionDate: collectionDate }
-                listOfLists.push(list)
+                if (item.value>0) {
+                    var list = { deptId: deptCodes[i], itemId: item.className, quantity: item.value, collectionDate: collectionDate }
+                    listOfLists.push(list)
+                }
+                
             }
         }
         

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Threading.Tasks;
+using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
@@ -19,6 +20,7 @@ namespace SSISTeam9.Controllers
         }
 
         // GET: Representative
+        [DeptHeadFilter]
         public ActionResult ChangeRepresentative(string employee,string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);

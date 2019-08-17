@@ -129,7 +129,7 @@ namespace SSISTeam9.Controllers
             return RedirectToAction("RequisitionList", "Requisition", new { sessionId = sessionId });
         }
 
-        [DepartmentFilter]
+        [DeptHeadFilter]
         public ActionResult GetPendingRequisitions(string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -163,7 +163,7 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        [DepartmentFilter]
+        [DeptHeadFilter]
         public ActionResult ViewPastRequisitions(string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -179,7 +179,7 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
-        [DepartmentFilter]
+        [DeptHeadFilter]
         public ActionResult ProcessRequisition(long reqId, string status, string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);

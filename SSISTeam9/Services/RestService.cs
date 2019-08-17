@@ -21,7 +21,75 @@ namespace SSISTeam9.Services
 
             DisbursementListDAO.AcknowledgeDisbursement(listId, emp.EmpId);
 
+            UpdateChargeBack(listId);
+
             return "Success";
+        }
+
+        private void UpdateChargeBack(long listId)
+        {
+            /* Move the following code to RestRepresentativeController*/
+            ////Attention: DisbursementList can only disburse once, date for that list is not null
+
+            ///*The following code is for ChargeBack table*/
+            ////By the time disburse item, calculate the amount of this list, update ChargeBack table               
+
+            DisbursementList disbursementList = DisbursementListService.GetDisbursementListByListId(listId);
+            List<DisbursementListDetails> disbursementListDetails = DisbursementListDetailsDAO.ViewDetails(listId);
+
+            foreach(DisbursementListDetails details in disbursementListDetails)
+            {
+
+                PriceList priceList = PriceListService.GetPriceListByItemId(details.Item.ItemId);
+                double price = 0;
+                if (priceList != null)
+                {
+                    price = priceList.Supplier1UnitPrice;
+                }
+
+                double amount = price * details.Quantity;
+                ChargeBackService.UpdateChargeBackData(amount, disbursementList);
+
+                ///*The following code is for StockCard table*/
+                ////By the time disburse item, update StockCard table with itemId, deptId and date, souceType = 2
+
+                int balance = CatalogueService.GetCatalogueById(details.Item.ItemId).StockLevel - details.Quantity;
+                StockCardService.CreateStockCardFromDisburse(details, disbursementList, balance);
+
+                ////following code will update and close requisitions
+                int disbursedAmount = details.Quantity;
+                List<Requisition> requisitions = RequisitionDAO.GetOutstandingRequisitionsAndDetailsByDeptIdAndItemId(disbursementList.Department.DeptId, details.Item.ItemId, listId); //will get those status assigned/partially completed(assigned)
+
+                foreach (var requisition in requisitions)
+                {
+
+                    if (requisition.RequisitionDetail.Quantity <= disbursedAmount)// if the balance is less than what was disbursed
+                    {
+
+                        RequisitionDetailsDAO.UpdateBalanceAmount(requisition.ReqId, details.Item.ItemId, 0);//change balance to 0
+
+                        if (RequisitionDetailsDAO.GetRequisitionDetailsByReqId(requisition.ReqId).Count > 0) //will get those the remaining amounts !=0 if 
+                        {
+                            RequisitionDAO.UpdateStatus(requisition.ReqId, "Partially Completed");
+                        }
+                        else
+                        {
+                            RequisitionDAO.UpdateStatus(requisition.ReqId, "Completed");
+                        }
+                        disbursedAmount -= requisition.RequisitionDetail.Quantity; // minusing the balance from what was disbursed
+                    }
+                    else// when the balance amount is more than the remainder of the disbursed amount
+                    {
+                        RequisitionDetailsDAO.UpdateBalanceAmount(requisition.ReqId, details.Item.ItemId, disbursedAmount);// change balance to remainder of disbursed amount
+
+                        RequisitionDAO.UpdateStatus(requisition.ReqId, "Partially Completed");
+
+                        break;//break out of for loop when disbursed amount become 0
+                    }
+                }
+
+            }
+
         }
 
         public string ApproveOrdereOfDepartment(int reqId)
@@ -466,28 +534,6 @@ namespace SSISTeam9.Services
                 };
 
                 DisbursementListService.UpdateDisbursementListDetails(dto.ListId, disbursementDetails);
-
-                /* Move the following code to RestRepresentativeController*/
-                ////Attention: DisbursementList can only disburse once, date for that list is not null
-
-                ///*The following code is for ChargeBack table*/
-                ////By the time disburse item, calculate the amount of this list, update ChargeBack table               
-                //PriceList priceList = PriceListService.GetPriceListByItemId(i.ItemId);
-                //double price = 0;
-                //if (priceList != null)
-                //{
-                //    price = priceList.Supplier1UnitPrice;
-                //}
-
-                //double amount = price * disbursementDetails.Quantity;
-                //DisbursementList disbursementList = DisbursementListService.GetDisbursementListByListId(listId);
-                //ChargeBackService.UpdateChargeBackData(amount, disbursementList);
-
-                ///*The following code is for StockCard table*/
-                ////By the time disburse item, update StockCard table with itemId, deptId and date, souceType = 2
-
-                //int balance = CatalogueService.GetCatalogueById(disbursementDetails.Item.ItemId).StockLevel - disbursementDetails.Quantity;
-                //StockCardService.CreateStockCardFromDisburse(disbursementDetails, disbursementList, balance);
 
             }
             return "Success";

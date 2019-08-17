@@ -120,6 +120,7 @@ else
                 tot += parseInt(arr[i].value);
         }
         document.getElementById("/" + id).innerHTML = tot;
+
         if (tot > jsRetForms[x]["stockLevel"]) {
             alert(jsRetForms[x]["description"] + " quantity cannot be more than stock level, stock level: " + jsRetForms[x]["stockLevel"]);
             return false;
@@ -127,6 +128,25 @@ else
         else if (tot > jsRetForms[x]["totalNeeded"]) {
             alert(jsRetForms[x]["description"] + " quantity cannot be more than total needed");
             return false;   
+        }
+        else if (tot < jsRetForms[x]["totalNeeded"] && jsRetForms[x]["stockLevel"] > jsRetForms[x]["totalNeeded"]) {
+            var desc = jsRetForms[x]["description"];
+            if (confirm(desc + " stock level more than retrieved amount. Confirm quantity?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }
+        else if (tot < jsRetForms[x]["stockLevel"] && jsRetForms[x]["stockLevel"] < jsRetForms[x]["totalNeeded"]) {
+            var desc = jsRetForms[x]["description"];
+            if (confirm(desc + " stock level more than retrieved amount. Confirm quantity?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         
         
@@ -181,8 +201,11 @@ else
         for (var i = 0; i < deptCodes.length; i++) {
             var listPerDeptCode = document.getElementsByName(deptCodes[i])
             for (var item of listPerDeptCode) {
-                var list = { deptId: deptCodes[i], itemId: item.className, quantity: item.value, collectionDate: collectionDate }
-                listOfLists.push(list)
+                if (item.value>0) {
+                    var list = { deptId: deptCodes[i], itemId: item.className, quantity: item.value, collectionDate: collectionDate }
+                    listOfLists.push(list)
+                }
+                
             }
         }
         

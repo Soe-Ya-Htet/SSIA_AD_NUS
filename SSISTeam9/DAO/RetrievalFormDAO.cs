@@ -17,7 +17,7 @@ namespace SSISTeam9.DAO
                 conn.Open();
 
                 string q = @"SELECT i.binNo, i.description, r.itemId, i.stockLevel, SUM(balance) as needed from RequisitionDetails r, Inventory i, Requisition req 
-                            where req.status IN ('Assigned','Partially Completed(Assigned)') AND  r.itemId=i.itemId AND r.reqId=req.reqid 
+                            where req.status IN ('Assigned','Partially Completed(Assigned)') AND  r.itemId=i.itemId AND r.reqId=req.reqid AND balance != 0
                             GROUP BY r.itemId, binNo, description, i.stockLevel 
                             ORDER BY binNo";
 
@@ -54,7 +54,7 @@ namespace SSISTeam9.DAO
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
-                string q = @"SELECT SUM(quantity) as needed, d.deptCode, d.deptId 
+                string q = @"SELECT SUM(balance) as needed, d.deptCode, d.deptId 
                             FROM RequisitionDetails r, Inventory i, Requisition req, Employee e, Department d 
                             WHERE /*reqId IN ({0})*/ req.status IN ('Assigned', 'Partially Completed(Assigned)') AND  r.itemId='" +itemId + "' AND r.itemId=i.itemId AND r.reqId=req.reqId AND req.empId=e.empId AND e.deptId=d.deptId " +
                             "GROUP BY r.itemId, d.deptCode, d.deptId " +

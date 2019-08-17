@@ -34,8 +34,13 @@ namespace SSISTeam9.Controllers
                 EmailNotification notice = new EmailNotification();
                 RepresentativeService.UpdateEmployeeRole(newRep, currentRep, deptId);
                 Employee newRepMailReceiver = EmployeeService.GetEmployeeById(newRep);
-                notice.ReceiverMailAddress = newRepMailReceiver.Email;
-                Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_ASSIGNED_AS_DEPT_REP));
+                Employee oldRepMailReceiver = EmployeeService.GetEmployeeById(currentRep);
+                Task.Run(() => {
+                    notice.ReceiverMailAddress = newRepMailReceiver.Email;
+                    emailService.SendMail(notice, EmailTrigger.ON_ASSIGNED_AS_DEPT_REP);
+                    notice.ReceiverMailAddress = oldRepMailReceiver.Email;
+                    emailService.SendMail(notice, EmailTrigger.ON_REMOVED_DEPT_REP);
+                });
 
             }
             List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(deptId);

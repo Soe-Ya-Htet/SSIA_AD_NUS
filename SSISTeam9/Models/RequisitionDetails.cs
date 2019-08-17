@@ -10,6 +10,7 @@ namespace SSISTeam9.Models
         public int Quantity { get; set; }
         public Requisition Requisition { get; set; }
         public Inventory Item { get; set; }
+        public int Balance { get; set; }
 
         //Attributes needed for analytics use case
         public long ItemId { get; set; }

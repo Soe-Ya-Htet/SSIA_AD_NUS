@@ -17,16 +17,18 @@ namespace SSISTeam9.DAO
                 conn.Open();
 
                 string q = @"INSERT INTO RequisitionDetails (reqId,itemId,quantity)" +
-                            "VALUES (@reqId, @itemId, @quantity)";
+                            "VALUES (@reqId, @itemId, @quantity, @balance)";
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.Parameters.AddWithValue("@reqId", DbType.Int64);
                 cmd.Parameters.AddWithValue("@itemId", DbType.Int64);
                 cmd.Parameters.AddWithValue("@quantity", DbType.Int32);
+                cmd.Parameters.AddWithValue("@balance", DbType.Int32);
                 foreach (var detail in reqDetailsList)
                 {
                     cmd.Parameters[0].Value = detail.Requisition.ReqId;
                     cmd.Parameters[1].Value = detail.Item.ItemId;
                     cmd.Parameters[2].Value = detail.Quantity;
+                    cmd.Parameters[3].Value = detail.Balance;
 
                     cmd.ExecuteNonQuery();
                 }
@@ -54,6 +56,7 @@ namespace SSISTeam9.DAO
                     RequisitionDetails requisitionDetail = new RequisitionDetails()
                     {
                         Quantity = (int)reader["quantity"],
+                        Balance = (int)reader["balance"],
                         Item = i
                     };
 

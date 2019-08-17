@@ -116,9 +116,10 @@ else
                 alert(jsRetForms[x]["deptNeeds"][i]["deptCode"] + " quantity cannot be more than dept needed");
                 return false;
             }
-            if (parseInt(arr[i].value))
+            if (parseInt(arr[i].value)) 
                 tot += parseInt(arr[i].value);
         }
+        document.getElementById("/" + id).innerHTML = tot;
         if (tot > jsRetForms[x]["stockLevel"]) {
             alert(jsRetForms[x]["description"] + " quantity cannot be more than stock level, stock level: " + jsRetForms[x]["stockLevel"]);
             return false;
@@ -127,9 +128,7 @@ else
             alert(jsRetForms[x]["description"] + " quantity cannot be more than total needed");
             return false;   
         }
-        else {
-            document.getElementById("/" + id).innerHTML = tot;
-        }
+        
         
 
     }
@@ -137,6 +136,18 @@ else
     window.onload = findAllTotal();
 
     function submitData() {
+        var collectionDate = document.getElementById("collectionDate").value
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
+
+        if (collectionDate < today.toString("yyyy-MM-dd")) {
+            alert("Invalid date");
+            return false;
+        }
+        
         var inputs = document.getElementsByTagName("input");
         for (var input of inputs) {
             if (input.value == "" || input.value < 0) {
@@ -165,11 +176,7 @@ else
 
         }//this returns arrays deptCodes
 
-        var collectionDate = document.getElementById("collectionDate").value
-        if (collectionDate < Date.now) {
-            alert("Cannot select past dates");
-            return false;
-        }
+        
         var listOfLists = new Array();
         for (var i = 0; i < deptCodes.length; i++) {
             var listPerDeptCode = document.getElementsByName(deptCodes[i])

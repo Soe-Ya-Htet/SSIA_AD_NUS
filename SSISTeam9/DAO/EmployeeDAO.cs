@@ -33,7 +33,7 @@ namespace SSISTeam9.DAO
                         UserName = (string)reader["userName"],
                         Password = (string)reader["password"],
                         Email = (reader["email"] == DBNull.Value) ? null : (string)reader["email"],
-                        SessionId = (reader["email"] == DBNull.Value) ? null : (string)reader["sessionId"]
+                        SessionId = (reader["sessionId"] == DBNull.Value) ? null : (string)reader["sessionId"]
                     };
                 }
                 return employee;
@@ -101,7 +101,7 @@ namespace SSISTeam9.DAO
                         UserName = (string)reader["userName"],
                         Password = (string)reader["password"],
                         Email = (reader["email"] == DBNull.Value) ? null : (string)reader["email"],
-                        SessionId = (reader["email"] == DBNull.Value) ? null : (string)reader["sessionId"]
+                        SessionId = (reader["sessionId"] == DBNull.Value) ? null : (string)reader["sessionId"]
                     };
                 }
                 return employee;
@@ -188,7 +188,7 @@ namespace SSISTeam9.DAO
                         UserName = (string)reader["userName"],
                         Password = (string)reader["password"],
                         Email = (reader["email"] == DBNull.Value) ? null : (string)reader["email"],
-                        SessionId = (reader["email"] == DBNull.Value) ? null : (string)reader["sessionId"]
+                        SessionId = (reader["sessionId"] == DBNull.Value) ? null : (string)reader["sessionId"]
 
                     };
                     employees.Add(employee);
@@ -241,6 +241,10 @@ namespace SSISTeam9.DAO
 
         public static List<Employee> GetEmployeesByIdList(List<long> empIds)
         {
+            if(null == empIds || empIds.Count == 0)
+            {
+                return new List<Employee>();
+            }
 
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
@@ -350,7 +354,12 @@ namespace SSISTeam9.DAO
 
                 string q = @"SELECT email from Employee where empId = '" + empId + "'";
                 SqlCommand cmd = new SqlCommand(q, conn);
-                string email = (string)cmd.ExecuteScalar();
+                SqlDataReader reader = cmd.ExecuteReader();
+                string email = "team9rockz@gmail.com";
+                if (reader.Read())
+                {
+                    email = (string)reader["email"];
+                }
                 
                 return email;
             }

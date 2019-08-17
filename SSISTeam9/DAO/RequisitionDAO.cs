@@ -71,6 +71,7 @@ namespace SSISTeam9.DAO
                     RequisitionDetails requisitionDetail = new RequisitionDetails()
                     {
                         Quantity = (int)reader["quantity"],
+                        Balance = (int)reader["balance"],
                         Item = i
                     };
 

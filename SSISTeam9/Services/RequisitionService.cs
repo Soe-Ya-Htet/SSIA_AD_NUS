@@ -168,6 +168,7 @@ namespace SSISTeam9.Services
                 reqDetail.Requisition = req;
                 reqDetail.Item = item;
                 reqDetail.Quantity = c.Quantity;
+                reqDetail.Balance = c.Quantity;
                 reqDetailsList.Add(reqDetail);
             }
             RequisitionDetailsDAO.SaveRequisitionDetails(reqDetailsList);
@@ -183,7 +184,7 @@ namespace SSISTeam9.Services
             {
                 list = GetRequisitionsWithObjects(list);
                 for (int i = 0; i < list.Count; i++)
-                {
+                {;
                     if (list[i].Employee.Department.DeptId == deptId)
                     {
                         filtered.Add(list[i]);

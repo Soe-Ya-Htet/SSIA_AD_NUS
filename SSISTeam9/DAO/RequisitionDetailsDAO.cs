@@ -67,13 +67,45 @@ namespace SSISTeam9.DAO
 
         }
 
+        public static List<RequisitionDetails> GetRemainingRequisitionDetailsByReqId(long reqId)
+        {
+            List<RequisitionDetails> reqDetails = new List<RequisitionDetails>();
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from RequisitionDetails WHERE reqId=@reqId AND balance!=0";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@reqId", reqId);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Inventory i = new Inventory()
+                    {
+                        ItemId = (long)reader["itemId"],
+                    };
+                    RequisitionDetails requisitionDetail = new RequisitionDetails()
+                    {
+                        Quantity = (int)reader["quantity"],
+                        Balance = (int)reader["balance"],
+                        Item = i
+                    };
+
+                    reqDetails.Add(requisitionDetail);
+                }
+            }
+            return reqDetails;
+
+        }
+
         internal static void UpdateBalanceAmount(long reqId, object itemId, int qty)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
 
-                string q = @"UPDATE RequisitionDetails SET quanity=@qty where itemId=@itemId AND reqId=@reqId";
+                string q = @"UPDATE RequisitionDetails SET balance=@qty where itemId=@itemId AND reqId=@reqId";
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.Parameters.AddWithValue("@qty", qty);
                 cmd.Parameters.AddWithValue("@itemId", itemId);

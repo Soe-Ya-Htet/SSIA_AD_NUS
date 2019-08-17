@@ -97,7 +97,7 @@ namespace SSISTeam9.Services
             }
 
 
-            stockCard.Balance = CatalogueService.GetCatalogueById(adj.ItemId).StockLevel + adj.AdjQty;
+            stockCard.Balance = CatalogueService.GetCatalogueById(adj.ItemId).StockLevel;
             StockCardDAO.CreateStockCardFromOrder(stockCard);
               
 

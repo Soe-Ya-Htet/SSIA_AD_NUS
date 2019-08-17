@@ -79,5 +79,25 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static void CreateStockCardFromAdj(StockCard stockCard)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"INSERT INTO StockCard (itemId,date,sourceType,sourceId,qty,balance)" +
+                            "VALUES ('" + stockCard.ItemId +
+                            "','" + stockCard.Date.Year +
+                            "-" + stockCard.Date.Month +
+                            "-" + stockCard.Date.Day +
+                            "','1','" + stockCard.SourceId +
+                            "','" + stockCard.Qty +
+                            "','" + stockCard.Balance + "')";
+
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
     }
 }

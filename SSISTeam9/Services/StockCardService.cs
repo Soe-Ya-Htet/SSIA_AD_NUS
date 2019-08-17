@@ -21,7 +21,8 @@ namespace SSISTeam9.Services
                         {
                             AdjId = stockCard.SourceId
                         };
-                        stockCard.Display = "Stock Adjustment";
+                        string adjId = stockCard.AdjVoucher.AdjId.ToString("000/000/0000");
+                        stockCard.Display = "Stock Adjustment" + adjId;
                         break;
                     case 2:
                         stockCard.DisbursementList = new DisbursementList()
@@ -80,12 +81,13 @@ namespace SSISTeam9.Services
         }
 
 
-        public static void CreateStockCardFromAdj(long itemId, int adjQty)
+        public static void CreateStockCardFromAdj(long adjId, long itemId, int adjQty)
         {
             
             StockCard stockCard = new StockCard();
             stockCard.Date = DateTime.Now;
             stockCard.ItemId = itemId;
+            stockCard.SourceId = adjId;
             if (adjQty < 0)
             {
                 stockCard.Qty = "ADJ - " + Math.Abs(adjQty);
@@ -95,7 +97,7 @@ namespace SSISTeam9.Services
                 stockCard.Qty = "ADJ + " + Math.Abs(adjQty);
             }
             stockCard.Balance = CatalogueService.GetCatalogueById(itemId).StockLevel;
-            StockCardDAO.CreateStockCardFromOrder(stockCard);             
+            StockCardDAO.CreateStockCardFromAdj(stockCard);             
         }
 
     }

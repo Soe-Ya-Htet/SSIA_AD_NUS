@@ -81,7 +81,7 @@ namespace SSISTeam9.Controllers
                     StockService.UpdateInventoryStockById(itemId, actualStock);
                     //The function below is for update stock card
                     //By the time authorise adjustment voucher, update StockCard table with itemId and date, souceType = 1
-                    StockCardService.CreateStockCardFromAdj(itemId, qty);
+                    StockCardService.CreateStockCardFromAdj(adjId, itemId, qty);
                 }
             }
             if (flag == 0)

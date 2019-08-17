@@ -114,7 +114,11 @@ namespace SSISTeam9.DAO
                         Status = (String)reader["status"],
                         //PickUpDate = (DateTime)reader["pickUpDate"],
                         ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
-                        Employee = e
+                        Employee = e,
+                        RequisitionDetail = new RequisitionDetails
+                        {
+                            Quantity = (int)reader["quantity"]
+                        }
                     };
 
 
@@ -143,7 +147,7 @@ namespace SSISTeam9.DAO
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
-                string q = @"SELECT * from Requisition r, RequisitionDetails d WHERE r.reqId = @reqId and r.reqId=d.reqId";
+                string q = @"SELECT * from Requisition WHERE reqId = @reqId";
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.Parameters.AddWithValue("@reqId", reqId);
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -162,11 +166,7 @@ namespace SSISTeam9.DAO
                         Status = (String)reader["status"],
                         //PickUpDate = (DateTime)reader["pickUpDate"],
                         ApprovedBy = (reader["approvedBy"] == DBNull.Value) ? "Nil" : (string)reader["approvedBy"],
-                        Employee = e,
-                        RequisitionDetail = new RequisitionDetails
-                        {
-                            Quantity = (int)reader["quantity"]
-                        }
+                        Employee = e
                     };
                 }
             }

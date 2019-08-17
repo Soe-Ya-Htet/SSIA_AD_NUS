@@ -18,6 +18,7 @@ namespace SSISTeam9.Controllers
             ViewData["catalogue"] = CatalogueService.GetCatalogueById(itemId);
             ViewData["priceList"] = PriceListService.GetPriceListByItemId(itemId);
             ViewData["stockCards"] = StockCardService.GetStockCardById(itemId);
+            ViewData["sessionId"] = sessionId;
             return View();
         }
     }

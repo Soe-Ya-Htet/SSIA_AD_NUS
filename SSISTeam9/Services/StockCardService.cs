@@ -22,7 +22,7 @@ namespace SSISTeam9.Services
                             AdjId = stockCard.SourceId
                         };
                         string adjId = stockCard.AdjVoucher.AdjId.ToString("000/000/0000");
-                        stockCard.Display = "Stock Adjustment" + adjId;
+                        stockCard.Display = "Stock Adjustment " + adjId;
                         break;
                     case 2:
                         stockCard.DisbursementList = new DisbursementList()

@@ -230,6 +230,8 @@ namespace SSISTeam9.Controllers
                         AdjVoucherService.UpdateStatus(adjId, 3);
                     }
                 }
+
+                //Inform manager
                 List<Employee> managers = new List<Employee>();
                 EmailNotification notice = new EmailNotification();
                 managers = EmployeeService.GetEmployeeByRole("STORE_MANAGER");

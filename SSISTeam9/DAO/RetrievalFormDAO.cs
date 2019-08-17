@@ -16,7 +16,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT i.binNo, i.description, r.itemId, i.stockLevel, SUM(quantity) as needed from RequisitionDetails r, Inventory i, Requisition req 
+                string q = @"SELECT i.binNo, i.description, r.itemId, i.stockLevel, SUM(balance) as needed from RequisitionDetails r, Inventory i, Requisition req 
                             where req.status IN ('Assigned','Partially Completed(Assigned)') AND  r.itemId=i.itemId AND r.reqId=req.reqid 
                             GROUP BY r.itemId, binNo, description, i.stockLevel 
                             ORDER BY binNo";

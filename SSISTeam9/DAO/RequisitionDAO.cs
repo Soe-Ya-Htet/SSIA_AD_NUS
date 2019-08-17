@@ -117,7 +117,8 @@ namespace SSISTeam9.DAO
                         Employee = e,
                         RequisitionDetail = new RequisitionDetails
                         {
-                            Quantity = (int)reader["quantity"]
+                            Quantity = (int)reader["quantity"],
+                            Balance = (int) reader["balance"]
                         }
                     };
 

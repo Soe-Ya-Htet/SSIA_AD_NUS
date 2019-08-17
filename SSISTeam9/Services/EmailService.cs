@@ -14,7 +14,8 @@ namespace SSISTeam9.Services
         ON_ASSIGNED_AS_DEPT_REP,
         ON_ALTERNATIVE_SUPPLIER,
         ON_PENDING_ADJVOUCHER,
-        ON_DELEGATED_AS_DEPT_HEAD
+        ON_DELEGATED_AS_DEPT_HEAD,
+        ON_DISBURSEMENT_CREATION
     }
     public class EmailService : IEmailService
     {
@@ -93,6 +94,9 @@ namespace SSISTeam9.Services
                 case EmailTrigger.ON_PENDING_ADJVOUCHER:
                     PrepareNotificationEmailToPurchasingDepartment(notice);
                     break;
+                case EmailTrigger.ON_DISBURSEMENT_CREATION:
+                    PrepareDisbursementEmailToDepartment(notice);
+                    break;
             }
         }
 
@@ -166,6 +170,17 @@ namespace SSISTeam9.Services
             notice.Subject = "Pending Authorisation for Adjustment Voucher";
             StringBuilder builder = new StringBuilder("Dear Sir / Mdm,");
             builder.Append("<br/><br/> You have a new adjustment voucher pending for authorisation.");
+            notice.Body = builder.ToString();
+        }
+
+        private void PrepareDisbursementEmailToDepartment(EmailNotification notice)
+        {
+            notice.Subject = "Next Collection Date for Department";
+            StringBuilder builder = new StringBuilder("Dear Sir / Mdm,");
+            builder.Append("<br/><br/> Please be informed that there is a collection for your department on <br/>")
+               .Append($"{notice.CollectionDate}. Please check disbursement list for details.<br/>");
+
+            
             notice.Body = builder.ToString();
         }
     }

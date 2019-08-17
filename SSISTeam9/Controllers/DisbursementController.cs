@@ -6,11 +6,18 @@ using System.Web.Mvc;
 using SSISTeam9.Services;
 using SSISTeam9.Models;
 using SSISTeam9.Filters;
+using System.Threading.Tasks;
 
 namespace SSISTeam9.Controllers
 {
     public class DisbursementController : Controller
     {
+        private readonly IEmailService emailService;
+
+        public DisbursementController()
+        {
+            emailService = new EmailService();
+        }
         // GET: Disbursement
         [StoreAuthorisationFilter]
         public ActionResult ViewAllDisbursements(string collectionPt,string sessionId)
@@ -108,7 +115,13 @@ namespace SSISTeam9.Controllers
                     date = entries[0].collectionDate
                     
                 };
-                
+
+                string repMail = RequisitionService.GetRep(d.Department.DeptId); //change to rep
+                EmailNotification notice = new EmailNotification();
+                notice.ReceiverMailAddress = repMail;
+                notice.CollectionDate = d.date.ToString("dd/MM/yyyy");
+                Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_DISBURSEMENT_CREATION)); //need to send to multiple reps
+
 
                 foreach (var entry in entries)
                 {
@@ -133,6 +146,8 @@ namespace SSISTeam9.Controllers
                 disbursementLists.Add(d);
             }
             DisbursementListService.CreateDisbursementLists(disbursementLists);
+
+            
 
             return Json(Url.Action("ViewAllDisbursements","Disbursement", new { sessionId = sessionId }));
         }

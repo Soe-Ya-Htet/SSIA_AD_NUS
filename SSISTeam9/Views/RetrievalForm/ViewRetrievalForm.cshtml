@@ -82,7 +82,7 @@
 </table>
     <div class="row justify-content-end">
         <input type="date" name="date" id="collectionDate" value="@DateTime.Now.AddDays(7).ToString("yyyy-MM-dd")" />
-        <input class="btn-success rounded" type="button" value="Submit" onclick="submitData()" />
+        <input class="btn-success rounded" type="button" id="submit" value="Submit" onclick="submitData()" />
     </div>
     
 }
@@ -114,7 +114,7 @@ else
         for (var i = 0; i < arr.length; i++) {
             if (parseInt(arr[i].value) > jsRetForms[x]["deptNeeds"][i]["deptNeeded"]) {
                 alert(jsRetForms[x]["deptNeeds"][i]["deptCode"] + " quantity cannot be more than dept needed");
-                return false;
+                
             }
             if (parseInt(arr[i].value)) 
                 tot += parseInt(arr[i].value);
@@ -185,7 +185,7 @@ else
                 listOfLists.push(list)
             }
         }
-
+        
 
         $.ajax({
             type: 'POST',
@@ -200,5 +200,12 @@ else
                 alert(errMsg);
             }
         });
+
+        var form = document.getElementById("submit");
+
+        form.disabled = true;
+        return true;
+        
+        
     }
 </script>

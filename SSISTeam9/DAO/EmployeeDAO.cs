@@ -350,7 +350,12 @@ namespace SSISTeam9.DAO
 
                 string q = @"SELECT email from Employee where empId = '" + empId + "'";
                 SqlCommand cmd = new SqlCommand(q, conn);
-                string email = (string)cmd.ExecuteScalar();
+                SqlDataReader reader = cmd.ExecuteReader();
+                string email = "team9rockz@gmail.com";
+                if (reader.Read())
+                {
+                    email = (string)reader["email"];
+                }
                 
                 return email;
             }

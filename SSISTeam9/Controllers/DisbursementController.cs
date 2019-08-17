@@ -87,19 +87,22 @@ namespace SSISTeam9.Controllers
             List<long> deptIds = new List<long>();
             
             List<DisbursementList> disbursementLists = new List<DisbursementList>();
-
-            foreach (var entry in entries)
+            if (entries != null)
             {
-                if (deptIds.Contains(entry.deptId))
+                foreach (var entry in entries)
                 {
+                    if (deptIds.Contains(entry.deptId))
+                    {
 
-                }
-                else
-                {
-                    deptIds.Add(entry.deptId);
-                    
+                    }
+                    else
+                    {
+                        deptIds.Add(entry.deptId);
+
+                    }
                 }
             }
+            
 
             List<EmailNotification> notices = new List<EmailNotification>();
 

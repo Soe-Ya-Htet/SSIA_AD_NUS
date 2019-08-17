@@ -65,7 +65,12 @@ namespace SSISTeam9.Controllers
             }
             else if (delegatedhead != null && d.Employee == null)
             {
+                EmailNotification notice = new EmailNotification();
+                long head = DepartmentService.GetCurrentHead(deptId);
+                Employee MailReceiver = EmployeeDAO.GetEmployeeById(head);
+                notice.ReceiverMailAddress = MailReceiver.Email;
                 DelegateService.DelegateToPreviousHead(deptId);
+                Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_REMOVED_DEPT_HEAD));
                 List<Employee> emps = RepresentativeService.GetEmployeesByDepartment(deptId);
                 ViewData["employees"] = emps;
                 ViewData["delegated"] = false;

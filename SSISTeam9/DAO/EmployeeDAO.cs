@@ -33,7 +33,7 @@ namespace SSISTeam9.DAO
                         UserName = (string)reader["userName"],
                         Password = (string)reader["password"],
                         Email = (reader["email"] == DBNull.Value) ? null : (string)reader["email"],
-                        SessionId = (reader["email"] == DBNull.Value) ? null : (string)reader["sessionId"]
+                        SessionId = (reader["sessionId"] == DBNull.Value) ? null : (string)reader["sessionId"]
                     };
                 }
                 return employee;
@@ -241,6 +241,10 @@ namespace SSISTeam9.DAO
 
         public static List<Employee> GetEmployeesByIdList(List<long> empIds)
         {
+            if(null == empIds || empIds.Count == 0)
+            {
+                return new List<Employee>();
+            }
 
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {

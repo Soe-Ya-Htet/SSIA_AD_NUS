@@ -76,6 +76,10 @@ namespace SSISTeam9.DAO
 
         public static List<Inventory> GetCataloguesByIdList(List<long> itemIds)
         {
+            if (null == itemIds || itemIds.Count == 0)
+            {
+                return new List<Inventory>();
+            }
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
@@ -308,6 +312,10 @@ namespace SSISTeam9.DAO
 
         public static List<Inventory> GetInventoriesByIdList(List<long> inventoryIds)
         {
+            if (null == inventoryIds || inventoryIds.Count == 0)
+            {
+                return new List<Inventory>();
+            }
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();

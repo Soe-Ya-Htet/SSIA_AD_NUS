@@ -9,38 +9,6 @@ namespace SSISTeam9.DAO
 {
     public class AdjVoucherDAO
     {
-        //public static List<AdjVoucher> GetAllAdjVouchers()
-        //{
-        //    List<AdjVoucher> adjVouchers = new List<AdjVoucher>();
-        //    using (SqlConnection conn = new SqlConnection(Data.db_cfg))
-        //    {
-        //        conn.Open();
-
-        //        string q = @"SELECT * from AdjVoucher WHERE flag != 1";
-        //        SqlCommand cmd = new SqlCommand(q, conn);
-
-        //        SqlDataReader reader = cmd.ExecuteReader();
-        //        while (reader.Read())
-        //        {
-        //            Inventory catalogue = new Inventory()
-        //            {
-        //                ItemId = (long)reader["itemId"],
-        //                ItemCode = (string)reader["itemCode"],
-        //                BinNo = (reader["binNo"] == DBNull.Value) ? "Nil" : (string)reader["binNo"],
-        //                StockLevel = (int)reader["stockLevel"],
-        //                ReorderLevel = (int)reader["reorderLevel"],
-        //                ReorderQty = (int)reader["reorderQty"],
-        //                Category = (string)reader["category"],
-        //                Description = (string)reader["description"],
-        //                UnitOfMeasure = (string)reader["unitOfMeasure"],
-        //                ImageUrl = (reader["imageUrl"] == DBNull.Value) ? "Nil" : (string)reader["imageUrl"]
-        //            };
-        //        }
-        //    }
-
-        //    return adjVouchers;
-
-        //}
 
         public static void GenerateDisbursement(List<AdjVoucher> adjVouchers)
         {
@@ -228,6 +196,7 @@ namespace SSISTeam9.DAO
                 cmd.ExecuteNonQuery();
             }
         }
+
 
     }
 }

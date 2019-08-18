@@ -433,6 +433,9 @@ namespace SSISTeam9.Services
                 long currentRepId = DepartmentService.GetCurrentRep(user.DeptId);
                 List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(user.DeptId);
                 Employee emp = employees.Find(e => e.EmpId == currentRepId);
+                if (emp == null)
+                    emp = DepartmentDAO.GetCurrentRepInfoById(user.DeptId);
+
                 repDict.Add("repList", employees);
                 repDict.Add("curRep", emp);
             }

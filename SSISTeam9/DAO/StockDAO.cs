@@ -48,7 +48,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * from Inventory ORDER BY (stockLevel - reorderLevel)";
+                string q = @"SELECT * from Inventory WHERE flag = 0 ORDER BY (stockLevel - reorderLevel)";
                 SqlCommand cmd = new SqlCommand(q, conn);
 
                 SqlDataReader reader = cmd.ExecuteReader();

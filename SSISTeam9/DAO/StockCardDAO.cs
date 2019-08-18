@@ -50,6 +50,9 @@ namespace SSISTeam9.DAO
                             "','" + disbursementList.date.Year +
                             "-" + disbursementList.date.Month +
                             "-" + disbursementList.date.Day +
+                            " " + disbursementList.date.Hour +
+                            ":" + disbursementList.date.Minute +
+                            ":" + disbursementList.date.Second +
                             "','2','" + disbursementList.Department.DeptId +
                             "','- " + disbursementDetails.Quantity +
                             "','" + balance + "')";
@@ -70,6 +73,9 @@ namespace SSISTeam9.DAO
                             "','" + stockCard.Date.Year +
                             "-" + stockCard.Date.Month +
                             "-" + stockCard.Date.Day +
+                            " " + stockCard.Date.Hour +
+                            ":" + stockCard.Date.Minute +
+                            ":" + stockCard.Date.Second +
                             "','3','" + stockCard.SourceId +
                             "','" + stockCard.Qty +
                             "','" + stockCard.Balance + "')";
@@ -90,6 +96,9 @@ namespace SSISTeam9.DAO
                             "','" + stockCard.Date.Year +
                             "-" + stockCard.Date.Month +
                             "-" + stockCard.Date.Day +
+                            " " + stockCard.Date.Hour +
+                            ":" + stockCard.Date.Minute +
+                            ":" + stockCard.Date.Second +
                             "','1','" + stockCard.SourceId +
                             "','" + stockCard.Qty +
                             "','" + stockCard.Balance + "')";

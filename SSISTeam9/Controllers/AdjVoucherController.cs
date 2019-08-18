@@ -325,6 +325,7 @@ namespace SSISTeam9.Controllers
             }
             else
             {
+                ViewData["sessionId"] = sessionId;
                 return View("NotAuthorised", "Home");
             }
             

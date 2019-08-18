@@ -36,7 +36,7 @@
     @using (Html.BeginForm("Generate", "ChargeBack", new { mode = 2, sessionId = sessionId }, FormMethod.Post))
     {
         <div style="text-align:center">
-            <label style="text-align:center;margin-top:10px;padding-right:5.7em">By Departmen: </label>
+            <label style="text-align:center;margin-top:10px;padding-right:5.7em">By Department: </label>
             <select name="yearOfOrder" id="yearOfOrder" style="width: 180px">
                 @foreach (int year in years)
                 {

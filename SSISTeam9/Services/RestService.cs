@@ -346,7 +346,7 @@ namespace SSISTeam9.Services
             }
             else
             {
-                List<DisbursementList> disbursements = DisbursementListDAO.GetAllPastDisbursementList(emp.DeptId, emp.EmpId);
+                List<DisbursementList> disbursements = DisbursementListDAO.GetAllPastDisbursementList(emp.DeptId, emp.EmpName);
                 disDict.Add("disbursementList", disbursements);
             }
 

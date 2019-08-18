@@ -298,7 +298,7 @@ namespace SSISTeam9.DAO
 
         }
 
-        public static List<DisbursementList> GetAllPastDisbursementList(long deptId, long empId)
+        public static List<DisbursementList> GetAllPastDisbursementList(long deptId, string empName)
         {
             List<DisbursementList> disbursements = new List<DisbursementList>();
 
@@ -307,11 +307,11 @@ namespace SSISTeam9.DAO
                 conn.Open();
 
                 string q = @"SELECT * FROM DisbursementList d, CollectionPoint cP, Department dept 
-                            WHERE d.collectionPointId= cP.placeId AND acknowledgedBy=@empId AND d.deptId = dept.deptId
+                            WHERE d.collectionPointId= cP.placeId AND acknowledgedBy=@empName AND d.deptId = dept.deptId
                             AND d.deptId = @deptId";
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.Parameters.AddWithValue("@deptId", deptId);
-                cmd.Parameters.AddWithValue("@empId", empId);
+                cmd.Parameters.AddWithValue("@empName", empName);
 
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())

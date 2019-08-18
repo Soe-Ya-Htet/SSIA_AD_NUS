@@ -98,6 +98,19 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static void UpdateDptCollectionPoint(DisbursementList disbursement)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"Update Department Set collectionPointId = @colPoint where deptId = @deptId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@colPoint", disbursement.CollectionPoint.PlacedId);
+                cmd.Parameters.AddWithValue("@deptId", disbursement.Department.DeptId);
+                cmd.ExecuteNonQuery();
+            }
+        }
 
         public static void DeleteDepartment(long DeptId)
         {
@@ -190,6 +203,32 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static Employee GetCurrentRepInfoById(long deptId)
+        {
+            Employee employee = null;
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+                string q = @"SELECT * FROM Employee e, Department d WHERE d.deptId = @deptId AND d.representativeId=e.empId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@deptId", deptId);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    employee = new Employee()
+                    {
+                        EmpId = (long)reader["empId"],
+                        EmpName = (string)reader["empName"],
+                        EmpRole = (string)reader["empRole"],
+                        EmpDisplayRole = (string)reader["empDisplayRole"],
+                        UserName = (string)reader["userName"],
+                        Password = (string)reader["password"]
+                    };
+                }
+                return employee;
+            }
+        }
         public static long GetCurrentHeadById(long deptId)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))

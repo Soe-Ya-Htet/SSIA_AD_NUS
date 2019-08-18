@@ -35,6 +35,7 @@ namespace SSISTeam9.Controllers
             Employee e = EmployeeDAO.GetEmployeeById(headId);
             ViewData["currentHead"] = e;
             ViewData["employees"] = employees;
+            ViewData["timeErr"] = false;
             bool all = DelegateService.CheckPreviousHeadForNav(deptId);
             ViewData["all"] = all;
             ViewData["sessionId"] = sessionId;
@@ -53,22 +54,32 @@ namespace SSISTeam9.Controllers
                 d.Department = new Department();
                 d.Department.DeptId = deptId;
                 bool isThereDelegate = DelegateService.CheckDelegatedByDept(deptId);
-                if (!isThereDelegate)
+                bool timeErr = (d.FromDate < DateTime.Now && d.ToDate < DateTime.Now);
+                ViewData["timeErr"] = timeErr;
+                if (!isThereDelegate && !timeErr)
                 {
                     DelegateService.AddNewDelegate(d, headId);
+                    EmailNotification notice = new EmailNotification();
+                    Employee MailReceiver = EmployeeService.GetEmployeeById(d.Employee.EmpId);
+                    notice.ReceiverMailAddress = MailReceiver.Email;
+                    notice.From = d.FromDate;
+                    notice.To = d.ToDate;
+                    Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_DELEGATED_AS_DEPT_HEAD));
                 }
                 bool allnav = DelegateService.CheckPreviousHeadForNav(deptId);
                 ViewData["all"] = allnav;
-                EmailNotification notice = new EmailNotification();
-                Employee MailReceiver = EmployeeService.GetEmployeeById(d.Employee.EmpId);
-                notice.ReceiverMailAddress = MailReceiver.Email;
-                notice.From = d.FromDate;
-                notice.To = d.ToDate;
-                Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_DELEGATED_AS_DEPT_HEAD));
                 long head = DepartmentService.GetCurrentHead(deptId);
                 Employee h = EmployeeDAO.GetEmployeeById(head);
                 ViewData["currentHead"] = h;
-                ViewData["delegated"] = true;
+                if (timeErr)
+                {
+                    ViewData["delegated"] = false;
+                }
+                else
+                {
+                    ViewData["delegated"] = true;
+                }
+                
                 return View();
             }
             else if (delegatedhead != null && d.Employee == null)

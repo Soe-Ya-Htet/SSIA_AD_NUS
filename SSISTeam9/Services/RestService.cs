@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using SSISTeam9.Controllers;
 using SSISTeam9.DAO;
@@ -11,6 +12,11 @@ namespace SSISTeam9.Services
 {
     public class RestService : IRestService
     {
+        private readonly IEmailService emailService;
+        public RestService()
+        {
+            emailService = new EmailService();
+        }
         public string AcknowledgementOfRepresentative(long listId)
         {
             Employee emp = AuthUtil.GetCurrentLoggedUser();
@@ -55,6 +61,7 @@ namespace SSISTeam9.Services
 
                 int balance = CatalogueService.GetCatalogueById(details.Item.ItemId).StockLevel - details.Quantity;
                 StockCardService.CreateStockCardFromDisburse(details, disbursementList, balance);
+                StockDAO.UpdateWithReduceInventoryStockById(details.Item.ItemId, details.Quantity);
 
                 ////following code will update and close requisitions
                 int disbursedAmount = details.Quantity;
@@ -114,9 +121,20 @@ namespace SSISTeam9.Services
                 return "Failed";
             }
 
-            long currentRep = DepartmentService.GetCurrentRep(user.DeptId);
+            long deptId = user.DeptId;
+            long currentRep = DepartmentService.GetCurrentRep(deptId);
+            bool all = DelegateService.CheckPreviousHeadForNav(deptId);
             long newRep = repId;
-            RepresentativeService.UpdateEmployeeRole(newRep, currentRep, user.DeptId);
+            EmailNotification notice = new EmailNotification();
+            RepresentativeService.UpdateEmployeeRole(newRep, currentRep, deptId);
+            Employee newRepMailReceiver = EmployeeService.GetEmployeeById(newRep);
+            Employee oldRepMailReceiver = EmployeeService.GetEmployeeById(currentRep);
+            Task.Run(() => {
+                notice.ReceiverMailAddress = newRepMailReceiver.Email;
+                emailService.SendMail(notice, EmailTrigger.ON_ASSIGNED_AS_DEPT_REP);
+                notice.ReceiverMailAddress = oldRepMailReceiver.Email;
+                emailService.SendMail(notice, EmailTrigger.ON_REMOVED_DEPT_REP);
+            });
 
             return "Success";
         }
@@ -137,6 +155,13 @@ namespace SSISTeam9.Services
             long headId = DepartmentService.GetCurrentHead(user.DeptId);
 
             DelegateService.AddNewDelegate(delegat, headId);
+
+            EmailNotification notice = new EmailNotification();
+            Employee MailReceiver = EmployeeService.GetEmployeeById(delegat.Employee.EmpId);
+            notice.ReceiverMailAddress = MailReceiver.Email;
+            notice.From = delegat.FromDate;
+            notice.To = delegat.ToDate;
+            Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_DELEGATED_AS_DEPT_HEAD));
 
             return "Success";
         }
@@ -408,6 +433,9 @@ namespace SSISTeam9.Services
                 long currentRepId = DepartmentService.GetCurrentRep(user.DeptId);
                 List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(user.DeptId);
                 Employee emp = employees.Find(e => e.EmpId == currentRepId);
+                if (emp == null)
+                    emp = DepartmentDAO.GetCurrentRepInfoById(user.DeptId);
+
                 repDict.Add("repList", employees);
                 repDict.Add("curRep", emp);
             }
@@ -435,18 +463,25 @@ namespace SSISTeam9.Services
             return retrievalDict;
         }
 
-        public Models.Delegate GetDelegateInfoOfDepartment()
+        public Dictionary<string, object> GetDelegateInfoOfDepartment()
         {
+            Dictionary<string, object> resDict = new Dictionary<string, object>();
+
             Employee user = AuthUtil.GetCurrentLoggedUser();
 
             if (user == null)
             {
-                return null;
+                resDict.Add("auth", false);
+                return resDict;
             }
 
+            resDict.Add("auth", true);
             Models.Delegate del = DelegateDAO.GetDelegateInfoByDeptId((int)user.DeptId);
 
-            return del;
+            resDict.Add("delegated", (del != null));
+            resDict.Add("userInfo", del);
+
+            return resDict;
         }
 
         public Dictionary<string, object> Login(Employee emp)

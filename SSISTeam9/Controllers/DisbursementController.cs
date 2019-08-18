@@ -180,34 +180,14 @@ namespace SSISTeam9.Controllers
                 };
                 DisbursementListService.UpdateDisbursementListDetails(listId, disbursementDetails);
 
-                /* Move the following code to RestRepresentativeController*/
-                ////Attention: DisbursementList can only disburse once, date for that list is not null
-
-                ///*The following code is for ChargeBack table*/
-                ////By the time disburse item, calculate the amount of this list, update ChargeBack table               
-                //PriceList priceList = PriceListService.GetPriceListByItemId(i.ItemId);
-                //double price = 0;
-                //if (priceList != null)
-                //{
-                //    price = priceList.Supplier1UnitPrice;
-                //}
-
-                //double amount = price * disbursementDetails.Quantity;
-                //DisbursementList disbursementList = DisbursementListService.GetDisbursementListByListId(listId);
-                //ChargeBackService.UpdateChargeBackData(amount, disbursementList);
-
-                ///*The following code is for StockCard table*/
-                ////By the time disburse item, update StockCard table with itemId, deptId and date, souceType = 2
-
-                //int balance = CatalogueService.GetCatalogueById(disbursementDetails.Item.ItemId).StockLevel - disbursementDetails.Quantity;
-                //StockCardService.CreateStockCardFromDisburse(disbursementDetails, disbursementList, balance);
-                              
+                
             }
 
 
             return Json(Url.Action("ViewAllDisbursements", "Disbursement", new {collectionPt = collectionPt, sessionId= sessionId }));
         }
 
+        [DepartmentFilter]
         public ActionResult RepDisbursementList(string sessionId, bool timeErr)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -236,6 +216,7 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
+        [DepartmentFilter]
         public ActionResult ChangeCollectionPoint(string sessionId, DisbursementList disbursement,FormCollection frm)
         {
             bool timeErr = false;
@@ -261,11 +242,7 @@ namespace SSISTeam9.Controllers
             return RedirectToAction("RepDisbursementList",new { sessionId = sessionId, timeErr = timeErr });
         }
 
-        public ActionResult Acknowledge(string sessionId)
-        {
-
-            return RedirectToAction("Home", "Employee");
-        }
+        
 
     public class PerItem
         {

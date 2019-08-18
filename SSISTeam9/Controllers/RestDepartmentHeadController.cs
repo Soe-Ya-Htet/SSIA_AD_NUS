@@ -15,9 +15,6 @@ namespace SSISTeam9.Controllers
     [RoutePrefix("rest/dept_head")]
     public class RestDepartmentHeadController : Controller
     {
-        //private readonly int deptId = 1;
-        //private readonly int headId = 2;
-
         private readonly IEmailService emailService;
         private readonly IRestService restService;
 
@@ -30,8 +27,6 @@ namespace SSISTeam9.Controllers
         [Route("employees")]
         public JsonResult GetEmployees()
         {
-            //Task.Run(() => emailService.SendEmail(""));
-
             return Json(restService.GetAllEmployeesOfDepartment(), JsonRequestBehavior.AllowGet);
         }
 

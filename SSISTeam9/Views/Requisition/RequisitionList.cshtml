@@ -28,9 +28,9 @@
                 </li>
                 @if (isRep)
                 {
-                <li class="nav-item active">
-                    @Html.ActionLink("Disbursement List", "RepDisbursementList", "Disbursement", new { sessionId = sessionId, timeErr = false }, new { @class = "nav-link" })
-                </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Disbursement List", "RepDisbursementList", "Disbursement", new { sessionId = sessionId, timeErr = false }, new { @class = "nav-link" })
+                    </li>
                 }
             </ul>
             <ul class="navbar-nav mt-2 mt-md-0">
@@ -51,7 +51,7 @@
     {
         <h2>Requisition List</h2>
         <form method="post">
-            <input class="btn-success rounded" style="float: right; margin-bottom: 10px;" type="submit" value="Create Requisition" formaction="/Requisition/CreateRequisition?sessionId=@sessionId">
+            <input class="btn-success rounded" style="float: right; margin-bottom: 10px;" type="button" value="Create Requisition" data-toggle="modal" data-target="#exampleModalCenter">
             <table class="table table-bordered">
                 <tr>
                     <th>
@@ -73,42 +73,64 @@
 
                 @foreach (var cart in Model)
                 {
-                <tr>
-                    <td>
-                        <img class="list-img" src="~/Content/Images/@(cart.Item.Category).jpg" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => cart.Item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => cart.Item.UnitOfMeasure)
-                    </td>
-                    <td>
-                        <input class="input-num" type="number" id="@cart.Item.ItemId" min="1" step="1" value="@cart.Quantity" name="@cart.Item.ItemId" />
-                    </td>
-                    <td>
-                        @Html.ActionLink("Remove From List", "RemoveFromCart", new { empId = cart.Employee.EmpId, itemId = cart.Item.ItemId, sessionId = sessionId })
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            <img class="list-img" src="~/Content/Images/@(cart.Item.Category).jpg" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => cart.Item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => cart.Item.UnitOfMeasure)
+                        </td>
+                        <td>
+                            <input class="input-num" type="number" id="@cart.Item.ItemId" min="1" step="1" value="@cart.Quantity" name="@cart.Item.ItemId" />
+                        </td>
+                        <td>
+                            @Html.ActionLink("Remove From List", "RemoveFromCart", new { empId = cart.Employee.EmpId, itemId = cart.Item.ItemId, sessionId = sessionId })
+                        </td>
+                    </tr>
                 }
 
             </table>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Confirm Creation!</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Proceed with requisition creation?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <input type="submit" class="btn btn-success" value="Confirm" formaction="/Requisition/CreateRequisition?sessionId=@sessionId">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
+
     }
 }
-        <style>
-            td {
-                padding: 2px;
-                width: 200px;
-            }
+<style>
+    td {
+        padding: 2px;
+        width: 200px;
+    }
 
-            tr {
-                height: 40px;
-                padding: 2px;
-                text-align: center;
-            }
+    tr {
+        height: 40px;
+        padding: 2px;
+        text-align: center;
+    }
 
-            th {
-                text-align: center;
-            }
-        </style>
+    th {
+        text-align: center;
+    }
+</style>

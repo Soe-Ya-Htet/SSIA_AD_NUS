@@ -33,14 +33,21 @@ namespace SSISTeam9.Controllers
             List<Inventory> stock = await StockService.GetAllItemsOrdered();
             List<Inventory> selectedItems = new List<Inventory>();
 
-            for (int i = 0; i < stock.Count; i++)
+            try
             {
-                if (inventory.CheckedItems[i] == true)
+                for (int i = 0; i < stock.Count; i++)
                 {
-                    selectedItems.Add(stock[i]);
+                    if (inventory.CheckedItems[i] == true)
+                    {
+                        selectedItems.Add(stock[i]);
+                    }
                 }
             }
-            
+            catch (NullReferenceException)
+            {
+                return RedirectToAction("All", new { sessionid = sessionId });
+            }
+
             ViewData["selectedItems"] = selectedItems;
             ViewData["sessionId"] = sessionId;
             return View();

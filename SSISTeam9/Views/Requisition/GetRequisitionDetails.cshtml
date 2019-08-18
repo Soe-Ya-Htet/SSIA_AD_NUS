@@ -104,16 +104,25 @@
                 <th>Description</th>
                 <th>UnitOfMeasure</th>
                 <th>Quantity</th>
+                @if (roleForDetail != "head")
+                {
+                    <th>Balance</th>
+                }
             </tr>
 
             @foreach (var detail in requisitionDetails)
             {
-                <tr>
+        <tr>
 
-                    <td>@detail.Item.Description</td>
-                    <td>@detail.Item.UnitOfMeasure</td>
-                    <td>@detail.Quantity</td>
-                </tr>
+            <td>@detail.Item.Description</td>
+            <td>@detail.Item.UnitOfMeasure</td>
+            <td>@detail.Quantity</td>
+            @if (roleForDetail != "head")
+            {
+                <td>@detail.Balance</td>
+            }
+
+        </tr>
             }
         </table>
         <div class="container">

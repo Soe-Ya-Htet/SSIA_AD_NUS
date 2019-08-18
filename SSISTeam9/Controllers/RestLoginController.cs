@@ -29,7 +29,6 @@ namespace SSISTeam9.Controllers
         }
 
         [BasicAuthenticationAttribute(rExecuted = false)]
-        [HttpPost]
         [Route("logout")]
         public ActionResult PostLogout()
         {

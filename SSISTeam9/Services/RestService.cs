@@ -61,6 +61,7 @@ namespace SSISTeam9.Services
 
                 int balance = CatalogueService.GetCatalogueById(details.Item.ItemId).StockLevel - details.Quantity;
                 StockCardService.CreateStockCardFromDisburse(details, disbursementList, balance);
+                StockDAO.UpdateWithReduceInventoryStockById(details.Item.ItemId, details.Quantity);
 
                 ////following code will update and close requisitions
                 int disbursedAmount = details.Quantity;
@@ -120,13 +121,15 @@ namespace SSISTeam9.Services
                 return "Failed";
             }
 
-            long currentRep = DepartmentService.GetCurrentRep(user.DeptId);
+            long deptId = user.DeptId;
+            long currentRep = DepartmentService.GetCurrentRep(deptId);
+            bool all = DelegateService.CheckPreviousHeadForNav(deptId);
             long newRep = repId;
-            RepresentativeService.UpdateEmployeeRole(newRep, currentRep, user.DeptId);
+            EmailNotification notice = new EmailNotification();
+            RepresentativeService.UpdateEmployeeRole(newRep, currentRep, deptId);
             Employee newRepMailReceiver = EmployeeService.GetEmployeeById(newRep);
             Employee oldRepMailReceiver = EmployeeService.GetEmployeeById(currentRep);
             Task.Run(() => {
-                EmailNotification notice = new EmailNotification();
                 notice.ReceiverMailAddress = newRepMailReceiver.Email;
                 emailService.SendMail(notice, EmailTrigger.ON_ASSIGNED_AS_DEPT_REP);
                 notice.ReceiverMailAddress = oldRepMailReceiver.Email;
@@ -457,18 +460,25 @@ namespace SSISTeam9.Services
             return retrievalDict;
         }
 
-        public Models.Delegate GetDelegateInfoOfDepartment()
+        public Dictionary<string, object> GetDelegateInfoOfDepartment()
         {
+            Dictionary<string, object> resDict = new Dictionary<string, object>();
+
             Employee user = AuthUtil.GetCurrentLoggedUser();
 
             if (user == null)
             {
-                return null;
+                resDict.Add("auth", false);
+                return resDict;
             }
 
+            resDict.Add("auth", true);
             Models.Delegate del = DelegateDAO.GetDelegateInfoByDeptId((int)user.DeptId);
 
-            return del;
+            resDict.Add("delegated", (del != null));
+            resDict.Add("userInfo", del);
+
+            return resDict;
         }
 
         public Dictionary<string, object> Login(Employee emp)

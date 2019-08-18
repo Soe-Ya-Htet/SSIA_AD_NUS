@@ -22,7 +22,7 @@ namespace SSISTeam9.Services
         string RejectOrdereOfDepartment(int reqId);
         Dictionary<string, List<Requisition>> GetAllPastOrdersOfDepartment();
         string DelegateAuthorityOfDepartment(Delegate delegat);
-        Delegate GetDelegateInfoOfDepartment();
+        Dictionary<string, object> GetDelegateInfoOfDepartment();
         string AcknowledgementOfRepresentative(long listId);
         Dictionary<string, List<DisbursementList>> GetAllPendingDisbursementsOfRep();
         Dictionary<string, List<DisbursementList>> GetAllPastDisbursementsOfRep();

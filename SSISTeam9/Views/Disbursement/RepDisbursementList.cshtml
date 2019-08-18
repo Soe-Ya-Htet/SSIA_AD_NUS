@@ -8,6 +8,9 @@
     List<CollectionPoint> collectionPoints = (List<CollectionPoint>)ViewData["collectionPoints"];
     string sessionId = (string)ViewData["sessionId"];
     bool isRep = (bool)ViewData["isRep"];
+    string str;
+    var errDict = (Dictionary<string, string>)ViewData["errDict"];
+
 }
 
 <!-- Fixed navbar -->
@@ -33,7 +36,7 @@
                 @if (isRep)
                 {
                     <li class="nav-item active">
-                        @Html.ActionLink("Disbursement List", "RepDisbursementList", "Disbursement", new { sessionId = sessionId }, new { @class = "nav-link" })
+                        @Html.ActionLink("Disbursement List", "RepDisbursementList", "Disbursement", new { sessionId = sessionId, timeErr = false }, new { @class = "nav-link" })
                     </li>
                 }
             </ul>
@@ -115,53 +118,63 @@
         <form method="post"></form>
         using (Html.BeginForm("ChangeCollectionPoint", "Disbursement", new { sessionId = sessionId }, FormMethod.Post, null))
         {
+        <div class="container">
+            <div class="row">
+                <div class="col col-md-4">
+                    @foreach (var point in collectionPoints)
+                    {
 
-            <div class="form-horizontal">
-                <div class="form-group">
-                    <div class="col-md-10">
-                        @foreach (var point in collectionPoints)
+                        if (point.PlacedId == disb.CollectionPoint.PlacedId)
                         {
-                            if (point.PlacedId == disb.CollectionPoint.PlacedId)
-                            {
-                                <input type="radio" name="collect" value="@point.PlacedId" checked /> @point.Name
-                            }
-                            else
-                            {
-                                <input type="radio" name="collect" value="@point.PlacedId" /> @point.Name
-                            }
-                            <br />
+                            <input type="radio" name="collect" value="@point.PlacedId" checked /> @point.Name
                         }
-                    </div>
+                        else
+                        {
+                            <input type="radio" name="collect" value="@point.PlacedId" /> @point.Name
+                        }
+                        <br />
+                    }
                 </div>
-
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col">
-                            <input type="submit" value="Change" class="rounded btn-width btn-success float-right" />
-                            @Html.Hidden("listId", disb.ListId)
-                        </div>
-                        <div class="col"></div>
+                @if (null != errDict && errDict.TryGetValue("time", out str))
+                {
+                    <div class="col col-8">
+                        <span class="field-validation-error">@str</span>
                     </div>
-                </div>
+                    <div class="col "></div>
+                }
             </div>
+
+
+            <div class="row">
+                <div class="col">
+                    <input type="submit" value="Change" class="rounded btn-width btn-success float-right" />
+                    @Html.Hidden("listId", disb.ListId)
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
         }
 
     }
 }
 
-            <style>
-                td {
-                    padding: 2px;
-                    width: 200px;
-                }
+<style>
+    td {
+        padding: 2px;
+        width: 200px;
+    }
 
-                tr {
-                    height: 40px;
-                    padding: 2px;
-                    text-align: center;
-                }
+    tr {
+        height: 40px;
+        padding: 2px;
+        text-align: center;
+    }
 
-                th {
-                    text-align: center;
-                }
-            </style>
+    th {
+        text-align: center;
+    }
+
+    .field-validation-error {
+        color: red;
+    }
+</style>

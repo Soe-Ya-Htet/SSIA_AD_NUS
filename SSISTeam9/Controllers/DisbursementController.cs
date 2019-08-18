@@ -180,7 +180,7 @@ namespace SSISTeam9.Controllers
             return Json(Url.Action("ViewAllDisbursements", "Disbursement", new {collectionPt = collectionPt, sessionId= sessionId }));
         }
 
-        public ActionResult RepDisbursementList(string sessionId)
+        public ActionResult RepDisbursementList(string sessionId, bool timeErr)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             DisbursementList disbursementList = new DisbursementList();
@@ -192,21 +192,45 @@ namespace SSISTeam9.Controllers
                 disDetailList = DisbursementListService.ViewDisbursementDetails(disbursementList.ListId);
             }
             List<CollectionPoint> collectionPoints = DisbursementListService.GetAllCollectionPoints();
+
+            Dictionary<string, string> errDict = new Dictionary<string, string>();
+            if (timeErr)
+            {
+                errDict.Add("time", "To change the collection point, you need at least 30 minutes before the pick up time of selected one.");
+            }
+            ViewData["errDict"] = errDict;
             ViewData["disbursement"] = disbursementList;
             ViewData["disDetailList"] = disDetailList;
             ViewData["collectionPoints"] = collectionPoints;
             ViewData["sessionId"] = sessionId;
             ViewData["isRep"] = (emp.EmpRole == "REPRESENTATIVE");
+
             return View();
         }
 
         public ActionResult ChangeCollectionPoint(string sessionId, DisbursementList disbursement,FormCollection frm)
         {
-            CollectionPoint c = new CollectionPoint();
-            c.PlacedId = long.Parse(frm["collect"].ToString());
+            bool timeErr = false;
+            disbursement = DisbursementListService.GetDisbursementListByListId(disbursement.ListId);
+            long selectedPoint = long.Parse(frm["collect"].ToString());
+            if (disbursement.CollectionPoint.PlacedId == selectedPoint)
+            {
+                return RedirectToAction("RepDisbursementList", new { sessionId = sessionId, timeErr = timeErr });
+            }
+            CollectionPoint c = DisbursementListService.GetCollectionPointByPlaceId(selectedPoint);
+            DateTime selectedTime = disbursement.date.Date + c.Time;
+            DateTime changeTime = DateTime.Now;
+            TimeSpan timeDifference = selectedTime - changeTime;
+            double minuteDifference = timeDifference.TotalMinutes;
+            if (minuteDifference < 30)
+            {
+                timeErr = true;
+                return RedirectToAction("RepDisbursementList", new { sessionId = sessionId, timeErr = timeErr });
+            }
+
             disbursement.CollectionPoint = c;
             DisbursementListService.ChangeCollectionPoint(disbursement);
-            return RedirectToAction("RepDisbursementList",new { sessionId = sessionId});
+            return RedirectToAction("RepDisbursementList",new { sessionId = sessionId, timeErr = timeErr });
         }
 
         public ActionResult Acknowledge(string sessionId)

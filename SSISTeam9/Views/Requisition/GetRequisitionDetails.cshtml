@@ -42,9 +42,9 @@
                         </li>
                         if (isRep)
                         {
-                            <li class="nav-item active">
-                                @Html.ActionLink("Disbursement List", "RepDisbursementList", "Disbursement", new { sessionId = sessionId }, new { @class = "nav-link" })
-                            </li>
+                        <li class="nav-item active">
+                            @Html.ActionLink("Disbursement List", "RepDisbursementList", "Disbursement", new { sessionId = sessionId, timeErr = false }, new { @class = "nav-link" })
+                        </li>
                         }
                     }
                     else if (roleForDetail == "head")

@@ -78,22 +78,25 @@ namespace SSISTeam9.Controllers
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
             List<Cart> empCarts = RequisitionService.GetCartsByEmpId(emp.EmpId);
-            List<Cart> cartsToRequest = new List<Cart>();
-            foreach (string key in Request.Form.AllKeys)
+            if(empCarts.Count != 0)
             {
-                var value = Request[key];
-                int quantity = Convert.ToInt32(value);
-                long itemId = Convert.ToInt64(key);
-                Cart cart = empCarts.Find(c => c.Item.ItemId == itemId) ;
-                cart.Quantity = quantity;
-                cartsToRequest.Add(cart);
-            }
+                List<Cart> cartsToRequest = new List<Cart>();
+                foreach (string key in Request.Form.AllKeys)
+                {
+                    var value = Request[key];
+                    int quantity = Convert.ToInt32(value);
+                    long itemId = Convert.ToInt64(key);
+                    Cart cart = empCarts.Find(c => c.Item.ItemId == itemId);
+                    cart.Quantity = quantity;
+                    cartsToRequest.Add(cart);
+                }
 
-            RequisitionService.CreateRequisition(cartsToRequest, emp.EmpId);
-            string headMail = RequisitionService.GetDeptHead(emp.DeptId);
-            EmailNotification notice = new EmailNotification();
-            notice.ReceiverMailAddress = headMail;
-            Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_REQUISITION_MAIL));
+                RequisitionService.CreateRequisition(cartsToRequest, emp.EmpId);
+                string headMail = RequisitionService.GetDeptHead(emp.DeptId);
+                EmailNotification notice = new EmailNotification();
+                notice.ReceiverMailAddress = headMail;
+                Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_REQUISITION_MAIL));
+            }
             return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionId });
         }
 

@@ -57,8 +57,7 @@ namespace SSISTeam9.DAO
                 string q = @"SELECT SUM(balance) as needed, d.deptCode, d.deptId 
                             FROM RequisitionDetails r, Inventory i, Requisition req, Employee e, Department d 
                             WHERE req.status IN ('Assigned', 'Partially Completed(Assigned)') AND  r.itemId='" +itemId + "' AND r.itemId=i.itemId AND r.reqId=req.reqId AND req.empId=e.empId AND e.deptId=d.deptId " +
-                            "GROUP BY r.itemId, d.deptCode, d.deptId" +
-                            "ORDER BY d.deptCode";
+                            "GROUP BY r.itemId, d.deptCode, d.deptId";
 
                 
                 SqlCommand cmd = new SqlCommand(q, conn);

@@ -225,12 +225,18 @@ namespace SSISTeam9.DAO
                 {
                     disbursementList = new DisbursementList()
                     {
+                        ListId = (long)reader["listId"],
                         date = (DateTime)reader["date"],
-                        AcknowledgedBy = reader["acknowledgedBy"].ToString()
+                        AcknowledgedBy = reader["acknowledgedBy"].ToString(),
+                        
                     };
                     disbursementList.Department = new Department()
                     {
                         DeptId = (long)reader["deptId"]
+                    };
+                    disbursementList.CollectionPoint = new CollectionPoint()
+                    {
+                        PlacedId = (long)reader["collectionPointId"]
                     };
                 }
             }

@@ -79,5 +79,10 @@ namespace SSISTeam9.Services
             List<DisbursementList> d = new List<DisbursementList>();
             return DisbursementListDAO.ViewCompletedDisbursByDept(deptId);
         }
+
+        public static CollectionPoint GetCollectionPointByPlaceId(long placeId)
+        {
+            return CollectionPointDAO.GetCollectionPointByPlaceId(placeId);
+        }
     }
 }

@@ -33,5 +33,29 @@ namespace SSISTeam9.DAO
             }
             return collectionPoints;
         }
+
+        public static CollectionPoint GetCollectionPointByPlaceId(long placeId)
+        {
+            CollectionPoint collectionPoint = null;
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"SELECT * from CollectionPoint where placeId = @placeId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@placeId", placeId);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    collectionPoint = new CollectionPoint()
+                    {
+                        PlacedId = (long)reader["placeId"],
+                        Name = (string)reader["name"],
+                        Time = (TimeSpan)reader["time"]
+                    };
+                }
+            }
+            return collectionPoint;
+        }
     }
 }

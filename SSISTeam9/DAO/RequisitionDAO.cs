@@ -91,7 +91,7 @@ namespace SSISTeam9.DAO
             {
                 conn.Open();
 
-                string q = @"SELECT * FROM Requisition r, RequisitionDetails rd, Employee e, DisbursementListDetails dld WHERE dld.listId=@listId AND dld.itemId=@itemId AND e.deptId=@deptId AND rd.itemId=dld.itemId AND rd.reqId=r.reqId AND r.status IN ('Assigned','Partially Completed(assigned)') AND r.empId = e.empId";
+                string q = @"SELECT * FROM Requisition r, RequisitionDetails rd, Employee e, DisbursementListDetails dld WHERE dld.listId=@listId AND dld.itemId=@itemId AND e.deptId=@deptId AND rd.itemId=dld.itemId AND rd.reqId=r.reqId AND r.status IN ('Assigned','Partially Completed') AND r.empId = e.empId";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 cmd.Parameters.AddWithValue("@listId", listId);

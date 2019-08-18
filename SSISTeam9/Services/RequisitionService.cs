@@ -63,10 +63,10 @@ namespace SSISTeam9.Services
             cart.Quantity = quantity;
             List<Cart> carts = CartDAO.GetAllCart();
             carts = GetCartsWithObjects(carts);
-
-            if (null != carts &&
-                null != carts.Find(c => c.Employee.EmpId == cart.Employee.EmpId && c.Item.ItemId == cart.Item.ItemId))
+            Cart checkCart = carts.Find(c => c.Employee.EmpId == cart.Employee.EmpId && c.Item.ItemId == cart.Item.ItemId);
+            if (null != checkCart)
             {
+                cart.Quantity = cart.Quantity + checkCart.Quantity;
                 CartDAO.UpdateCart(cart);
             }
             else
@@ -158,7 +158,8 @@ namespace SSISTeam9.Services
             Employee emp = new Employee();
             emp.EmpId = empId;
             Requisition req = new Requisition();
-            req.ReqCode = string.Format(String.Format("#R{0:0000000000}", reqs.Max()+1));
+            long arg = reqs.Count == 0 ? 0 : reqs.Max();
+            req.ReqCode = string.Format(String.Format("#R{0:0000000000}", arg+1));
             req.DateOfRequest = DateTime.Now;
             req.Status = "Pending Approval";
             req.Employee = emp;

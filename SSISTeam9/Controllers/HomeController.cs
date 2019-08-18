@@ -62,11 +62,11 @@ namespace SSISTeam9.Controllers
             {
                 return RedirectToAction("NewRequisition", "Requisition", new { sessionId = sessionid});
             }
+            //else if ((empRole=="HEAD" && empDisplayRole=="HEAD"))
+            //{
+            //    return RedirectToAction("GetPendingRequisitions","Requisition",new { sessionId=sessionid});
+            //}
             else if ((empRole=="HEAD" && empDisplayRole=="HEAD"))
-            {
-                return RedirectToAction("GetPendingRequisitions","Requisition",new { sessionId=sessionid});
-            }
-            else if ((empRole=="EMPLOYEE" && empDisplayRole=="HEAD"))
             {
                 bool between = DelegateService.CheckDate(emp.DeptId);
                 bool after = DelegateService.AfterDate(emp.DeptId);

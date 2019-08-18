@@ -609,6 +609,8 @@
     <Compile Include="Filters\BasicAuthenticationAttribute.cs" />
     <Compile Include="Filters\CatalogueFilter.cs" />
     <Compile Include="Filters\DepartmentFilter.cs" />
+    <Compile Include="Filters\DeptHeadFilter.cs" />
+    <Compile Include="Filters\DeptPermanentHeadFilter.cs" />
     <Compile Include="Filters\PendingDeliveryOrderFilter.cs" />
     <Compile Include="Filters\StoreAuthorisationFilter.cs" />
     <Compile Include="Global.asax.cs">

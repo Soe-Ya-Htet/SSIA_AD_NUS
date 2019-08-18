@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Threading.Tasks;
+using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
@@ -23,7 +24,8 @@ namespace SSISTeam9.Controllers
         {
             return View();
         }
-        
+
+        [DeptPermanentHeadFilter]
         public ActionResult ViewDelegate(Models.Delegate d, string delegatedhead, string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -50,7 +52,13 @@ namespace SSISTeam9.Controllers
             {
                 d.Department = new Department();
                 d.Department.DeptId = deptId;
-                DelegateService.AddNewDelegate(d, headId);
+                bool isThereDelegate = DelegateService.CheckDelegatedByDept(deptId);
+                if (!isThereDelegate)
+                {
+                    DelegateService.AddNewDelegate(d, headId);
+                }
+                bool allnav = DelegateService.CheckPreviousHeadForNav(deptId);
+                ViewData["all"] = allnav;
                 EmailNotification notice = new EmailNotification();
                 Employee MailReceiver = EmployeeService.GetEmployeeById(d.Employee.EmpId);
                 notice.ReceiverMailAddress = MailReceiver.Email;

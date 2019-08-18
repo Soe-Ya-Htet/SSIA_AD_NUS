@@ -53,6 +53,8 @@ namespace SSISTeam9.Controllers
                 d.Department = new Department();
                 d.Department.DeptId = deptId;
                 DelegateService.AddNewDelegate(d, headId);
+                bool allnav = DelegateService.CheckPreviousHeadForNav(deptId);
+                ViewData["all"] = allnav;
                 EmailNotification notice = new EmailNotification();
                 Employee MailReceiver = EmployeeService.GetEmployeeById(d.Employee.EmpId);
                 notice.ReceiverMailAddress = MailReceiver.Email;

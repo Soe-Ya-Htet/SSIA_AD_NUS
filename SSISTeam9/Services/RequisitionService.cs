@@ -63,10 +63,10 @@ namespace SSISTeam9.Services
             cart.Quantity = quantity;
             List<Cart> carts = CartDAO.GetAllCart();
             carts = GetCartsWithObjects(carts);
-
-            if (null != carts &&
-                null != carts.Find(c => c.Employee.EmpId == cart.Employee.EmpId && c.Item.ItemId == cart.Item.ItemId))
+            Cart checkCart = carts.Find(c => c.Employee.EmpId == cart.Employee.EmpId && c.Item.ItemId == cart.Item.ItemId);
+            if (null != checkCart)
             {
+                cart.Quantity = cart.Quantity + checkCart.Quantity;
                 CartDAO.UpdateCart(cart);
             }
             else

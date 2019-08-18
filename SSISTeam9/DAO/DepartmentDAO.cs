@@ -98,6 +98,19 @@ namespace SSISTeam9.DAO
             }
         }
 
+        public static void UpdateDptCollectionPoint(DisbursementList disbursement)
+        {
+            using (SqlConnection conn = new SqlConnection(Data.db_cfg))
+            {
+                conn.Open();
+
+                string q = @"Update Department Set collectionPointId = @colPoint where deptId = @deptId";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@colPoint", disbursement.CollectionPoint.PlacedId);
+                cmd.Parameters.AddWithValue("@deptId", disbursement.Department.DeptId);
+                cmd.ExecuteNonQuery();
+            }
+        }
 
         public static void DeleteDepartment(long DeptId)
         {

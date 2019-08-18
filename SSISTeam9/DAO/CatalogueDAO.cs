@@ -300,7 +300,7 @@ namespace SSISTeam9.DAO
                             "','" + Catalogue.Description +
                             "','" + Catalogue.UnitOfMeasure+ 
                             "','" + Catalogue.BinNo + 
-                            "'0','0','0','0') SELECT CAST(scope_identity() AS int)";
+                            "','0','0','0','0') SELECT CAST(scope_identity() AS int)";
 
                 SqlCommand cmd = new SqlCommand(q, conn);
                 itemId = (int)cmd.ExecuteScalar();

@@ -755,9 +755,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Requisition\NewRequisition.cshtml" />
     <Content Include="Views\Supplier\All.cshtml" />
     <Content Include="Views\Supplier\DisplaySupplierDetails.cshtml" />
@@ -802,7 +799,6 @@
     <Content Include="Views\Requisition\MyRequisition.cshtml" />
     <Content Include="Views\Requisition\DeptRequisition.cshtml" />
     <Content Include="Views\Catalogue\CreateNext.cshtml" />
-    <Content Include="Views\Delegate\ViewRemoveDelegate.cshtml" />
     <Content Include="Views\Analytics\ByStationeryCategoryOrdered.cshtml" />
     <Content Include="Views\Catalogue\UpdateNext.cshtml" />
     <Content Include="Views\Requisition\ViewPastRequisitions.cshtml" />

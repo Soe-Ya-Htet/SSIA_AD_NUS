@@ -65,7 +65,8 @@ namespace SSISTeam9.Services
 
         public static void ChangeCollectionPoint(DisbursementList disbursement)
         {
-            DisbursementListDAO.UpdateCollectionPoint(disbursement);
+            DisbursementListDAO.UpdateDisCollectionPoint(disbursement);
+            DepartmentDAO.UpdateDptCollectionPoint(disbursement);
         }
 
         public static List<DisbursementList> ViewAllCompletedDisbursements()

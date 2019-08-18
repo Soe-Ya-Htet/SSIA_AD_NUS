@@ -166,7 +166,7 @@ namespace SSISTeam9.DAO
             return disbursementList;
         }
 
-        public static void UpdateCollectionPoint(DisbursementList disbursement)
+        public static void UpdateDisCollectionPoint(DisbursementList disbursement)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {

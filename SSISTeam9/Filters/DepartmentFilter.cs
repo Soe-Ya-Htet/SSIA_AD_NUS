@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Routing;
 using System.Web.Mvc;
 using SSISTeam9.Services;
+using SSISTeam9.Models;
 
 namespace SSISTeam9.Filters
 {
@@ -14,7 +15,10 @@ namespace SSISTeam9.Filters
         public void OnAuthorization(AuthorizationContext context)
         {
             string sessionId = HttpContext.Current.Request["sessionId"];
-            string userRole = EmployeeService.GetUserBySessionId(sessionId).EmpRole;
+            Employee e = EmployeeService.GetUserBySessionId(sessionId);
+            string userRole = e.EmpRole;
+            string displayRole = e.EmpDisplayRole;
+            
 
             if (!EmployeeService.IsActiveSessionId(sessionId))
             {
@@ -26,7 +30,7 @@ namespace SSISTeam9.Filters
                     }
                 );
             }
-            else if (userRole == "STORE_CLERK" || userRole == "STORE_SUPERVISOR" || userRole == "STORE_MANAGER")
+            else if (!(userRole == "EMPLOYEE" && displayRole == "EMPLOYEE") && !(userRole == "REPRESENTATIVE" && displayRole == "REPRESENTATIVE"))
             {
                 context.Result = new RedirectToRouteResult(
                        new RouteValueDictionary

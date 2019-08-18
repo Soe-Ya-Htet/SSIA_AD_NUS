@@ -19,12 +19,6 @@ namespace SSISTeam9.Controllers
             emailService = new EmailService();
         }
 
-        // GET: Requisition
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         [DepartmentFilter]
         public ActionResult NewRequisition(string sessionId)
         {

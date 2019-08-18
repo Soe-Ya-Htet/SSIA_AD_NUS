@@ -208,6 +208,7 @@ namespace SSISTeam9.Controllers
             return Json(Url.Action("ViewAllDisbursements", "Disbursement", new {collectionPt = collectionPt, sessionId= sessionId }));
         }
 
+        [DepartmentFilter]
         public ActionResult RepDisbursementList(string sessionId, bool timeErr)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -236,6 +237,7 @@ namespace SSISTeam9.Controllers
             return View();
         }
 
+        [DepartmentFilter]
         public ActionResult ChangeCollectionPoint(string sessionId, DisbursementList disbursement,FormCollection frm)
         {
             bool timeErr = false;

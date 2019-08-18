@@ -25,7 +25,7 @@ namespace SSISTeam9.Services
                 return "Failed";
             }
 
-            DisbursementListDAO.AcknowledgeDisbursement(listId, emp.EmpId);
+            DisbursementListDAO.AcknowledgeDisbursement(listId, emp.EmpName);
 
             UpdateChargeBack(listId);
 

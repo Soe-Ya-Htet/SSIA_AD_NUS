@@ -243,14 +243,14 @@ namespace SSISTeam9.DAO
             return disbursementList;
         }
 
-        public static void AcknowledgeDisbursement(long listId, long empId)
+        public static void AcknowledgeDisbursement(long listId, string empName)
         {
             using (SqlConnection conn = new SqlConnection(Data.db_cfg))
             {
                 conn.Open();
-                string q = @"Update DisbursementList Set acknowledgedBy = @empId where listId = @listId";
+                string q = @"Update DisbursementList Set acknowledgedBy = @empName where listId = @listId";
                 SqlCommand cmd = new SqlCommand(q, conn);
-                cmd.Parameters.AddWithValue("@empId", empId);
+                cmd.Parameters.AddWithValue("@empName", empName);
                 cmd.Parameters.AddWithValue("@listId", listId);
                 cmd.ExecuteNonQuery();
             }

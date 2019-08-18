@@ -7,6 +7,8 @@
     var showAll = (bool)ViewData["all"];
     var currentHead = (Employee)ViewData["currentHead"];
     var delegated = (bool)ViewData["delegated"];
+    var timeErr = (bool)ViewData["timeErr"];
+    var str = "Date cannot be from past!";
     foreach (var emp in employees)
     {
         if (emp.EmpRole != "REPRESENTATIVE")
@@ -89,6 +91,10 @@
                 </div>
                 <div class="col-sm">
                     @Html.ValidationMessageFor(x => x.ToDate, "", new { style = "color:red" })
+                    @if (timeErr)
+                    {
+                        <span style="color:red">@str</span>
+                    }
                 </div>
             </div>
             <div class="row mt-3">
@@ -172,6 +178,12 @@ else
         e.preventDefault();
         checkDate();
     });
+    @*if (@timeErr) {
+        window.addEventListener("load", function () {
+        alert("Date cannot be from past dates!")
+    }, true);
+    }*@
+    
 </script>
 
 

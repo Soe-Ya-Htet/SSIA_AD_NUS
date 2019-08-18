@@ -127,6 +127,12 @@ namespace SSISTeam9.Services
             return deptHead.Email;
         }
 
+        public static string GetRep(long deptId)
+        {
+            Employee rep = EmployeeDAO.GetRepByDeptId(deptId);
+            return rep.Email;
+        }
+
         public static List<Requisition> GetRequisitionByEmpId(long empId)
         {
             List<Requisition> reqs = RequisitionDAO.GetRequisitionByEmpId(empId);
@@ -152,7 +158,8 @@ namespace SSISTeam9.Services
             Employee emp = new Employee();
             emp.EmpId = empId;
             Requisition req = new Requisition();
-            req.ReqCode = string.Format(String.Format("#R{0:0000000000}", reqs.Max()+1));
+            long arg = reqs.Count == 0 ? 0 : reqs.Max();
+            req.ReqCode = string.Format(String.Format("#R{0:0000000000}", arg+1));
             req.DateOfRequest = DateTime.Now;
             req.Status = "Pending Approval";
             req.Employee = emp;

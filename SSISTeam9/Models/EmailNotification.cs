@@ -23,5 +23,7 @@ namespace SSISTeam9.Models
 
         public PurchaseOrder Order { get; set; }
 
+        public string CollectionDate { get; set; }
+
     }
 }

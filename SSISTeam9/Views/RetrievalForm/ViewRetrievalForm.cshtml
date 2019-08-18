@@ -82,7 +82,7 @@
 </table>
     <div class="row justify-content-end">
         <input type="date" name="date" id="collectionDate" value="@DateTime.Now.AddDays(7).ToString("yyyy-MM-dd")" />
-        <input class="btn-success rounded" type="button" value="Submit" onclick="submitData()" />
+        <input class="btn-success rounded" type="button" id="submit" value="Submit" onclick="submitData()" />
     </div>
     
 }
@@ -114,12 +114,13 @@ else
         for (var i = 0; i < arr.length; i++) {
             if (parseInt(arr[i].value) > jsRetForms[x]["deptNeeds"][i]["deptNeeded"]) {
                 alert(jsRetForms[x]["deptNeeds"][i]["deptCode"] + " quantity cannot be more than dept needed");
-                return false;
+                
             }
             if (parseInt(arr[i].value)) 
                 tot += parseInt(arr[i].value);
         }
         document.getElementById("/" + id).innerHTML = tot;
+
         if (tot > jsRetForms[x]["stockLevel"]) {
             alert(jsRetForms[x]["description"] + " quantity cannot be more than stock level, stock level: " + jsRetForms[x]["stockLevel"]);
             return false;
@@ -127,6 +128,25 @@ else
         else if (tot > jsRetForms[x]["totalNeeded"]) {
             alert(jsRetForms[x]["description"] + " quantity cannot be more than total needed");
             return false;   
+        }
+        else if (tot < jsRetForms[x]["totalNeeded"] && jsRetForms[x]["stockLevel"] > jsRetForms[x]["totalNeeded"]) {
+            var desc = jsRetForms[x]["description"];
+            if (confirm(desc + " stock level more than retrieved amount. Confirm quantity?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }
+        else if (tot < jsRetForms[x]["stockLevel"] && jsRetForms[x]["stockLevel"] < jsRetForms[x]["totalNeeded"]) {
+            var desc = jsRetForms[x]["description"];
+            if (confirm(desc + " stock level more than retrieved amount. Confirm quantity?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         
         
@@ -181,11 +201,14 @@ else
         for (var i = 0; i < deptCodes.length; i++) {
             var listPerDeptCode = document.getElementsByName(deptCodes[i])
             for (var item of listPerDeptCode) {
-                var list = { deptId: deptCodes[i], itemId: item.className, quantity: item.value, collectionDate: collectionDate }
-                listOfLists.push(list)
+                if (item.value>0) {
+                    var list = { deptId: deptCodes[i], itemId: item.className, quantity: item.value, collectionDate: collectionDate }
+                    listOfLists.push(list)
+                }
+                
             }
         }
-
+        
 
         $.ajax({
             type: 'POST',
@@ -200,5 +223,12 @@ else
                 alert(errMsg);
             }
         });
+
+        var form = document.getElementById("submit");
+
+        form.disabled = true;
+        return true;
+        
+        
     }
 </script>

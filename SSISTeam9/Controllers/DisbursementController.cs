@@ -6,11 +6,18 @@ using System.Web.Mvc;
 using SSISTeam9.Services;
 using SSISTeam9.Models;
 using SSISTeam9.Filters;
+using System.Threading.Tasks;
 
 namespace SSISTeam9.Controllers
 {
     public class DisbursementController : Controller
     {
+        private readonly IEmailService emailService;
+
+        public DisbursementController()
+        {
+            emailService = new EmailService();
+        }
         // GET: Disbursement
         [StoreAuthorisationFilter]
         public ActionResult ViewAllDisbursements(string collectionPt,string sessionId)
@@ -80,19 +87,27 @@ namespace SSISTeam9.Controllers
             List<long> deptIds = new List<long>();
             
             List<DisbursementList> disbursementLists = new List<DisbursementList>();
-
-            foreach (var entry in entries)
+            if (entries != null)
             {
-                if (deptIds.Contains(entry.deptId))
+                foreach (var entry in entries)
                 {
+                    if (deptIds.Contains(entry.deptId))
+                    {
 
-                }
-                else
-                {
-                    deptIds.Add(entry.deptId);
-                    
+                    }
+                    else
+                    {
+                        deptIds.Add(entry.deptId);
+
+                    }
                 }
             }
+            
+
+            List<EmailNotification> notices = new List<EmailNotification>();
+
+
+            
 
             foreach (var deptId in deptIds)
             {
@@ -108,7 +123,12 @@ namespace SSISTeam9.Controllers
                     date = entries[0].collectionDate
                     
                 };
-                
+
+                string repMail = RequisitionService.GetRep(d.Department.DeptId); //change to rep
+                EmailNotification notice = new EmailNotification();
+                notice.ReceiverMailAddress = repMail;
+                notice.CollectionDate = d.date.ToString("dd/MM/yyyy");
+                notices.Add(notice);
 
                 foreach (var entry in entries)
                 {
@@ -133,6 +153,14 @@ namespace SSISTeam9.Controllers
                 disbursementLists.Add(d);
             }
             DisbursementListService.CreateDisbursementLists(disbursementLists);
+            Task.Run(() => {
+                foreach (var notice in notices)
+                {
+                    emailService.SendMail(notice, EmailTrigger.ON_DISBURSEMENT_CREATION); //need to send to multiple reps
+
+                }
+            });
+
 
             return Json(Url.Action("ViewAllDisbursements","Disbursement", new { sessionId = sessionId }));
         }

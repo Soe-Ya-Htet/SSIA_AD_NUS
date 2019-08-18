@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Threading.Tasks;
+using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
@@ -19,6 +20,7 @@ namespace SSISTeam9.Controllers
         }
 
         // GET: Representative
+        [DeptHeadFilter]
         public ActionResult ChangeRepresentative(string employee,string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -34,8 +36,13 @@ namespace SSISTeam9.Controllers
                 EmailNotification notice = new EmailNotification();
                 RepresentativeService.UpdateEmployeeRole(newRep, currentRep, deptId);
                 Employee newRepMailReceiver = EmployeeService.GetEmployeeById(newRep);
-                notice.ReceiverMailAddress = newRepMailReceiver.Email;
-                Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_ASSIGNED_AS_DEPT_REP));
+                Employee oldRepMailReceiver = EmployeeService.GetEmployeeById(currentRep);
+                Task.Run(() => {
+                    notice.ReceiverMailAddress = newRepMailReceiver.Email;
+                    emailService.SendMail(notice, EmailTrigger.ON_ASSIGNED_AS_DEPT_REP);
+                    notice.ReceiverMailAddress = oldRepMailReceiver.Email;
+                    emailService.SendMail(notice, EmailTrigger.ON_REMOVED_DEPT_REP);
+                });
 
             }
             List<Employee> employees = RepresentativeService.GetEmployeesByDepartment(deptId);

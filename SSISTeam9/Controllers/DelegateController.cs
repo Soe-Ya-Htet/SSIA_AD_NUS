@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Threading.Tasks;
+using SSISTeam9.Filters;
 
 namespace SSISTeam9.Controllers
 {
@@ -23,7 +24,8 @@ namespace SSISTeam9.Controllers
         {
             return View();
         }
-        
+
+        [DeptPermanentHeadFilter]
         public ActionResult ViewDelegate(Models.Delegate d, string delegatedhead, string sessionId)
         {
             Employee emp = EmployeeService.GetUserBySessionId(sessionId);
@@ -65,7 +67,12 @@ namespace SSISTeam9.Controllers
             }
             else if (delegatedhead != null && d.Employee == null)
             {
+                EmailNotification notice = new EmailNotification();
+                long head = DepartmentService.GetCurrentHead(deptId);
+                Employee MailReceiver = EmployeeDAO.GetEmployeeById(head);
+                notice.ReceiverMailAddress = MailReceiver.Email;
                 DelegateService.DelegateToPreviousHead(deptId);
+                Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_REMOVED_DEPT_HEAD));
                 List<Employee> emps = RepresentativeService.GetEmployeesByDepartment(deptId);
                 ViewData["employees"] = emps;
                 ViewData["delegated"] = false;

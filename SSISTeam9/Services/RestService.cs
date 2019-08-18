@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using SSISTeam9.Controllers;
 using SSISTeam9.DAO;
@@ -11,6 +12,11 @@ namespace SSISTeam9.Services
 {
     public class RestService : IRestService
     {
+        private readonly IEmailService emailService;
+        public RestService()
+        {
+            emailService = new EmailService();
+        }
         public string AcknowledgementOfRepresentative(long listId)
         {
             Employee emp = AuthUtil.GetCurrentLoggedUser();
@@ -117,6 +123,15 @@ namespace SSISTeam9.Services
             long currentRep = DepartmentService.GetCurrentRep(user.DeptId);
             long newRep = repId;
             RepresentativeService.UpdateEmployeeRole(newRep, currentRep, user.DeptId);
+            Employee newRepMailReceiver = EmployeeService.GetEmployeeById(newRep);
+            Employee oldRepMailReceiver = EmployeeService.GetEmployeeById(currentRep);
+            Task.Run(() => {
+                EmailNotification notice = new EmailNotification();
+                notice.ReceiverMailAddress = newRepMailReceiver.Email;
+                emailService.SendMail(notice, EmailTrigger.ON_ASSIGNED_AS_DEPT_REP);
+                notice.ReceiverMailAddress = oldRepMailReceiver.Email;
+                emailService.SendMail(notice, EmailTrigger.ON_REMOVED_DEPT_REP);
+            });
 
             return "Success";
         }
@@ -137,6 +152,13 @@ namespace SSISTeam9.Services
             long headId = DepartmentService.GetCurrentHead(user.DeptId);
 
             DelegateService.AddNewDelegate(delegat, headId);
+
+            EmailNotification notice = new EmailNotification();
+            Employee MailReceiver = EmployeeService.GetEmployeeById(delegat.Employee.EmpId);
+            notice.ReceiverMailAddress = MailReceiver.Email;
+            notice.From = delegat.FromDate;
+            notice.To = delegat.ToDate;
+            Task.Run(() => emailService.SendMail(notice, EmailTrigger.ON_DELEGATED_AS_DEPT_HEAD));
 
             return "Success";
         }
